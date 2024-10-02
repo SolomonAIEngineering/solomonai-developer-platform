@@ -21,7 +21,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
           if (!input.trim()) {
             return "Package name cannot be empty";
           }
-          const packagePath = path.join(rootPath, "packages", input);
+          const packagePath = path.join(rootPath, "packages", input.replace(/^@react-package\//, ""));
           if (fs.existsSync(packagePath)) {
             return "A package with this name already exists";
           }
@@ -43,7 +43,8 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
         // Sanitize package name
         (answers) => {
           if (answers && typeof answers === 'object' && 'name' in answers) {
-            answers.name = (answers.name as string).replace("@v1/", "").trim();
+            answers.name = (answers.name as string).replace(/^@react-package\//, "").trim();
+            answers.fullName = answers.type === "react-library" ? `@react-package/${answers.name}` : answers.name;
           }
           return "Config sanitized";
         },
@@ -76,6 +77,21 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
                 packageJson.workspaces = [];
               }
               packageJson.workspaces.push(`packages/${answers.name}`);
+              return JSON.stringify(packageJson, null, 2);
+            } catch (error) {
+              console.error("Error updating package.json:", error);
+              return content;
+            }
+          },
+        },
+        // Update package.json in the new package to use the correct name
+        {
+          type: "modify",
+          path: path.join(rootPath, "packages", "{{name}}", "package.json"),
+          transform: (content: string, answers: PackageAnswers & { fullName: string }) => {
+            try {
+              const packageJson = JSON.parse(content);
+              packageJson.name = answers.fullName;
               return JSON.stringify(packageJson, null, 2);
             } catch (error) {
               console.error("Error updating package.json:", error);

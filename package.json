@@ -24,7 +24,8 @@
     "packages/yoan",
     "packages/yooo",
     "packages/yazzz",
-    "packages/noval"
+    "packages/noval",
+    "packages/yoa"
   ],
   "scripts": {
     "bump-versions": "bun changeset version && bun install",
