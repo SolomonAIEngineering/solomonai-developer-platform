@@ -39,7 +39,8 @@
     "app": "turbo dev --filter=@v1/app",
     "tailwind-config-viewer": " tailwind-config-viewer -c ./index.js -o -p 3333",
     "compile-tw-config": "tsc --noEmitOnError tooling/tailwind-config/index.ts --outDir  ./",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "type-check": "tsc  --noemit"
   },
   "lint-staged": {
     "**/*.{md,mdx}": [
