@@ -1,21 +1,12 @@
 {
   "extends": ["@v1/typescript/base.json"],
   "compilerOptions": {
-    "incremental": true,
-    "tsBuildInfoFile": ".tsbuildinfo",
-    "noImplicitAny": false,
-    "baseUrl": "./",
+    "jsx": "react",
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "allowImportingTsExtensions": true,
-    "noEmit": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true
+    "noImplicitAny": false
   },
   "include": ["**/*.ts", "**/*.js"]
 }

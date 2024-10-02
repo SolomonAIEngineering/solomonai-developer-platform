@@ -392,6 +392,17 @@ bun seed // run seed
 - **Security & Encryption**: End-to-end encryption, multi-factor authentication, and secure file sharing.
 - **Integration & Compatibility**: OAuth 2.0, SSO, and webhook support for real-time event notifications.
 
+## Generating Packages
+To generate packages run
+```bash
+bun run gen
+```
+
+To generate apps run
+```bash
+./generate-app.sh {{name}}
+```
+
 ## Contributing
 
 We welcome contributions from the community! Whether you're fixing a bug, improving the documentation, or adding a new feature, we appreciate your help in making Solomon AI better. There is a lot of context involved and we understand it can be overwhelming when first trying to join the project. Here is a quick summary of key information and how we currently work together:
