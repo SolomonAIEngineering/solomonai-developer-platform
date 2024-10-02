@@ -8,6 +8,8 @@
     "services/*"
   ],
   "scripts": {
+    "bump-versions": "bun changeset version && bun install",
+    "changeset": "bunx changeset",
     "lint:md": "markdownlint \"**/*.md\" --dot --ignore node_modules --ignore .changeset --ignore services --ignore .github",
     "lint:spell": "cspell \"**\" --gitignore --dot --no-progress --cache --unique ",
     "release": "turbo run build lint typecheck && changeset version && changeset publish",
