@@ -1,7 +1,14 @@
 {
   "name": "typescript-saas-template",
   "private": true,
-  "workspaces": ["packages/*", "apps/*", "tooling/*", "services/*"],
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "tooling/*",
+    "services/*",
+    "docs/*",
+    "tooling/config/*"
+  ],
   "scripts": {
     "bump-versions": "bun changeset version && bun install",
     "changeset": "bunx changeset",

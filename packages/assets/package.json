@@ -1,0 +1,9 @@
+{
+  "name": "@v1/assets",
+  "version": "0.4.3",
+  "private": true,
+  "description": "Solomon AI's assets package",
+  "license": "MIT",
+  "author": "Solomon AI",
+  "files": ["**/*"]
+}

@@ -13,7 +13,7 @@ import {
   ShareIcon,
 } from "lucide-react";
 
-import { cn } from "@orbitkit/ui/cn";
+import { cn } from "@v1/ui/cn";
 
 import { Button } from "../button";
 import { Sheet, SheetContent, SheetTrigger } from "../sheet";

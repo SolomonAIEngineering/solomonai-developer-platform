@@ -21,7 +21,7 @@ import {
   ReloadIcon,
 } from "@radix-ui/react-icons";
 
-import { cn } from "@orbitkit/ui/cn";
+import { cn } from "@v1/ui/cn";
 
 import { Button } from "../button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../tooltip";

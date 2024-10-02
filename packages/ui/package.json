@@ -377,10 +377,10 @@
     "vaul": "^0.9.3"
   },
   "devDependencies": {
-    "@orbitkit/assets": "workspace:^",
-    "@orbitkit/storybook": "workspace:^",
-    "@orbitkit/tailwind": "workspace:^",
-    "@orbitkit/tsconfig": "workspace:^",
+    "@v1/assets": "workspace:^",
+    "@v1/storybook": "workspace:^",
+    "@v1/tailwind": "workspace:^",
+    "@v1/typescript": "workspace:^",
     "@storybook/addon-essentials": "^8.3.1",
     "@storybook/addon-links": "^8.3.1",
     "@storybook/react-vite": "^8.3.1",
