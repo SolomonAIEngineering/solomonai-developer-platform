@@ -8,5 +8,7 @@
   },
   "devDependencies": {
     "typescript": "^4.9.0"
-  }
+  },
+  "author": "Yoan Yomba",
+  "license": "GNU AFFERO GENERAL PUBLIC LICENSE"
 }

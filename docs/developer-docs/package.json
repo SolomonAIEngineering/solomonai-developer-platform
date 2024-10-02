@@ -1,0 +1,19 @@
+{
+  "name": "@v1/docs",
+  "version": "0.4.3",
+  "private": true,
+  "description": "Documentation website for Solomon AI using Mintlify",
+  "license": "MIT",
+  "author": "Yoan Yomba",
+  "type": "module",
+  "scripts": {
+    "dev": "mintlify dev --port=3002"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "mintlify": "^4.0.217"
+  },
+  "volta": {
+    "extends": "../../package.json"
+  }
+}

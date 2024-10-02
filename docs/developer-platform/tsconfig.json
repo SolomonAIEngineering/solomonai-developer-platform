@@ -1,0 +1,37 @@
+{
+  "extends": [
+    "@v1/typescript/nextjs.json"
+  ],
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.cts",
+    "**/*.ctsx",
+    "**/*.mts",
+    "**/*.mtsx",
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.cjs",
+    "**/*.cjsx",
+    "**/*.mjs",
+    "**/*.mjsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

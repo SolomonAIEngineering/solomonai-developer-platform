@@ -26,5 +26,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "typescript": "^5.5.4"
-  }
+  },
+  "author": "Yoan Yomba",
+  "license": "GNU AFFERO GENERAL PUBLIC LICENSE"
 }

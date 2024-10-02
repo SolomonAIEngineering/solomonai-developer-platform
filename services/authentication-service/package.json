@@ -29,5 +29,7 @@
     "@supabase/supabase-js": "^2.33.1",
     "hono": "^3.5.7",
     "zod": "3.22.2"
-  }
+  },
+  "author": "Yoan Yomba",
+  "license": "GNU AFFERO GENERAL PUBLIC LICENSE"
 }

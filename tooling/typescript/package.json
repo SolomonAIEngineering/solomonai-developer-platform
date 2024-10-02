@@ -1,4 +1,6 @@
 {
   "name": "@v1/typescript",
-  "private": true
+  "private": true,
+  "author": "Yoan Yomba",
+  "license": "GNU AFFERO GENERAL PUBLIC LICENSE"
 }

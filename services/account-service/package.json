@@ -58,5 +58,7 @@
     "@types/service-worker-mock": "^2.0.1",
     "prettier": "^3.3.3",
     "wrangler": "^3.0.0"
-  }
+  },
+  "author": "Yoan Yomba",
+  "license": "GNU AFFERO GENERAL PUBLIC LICENSE"
 }
