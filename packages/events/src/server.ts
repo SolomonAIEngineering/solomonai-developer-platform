@@ -1,26 +1,26 @@
-import { cookies } from 'next/headers'
+import { cookies } from "next/headers";
 
-import type { PostEventPayload } from '@openpanel/nextjs'
+import type { PostEventPayload } from "@openpanel/nextjs";
 
-import { OpenPanel } from '@openpanel/nextjs'
-import { waitUntil } from '@vercel/functions'
+import { OpenPanel } from "@openpanel/nextjs";
+import { waitUntil } from "@vercel/functions";
 
 type Props = {
-  userId?: string
-  fullName?: string | null
-}
+  userId?: string;
+  fullName?: string | null;
+};
 
 export const setupAnalytics = async (options?: Props) => {
-  const { userId, fullName } = options ?? {}
-  const trackingConsent = cookies().get('tracking-consent')?.value === '0'
+  const { userId, fullName } = options ?? {};
+  const trackingConsent = cookies().get("tracking-consent")?.value === "0";
 
   const client = new OpenPanel({
     clientId: process.env.NEXT_PUBLIC_OPENPANEL_CLIENT_ID!,
     clientSecret: process.env.OPENPANEL_SECRET_KEY!,
-  })
+  });
 
   if (trackingConsent && userId && fullName) {
-    const [firstName, lastName] = fullName.split(' ')
+    const [firstName, lastName] = fullName.split(" ");
 
     waitUntil(
       client.identify({
@@ -28,19 +28,19 @@ export const setupAnalytics = async (options?: Props) => {
         firstName,
         lastName,
       }),
-    )
+    );
   }
 
   return {
-    track: (options: { event: string } & PostEventPayload['properties']) => {
-      if (process.env.NODE_ENV !== 'production') {
-        console.log('Track', options)
-        return
+    track: (options: { event: string } & PostEventPayload["properties"]) => {
+      if (process.env.NODE_ENV !== "production") {
+        console.log("Track", options);
+        return;
       }
 
-      const { event, ...rest } = options
+      const { event, ...rest } = options;
 
-      waitUntil(client.track(event, rest))
+      waitUntil(client.track(event, rest));
     },
-  }
-}
+  };
+};

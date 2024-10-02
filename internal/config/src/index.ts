@@ -6,10 +6,10 @@
  * in other packages where needed.
  */
 
-export * from './business'
-export * from './solopreneur'
-export * from './consumer'
-export * from './types'
+export * from "./business";
+export * from "./solopreneur";
+export * from "./consumer";
+export * from "./types";
 
 // API exports (if applicable)
 // export * from "./api";

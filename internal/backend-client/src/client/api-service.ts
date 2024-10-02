@@ -7,19 +7,19 @@ import {
   UserServiceV2Api,
   WorkspaceServiceApi,
   WorkspaceServiceRestApi,
-} from 'client-typescript-sdk'
+} from "client-typescript-sdk";
 
-import { ApiConfig } from './config.ts'
-import { Logger } from './logger.ts'
-import { IApiService } from './types.ts'
+import { ApiConfig } from "./config.ts";
+import { Logger } from "./logger.ts";
+import { IApiService } from "./types.ts";
 
 /**
  * ApiService class that implements IApiService interface.
  * This class manages API configurations and provides access to various service APIs.
  */
 export class ApiService implements IApiService {
-  private configuration: Configuration
-  private token?: string
+  private configuration: Configuration;
+  private token?: string;
 
   /**
    * Creates an instance of ApiService.
@@ -30,9 +30,9 @@ export class ApiService implements IApiService {
     private config: ApiConfig,
     private middlewares: Middleware[],
   ) {
-    this.token = config.token
-    this.configuration = this.createConfiguration()
-    Logger.info('ApiService instance created', { apiUrl: this.config.apiUrl })
+    this.token = config.token;
+    this.configuration = this.createConfiguration();
+    Logger.info("ApiService instance created", { apiUrl: this.config.apiUrl });
   }
 
   /**
@@ -42,11 +42,11 @@ export class ApiService implements IApiService {
    */
   private createConfiguration(): Configuration {
     const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-    }
+      "Content-Type": "application/json",
+    };
 
     if (this.token) {
-      headers['Authorization'] = `Bearer ${this.token}`
+      headers["Authorization"] = `Bearer ${this.token}`;
     }
 
     return new Configuration({
@@ -54,7 +54,7 @@ export class ApiService implements IApiService {
       accessToken: this.token,
       headers: headers,
       middleware: this.middlewares,
-    })
+    });
   }
 
   /**
@@ -62,9 +62,9 @@ export class ApiService implements IApiService {
    * @param {string} token - The new token to be set.
    */
   public setToken(token: string): void {
-    this.token = token
-    this.configuration = this.createConfiguration()
-    Logger.info('New token set and configuration updated')
+    this.token = token;
+    this.configuration = this.createConfiguration();
+    Logger.info("New token set and configuration updated");
   }
 
   /**
@@ -72,7 +72,7 @@ export class ApiService implements IApiService {
    * @returns {string | undefined} The current token or undefined if not set.
    */
   public getToken(): string | undefined {
-    return this.token
+    return this.token;
   }
 
   /**
@@ -80,7 +80,7 @@ export class ApiService implements IApiService {
    * @returns {UserServiceV2Api} An instance of UserServiceV2Api.
    */
   public getUserServiceV2Api(): UserServiceV2Api {
-    return new UserServiceV2Api(this.configuration)
+    return new UserServiceV2Api(this.configuration);
   }
 
   /**
@@ -88,7 +88,7 @@ export class ApiService implements IApiService {
    * @returns {AccountingServiceApi} An instance of AccountingServiceApi.
    */
   public getAccountingServiceApi(): AccountingServiceApi {
-    return new AccountingServiceApi(this.configuration)
+    return new AccountingServiceApi(this.configuration);
   }
 
   /**
@@ -96,7 +96,7 @@ export class ApiService implements IApiService {
    * @returns {FinancialServiceApi} An instance of FinancialServiceApi.
    */
   public getFinancialServiceApi(): FinancialServiceApi {
-    return new FinancialServiceApi(this.configuration)
+    return new FinancialServiceApi(this.configuration);
   }
 
   /**
@@ -104,7 +104,7 @@ export class ApiService implements IApiService {
    * @returns {SocialServiceApi} An instance of SocialServiceApi.
    */
   public getSocialServiceApi(): SocialServiceApi {
-    return new SocialServiceApi(this.configuration)
+    return new SocialServiceApi(this.configuration);
   }
 
   /**
@@ -112,7 +112,7 @@ export class ApiService implements IApiService {
    * @returns {WorkspaceServiceApi} An instance of WorkspaceServiceApi.
    */
   public getWorkspaceServiceApi(): WorkspaceServiceApi {
-    return new WorkspaceServiceApi(this.configuration)
+    return new WorkspaceServiceApi(this.configuration);
   }
 
   /**
@@ -120,7 +120,7 @@ export class ApiService implements IApiService {
    * @returns {WorkspaceServiceRestApi} An instance of WorkspaceServiceRestApi.
    */
   public getWorkspaceServiceRestApi(): WorkspaceServiceRestApi {
-    return new WorkspaceServiceRestApi(this.configuration)
+    return new WorkspaceServiceRestApi(this.configuration);
   }
 
   /**
@@ -128,9 +128,9 @@ export class ApiService implements IApiService {
    * @param {Middleware[]} middlewares - The new array of middlewares.
    */
   public updateMiddlewares(middlewares: Middleware[]): void {
-    this.middlewares = middlewares
-    this.configuration = this.createConfiguration()
-    Logger.info('Middlewares updated and configuration recreated')
+    this.middlewares = middlewares;
+    this.configuration = this.createConfiguration();
+    Logger.info("Middlewares updated and configuration recreated");
   }
 
   /**
@@ -138,6 +138,6 @@ export class ApiService implements IApiService {
    * @returns {ApiConfig} The current API configuration.
    */
   public getConfig(): ApiConfig {
-    return this.config
+    return this.config;
   }
 }

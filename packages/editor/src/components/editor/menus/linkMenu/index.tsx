@@ -1,1 +1,1 @@
-export { LinkMenu } from './linkMenu'
+export { LinkMenu } from "./linkMenu";

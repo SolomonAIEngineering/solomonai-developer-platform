@@ -8,14 +8,14 @@ import { GeistSans } from 'geist/font/sans'
 import { ThemeProvider } from 'next-themes'
 import { extractRouterConfig } from 'uploadthing/server'
 
-import { Toaster } from '@orbitkit/ui/toast'
+import { Toaster } from '@v1/ui/toast'
 
 import { PostHogReactProvider } from '@/lib/posthog/react'
 import { TRPCReactProvider } from '@/lib/trpc/react'
 
 import { fileRouter } from './api/uploadthing/core'
 
-import '@orbitkit/ui/globals.css'
+import '@v1/ui/globals.css'
 
 const PostHogPageView = dynamic(() => import('@/lib/posthog/view'), {
   ssr: false,

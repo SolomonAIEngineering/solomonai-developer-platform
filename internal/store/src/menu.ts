@@ -1,15 +1,15 @@
-import { create } from 'zustand'
+import { create } from "zustand";
 
 /**
  * Represents the state of the menu.
  */
 interface MenuState {
   /** Indicates whether the menu is in customization mode. */
-  isCustomizing: boolean
+  isCustomizing: boolean;
   /** Function to set the customization mode. */
-  setCustomizing: (isCustomizing: boolean) => void
+  setCustomizing: (isCustomizing: boolean) => void;
   /** Function to toggle the customization mode. */
-  toggleCustomizing: () => void
+  toggleCustomizing: () => void;
 }
 
 /**
@@ -29,4 +29,4 @@ export const useMenuStore = create<MenuState>()((set) => ({
   setCustomizing: (isCustomizing) => set({ isCustomizing }),
   toggleCustomizing: () =>
     set((state) => ({ isCustomizing: !state.isCustomizing })),
-}))
+}));

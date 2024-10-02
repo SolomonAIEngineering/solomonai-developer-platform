@@ -1,14 +1,14 @@
 /* eslint-disable react/no-unstable-nested-components */
-import { Link, Redirect, SplashScreen, Tabs } from 'expo-router';
-import React, { useCallback, useEffect } from 'react';
+import { Link, Redirect, SplashScreen, Tabs } from "expo-router";
+import React, { useCallback, useEffect } from "react";
 
-import { useAuth, useIsFirstTime } from '@/core';
-import { Pressable, Text } from '@/ui';
+import { useAuth, useIsFirstTime } from "@/core";
+import { Pressable, Text } from "@/ui";
 import {
   Feed as FeedIcon,
   Settings as SettingsIcon,
   Style as StyleIcon,
-} from '@/ui/icons';
+} from "@/ui/icons";
 
 export default function TabLayout() {
   const status = useAuth.use.status();
@@ -17,7 +17,7 @@ export default function TabLayout() {
     await SplashScreen.hideAsync();
   }, []);
   useEffect(() => {
-    if (status !== 'idle') {
+    if (status !== "idle") {
       setTimeout(() => {
         hideSplash();
       }, 1000);
@@ -27,7 +27,7 @@ export default function TabLayout() {
   if (isFirstTime) {
     return <Redirect href="/onboarding" />;
   }
-  if (status === 'signOut') {
+  if (status === "signOut") {
     return <Redirect href="/login" />;
   }
   return (
@@ -35,29 +35,29 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Feed',
+          title: "Feed",
           tabBarIcon: ({ color }) => <FeedIcon color={color} />,
           headerRight: () => <CreateNewPostLink />,
-          tabBarTestID: 'feed-tab',
+          tabBarTestID: "feed-tab",
         }}
       />
 
       <Tabs.Screen
         name="style"
         options={{
-          title: 'Style',
+          title: "Style",
           headerShown: false,
           tabBarIcon: ({ color }) => <StyleIcon color={color} />,
-          tabBarTestID: 'style-tab',
+          tabBarTestID: "style-tab",
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
-          title: 'Settings',
+          title: "Settings",
           headerShown: false,
           tabBarIcon: ({ color }) => <SettingsIcon color={color} />,
-          tabBarTestID: 'settings-tab',
+          tabBarTestID: "settings-tab",
         }}
       />
     </Tabs>

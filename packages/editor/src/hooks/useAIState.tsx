@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from "react";
 
 /**
  * Defines the structure for AI state management, including loading state and
@@ -6,13 +6,13 @@ import { useState } from 'react'
  */
 export type AIStateType = {
   /** Indicates whether the AI is currently loading. */
-  isAiLoading: boolean
+  isAiLoading: boolean;
 
   /**
    * Error message, if any, related to AI processing. Can be null if no error is
    * present.
    */
-  aiError?: string | null
+  aiError?: string | null;
 
   /**
    * Sets the loading state for the AI.
@@ -20,7 +20,7 @@ export type AIStateType = {
    * @param isAiLoading - A boolean value to indicate whether the AI is
    *   currently loading.
    */
-  setIsAiLoading: (isAiLoading: boolean) => void
+  setIsAiLoading: (isAiLoading: boolean) => void;
 
   /**
    * Sets the error message related to AI processing.
@@ -28,8 +28,8 @@ export type AIStateType = {
    * @param aiError - A string containing the error message, or null if no error
    *   is to be set.
    */
-  setAiError: (aiError: string | null) => void
-}
+  setAiError: (aiError: string | null) => void;
+};
 
 /**
  * A custom React hook for managing the state of an AI component, including
@@ -39,13 +39,13 @@ export type AIStateType = {
  *   state.
  */
 export const useAIState = (): AIStateType => {
-  const [isAiLoading, setIsAiLoading] = useState(false)
-  const [aiError, setAiError] = useState<string | null>(null)
+  const [isAiLoading, setIsAiLoading] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
 
   return {
     isAiLoading,
     aiError,
     setIsAiLoading,
     setAiError,
-  }
-}
+  };
+};

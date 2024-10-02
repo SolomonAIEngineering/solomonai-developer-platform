@@ -1,20 +1,20 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from "react";
 
-import type { Editor } from '@tiptap/core'
+import type { Editor } from "@tiptap/core";
 
-import { Button } from '@v1/ui/button'
-import { Input } from '@v1/ui/input'
-import { Label } from '@v1/ui/label'
-import { Switch } from '@v1/ui/switch'
+import { Button } from "@v1/ui/button";
+import { Input } from "@v1/ui/input";
+import { Label } from "@v1/ui/label";
+import { Switch } from "@v1/ui/switch";
 
-import { cn } from '@/lib/editor/utils'
+import { cn } from "@/lib/editor/utils";
 
-import { LinkProps } from '../../types'
+import { LinkProps } from "../../types";
 
 interface LinkEditBlockProps extends React.HTMLAttributes<HTMLDivElement> {
-  editor: Editor
-  onSetLink: ({ url, text, openInNewTab }: LinkProps) => void
-  close?: () => void
+  editor: Editor;
+  onSetLink: ({ url, text, openInNewTab }: LinkProps) => void;
+  close?: () => void;
 }
 
 const LinkEditBlock = ({
@@ -25,58 +25,58 @@ const LinkEditBlock = ({
   ...props
 }: LinkEditBlockProps) => {
   const [field, setField] = useState<LinkProps>({
-    url: '',
-    text: '',
+    url: "",
+    text: "",
     openInNewTab: false,
-  })
+  });
 
   const data = useMemo(() => {
-    const { href, target } = editor.getAttributes('link')
-    const { from, to } = editor.state.selection
-    const text = editor.state.doc.textBetween(from, to, ' ')
+    const { href, target } = editor.getAttributes("link");
+    const { from, to } = editor.state.selection;
+    const text = editor.state.doc.textBetween(from, to, " ");
 
     return {
       url: href,
       text,
-      openInNewTab: target === '_blank' ? true : false,
-    }
-  }, [editor])
+      openInNewTab: target === "_blank" ? true : false,
+    };
+  }, [editor]);
 
   useEffect(() => {
-    setField(data)
-  }, [data])
+    setField(data);
+  }, [data]);
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    onSetLink(field)
-    close?.()
-  }
+    e.preventDefault();
+    onSetLink(field);
+    close?.();
+  };
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className={cn('space-y-4', className)} {...props}>
-        <div className='space-y-1'>
+      <div className={cn("space-y-4", className)} {...props}>
+        <div className="space-y-1">
           <Label>Link</Label>
           <Input
-            type='url'
+            type="url"
             required
-            placeholder='Paste a link'
-            value={field.url ?? ''}
+            placeholder="Paste a link"
+            value={field.url ?? ""}
             onChange={(e) => setField({ ...field, url: e.target.value })}
           />
         </div>
 
-        <div className='space-y-1'>
+        <div className="space-y-1">
           <Label>Display text (optional)</Label>
           <Input
-            type='text'
-            placeholder='Text to display'
-            value={field.text ?? ''}
+            type="text"
+            placeholder="Text to display"
+            value={field.text ?? ""}
             onChange={(e) => setField({ ...field, text: e.target.value })}
           />
         </div>
 
-        <div className='flex items-center space-x-2'>
+        <div className="flex items-center space-x-2">
           <Label>Open in new tab</Label>
           <Switch
             checked={field.openInNewTab}
@@ -86,18 +86,18 @@ const LinkEditBlock = ({
           />
         </div>
 
-        <div className='flex justify-end space-x-2'>
+        <div className="flex justify-end space-x-2">
           {close && (
-            <Button variant='ghost' type='button' onClick={close}>
+            <Button variant="ghost" type="button" onClick={close}>
               Cancel
             </Button>
           )}
 
-          <Button type='submit'>Insert</Button>
+          <Button type="submit">Insert</Button>
         </div>
       </div>
     </form>
-  )
-}
+  );
+};
 
-export { LinkEditBlock }
+export { LinkEditBlock };

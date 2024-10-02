@@ -1,15 +1,15 @@
-import { useCallback } from 'react'
+import { useCallback } from "react";
 
-import { Editor, NodeViewWrapper } from '@tiptap/react'
+import { Editor, NodeViewWrapper } from "@tiptap/react";
 
-import { ImageUploader } from './imageUploader'
+import { ImageUploader } from "./imageUploader";
 
 export const ImageUpload = ({
   getPos,
   editor,
 }: {
-  getPos: () => number
-  editor: Editor
+  getPos: () => number;
+  editor: Editor;
 }) => {
   const onUpload = useCallback(
     (url: string) => {
@@ -19,19 +19,19 @@ export const ImageUpload = ({
           .setImageBlock({ src: url })
           .deleteRange({ from: getPos(), to: getPos() })
           .focus()
-          .run()
+          .run();
       }
     },
     [getPos, editor],
-  )
+  );
 
   return (
     <NodeViewWrapper>
-      <div className='m-0 p-0' data-drag-handle>
+      <div className="m-0 p-0" data-drag-handle>
         <ImageUploader onUpload={onUpload} />
       </div>
     </NodeViewWrapper>
-  )
-}
+  );
+};
 
-export default ImageUpload
+export default ImageUpload;

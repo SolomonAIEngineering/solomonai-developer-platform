@@ -1,22 +1,22 @@
-import type { BaseError } from './errors/base'
+import type { BaseError } from "./errors/base";
 
 /**
  * Represents a successful result containing a value.
  * @template V The type of the successful value.
  */
 type OkResult<V> = {
-  val: V
-  err?: never
-}
+  val: V;
+  err?: never;
+};
 
 /**
  * Represents an error result containing a BaseError.
  * @template E The specific error type extending BaseError.
  */
 type ErrResult<E extends BaseError> = {
-  val?: never
-  err: E
-}
+  val?: never;
+  err: E;
+};
 
 /**
  * A union type representing either a successful result or an error result.
@@ -26,22 +26,22 @@ type ErrResult<E extends BaseError> = {
  */
 export type Result<V, E extends BaseError = BaseError> =
   | OkResult<V>
-  | ErrResult<E>
+  | ErrResult<E>;
 
 /**
  * Creates a successful result with no value.
  * @returns An OkResult with a 'never' type value.
  */
-export function Ok(): OkResult<never>
+export function Ok(): OkResult<never>;
 /**
  * Creates a successful result with the given value.
  * @template V The type of the successful value.
  * @param val The value to be wrapped in the OkResult.
  * @returns An OkResult containing the provided value.
  */
-export function Ok<V>(val: V): OkResult<V>
+export function Ok<V>(val: V): OkResult<V>;
 export function Ok<V>(val?: V): OkResult<V> {
-  return { val } as OkResult<V>
+  return { val } as OkResult<V>;
 }
 
 /**
@@ -51,7 +51,7 @@ export function Ok<V>(val?: V): OkResult<V> {
  * @returns An ErrResult containing the provided error.
  */
 export function Err<E extends BaseError>(err: E): ErrResult<E> {
-  return { err }
+  return { err };
 }
 
 /**
@@ -84,8 +84,8 @@ export async function wrap<T, E extends BaseError>(
   errorFactory: (err: Error) => E,
 ): Promise<Result<T, E>> {
   try {
-    return Ok(await p)
+    return Ok(await p);
   } catch (e) {
-    return Err(errorFactory(e as Error))
+    return Err(errorFactory(e as Error));
   }
 }

@@ -1,6 +1,6 @@
-import type { FileShareMessageEvent } from '@slack/web-api'
+import type { FileShareMessageEvent } from "@slack/web-api";
 
-import { client, Events } from '@orbitkit/jobs'
+import { client, Events } from "@orbitkit/jobs";
 
 export async function fileShare(
   event: FileShareMessageEvent,
@@ -12,7 +12,7 @@ export async function fileShare(
     mimetype: file.mimetype,
     size: file.size,
     url: file.url_private_download,
-  }))
+  }));
 
   if (files && files.length > 0) {
     await Promise.all(
@@ -28,6 +28,6 @@ export async function fileShare(
           },
         }),
       ),
-    )
+    );
   }
 }

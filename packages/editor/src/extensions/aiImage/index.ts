@@ -1,1 +1,1 @@
-export * from './aiImage'
+export * from "./aiImage";

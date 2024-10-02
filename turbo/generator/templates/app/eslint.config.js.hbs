@@ -1,2 +1,7 @@
-import { configs, defineConfig } from '@orbitkit/eslint' export default
-defineConfig( ...configs.base, ...configs.next, ...configs.playwright, )
+import { configs, defineConfig } from '@v1/eslint'
+
+export default defineConfig(
+  ...configs.base,
+  ...configs.next,
+  ...configs.playwright,
+)

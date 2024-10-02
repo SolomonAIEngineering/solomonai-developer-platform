@@ -1,17 +1,17 @@
-import { useMemo } from 'react'
+import { useMemo } from "react";
 
-import { Content } from '@tiptap/core'
-import * as Y from 'yjs'
+import { Content } from "@tiptap/core";
+import * as Y from "yjs";
 
-import BlockEditor from './blockEditor'
+import BlockEditor from "./blockEditor";
 
 export interface MarkdownPreviewProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  callback?: (content: string) => void
-  content?: string
-  aiAppId: string
-  aiBaseUrl: string
-  aiToken: string
+  callback?: (content: string) => void;
+  content?: string;
+  aiAppId: string;
+  aiBaseUrl: string;
+  aiToken: string;
 }
 
 export const MarkdownPreview: React.FC<MarkdownPreviewProps> = ({
@@ -21,11 +21,11 @@ export const MarkdownPreview: React.FC<MarkdownPreviewProps> = ({
   aiBaseUrl,
   aiToken,
 }) => {
-  const ydoc = useMemo(() => new Y.Doc(), [])
+  const ydoc = useMemo(() => new Y.Doc(), []);
 
-  let initialContent: Content | undefined = undefined
+  let initialContent: Content | undefined = undefined;
   if (content) {
-    initialContent = content
+    initialContent = content;
   }
 
   return (
@@ -37,9 +37,9 @@ export const MarkdownPreview: React.FC<MarkdownPreviewProps> = ({
         aiAppId={aiAppId}
         aiBaseUrl={aiBaseUrl}
         content={content}
-        label={content ? 'Update' : 'Submit'}
+        label={content ? "Update" : "Submit"}
         hasCollab={false}
       />
     </>
-  )
-}
+  );
+};

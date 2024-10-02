@@ -1,9 +1,9 @@
-import type { Client } from '@v1/supabase/types'
+import type { Client } from "@v1/supabase/types";
 
-import { startOfMonth } from 'date-fns'
-import { z } from 'zod'
+import { startOfMonth } from "date-fns";
+import { z } from "zod";
 
-import { getRunwayQuery } from '@v1/dbes'
+import { getRunwayQuery } from "@v1/dbes";
 
 export function getRunwayTool({
   defaultValues,
@@ -11,23 +11,23 @@ export function getRunwayTool({
   teamId,
 }: {
   defaultValues: {
-    from: string
-    to: string
-  }
-  supabase: Client
-  teamId: string
+    from: string;
+    to: string;
+  };
+  supabase: Client;
+  teamId: string;
 }) {
   return {
-    description: 'Get the runway',
+    description: "Get the runway",
     parameters: z.object({
-      currency: z.string().describe('The currency for the runway').optional(),
+      currency: z.string().describe("The currency for the runway").optional(),
       startDate: z.coerce
         .date()
-        .describe('The start date of the runway, in ISO-8601 format')
+        .describe("The start date of the runway, in ISO-8601 format")
         .default(new Date(defaultValues.from)),
       endDate: z.coerce
         .date()
-        .describe('The end date of the runway, in ISO-8601 format')
+        .describe("The end date of the runway, in ISO-8601 format")
         .default(new Date(defaultValues.to)),
     }),
     execute: async ({
@@ -35,22 +35,22 @@ export function getRunwayTool({
       startDate,
       endDate,
     }: {
-      currency?: string
-      startDate: Date
-      endDate: Date
+      currency?: string;
+      startDate: Date;
+      endDate: Date;
     }) => {
       const { data } = await getRunwayQuery(supabase, {
         currency,
         from: startOfMonth(startDate).toISOString(),
         to: endDate.toISOString(),
         teamId,
-      })
+      });
 
       if (!data) {
-        return 'No runway found'
+        return "No runway found";
       }
 
-      return `Runway with currency ${currency} is ${data} months. Based on the data from ${startDate.toISOString()} to ${endDate.toISOString()}.`
+      return `Runway with currency ${currency} is ${data} months. Based on the data from ${startDate.toISOString()} to ${endDate.toISOString()}.`;
     },
-  }
+  };
 }

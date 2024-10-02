@@ -1,7 +1,7 @@
-import type { Client } from '../types'
+import type { Client } from "../types";
 
-import { UTCDate } from '@date-fns/utc'
-import { z } from 'zod'
+import { UTCDate } from "@date-fns/utc";
+import { z } from "zod";
 
 /**
  * Converts a date string to a UTCDate object.
@@ -9,7 +9,7 @@ import { z } from 'zod'
  * @returns A UTCDate object representing the input date string.
  */
 function toUTCDate(dateString: string): UTCDate {
-  return new UTCDate(dateString)
+  return new UTCDate(dateString);
 }
 
 // Base schema for common parameters
@@ -17,14 +17,14 @@ const baseQueryParamsSchema = z.object({
   teamId: z.string(),
   from: z.string(),
   to: z.string(),
-  currency: z.string().optional().default('USD'),
-})
+  currency: z.string().optional().default("USD"),
+});
 
 // Schema and type for getMonthlyExpensesQuery
-const getMonthlyExpensesQueryParamsSchema = baseQueryParamsSchema
+const getMonthlyExpensesQueryParamsSchema = baseQueryParamsSchema;
 export type GetMonthlyExpensesQueryParams = z.infer<
   typeof getMonthlyExpensesQueryParamsSchema
->
+>;
 
 /**
  * Retrieves monthly expenses for a specified team and date range.
@@ -37,20 +37,20 @@ export async function getMonthlyExpensesQuery(
   params: GetMonthlyExpensesQueryParams,
 ) {
   const { teamId, from, to, currency } =
-    getMonthlyExpensesQueryParamsSchema.parse(params)
-  return supabase.rpc('get_monthly_expenses', {
+    getMonthlyExpensesQueryParamsSchema.parse(params);
+  return supabase.rpc("get_monthly_expenses", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
-  })
+  });
 }
 
 // Schema and type for getExpensesByCategoryQuery
-const getExpensesByCategoryQueryParamsSchema = baseQueryParamsSchema
+const getExpensesByCategoryQueryParamsSchema = baseQueryParamsSchema;
 export type GetExpensesByCategoryQueryParams = z.infer<
   typeof getExpensesByCategoryQueryParamsSchema
->
+>;
 
 /**
  * Retrieves expenses by category for a specified team and date range.
@@ -63,20 +63,20 @@ export async function getExpensesByCategoryQuery(
   params: GetExpensesByCategoryQueryParams,
 ) {
   const { teamId, from, to, currency } =
-    getExpensesByCategoryQueryParamsSchema.parse(params)
-  return supabase.rpc('get_expenses_by_category', {
+    getExpensesByCategoryQueryParamsSchema.parse(params);
+  return supabase.rpc("get_expenses_by_category", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
-  })
+  });
 }
 
 // Schema and type for getDailyExpensesQuery
-const getDailyExpensesQueryParamsSchema = baseQueryParamsSchema
+const getDailyExpensesQueryParamsSchema = baseQueryParamsSchema;
 export type GetDailyExpensesQueryParams = z.infer<
   typeof getDailyExpensesQueryParamsSchema
->
+>;
 
 /**
  * Retrieves daily expenses for a specified team and date range.
@@ -89,24 +89,24 @@ export async function getDailyExpensesQuery(
   params: GetDailyExpensesQueryParams,
 ) {
   const { teamId, from, to, currency } =
-    getDailyExpensesQueryParamsSchema.parse(params)
-  const dailyExpenses = await supabase.rpc('get_daily_expenses', {
+    getDailyExpensesQueryParamsSchema.parse(params);
+  const dailyExpenses = await supabase.rpc("get_daily_expenses", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
-  })
+  });
 
-  return dailyExpenses
+  return dailyExpenses;
 }
 
 // Schema and type for getTopExpenseCategoriesQuery
 const getTopExpenseCategoriesQueryParamsSchema = baseQueryParamsSchema.extend({
   limit: z.number().optional().default(5),
-})
+});
 export type GetTopExpenseCategoriesQueryParams = z.infer<
   typeof getTopExpenseCategoriesQueryParamsSchema
->
+>;
 
 /**
  * Retrieves the top expense categories for a specified team and date range.
@@ -119,23 +119,23 @@ export async function getTopExpenseCategoriesQuery(
   params: GetTopExpenseCategoriesQueryParams,
 ) {
   const { teamId, from, to, currency, limit } =
-    getTopExpenseCategoriesQueryParamsSchema.parse(params)
-  return supabase.rpc('get_top_expense_categories', {
+    getTopExpenseCategoriesQueryParamsSchema.parse(params);
+  return supabase.rpc("get_top_expense_categories", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
     limit_count: limit,
-  })
+  });
 }
 
 // Schema and type for getExpensesByMerchantQuery
 const getExpensesByMerchantQueryParamsSchema = baseQueryParamsSchema.extend({
   limit: z.number().optional().default(10),
-})
+});
 export type GetExpensesByMerchantQueryParams = z.infer<
   typeof getExpensesByMerchantQueryParamsSchema
->
+>;
 
 /**
  * Retrieves expenses by merchant for a specified team and date range.
@@ -148,21 +148,21 @@ export async function getExpensesByMerchantQuery(
   params: GetExpensesByMerchantQueryParams,
 ) {
   const { teamId, from, to, currency, limit } =
-    getExpensesByMerchantQueryParamsSchema.parse(params)
-  return supabase.rpc('get_expenses_by_merchant', {
+    getExpensesByMerchantQueryParamsSchema.parse(params);
+  return supabase.rpc("get_expenses_by_merchant", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
     limit_count: limit,
-  })
+  });
 }
 
 // Schema and type for getWeeklyExpenseTrendsQuery
-const getWeeklyExpenseTrendsQueryParamsSchema = baseQueryParamsSchema
+const getWeeklyExpenseTrendsQueryParamsSchema = baseQueryParamsSchema;
 export type GetWeeklyExpenseTrendsQueryParams = z.infer<
   typeof getWeeklyExpenseTrendsQueryParamsSchema
->
+>;
 
 /**
  * Retrieves weekly expense trends for a specified team and date range.
@@ -175,20 +175,20 @@ export async function getWeeklyExpenseTrendsQuery(
   params: GetWeeklyExpenseTrendsQueryParams,
 ) {
   const { teamId, from, to, currency } =
-    getWeeklyExpenseTrendsQueryParamsSchema.parse(params)
-  return supabase.rpc('get_weekly_expense_trends', {
+    getWeeklyExpenseTrendsQueryParamsSchema.parse(params);
+  return supabase.rpc("get_weekly_expense_trends", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
-  })
+  });
 }
 
 // Schema and type for getExpensesByPaymentChannelQuery
-const getExpensesByPaymentChannelQueryParamsSchema = baseQueryParamsSchema
+const getExpensesByPaymentChannelQueryParamsSchema = baseQueryParamsSchema;
 export type GetExpensesByPaymentChannelQueryParams = z.infer<
   typeof getExpensesByPaymentChannelQueryParamsSchema
->
+>;
 
 /**
  * Retrieves expenses by payment channel for a specified team and date range.
@@ -201,22 +201,22 @@ export async function getExpensesByPaymentChannelQuery(
   params: GetExpensesByPaymentChannelQueryParams,
 ) {
   const { teamId, from, to, currency } =
-    getExpensesByPaymentChannelQueryParamsSchema.parse(params)
-  return supabase.rpc('get_expenses_by_payment_channel', {
+    getExpensesByPaymentChannelQueryParamsSchema.parse(params);
+  return supabase.rpc("get_expenses_by_payment_channel", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
-  })
+  });
 }
 
 // Schema and type for getRecurringExpensesQuery
 const getRecurringExpensesQueryParamsSchema = baseQueryParamsSchema.extend({
   minOccurrences: z.number().optional().default(3),
-})
+});
 export type GetRecurringExpensesQueryParams = z.infer<
   typeof getRecurringExpensesQueryParamsSchema
->
+>;
 
 /**
  * Retrieves recurring expenses for a specified team and date range.
@@ -229,21 +229,22 @@ export async function getRecurringExpensesQuery(
   params: GetRecurringExpensesQueryParams,
 ) {
   const { teamId, from, to, currency, minOccurrences } =
-    getRecurringExpensesQueryParamsSchema.parse(params)
-  return supabase.rpc('get_recurring_expenses', {
+    getRecurringExpensesQueryParamsSchema.parse(params);
+  return supabase.rpc("get_recurring_expenses", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
     min_occurrences: minOccurrences,
-  })
+  });
 }
 
 // Schema and type for getExpenseDistributionByDayOfWeekQuery
-const getExpenseDistributionByDayOfWeekQueryParamsSchema = baseQueryParamsSchema
+const getExpenseDistributionByDayOfWeekQueryParamsSchema =
+  baseQueryParamsSchema;
 export type GetExpenseDistributionByDayOfWeekQueryParams = z.infer<
   typeof getExpenseDistributionByDayOfWeekQueryParamsSchema
->
+>;
 
 /**
  * Retrieves expense distribution by day of week for a specified team and date range.
@@ -256,22 +257,22 @@ export async function getExpenseDistributionByDayOfWeekQuery(
   params: GetExpenseDistributionByDayOfWeekQueryParams,
 ) {
   const { teamId, from, to, currency } =
-    getExpenseDistributionByDayOfWeekQueryParamsSchema.parse(params)
-  return supabase.rpc('get_expense_distribution_by_day_of_week', {
+    getExpenseDistributionByDayOfWeekQueryParamsSchema.parse(params);
+  return supabase.rpc("get_expense_distribution_by_day_of_week", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
-  })
+  });
 }
 
 // Schema and type for getExpenseGrowthRateQuery
 const getExpenseGrowthRateQueryParamsSchema = baseQueryParamsSchema.extend({
-  intervalType: z.string().optional().default('month'),
-})
+  intervalType: z.string().optional().default("month"),
+});
 export type GetExpenseGrowthRateQueryParams = z.infer<
   typeof getExpenseGrowthRateQueryParamsSchema
->
+>;
 
 /**
  * Retrieves expense growth rate for a specified team and date range.
@@ -284,26 +285,26 @@ export async function getExpenseGrowthRateQuery(
   params: GetExpenseGrowthRateQueryParams,
 ) {
   const { teamId, from, to, currency, intervalType } =
-    getExpenseGrowthRateQueryParamsSchema.parse(params)
-  return supabase.rpc('get_expense_growth_rate', {
+    getExpenseGrowthRateQueryParamsSchema.parse(params);
+  return supabase.rpc("get_expense_growth_rate", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
     interval_type: intervalType,
-  })
+  });
 }
 
 // Schema and type for getExpenseForecastQuery
 const getExpenseForecastQueryParamsSchema = z.object({
   teamId: z.string(),
   forecastDate: z.string(),
-  currency: z.string().optional().default('USD'),
+  currency: z.string().optional().default("USD"),
   lookbackMonths: z.number().optional().default(3),
-})
+});
 export type GetExpenseForecastQueryParams = z.infer<
   typeof getExpenseForecastQueryParamsSchema
->
+>;
 
 /**
  * Retrieves expense forecast for a specified team and forecast date.
@@ -316,22 +317,22 @@ export async function getExpenseForecastQuery(
   params: GetExpenseForecastQueryParams,
 ) {
   const { teamId, forecastDate, currency, lookbackMonths } =
-    getExpenseForecastQueryParamsSchema.parse(params)
-  return supabase.rpc('get_expense_forecast', {
+    getExpenseForecastQueryParamsSchema.parse(params);
+  return supabase.rpc("get_expense_forecast", {
     team_id: teamId,
     forecast_date: toUTCDate(forecastDate).toDateString(),
     currency: currency,
     lookback_months: lookbackMonths,
-  })
+  });
 }
 
 // Schema and type for getExpenseAnomaliesQuery
 const getExpenseAnomaliesQueryParamsSchema = baseQueryParamsSchema.extend({
   thresholdPercentage: z.number().optional().default(50),
-})
+});
 export type GetExpenseAnomaliesQueryParams = z.infer<
   typeof getExpenseAnomaliesQueryParamsSchema
->
+>;
 
 /**
  * Retrieves expense anomalies for a specified team and date range.
@@ -344,21 +345,21 @@ export async function getExpenseAnomaliesQuery(
   params: GetExpenseAnomaliesQueryParams,
 ) {
   const { teamId, from, to, currency, thresholdPercentage } =
-    getExpenseAnomaliesQueryParamsSchema.parse(params)
-  return supabase.rpc('get_expense_anomalies', {
+    getExpenseAnomaliesQueryParamsSchema.parse(params);
+  return supabase.rpc("get_expense_anomalies", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
     threshold_percentage: thresholdPercentage,
-  })
+  });
 }
 
 // Schema and type for getExpenseTrendsByTimeOfDayQuery
-const getExpenseTrendsByTimeOfDayQueryParamsSchema = baseQueryParamsSchema
+const getExpenseTrendsByTimeOfDayQueryParamsSchema = baseQueryParamsSchema;
 export type GetExpenseTrendsByTimeOfDayQueryParams = z.infer<
   typeof getExpenseTrendsByTimeOfDayQueryParamsSchema
->
+>;
 
 /**
  * Retrieves expense trends by time of day for a specified team and date range.
@@ -371,13 +372,13 @@ export async function getExpenseTrendsByTimeOfDayQuery(
   params: GetExpenseTrendsByTimeOfDayQueryParams,
 ) {
   const { teamId, from, to, currency } =
-    getExpenseTrendsByTimeOfDayQueryParamsSchema.parse(params)
-  return supabase.rpc('get_expense_trends_by_time_of_day', {
+    getExpenseTrendsByTimeOfDayQueryParamsSchema.parse(params);
+  return supabase.rpc("get_expense_trends_by_time_of_day", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
-  })
+  });
 }
 
 // Schema and type for getExpenseComparisonQuery
@@ -385,11 +386,11 @@ const getExpenseComparisonQueryParamsSchema = z.object({
   teamId: z.string(),
   currentFrom: z.string(),
   currentTo: z.string(),
-  currency: z.string().optional().default('USD'),
-})
+  currency: z.string().optional().default("USD"),
+});
 export type GetExpenseComparisonQueryParams = z.infer<
   typeof getExpenseComparisonQueryParamsSchema
->
+>;
 
 /**
  * Retrieves expense comparison data for a specified team and date range.
@@ -402,21 +403,21 @@ export async function getExpenseComparisonQuery(
   params: GetExpenseComparisonQueryParams,
 ) {
   const { teamId, currentFrom, currentTo, currency } =
-    getExpenseComparisonQueryParamsSchema.parse(params)
-  return supabase.rpc('get_expense_comparison', {
+    getExpenseComparisonQueryParamsSchema.parse(params);
+  return supabase.rpc("get_expense_comparison", {
     team_id: teamId,
     current_start_date: toUTCDate(currentFrom).toDateString(),
     current_end_date: toUTCDate(currentTo).toDateString(),
     currency: currency,
-  })
+  });
 }
 
 // Schema and type for getExpenseByPersonalFinanceCategoryQuery
 const getExpenseByPersonalFinanceCategoryQueryParamsSchema =
-  baseQueryParamsSchema
+  baseQueryParamsSchema;
 export type GetExpenseByPersonalFinanceCategoryQueryParams = z.infer<
   typeof getExpenseByPersonalFinanceCategoryQueryParamsSchema
->
+>;
 
 /**
  * Retrieves expenses by personal finance category for a specified team and date range.
@@ -429,20 +430,20 @@ export async function getExpenseByPersonalFinanceCategoryQuery(
   params: GetExpenseByPersonalFinanceCategoryQueryParams,
 ) {
   const { teamId, from, to, currency } =
-    getExpenseByPersonalFinanceCategoryQueryParamsSchema.parse(params)
-  return supabase.rpc('get_expense_by_personal_finance_category', {
+    getExpenseByPersonalFinanceCategoryQueryParamsSchema.parse(params);
+  return supabase.rpc("get_expense_by_personal_finance_category", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
-  })
+  });
 }
 
 // Schema and type for getInventoryCostAnalysisQuery
-const getInventoryCostAnalysisQueryParamsSchema = baseQueryParamsSchema
+const getInventoryCostAnalysisQueryParamsSchema = baseQueryParamsSchema;
 export type GetInventoryCostAnalysisQueryParams = z.infer<
   typeof getInventoryCostAnalysisQueryParamsSchema
->
+>;
 
 /**
  * Retrieves inventory cost analysis data for a specified team and date range.
@@ -455,20 +456,20 @@ export async function getInventoryCostAnalysisQuery(
   params: GetInventoryCostAnalysisQueryParams,
 ) {
   const { teamId, from, to, currency } =
-    getInventoryCostAnalysisQueryParamsSchema.parse(params)
-  return supabase.rpc('get_inventory_cost_analysis', {
+    getInventoryCostAnalysisQueryParamsSchema.parse(params);
+  return supabase.rpc("get_inventory_cost_analysis", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
-  })
+  });
 }
 
 // Schema and type for getRentAndUtilitiesAnalysisQuery
-const getRentAndUtilitiesAnalysisQueryParamsSchema = baseQueryParamsSchema
+const getRentAndUtilitiesAnalysisQueryParamsSchema = baseQueryParamsSchema;
 export type GetRentAndUtilitiesAnalysisQueryParams = z.infer<
   typeof getRentAndUtilitiesAnalysisQueryParamsSchema
->
+>;
 
 /**
  * Retrieves rent and utilities analysis data for a specified team and date range.
@@ -481,20 +482,20 @@ export async function getRentAndUtilitiesAnalysisQuery(
   params: GetRentAndUtilitiesAnalysisQueryParams,
 ) {
   const { teamId, from, to, currency } =
-    getRentAndUtilitiesAnalysisQueryParamsSchema.parse(params)
-  return supabase.rpc('get_rent_and_utilities_analysis', {
+    getRentAndUtilitiesAnalysisQueryParamsSchema.parse(params);
+  return supabase.rpc("get_rent_and_utilities_analysis", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
-  })
+  });
 }
 
 // Schema and type for getSalariesAndWagesAnalysisQuery
-const getSalariesAndWagesAnalysisQueryParamsSchema = baseQueryParamsSchema
+const getSalariesAndWagesAnalysisQueryParamsSchema = baseQueryParamsSchema;
 export type GetSalariesAndWagesAnalysisQueryParams = z.infer<
   typeof getSalariesAndWagesAnalysisQueryParamsSchema
->
+>;
 
 /**
  * Retrieves salaries and wages analysis data for a specified team and date range.
@@ -507,21 +508,21 @@ export async function getSalariesAndWagesAnalysisQuery(
   params: GetSalariesAndWagesAnalysisQueryParams,
 ) {
   const { teamId, from, to, currency } =
-    getSalariesAndWagesAnalysisQueryParamsSchema.parse(params)
-  return supabase.rpc('get_salaries_and_wages_analysis', {
+    getSalariesAndWagesAnalysisQueryParamsSchema.parse(params);
+  return supabase.rpc("get_salaries_and_wages_analysis", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
-  })
+  });
 }
 
 // Schema and type for getEquipmentAndMaintenanceAnalysisQuery
 const getEquipmentAndMaintenanceAnalysisQueryParamsSchema =
-  baseQueryParamsSchema
+  baseQueryParamsSchema;
 export type GetEquipmentAndMaintenanceAnalysisQueryParams = z.infer<
   typeof getEquipmentAndMaintenanceAnalysisQueryParamsSchema
->
+>;
 
 /**
  * Retrieves equipment and maintenance analysis data for a specified team and date range.
@@ -534,20 +535,20 @@ export async function getEquipmentAndMaintenanceAnalysisQuery(
   params: GetEquipmentAndMaintenanceAnalysisQueryParams,
 ) {
   const { teamId, from, to, currency } =
-    getEquipmentAndMaintenanceAnalysisQueryParamsSchema.parse(params)
-  return supabase.rpc('get_equipment_and_maintenance_analysis', {
+    getEquipmentAndMaintenanceAnalysisQueryParamsSchema.parse(params);
+  return supabase.rpc("get_equipment_and_maintenance_analysis", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
-  })
+  });
 }
 
 // Schema and type for getProfessionalServicesAnalysisQuery
-const getProfessionalServicesAnalysisQueryParamsSchema = baseQueryParamsSchema
+const getProfessionalServicesAnalysisQueryParamsSchema = baseQueryParamsSchema;
 export type GetProfessionalServicesAnalysisQueryParams = z.infer<
   typeof getProfessionalServicesAnalysisQueryParamsSchema
->
+>;
 
 /**
  * Retrieves professional services analysis data for a specified team and date range.
@@ -560,20 +561,20 @@ export async function getProfessionalServicesAnalysisQuery(
   params: GetProfessionalServicesAnalysisQueryParams,
 ) {
   const { teamId, from, to, currency } =
-    getProfessionalServicesAnalysisQueryParamsSchema.parse(params)
-  return supabase.rpc('get_professional_services_analysis', {
+    getProfessionalServicesAnalysisQueryParamsSchema.parse(params);
+  return supabase.rpc("get_professional_services_analysis", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
-  })
+  });
 }
 
 // Schema and type for getSoftwareSubscriptionAnalysisQuery
-const getSoftwareSubscriptionAnalysisQueryParamsSchema = baseQueryParamsSchema
+const getSoftwareSubscriptionAnalysisQueryParamsSchema = baseQueryParamsSchema;
 export type GetSoftwareSubscriptionAnalysisQueryParams = z.infer<
   typeof getSoftwareSubscriptionAnalysisQueryParamsSchema
->
+>;
 
 /**
  * Retrieves software subscription analysis data for a specified team and date range.
@@ -586,20 +587,20 @@ export async function getSoftwareSubscriptionAnalysisQuery(
   params: GetSoftwareSubscriptionAnalysisQueryParams,
 ) {
   const { teamId, from, to, currency } =
-    getSoftwareSubscriptionAnalysisQueryParamsSchema.parse(params)
-  return supabase.rpc('get_software_subscription_analysis', {
+    getSoftwareSubscriptionAnalysisQueryParamsSchema.parse(params);
+  return supabase.rpc("get_software_subscription_analysis", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
-  })
+  });
 }
 
 // Schema and type for getSupplierExpenseAnalysisQuery
-const getSupplierExpenseAnalysisQueryParamsSchema = baseQueryParamsSchema
+const getSupplierExpenseAnalysisQueryParamsSchema = baseQueryParamsSchema;
 export type GetSupplierExpenseAnalysisQueryParams = z.infer<
   typeof getSupplierExpenseAnalysisQueryParamsSchema
->
+>;
 
 /**
  * Retrieves supplier expense analysis data for a specified team and date range.
@@ -612,20 +613,20 @@ export async function getSupplierExpenseAnalysisQuery(
   params: GetSupplierExpenseAnalysisQueryParams,
 ) {
   const { teamId, from, to, currency } =
-    getSupplierExpenseAnalysisQueryParamsSchema.parse(params)
-  return supabase.rpc('get_supplier_expense_analysis', {
+    getSupplierExpenseAnalysisQueryParamsSchema.parse(params);
+  return supabase.rpc("get_supplier_expense_analysis", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
-  })
+  });
 }
 
 // Schema and type for getShippingLogisticsAnalysisQuery
-const getShippingLogisticsAnalysisQueryParamsSchema = baseQueryParamsSchema
+const getShippingLogisticsAnalysisQueryParamsSchema = baseQueryParamsSchema;
 export type GetShippingLogisticsAnalysisQueryParams = z.infer<
   typeof getShippingLogisticsAnalysisQueryParamsSchema
->
+>;
 
 /**
  * Retrieves shipping and logistics analysis data for a specified team and date range.
@@ -638,27 +639,27 @@ export async function getShippingLogisticsAnalysisQuery(
   params: GetShippingLogisticsAnalysisQueryParams,
 ) {
   const { teamId, from, to, currency } =
-    getShippingLogisticsAnalysisQueryParamsSchema.parse(params)
-  return supabase.rpc('get_shipping_logistics_analysis', {
+    getShippingLogisticsAnalysisQueryParamsSchema.parse(params);
+  return supabase.rpc("get_shipping_logistics_analysis", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
-  })
+  });
 }
 
 /**
  * Zod schema for the parameters of the getExpenseBreakdownByLocationQuery function.
  */
 export const getExpenseBreakdownByLocationQueryParamsSchema =
-  baseQueryParamsSchema
+  baseQueryParamsSchema;
 
 /**
  * Type inference from the Zod schema for the getExpenseBreakdownByLocationQuery function parameters.
  */
 export type GetExpenseBreakdownByLocationQueryParams = z.infer<
   typeof getExpenseBreakdownByLocationQueryParamsSchema
->
+>;
 
 /**
  * Retrieves expense breakdown by location for a specified team and date range.
@@ -671,11 +672,11 @@ export async function getExpenseBreakdownByLocationQuery(
   params: GetExpenseBreakdownByLocationQueryParams,
 ) {
   const { teamId, from, to, currency } =
-    getExpenseBreakdownByLocationQueryParamsSchema.parse(params)
-  return supabase.rpc('get_expense_breakdown_by_location', {
+    getExpenseBreakdownByLocationQueryParamsSchema.parse(params);
+  return supabase.rpc("get_expense_breakdown_by_location", {
     team_id: teamId,
     start_date: toUTCDate(from).toDateString(),
     end_date: toUTCDate(to).toDateString(),
     currency: currency,
-  })
+  });
 }

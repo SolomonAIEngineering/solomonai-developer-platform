@@ -1,55 +1,55 @@
-import type { Doc as YDoc } from 'yjs'
+import type { Doc as YDoc } from "yjs";
 
-import { TiptapCollabProvider } from '@hocuspocus/provider'
-import { Language } from '@tiptap-pro/extension-ai'
+import { TiptapCollabProvider } from "@hocuspocus/provider";
+import { Language } from "@tiptap-pro/extension-ai";
 
 export interface TiptapProps {
-  aiToken: string
-  hasCollab: boolean
-  ydoc: YDoc
-  provider?: TiptapCollabProvider | null | undefined
-  aiAppId: string
-  aiBaseUrl: string
-  content?: string
-  onContentChange?: (content: string) => void
-  label?: string
+  aiToken: string;
+  hasCollab: boolean;
+  ydoc: YDoc;
+  provider?: TiptapCollabProvider | null | undefined;
+  aiAppId: string;
+  aiBaseUrl: string;
+  content?: string;
+  onContentChange?: (content: string) => void;
+  label?: string;
 }
 
 export type EditorUser = {
-  clientId: string
-  name: string
-  color: string
-  initials?: string
-}
+  clientId: string;
+  name: string;
+  color: string;
+  initials?: string;
+};
 
 export type LanguageOption = {
-  name: string
-  label: string
-  value: Language
-}
+  name: string;
+  label: string;
+  value: Language;
+};
 
 export type AiTone =
-  | 'academic'
-  | 'business'
-  | 'casual'
-  | 'childfriendly'
-  | 'conversational'
-  | 'emotional'
-  | 'humorous'
-  | 'informative'
-  | 'inspirational'
-  | string
+  | "academic"
+  | "business"
+  | "casual"
+  | "childfriendly"
+  | "conversational"
+  | "emotional"
+  | "humorous"
+  | "informative"
+  | "inspirational"
+  | string;
 
-export type AiPromptType = 'SHORTEN' | 'EXTEND' | 'SIMPLIFY' | 'TONE'
+export type AiPromptType = "SHORTEN" | "EXTEND" | "SIMPLIFY" | "TONE";
 
 export type AiToneOption = {
-  name: string
-  label: string
-  value: AiTone
-}
+  name: string;
+  label: string;
+  value: AiTone;
+};
 
 export type AiImageStyle = {
-  name: string
-  label: string
-  value: string
-}
+  name: string;
+  label: string;
+  value: string;
+};

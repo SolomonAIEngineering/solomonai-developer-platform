@@ -1,10 +1,10 @@
-import { createContext } from 'react'
+import { createContext } from "react";
 
 interface IEditorContext {
-  isAiLoading: boolean
-  aiError?: string | undefined | null
-  setIsAiLoading: Function
-  setAiError: Function
+  isAiLoading: boolean;
+  aiError?: string | undefined | null;
+  setIsAiLoading: Function;
+  setAiError: Function;
 }
 
 export const EditorContext = createContext<IEditorContext>({
@@ -12,4 +12,4 @@ export const EditorContext = createContext<IEditorContext>({
   aiError: null,
   setIsAiLoading: () => {},
   setAiError: () => {},
-})
+});

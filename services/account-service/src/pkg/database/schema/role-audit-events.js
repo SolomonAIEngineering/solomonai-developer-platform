@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { integer, sqliteTable, text, } from "drizzle-orm/sqlite-core";
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { auditActionEnum } from "./enums.js";
 import { roles } from "./roles.js";
 /**
@@ -18,14 +18,14 @@ import { roles } from "./roles.js";
  * @property {number | null} roleId - Foreign key referencing the affected role in the roles table.
  */
 export const roleAuditEvents = sqliteTable("role_audit_events", {
-    id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    action: auditActionEnum,
-    performedBy: text("performed_by").notNull(),
-    timestamp: text("timestamp").default(sql `(CURRENT_TIMESTAMP)`),
-    affectedFields: text("affected_fields"),
-    previousValues: text("previous_values"),
-    clientIp: text("client_ip"),
-    userAgent: text("user_agent"),
-    context: text("context"),
-    roleId: integer("role_id").references(() => roles.id),
+  id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+  action: auditActionEnum,
+  performedBy: text("performed_by").notNull(),
+  timestamp: text("timestamp").default(sql`(CURRENT_TIMESTAMP)`),
+  affectedFields: text("affected_fields"),
+  previousValues: text("previous_values"),
+  clientIp: text("client_ip"),
+  userAgent: text("user_agent"),
+  context: text("context"),
+  roleId: integer("role_id").references(() => roles.id),
 });

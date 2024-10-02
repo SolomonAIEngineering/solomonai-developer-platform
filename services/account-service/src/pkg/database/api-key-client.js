@@ -9,255 +9,257 @@ import { z } from "zod";
  * This class follows the singleton pattern and extends DatabaseClient.
  */
 export class ApiKeyDatabaseClient extends DatabaseClient {
-    static instance = null;
-    constructor(db) {
-        super(db);
+  static instance = null;
+  constructor(db) {
+    super(db);
+  }
+  static async getInstance(db) {
+    if (!ApiKeyDatabaseClient.instance) {
+      ApiKeyDatabaseClient.instance = new ApiKeyDatabaseClient(db);
     }
-    static async getInstance(db) {
-        if (!ApiKeyDatabaseClient.instance) {
-            ApiKeyDatabaseClient.instance = new ApiKeyDatabaseClient(db);
-        }
-        return ApiKeyDatabaseClient.instance;
+    return ApiKeyDatabaseClient.instance;
+  }
+  // Input validation schemas
+  nameSchema = z.string().min(1).max(100);
+  keySchema = z.string().min(16).max(64);
+  /**
+   * Validates input data using Zod schemas.
+   * @throws {DatabaseError} If validation fails.
+   */
+  validateInput(schema, data) {
+    try {
+      return schema.parse(data);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        throw new DatabaseError({
+          code: ErrorCode.BAD_REQUEST,
+          message: `Validation error: ${error.errors.map((e) => e.message).join(", ")}`,
+        });
+      }
+      throw error;
     }
-    // Input validation schemas
-    nameSchema = z.string().min(1).max(100);
-    keySchema = z.string().min(16).max(64);
-    /**
-     * Validates input data using Zod schemas.
-     * @throws {DatabaseError} If validation fails.
-     */
-    validateInput(schema, data) {
-        try {
-            return schema.parse(data);
-        }
-        catch (error) {
-            if (error instanceof z.ZodError) {
-                throw new DatabaseError({
-                    code: ErrorCode.BAD_REQUEST,
-                    message: `Validation error: ${error.errors.map((e) => e.message).join(", ")}`,
-                });
-            }
-            throw error;
-        }
+  }
+  /**
+   * Creates a new API key.
+   * @throws {DatabaseError} If the API key creation fails or if a key with the same name already exists for the user/business.
+   */
+  async createApiKey(params) {
+    const validatedParams = {
+      name: this.validateInput(this.nameSchema, params.name),
+      key: this.validateInput(this.keySchema, params.key),
+      userAccountId: params.userAccountId,
+      businessAccountId: params.businessAccountId,
+    };
+    return this.executeTransaction(async (tx) => {
+      const existingKey = await tx
+        .select()
+        .from(schema.apiKeys)
+        .where(
+          and(
+            eq(schema.apiKeys.name, validatedParams.name),
+            params.userAccountId
+              ? eq(schema.apiKeys.userAccountId, params.userAccountId)
+              : eq(schema.apiKeys.businessAccountId, params.businessAccountId),
+          ),
+        )
+        .get();
+      if (existingKey) {
+        throw new DatabaseError({
+          code: ErrorCode.NOT_UNIQUE,
+          message: "API key with this name already exists for this account",
+        });
+      }
+      const [newApiKey] = await tx
+        .insert(schema.apiKeys)
+        .values(validatedParams)
+        .returning();
+      if (!newApiKey) {
+        throw new DatabaseError({
+          code: ErrorCode.INTERNAL_SERVER_ERROR,
+          message: "Failed to create API key",
+        });
+      }
+      return newApiKey;
+    });
+  }
+  /**
+   * Retrieves an API key by its ID.
+   * @param id The ID of the API key to retrieve.
+   * @returns The API key if found, null otherwise.
+   * @throws {DatabaseError} If the API key ID is not provided or if there's an error during the database query.
+   */
+  async getApiKeyById(id) {
+    if (!id) {
+      throw new DatabaseError({
+        code: ErrorCode.BAD_REQUEST,
+        message: "API key ID is required",
+      });
     }
-    /**
-     * Creates a new API key.
-     * @throws {DatabaseError} If the API key creation fails or if a key with the same name already exists for the user/business.
-     */
-    async createApiKey(params) {
-        const validatedParams = {
-            name: this.validateInput(this.nameSchema, params.name),
-            key: this.validateInput(this.keySchema, params.key),
-            userAccountId: params.userAccountId,
-            businessAccountId: params.businessAccountId,
+    try {
+      return await this.executeQuery(async (db) => {
+        const [apiKey] = await db
+          .select()
+          .from(schema.apiKeys)
+          .where(eq(schema.apiKeys.id, id));
+        return apiKey || null;
+      });
+    } catch (error) {
+      throw new DatabaseError({
+        code: ErrorCode.INTERNAL_SERVER_ERROR,
+        message: `Failed to get API key by ID: ${error instanceof Error ? error.message : "Unknown error"}`,
+      });
+    }
+  }
+  /**
+   * Updates an API key.
+   * @param id The ID of the API key to update.
+   * @param updateData The data to update.
+   * @returns The updated API key.
+   * @throws {DatabaseError} If the update fails.
+   */
+  async updateApiKey(id, updateData) {
+    try {
+      const [updatedApiKey] = await this.getClient()
+        .update(schema.apiKeys)
+        .set(updateData)
+        .where(eq(schema.apiKeys.id, id))
+        .returning();
+      if (!updatedApiKey) {
+        throw new DatabaseError({
+          code: "NOT_FOUND",
+          message: `API key with ID ${id} not found`,
+        });
+      }
+      return updatedApiKey;
+    } catch (error) {
+      throw new DatabaseError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: `Failed to update API key: ${error instanceof Error ? error.message : "Unknown error"}`,
+      });
+    }
+  }
+  /**
+   * Deletes an API key.
+   * @param id The ID of the API key to delete.
+   * @returns True if the API key was deleted, false otherwise.
+   */
+  async deleteApiKey(id) {
+    if (!id) {
+      throw new DatabaseError({
+        code: ErrorCode.BAD_REQUEST,
+        message: "API key ID is required for deletion",
+      });
+    }
+    try {
+      return await this.executeQuery(async (db) => {
+        const [result] = await db
+          .delete(schema.apiKeys)
+          .where(eq(schema.apiKeys.id, id))
+          .returning({ id: schema.apiKeys.id });
+        return !!result;
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+  /**
+   * Searches for API keys based on a query string.
+   * @param query The search query.
+   * @param limit The maximum number of results to return.
+   * @param offset The number of results to skip.
+   * @returns An array of API keys matching the search criteria.
+   */
+  async searchApiKeys(query, limit = 10, offset = 0) {
+    const sanitizedQuery = query.replace(/[%_]/g, "\\$&"); // Escape special characters
+    return this.executeQuery(async (db) => {
+      return db
+        .select()
+        .from(schema.apiKeys)
+        .where(like(schema.apiKeys.name, `%${sanitizedQuery}%`))
+        .limit(limit)
+        .offset(offset);
+    });
+  }
+  /**
+   * Retrieves recently created API keys.
+   * @param limit The maximum number of results to return.
+   * @returns An array of recently created API keys.
+   */
+  async getRecentlyCreatedApiKeys(limit = 10) {
+    return this.executeQuery(async (db) => {
+      return db
+        .select()
+        .from(schema.apiKeys)
+        .orderBy(desc(schema.apiKeys.createdAt))
+        .limit(limit);
+    });
+  }
+  /**
+   * Retrieves all API keys for a user or business account.
+   * @param accountId The ID of the user or business account.
+   * @param accountType 'user' or 'business'
+   * @returns An array of API keys associated with the account.
+   */
+  async getApiKeysForAccount(accountId, accountType) {
+    return this.executeQuery(async (db) => {
+      return db
+        .select()
+        .from(schema.apiKeys)
+        .where(
+          accountType === "user"
+            ? eq(schema.apiKeys.userAccountId, accountId)
+            : eq(schema.apiKeys.businessAccountId, accountId),
+        );
+    });
+  }
+  /**
+   * Verifies an API key.
+   * @param key The API key to verify.
+   * @returns The API key details if valid, null otherwise.
+   */
+  async verifyApiKey(key) {
+    return this.executeQuery(async (db) => {
+      const [apiKey] = await db
+        .select()
+        .from(schema.apiKeys)
+        .where(eq(schema.apiKeys.key, key));
+      return apiKey || null;
+    });
+  }
+  /**
+   * Retrieves an API key with all its related data including usage statistics.
+   *
+   * @param apiKeyId The ID of the API key to retrieve.
+   * @returns A Promise resolving to an object containing the API key and all its related data.
+   * @throws {DatabaseError} If the API key is not found or if there's an error during the database query.
+   */
+  async getApiKeyWithAllRelations(apiKeyId) {
+    try {
+      const result = await this.getClient().transaction(async (tx) => {
+        // Fetch the API key
+        const [apiKey] = await tx
+          .select()
+          .from(schema.apiKeys)
+          .where(eq(schema.apiKeys.id, apiKeyId));
+        if (!apiKey) {
+          throw new DatabaseError({
+            code: "NOT_FOUND",
+            message: `API key with ID ${apiKeyId} not found`,
+          });
+        }
+        return {
+          apiKey,
         };
-        return this.executeTransaction(async (tx) => {
-            const existingKey = await tx
-                .select()
-                .from(schema.apiKeys)
-                .where(and(eq(schema.apiKeys.name, validatedParams.name), params.userAccountId
-                ? eq(schema.apiKeys.userAccountId, params.userAccountId)
-                : eq(schema.apiKeys.businessAccountId, params.businessAccountId)))
-                .get();
-            if (existingKey) {
-                throw new DatabaseError({
-                    code: ErrorCode.NOT_UNIQUE,
-                    message: "API key with this name already exists for this account",
-                });
-            }
-            const [newApiKey] = await tx
-                .insert(schema.apiKeys)
-                .values(validatedParams)
-                .returning();
-            if (!newApiKey) {
-                throw new DatabaseError({
-                    code: ErrorCode.INTERNAL_SERVER_ERROR,
-                    message: "Failed to create API key",
-                });
-            }
-            return newApiKey;
-        });
+      });
+      return result;
+    } catch (error) {
+      if (error instanceof DatabaseError) {
+        throw error;
+      }
+      throw new DatabaseError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: `Failed to retrieve API key data: ${error instanceof Error ? error.message : "Unknown error"}`,
+      });
     }
-    /**
-     * Retrieves an API key by its ID.
-     * @param id The ID of the API key to retrieve.
-     * @returns The API key if found, null otherwise.
-     * @throws {DatabaseError} If the API key ID is not provided or if there's an error during the database query.
-     */
-    async getApiKeyById(id) {
-        if (!id) {
-            throw new DatabaseError({
-                code: ErrorCode.BAD_REQUEST,
-                message: "API key ID is required",
-            });
-        }
-        try {
-            return await this.executeQuery(async (db) => {
-                const [apiKey] = await db
-                    .select()
-                    .from(schema.apiKeys)
-                    .where(eq(schema.apiKeys.id, id));
-                return apiKey || null;
-            });
-        }
-        catch (error) {
-            throw new DatabaseError({
-                code: ErrorCode.INTERNAL_SERVER_ERROR,
-                message: `Failed to get API key by ID: ${error instanceof Error ? error.message : "Unknown error"}`,
-            });
-        }
-    }
-    /**
-     * Updates an API key.
-     * @param id The ID of the API key to update.
-     * @param updateData The data to update.
-     * @returns The updated API key.
-     * @throws {DatabaseError} If the update fails.
-     */
-    async updateApiKey(id, updateData) {
-        try {
-            const [updatedApiKey] = await this.getClient()
-                .update(schema.apiKeys)
-                .set(updateData)
-                .where(eq(schema.apiKeys.id, id))
-                .returning();
-            if (!updatedApiKey) {
-                throw new DatabaseError({
-                    code: "NOT_FOUND",
-                    message: `API key with ID ${id} not found`,
-                });
-            }
-            return updatedApiKey;
-        }
-        catch (error) {
-            throw new DatabaseError({
-                code: "INTERNAL_SERVER_ERROR",
-                message: `Failed to update API key: ${error instanceof Error ? error.message : "Unknown error"}`,
-            });
-        }
-    }
-    /**
-     * Deletes an API key.
-     * @param id The ID of the API key to delete.
-     * @returns True if the API key was deleted, false otherwise.
-     */
-    async deleteApiKey(id) {
-        if (!id) {
-            throw new DatabaseError({
-                code: ErrorCode.BAD_REQUEST,
-                message: "API key ID is required for deletion",
-            });
-        }
-        try {
-            return await this.executeQuery(async (db) => {
-                const [result] = await db
-                    .delete(schema.apiKeys)
-                    .where(eq(schema.apiKeys.id, id))
-                    .returning({ id: schema.apiKeys.id });
-                return !!result;
-            });
-        }
-        catch (error) {
-            throw error;
-        }
-    }
-    /**
-     * Searches for API keys based on a query string.
-     * @param query The search query.
-     * @param limit The maximum number of results to return.
-     * @param offset The number of results to skip.
-     * @returns An array of API keys matching the search criteria.
-     */
-    async searchApiKeys(query, limit = 10, offset = 0) {
-        const sanitizedQuery = query.replace(/[%_]/g, "\\$&"); // Escape special characters
-        return this.executeQuery(async (db) => {
-            return db
-                .select()
-                .from(schema.apiKeys)
-                .where(like(schema.apiKeys.name, `%${sanitizedQuery}%`))
-                .limit(limit)
-                .offset(offset);
-        });
-    }
-    /**
-     * Retrieves recently created API keys.
-     * @param limit The maximum number of results to return.
-     * @returns An array of recently created API keys.
-     */
-    async getRecentlyCreatedApiKeys(limit = 10) {
-        return this.executeQuery(async (db) => {
-            return db
-                .select()
-                .from(schema.apiKeys)
-                .orderBy(desc(schema.apiKeys.createdAt))
-                .limit(limit);
-        });
-    }
-    /**
-     * Retrieves all API keys for a user or business account.
-     * @param accountId The ID of the user or business account.
-     * @param accountType 'user' or 'business'
-     * @returns An array of API keys associated with the account.
-     */
-    async getApiKeysForAccount(accountId, accountType) {
-        return this.executeQuery(async (db) => {
-            return db
-                .select()
-                .from(schema.apiKeys)
-                .where(accountType === "user"
-                ? eq(schema.apiKeys.userAccountId, accountId)
-                : eq(schema.apiKeys.businessAccountId, accountId));
-        });
-    }
-    /**
-     * Verifies an API key.
-     * @param key The API key to verify.
-     * @returns The API key details if valid, null otherwise.
-     */
-    async verifyApiKey(key) {
-        return this.executeQuery(async (db) => {
-            const [apiKey] = await db
-                .select()
-                .from(schema.apiKeys)
-                .where(eq(schema.apiKeys.key, key));
-            return apiKey || null;
-        });
-    }
-    /**
-     * Retrieves an API key with all its related data including usage statistics.
-     *
-     * @param apiKeyId The ID of the API key to retrieve.
-     * @returns A Promise resolving to an object containing the API key and all its related data.
-     * @throws {DatabaseError} If the API key is not found or if there's an error during the database query.
-     */
-    async getApiKeyWithAllRelations(apiKeyId) {
-        try {
-            const result = await this.getClient().transaction(async (tx) => {
-                // Fetch the API key
-                const [apiKey] = await tx
-                    .select()
-                    .from(schema.apiKeys)
-                    .where(eq(schema.apiKeys.id, apiKeyId));
-                if (!apiKey) {
-                    throw new DatabaseError({
-                        code: "NOT_FOUND",
-                        message: `API key with ID ${apiKeyId} not found`,
-                    });
-                }
-                return {
-                    apiKey,
-                };
-            });
-            return result;
-        }
-        catch (error) {
-            if (error instanceof DatabaseError) {
-                throw error;
-            }
-            throw new DatabaseError({
-                code: "INTERNAL_SERVER_ERROR",
-                message: `Failed to retrieve API key data: ${error instanceof Error ? error.message : "Unknown error"}`,
-            });
-        }
-    }
+  }
 }

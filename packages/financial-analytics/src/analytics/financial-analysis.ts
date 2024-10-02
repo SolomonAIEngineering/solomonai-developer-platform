@@ -1,10 +1,10 @@
-import { PlaidAccountTransaction } from 'client-typescript-sdk'
+import { PlaidAccountTransaction } from "client-typescript-sdk";
 
 export class FinancialAnalysis {
-  private transactions: PlaidAccountTransaction[]
+  private transactions: PlaidAccountTransaction[];
 
   constructor(transactions: PlaidAccountTransaction[]) {
-    this.transactions = transactions
+    this.transactions = transactions;
   }
 
   /**
@@ -12,8 +12,8 @@ export class FinancialAnalysis {
    * @returns {number} The monthly ARR.
    */
   getMonthlyARR(): number {
-    const monthlyIncome = this.getMonthlyIncome()
-    return monthlyIncome * 12
+    const monthlyIncome = this.getMonthlyIncome();
+    return monthlyIncome * 12;
   }
 
   /**
@@ -21,8 +21,8 @@ export class FinancialAnalysis {
    * @returns {number} The yearly ARR.
    */
   getYearlyARR(): number {
-    const monthlyIncome = this.getMonthlyIncome()
-    return monthlyIncome * 12
+    const monthlyIncome = this.getMonthlyIncome();
+    return monthlyIncome * 12;
   }
 
   /**
@@ -32,9 +32,9 @@ export class FinancialAnalysis {
    * @returns {number} The income growth rate.
    */
   getIncomeGrowthRate(startDate: Date, endDate: Date): number {
-    const startIncome = this.getMonthlyIncomeForPeriod(startDate, startDate)
-    const endIncome = this.getMonthlyIncomeForPeriod(endDate, endDate)
-    return (endIncome - startIncome) / startIncome
+    const startIncome = this.getMonthlyIncomeForPeriod(startDate, startDate);
+    const endIncome = this.getMonthlyIncomeForPeriod(endDate, endDate);
+    return (endIncome - startIncome) / startIncome;
   }
 
   /**
@@ -42,20 +42,20 @@ export class FinancialAnalysis {
    * @returns {Record<string, number>} The ARR breakdown by segment.
    */
   getARRBreakdownBySegment(): Record<string, number> {
-    const segmentARR: Record<string, number> = {}
+    const segmentARR: Record<string, number> = {};
 
     this.transactions.forEach((transaction) => {
-      const segment = transaction.personalFinanceCategoryPrimary || 'Other'
-      const amount = transaction.amount || 0
-      segmentARR[segment] = (segmentARR[segment] || 0) + amount
-    })
+      const segment = transaction.personalFinanceCategoryPrimary || "Other";
+      const amount = transaction.amount || 0;
+      segmentARR[segment] = (segmentARR[segment] || 0) + amount;
+    });
 
     return Object.fromEntries(
       Object.entries(segmentARR).map(([segment, value]) => [
         segment,
         value * 12,
       ]),
-    )
+    );
   }
 
   /**
@@ -63,21 +63,21 @@ export class FinancialAnalysis {
    * @returns {Record<string, number>} The ARR breakdown by payment channel.
    */
   getARRBreakdownByPaymentChannel(): Record<string, number> {
-    const paymentChannelARR: Record<string, number> = {}
+    const paymentChannelARR: Record<string, number> = {};
 
     this.transactions.forEach((transaction) => {
-      const paymentChannel = transaction.paymentChannel || 'Other'
-      const amount = transaction.amount || 0
+      const paymentChannel = transaction.paymentChannel || "Other";
+      const amount = transaction.amount || 0;
       paymentChannelARR[paymentChannel] =
-        (paymentChannelARR[paymentChannel] || 0) + amount
-    })
+        (paymentChannelARR[paymentChannel] || 0) + amount;
+    });
 
     return Object.fromEntries(
       Object.entries(paymentChannelARR).map(([channel, value]) => [
         channel,
         value * 12,
       ]),
-    )
+    );
   }
 
   /**
@@ -85,21 +85,21 @@ export class FinancialAnalysis {
    * @returns {Record<string, number>} The ARR breakdown by transaction type.
    */
   getARRBreakdownByTransactionType(): Record<string, number> {
-    const transactionTypeARR: Record<string, number> = {}
+    const transactionTypeARR: Record<string, number> = {};
 
     this.transactions.forEach((transaction) => {
-      const transactionType = transaction.transactionCode || 'Other'
-      const amount = transaction.amount || 0
+      const transactionType = transaction.transactionCode || "Other";
+      const amount = transaction.amount || 0;
       transactionTypeARR[transactionType] =
-        (transactionTypeARR[transactionType] || 0) + amount
-    })
+        (transactionTypeARR[transactionType] || 0) + amount;
+    });
 
     return Object.fromEntries(
       Object.entries(transactionTypeARR).map(([type, value]) => [
         type,
         value * 12,
       ]),
-    )
+    );
   }
 
   /**
@@ -111,7 +111,7 @@ export class FinancialAnalysis {
     return this.transactions
       .filter((transaction) => transaction.amount)
       .sort((a, b) => (b.amount || 0) - (a.amount || 0))
-      .slice(0, limit)
+      .slice(0, limit);
   }
 
   /**
@@ -120,12 +120,12 @@ export class FinancialAnalysis {
    * @returns {Record<string, number>} The top revenue-generating segments.
    */
   getTopRevenueSegments(limit: number): Record<string, number> {
-    const segmentARR = this.getARRBreakdownBySegment()
+    const segmentARR = this.getARRBreakdownBySegment();
     return Object.fromEntries(
       Object.entries(segmentARR)
         .sort(([, a], [, b]) => b - a)
         .slice(0, limit),
-    )
+    );
   }
 
   /**
@@ -134,12 +134,12 @@ export class FinancialAnalysis {
    * @returns {Record<string, number>} The top revenue-generating payment channels.
    */
   getTopRevenuePaymentChannels(limit: number): Record<string, number> {
-    const paymentChannelARR = this.getARRBreakdownByPaymentChannel()
+    const paymentChannelARR = this.getARRBreakdownByPaymentChannel();
     return Object.fromEntries(
       Object.entries(paymentChannelARR)
         .sort(([, a], [, b]) => b - a)
         .slice(0, limit),
-    )
+    );
   }
 
   /**
@@ -148,16 +148,16 @@ export class FinancialAnalysis {
    * @returns {Record<string, number>} The top revenue-generating transaction types.
    */
   getTopRevenueTransactionTypes(limit: number): Record<string, number> {
-    const transactionTypeARR = this.getARRBreakdownByTransactionType()
+    const transactionTypeARR = this.getARRBreakdownByTransactionType();
     return Object.fromEntries(
       Object.entries(transactionTypeARR)
         .sort(([, a], [, b]) => b - a)
         .slice(0, limit),
-    )
+    );
   }
 
   private getMonthlyIncome(): number {
-    let totalIncome = 0
+    let totalIncome = 0;
 
     this.transactions.forEach((transaction) => {
       if (
@@ -165,16 +165,16 @@ export class FinancialAnalysis {
         transaction.currentDate.getMonth() === new Date().getMonth() &&
         transaction.currentDate.getFullYear() === new Date().getFullYear()
       ) {
-        const amount = transaction.amount || 0
-        totalIncome += amount
+        const amount = transaction.amount || 0;
+        totalIncome += amount;
       }
-    })
+    });
 
-    return totalIncome
+    return totalIncome;
   }
 
   private getMonthlyIncomeForPeriod(startDate: Date, endDate: Date): number {
-    let totalIncome = 0
+    let totalIncome = 0;
 
     this.transactions.forEach((transaction) => {
       if (
@@ -182,11 +182,11 @@ export class FinancialAnalysis {
         transaction.currentDate >= startDate &&
         transaction.currentDate <= endDate
       ) {
-        const amount = transaction.amount || 0
-        totalIncome += amount
+        const amount = transaction.amount || 0;
+        totalIncome += amount;
       }
-    })
+    });
 
-    return totalIncome
+    return totalIncome;
   }
 }

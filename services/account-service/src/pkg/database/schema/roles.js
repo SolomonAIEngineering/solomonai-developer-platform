@@ -1,5 +1,5 @@
 import { relations, sql } from "drizzle-orm";
-import { integer, sqliteTable, text, } from "drizzle-orm/sqlite-core";
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { businessAccounts } from "./business-accounts.js";
 import { roleTypeEnum } from "./enums.js";
 import { roleAuditEvents } from "./role-audit-events.js";
@@ -32,32 +32,50 @@ import { userAccounts } from "./user-accounts.js";
  * @property {number | null} businessAccountId - Foreign key referencing the associated business account.
  */
 export const roles = sqliteTable("roles", {
-    id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    name: text("name", { length: 255 }).notNull().unique(),
-    type: roleTypeEnum,
-    canCreateUsers: integer("can_create_users", { mode: "boolean" }).default(false),
-    canReadUsers: integer("can_read_users", { mode: "boolean" }).default(false),
-    canUpdateUsers: integer("can_update_users", { mode: "boolean" }).default(false),
-    canDeleteUsers: integer("can_delete_users", { mode: "boolean" }).default(false),
-    canCreateProjects: integer("can_create_projects", {
-        mode: "boolean",
-    }).default(false),
-    canReadProjects: integer("can_read_projects", { mode: "boolean" }).default(false),
-    canUpdateProjects: integer("can_update_projects", {
-        mode: "boolean",
-    }).default(false),
-    canDeleteProjects: integer("can_delete_projects", {
-        mode: "boolean",
-    }).default(false),
-    canCreateReports: integer("can_create_reports", { mode: "boolean" }).default(false),
-    canReadReports: integer("can_read_reports", { mode: "boolean" }).default(false),
-    canUpdateReports: integer("can_update_reports", { mode: "boolean" }).default(false),
-    canDeleteReports: integer("can_delete_reports", { mode: "boolean" }).default(false),
-    createdAt: text("created_at").default(sql `(CURRENT_TIMESTAMP)`),
-    updatedAt: text("updated_at").default(sql `(CURRENT_TIMESTAMP)`),
-    teamId: integer("team_id").references(() => teams.id),
-    userAccountId: integer("user_account_id").references(() => userAccounts.id),
-    businessAccountId: integer("business_account_id").references(() => businessAccounts.id),
+  id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+  name: text("name", { length: 255 }).notNull().unique(),
+  type: roleTypeEnum,
+  canCreateUsers: integer("can_create_users", { mode: "boolean" }).default(
+    false,
+  ),
+  canReadUsers: integer("can_read_users", { mode: "boolean" }).default(false),
+  canUpdateUsers: integer("can_update_users", { mode: "boolean" }).default(
+    false,
+  ),
+  canDeleteUsers: integer("can_delete_users", { mode: "boolean" }).default(
+    false,
+  ),
+  canCreateProjects: integer("can_create_projects", {
+    mode: "boolean",
+  }).default(false),
+  canReadProjects: integer("can_read_projects", { mode: "boolean" }).default(
+    false,
+  ),
+  canUpdateProjects: integer("can_update_projects", {
+    mode: "boolean",
+  }).default(false),
+  canDeleteProjects: integer("can_delete_projects", {
+    mode: "boolean",
+  }).default(false),
+  canCreateReports: integer("can_create_reports", { mode: "boolean" }).default(
+    false,
+  ),
+  canReadReports: integer("can_read_reports", { mode: "boolean" }).default(
+    false,
+  ),
+  canUpdateReports: integer("can_update_reports", { mode: "boolean" }).default(
+    false,
+  ),
+  canDeleteReports: integer("can_delete_reports", { mode: "boolean" }).default(
+    false,
+  ),
+  createdAt: text("created_at").default(sql`(CURRENT_TIMESTAMP)`),
+  updatedAt: text("updated_at").default(sql`(CURRENT_TIMESTAMP)`),
+  teamId: integer("team_id").references(() => teams.id),
+  userAccountId: integer("user_account_id").references(() => userAccounts.id),
+  businessAccountId: integer("business_account_id").references(
+    () => businessAccounts.id,
+  ),
 });
 /**
  * Defines the relationships between the roles table and other tables.
@@ -72,17 +90,17 @@ export const roles = sqliteTable("roles", {
  *                                    Links a role to its audit events history.
  */
 export const rolesRelations = relations(roles, ({ one, many }) => ({
-    team: one(teams, {
-        fields: [roles.teamId],
-        references: [teams.id],
-    }),
-    userAccount: one(userAccounts, {
-        fields: [roles.userAccountId],
-        references: [userAccounts.id],
-    }),
-    businessAccount: one(businessAccounts, {
-        fields: [roles.businessAccountId],
-        references: [businessAccounts.id],
-    }),
-    auditEvents: many(roleAuditEvents),
+  team: one(teams, {
+    fields: [roles.teamId],
+    references: [teams.id],
+  }),
+  userAccount: one(userAccounts, {
+    fields: [roles.userAccountId],
+    references: [userAccounts.id],
+  }),
+  businessAccount: one(businessAccounts, {
+    fields: [roles.businessAccountId],
+    references: [businessAccounts.id],
+  }),
+  auditEvents: many(roleAuditEvents),
 }));

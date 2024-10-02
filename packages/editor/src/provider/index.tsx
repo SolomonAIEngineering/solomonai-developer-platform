@@ -1,1 +1,1 @@
-export * from './plate-editor-tooltip-provider'
+export * from "./plate-editor-tooltip-provider";

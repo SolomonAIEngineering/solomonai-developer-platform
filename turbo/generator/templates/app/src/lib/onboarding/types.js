@@ -1,8 +1,8 @@
 export const ONBOARDING_STEPS = [
-    "mfa",
-    "workspace",
-    "team",
-    "invite",
-    "plan",
-    "completed",
+  "mfa",
+  "workspace",
+  "team",
+  "invite",
+  "plan",
+  "completed",
 ];

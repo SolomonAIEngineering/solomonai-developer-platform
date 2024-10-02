@@ -1,17 +1,17 @@
-import { useMemo } from 'react'
+import { useMemo } from "react";
 
-import { Content } from '@tiptap/core'
-import { SmartNote } from 'solomon-ai-typescript-sdk'
-import * as Y from 'yjs'
+import { Content } from "@tiptap/core";
+import { SmartNote } from "solomon-ai-typescript-sdk";
+import * as Y from "yjs";
 
-import { BlockEditor } from './blockeditor'
+import { BlockEditor } from "./blockeditor";
 
 export interface NoteEditorProps extends React.HTMLAttributes<HTMLDivElement> {
-  callback: (content: string) => void
-  note?: SmartNote
-  aiAppId: string
-  aiBaseUrl: string
-  aiToken: string
+  callback: (content: string) => void;
+  note?: SmartNote;
+  aiAppId: string;
+  aiBaseUrl: string;
+  aiToken: string;
 }
 
 export const NoteEditor: React.FC<NoteEditorProps> = ({
@@ -21,11 +21,11 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({
   aiBaseUrl,
   aiToken,
 }) => {
-  const ydoc = useMemo(() => new Y.Doc(), [])
+  const ydoc = useMemo(() => new Y.Doc(), []);
 
-  let initialContent: Content | undefined = undefined
+  let initialContent: Content | undefined = undefined;
   if (note) {
-    initialContent = note.content
+    initialContent = note.content;
   }
 
   return (
@@ -34,7 +34,7 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({
         hasCollab={true}
         ydoc={ydoc}
         // enableMenubar
-        label={note ? 'Update' : 'Submit'}
+        label={note ? "Update" : "Submit"}
         onContentChange={callback}
         content={initialContent}
         aiToken={aiToken}
@@ -42,5 +42,5 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({
         aiBaseUrl={aiBaseUrl}
       />
     </>
-  )
-}
+  );
+};

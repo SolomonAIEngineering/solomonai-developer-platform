@@ -8,9 +8,9 @@ import { text } from "drizzle-orm/sqlite-core";
  * @property PROFILE_TYPE_BUSINESS - Represents a business profile.
  */
 export const profileTypeEnum = text("profile_type", [
-    "PROFILE_TYPE_UNSPECIFIED",
-    "PROFILE_TYPE_USER",
-    "PROFILE_TYPE_BUSINESS",
+  "PROFILE_TYPE_UNSPECIFIED",
+  "PROFILE_TYPE_USER",
+  "PROFILE_TYPE_BUSINESS",
 ]);
 /**
  * Enum representing the different role types in the system.
@@ -21,10 +21,10 @@ export const profileTypeEnum = text("profile_type", [
  * @property ROLE_TYPE_REGULAR - Represents a regular user role with standard privileges.
  */
 export const roleTypeEnum = text("role_type", [
-    "ROLE_TYPE_UNSPECIFIED",
-    "ROLE_TYPE_SUPER_ADMIN",
-    "ROLE_TYPE_TEAM_ADMIN",
-    "ROLE_TYPE_REGULAR",
+  "ROLE_TYPE_UNSPECIFIED",
+  "ROLE_TYPE_SUPER_ADMIN",
+  "ROLE_TYPE_TEAM_ADMIN",
+  "ROLE_TYPE_REGULAR",
 ]);
 /**
  * Enum representing the types of audit actions in the system.
@@ -35,10 +35,10 @@ export const roleTypeEnum = text("role_type", [
  * @property AUDIT_ACTION_DELETED - Represents a deletion action in the audit log.
  */
 export const auditActionEnum = text("audit_action", [
-    "AUDIT_ACTION_UNSPECIFIED",
-    "AUDIT_ACTION_CREATED",
-    "AUDIT_ACTION_UPDATED",
-    "AUDIT_ACTION_DELETED",
+  "AUDIT_ACTION_UNSPECIFIED",
+  "AUDIT_ACTION_CREATED",
+  "AUDIT_ACTION_UPDATED",
+  "AUDIT_ACTION_DELETED",
 ]);
 /**
  * Enum representing the possible statuses of an API key.
@@ -48,7 +48,7 @@ export const auditActionEnum = text("audit_action", [
  * @property REVOKED - Indicates that the API key has been permanently revoked and cannot be used.
  */
 export const apiKeyStatusEnum = text("api_key_status", [
-    "ACTIVE",
-    "INACTIVE",
-    "REVOKED",
+  "ACTIVE",
+  "INACTIVE",
+  "REVOKED",
 ]);

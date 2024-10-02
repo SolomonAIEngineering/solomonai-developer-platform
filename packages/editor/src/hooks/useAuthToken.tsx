@@ -1,34 +1,34 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 
-import { useAuth0, User } from '@auth0/auth0-react'
+import { useAuth0, User } from "@auth0/auth0-react";
 
 export function useAuthToken() {
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0()
-  const [token, setToken] = useState('')
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const [token, setToken] = useState("");
 
   useEffect(() => {
     const fetchToken = async () => {
       if (isAuthenticated) {
-        const accessToken = await getAccessTokenSilently()
-        setToken(accessToken)
+        const accessToken = await getAccessTokenSilently();
+        setToken(accessToken);
       }
-    }
+    };
 
-    fetchToken()
-  }, [isAuthenticated, getAccessTokenSilently])
+    fetchToken();
+  }, [isAuthenticated, getAccessTokenSilently]);
 
-  return token
+  return token;
 }
 
 interface AuthUser extends User {
-  accessToken?: string
+  accessToken?: string;
 }
 
 interface UseAuthUserResult {
-  authUser: AuthUser | null
-  isLoading: boolean
-  error: Error | null
-  isAuthenticated: boolean
+  authUser: AuthUser | null;
+  isLoading: boolean;
+  error: Error | null;
+  isAuthenticated: boolean;
 }
 
 /**
@@ -41,13 +41,13 @@ interface UseAuthUserResult {
  */
 export function useAuthUser(): UseAuthUserResult {
   const { user, isAuthenticated, isLoading, getAccessTokenSilently } =
-    useAuth0<User>()
+    useAuth0<User>();
 
   // State to hold the authenticated user's details including the access token.
-  const [authUser, setAuthUser] = useState<AuthUser | null>(null)
+  const [authUser, setAuthUser] = useState<AuthUser | null>(null);
 
   // State to hold any errors that may occur during the authentication process.
-  const [error, setError] = useState<Error | null>(null)
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     // Fetches user details if authenticated and user information is available.
@@ -55,22 +55,22 @@ export function useAuthUser(): UseAuthUserResult {
       if (isAuthenticated && user) {
         try {
           // Attempt to get the access token silently.
-          const accessToken = await getAccessTokenSilently()
+          const accessToken = await getAccessTokenSilently();
 
           // Update the state with the user's details and access token.
-          setAuthUser({ ...user, accessToken })
+          setAuthUser({ ...user, accessToken });
         } catch (err) {
           // If an error occurs, update the error state.
           if (err instanceof Error) {
-            setError(err)
+            setError(err);
           }
         }
       }
-    }
+    };
 
-    fetchUserDetails()
-  }, [isAuthenticated, user, getAccessTokenSilently])
+    fetchUserDetails();
+  }, [isAuthenticated, user, getAccessTokenSilently]);
 
   // Return the authentication state including user details, loading status, error, and authentication status.
-  return { authUser, isLoading, error, isAuthenticated }
+  return { authUser, isLoading, error, isAuthenticated };
 }

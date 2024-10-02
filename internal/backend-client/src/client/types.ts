@@ -1,4 +1,4 @@
-import { Middleware } from 'client-typescript-sdk'
+import { Middleware } from "client-typescript-sdk";
 
 /**
  * Interface for the API service.
@@ -12,14 +12,14 @@ export interface IApiService {
    * @param {string} token - The authentication token to set.
    * @returns {void}
    */
-  setToken(token: string): void
+  setToken(token: string): void;
 
   /**
    * Retrieves the current authentication token.
    *
    * @returns {string | undefined} The current token if set, or undefined if no token is set.
    */
-  getToken(): string | undefined
+  getToken(): string | undefined;
 }
 
 /**
@@ -34,4 +34,4 @@ export type ApiServiceFactory = (
   apiUrl: string,
   token?: string,
   middlewares?: Middleware[],
-) => IApiService
+) => IApiService;

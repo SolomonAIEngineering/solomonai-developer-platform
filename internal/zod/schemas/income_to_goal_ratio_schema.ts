@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 export const DailyBalanceSnapshotSchema = z.object({
   Date: z.date(),
@@ -7,4 +7,4 @@ export const DailyBalanceSnapshotSchema = z.object({
   EndOfDayBalance: z.number(),
   UserId: z.string().uuid(),
   ProfileType: z.string(),
-})
+});

@@ -3,31 +3,31 @@
  */
 type Settings = {
   /** Unique identifier for the setting */
-  id: string
+  id: string;
   /** Display label for the setting */
-  label: string
+  label: string;
   /** Detailed description of the setting */
-  description: string
+  description: string;
   /** The type of input for the setting */
-  type: 'switch' | 'text' | 'number' | 'select'
+  type: "switch" | "text" | "number" | "select";
   /** Options for select type */
-  options?: string[]
+  options?: string[];
   /** Indicates whether the setting is required */
-  required: boolean
+  required: boolean;
   /** The current value of the setting */
-  value: unknown
-}
+  value: unknown;
+};
 
 /**
  * Enum representing categories for integrations.
  */
 enum IntegrationCategory {
-  Assistant = 'assistant',
-  Accounting = 'accounting',
-  Payroll = 'payroll',
-  Banking = 'banking',
-  CRM = 'crm',
-  Notification = 'notification',
+  Assistant = "assistant",
+  Accounting = "accounting",
+  Payroll = "payroll",
+  Banking = "banking",
+  CRM = "crm",
+  Notification = "notification",
 }
 
 /**
@@ -35,28 +35,28 @@ enum IntegrationCategory {
  */
 type IntegrationConfig = {
   /** The name of the integration */
-  name: string
+  name: string;
   /** Unique identifier for the integration */
-  id: string
+  id: string;
   /** Category of the integration */
-  category: IntegrationCategory
+  category: IntegrationCategory;
   /** Indicates whether the integration is currently active */
-  active: boolean
+  active: boolean;
   /** React component for the integration's logo */
-  logo: React.ComponentType<React.SVGProps<SVGSVGElement>>
+  logo: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   /** Brief description of the integration */
-  short_description: string
+  short_description: string;
   /** Detailed description of the integration */
-  description: string
+  description: string;
   /** Array of image URLs associated with the integration */
-  images: string[]
+  images: string[];
   /** Function to be called when initializing the integration */
-  onInitialize: () => void
+  onInitialize: () => void;
   /** Array of settings for the integration */
-  settings: Array<Settings>
+  settings: Array<Settings>;
   /** Object containing additional configuration options for the integration */
-  config: Record<string, unknown>
-}
+  config: Record<string, unknown>;
+};
 
-export { IntegrationCategory }
-export type { IntegrationConfig, Settings }
+export { IntegrationCategory };
+export type { IntegrationConfig, Settings };

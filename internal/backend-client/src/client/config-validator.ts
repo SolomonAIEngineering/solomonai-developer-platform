@@ -1,7 +1,7 @@
 // config-validator.ts
 
-import { ApiConfig } from './config.ts'
-import { Logger } from './logger.ts'
+import { ApiConfig } from "./config.ts";
+import { Logger } from "./logger.ts";
 
 /**
  * ConfigValidator class for validating API configurations.
@@ -13,11 +13,11 @@ export class ConfigValidator {
    * @throws {Error} If the configuration is invalid.
    */
   static validateApiConfig(config: ApiConfig): void {
-    this.validateConfigExistence(config)
-    this.validateApiUrl(config.apiUrl)
-    this.validateTimeout(config.timeout)
-    this.validateToken(config.token)
-    this.validateApiKey(config.apiKey)
+    this.validateConfigExistence(config);
+    this.validateApiUrl(config.apiUrl);
+    this.validateTimeout(config.timeout);
+    this.validateToken(config.token);
+    this.validateApiKey(config.apiKey);
     // Add more validation calls here as needed
   }
 
@@ -29,7 +29,7 @@ export class ConfigValidator {
    */
   private static validateConfigExistence(config: ApiConfig): void {
     if (!config) {
-      throw this.logAndThrow('API configuration is missing')
+      throw this.logAndThrow("API configuration is missing");
     }
   }
 
@@ -41,10 +41,10 @@ export class ConfigValidator {
    */
   private static validateApiUrl(apiUrl: string | undefined): void {
     if (!apiUrl) {
-      throw this.logAndThrow('API URL is required')
+      throw this.logAndThrow("API URL is required");
     }
     if (!/^https?:\/\//i.test(apiUrl)) {
-      throw this.logAndThrow('API URL must start with http:// or https://')
+      throw this.logAndThrow("API URL must start with http:// or https://");
     }
   }
 
@@ -57,9 +57,9 @@ export class ConfigValidator {
   private static validateTimeout(timeout: number | undefined): void {
     if (
       timeout !== undefined &&
-      (typeof timeout !== 'number' || timeout <= 0)
+      (typeof timeout !== "number" || timeout <= 0)
     ) {
-      throw this.logAndThrow('Timeout must be a positive number')
+      throw this.logAndThrow("Timeout must be a positive number");
     }
   }
 
@@ -74,7 +74,7 @@ export class ConfigValidator {
       token &&
       !/^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/.test(token)
     ) {
-      throw this.logAndThrow('Invalid token format')
+      throw this.logAndThrow("Invalid token format");
     }
   }
 
@@ -87,9 +87,9 @@ export class ConfigValidator {
   private static validateApiKey(apiKey: string | undefined): void {
     if (apiKey !== undefined) {
       // Adjust this regex pattern based on your specific API key format
-      const apiKeyPattern = /^[A-Za-z0-9_-]{20,40}$/
+      const apiKeyPattern = /^[A-Za-z0-9_-]{20,40}$/;
       if (!apiKeyPattern.test(apiKey)) {
-        throw this.logAndThrow('Invalid API key format')
+        throw this.logAndThrow("Invalid API key format");
       }
     }
   }
@@ -101,7 +101,7 @@ export class ConfigValidator {
    * @private
    */
   private static logAndThrow(message: string): Error {
-    Logger.error('Invalid API configuration', new Error(message))
-    return new Error(message)
+    Logger.error("Invalid API configuration", new Error(message));
+    return new Error(message);
   }
 }

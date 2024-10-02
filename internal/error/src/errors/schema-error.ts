@@ -1,6 +1,6 @@
-import type { ZodError } from 'zod'
+import type { ZodError } from "zod";
 
-import { BaseError } from './base'
+import { BaseError } from "./base";
 
 /**
  * Represents an error that occurs when an object does not conform to the required schema.
@@ -10,10 +10,10 @@ import { BaseError } from './base'
  */
 export class SchemaError extends BaseError<{ raw: unknown }> {
   /** Indicates whether the operation can be retried. Always false for schema errors. */
-  public readonly retry = false
+  public readonly retry = false;
 
   /** The name of the error class. */
-  public readonly name = SchemaError.name
+  public readonly name = SchemaError.name;
 
   /**
    * Creates a new instance of SchemaError.
@@ -25,13 +25,13 @@ export class SchemaError extends BaseError<{ raw: unknown }> {
    * @param {BaseError} [opts.cause] - The underlying cause of this error, if any.
    */
   constructor(opts: {
-    message: string
-    context?: { raw: unknown }
-    cause?: BaseError
+    message: string;
+    context?: { raw: unknown };
+    cause?: BaseError;
   }) {
     super({
       ...opts,
-    })
+    });
   }
 
   /**
@@ -54,6 +54,6 @@ export class SchemaError extends BaseError<{ raw: unknown }> {
         raw: JSON.stringify(raw),
         ...context,
       },
-    })
+    });
   }
 }

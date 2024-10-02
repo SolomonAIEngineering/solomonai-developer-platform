@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 export const LargeIncomeTransactionsSchema = z.object({
   Time: z.date(),
@@ -6,4 +6,4 @@ export const LargeIncomeTransactionsSchema = z.object({
   Source: z.string(),
   Category: z.string(),
   UserId: z.string().uuid(),
-})
+});

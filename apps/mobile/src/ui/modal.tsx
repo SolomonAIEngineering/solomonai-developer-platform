@@ -31,14 +31,14 @@
 import type {
   BottomSheetBackdropProps,
   BottomSheetModalProps,
-} from '@gorhom/bottom-sheet';
-import { BottomSheetModal, useBottomSheet } from '@gorhom/bottom-sheet';
-import * as React from 'react';
-import { Pressable, View } from 'react-native';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
-import { Path, Svg } from 'react-native-svg';
+} from "@gorhom/bottom-sheet";
+import { BottomSheetModal, useBottomSheet } from "@gorhom/bottom-sheet";
+import * as React from "react";
+import { Pressable, View } from "react-native";
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
+import { Path, Svg } from "react-native-svg";
 
-import { Text } from './text';
+import { Text } from "./text";
 
 type ModalProps = BottomSheetModalProps & {
   title?: string;
@@ -65,23 +65,23 @@ export const useModal = () => {
 export const Modal = React.forwardRef(
   (
     {
-      snapPoints: _snapPoints = ['60%'],
+      snapPoints: _snapPoints = ["60%"],
       title,
       detached = false,
       ...props
     }: ModalProps,
-    ref: ModalRef
+    ref: ModalRef,
   ) => {
     const detachedProps = React.useMemo(
       () => getDetachedProps(detached),
-      [detached]
+      [detached],
     );
     const modal = useModal();
     const snapPoints = React.useMemo(() => _snapPoints, [_snapPoints]);
 
     React.useImperativeHandle(
       ref,
-      () => (modal.ref.current as BottomSheetModal) || null
+      () => (modal.ref.current as BottomSheetModal) || null,
     );
 
     const renderHandleComponent = React.useCallback(
@@ -91,7 +91,7 @@ export const Modal = React.forwardRef(
           <ModalHeader title={title} dismiss={modal.dismiss} />
         </>
       ),
-      [title, modal.dismiss]
+      [title, modal.dismiss],
     );
 
     return (
@@ -105,7 +105,7 @@ export const Modal = React.forwardRef(
         handleComponent={renderHandleComponent}
       />
     );
-  }
+  },
 );
 
 /**
@@ -121,7 +121,7 @@ const CustomBackdrop = ({ style }: BottomSheetBackdropProps) => {
       onPress={() => close()}
       entering={FadeIn.duration(50)}
       exiting={FadeOut.duration(20)}
-      style={[style, { backgroundColor: 'rgba(0, 0, 0, 0.4)' }]}
+      style={[style, { backgroundColor: "rgba(0, 0, 0, 0.4)" }]}
     />
   );
 };
@@ -144,7 +144,7 @@ const getDetachedProps = (detached: boolean) => {
     return {
       detached: true,
       bottomInset: 46,
-      style: { marginHorizontal: 16, overflow: 'hidden' },
+      style: { marginHorizontal: 16, overflow: "hidden" },
     } as Partial<BottomSheetModalProps>;
   }
   return {} as Partial<BottomSheetModalProps>;

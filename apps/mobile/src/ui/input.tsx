@@ -1,42 +1,42 @@
-import * as React from 'react';
+import * as React from "react";
 import type {
   Control,
   FieldValues,
   Path,
   RegisterOptions,
-} from 'react-hook-form';
-import { useController } from 'react-hook-form';
-import type { TextInputProps } from 'react-native';
-import { I18nManager, StyleSheet, View } from 'react-native';
-import { TextInput as NTextInput } from 'react-native';
-import { tv } from 'tailwind-variants';
+} from "react-hook-form";
+import { useController } from "react-hook-form";
+import type { TextInputProps } from "react-native";
+import { I18nManager, StyleSheet, View } from "react-native";
+import { TextInput as NTextInput } from "react-native";
+import { tv } from "tailwind-variants";
 
-import colors from './colors';
-import { Text } from './text';
+import colors from "./colors";
+import { Text } from "./text";
 
 const inputTv = tv({
   slots: {
-    container: 'mb-2',
-    label: 'text-grey-100 mb-1 text-lg dark:text-neutral-100',
+    container: "mb-2",
+    label: "text-grey-100 mb-1 text-lg dark:text-neutral-100",
     input:
-      'mt-0 rounded-xl border-[0.5px] border-neutral-300 bg-neutral-100 px-4 py-3 font-inter text-base  font-medium leading-5 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white',
+      "mt-0 rounded-xl border-[0.5px] border-neutral-300 bg-neutral-100 px-4 py-3 font-inter text-base  font-medium leading-5 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white",
   },
 
   variants: {
     focused: {
       true: {
-        input: 'border-neutral-400 dark:border-neutral-300',
+        input: "border-neutral-400 dark:border-neutral-300",
       },
     },
     error: {
       true: {
-        input: 'border-danger-600',
-        label: 'text-danger-600 dark:text-danger-600',
+        input: "border-danger-600",
+        label: "text-danger-600 dark:text-danger-600",
       },
     },
     disabled: {
       true: {
-        input: 'bg-neutral-200',
+        input: "bg-neutral-200",
       },
     },
   },
@@ -56,7 +56,7 @@ export interface NInputProps extends TextInputProps {
 type TRule<T extends FieldValues> =
   | Omit<
       RegisterOptions<T>,
-      'disabled' | 'valueAsNumber' | 'valueAsDate' | 'setValueAs'
+      "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"
     >
   | undefined;
 
@@ -84,7 +84,7 @@ export const Input = React.forwardRef<NTextInput, NInputProps>((props, ref) => {
         focused: isFocussed,
         disabled: Boolean(props.disabled),
       }),
-    [error, isFocussed, props.disabled]
+    [error, isFocussed, props.disabled],
   );
 
   return (
@@ -106,8 +106,8 @@ export const Input = React.forwardRef<NTextInput, NInputProps>((props, ref) => {
         onFocus={onFocus}
         {...inputProps}
         style={StyleSheet.flatten([
-          { writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr' },
-          { textAlign: I18nManager.isRTL ? 'right' : 'left' },
+          { writingDirection: I18nManager.isRTL ? "rtl" : "ltr" },
+          { textAlign: I18nManager.isRTL ? "right" : "left" },
           inputProps.style,
         ])}
       />
@@ -125,7 +125,7 @@ export const Input = React.forwardRef<NTextInput, NInputProps>((props, ref) => {
 
 // only used with react-hook-form
 export function ControlledInput<T extends FieldValues>(
-  props: ControlledInputProps<T>
+  props: ControlledInputProps<T>,
 ) {
   const { name, control, rules, ...inputProps } = props;
 
@@ -135,7 +135,7 @@ export function ControlledInput<T extends FieldValues>(
       ref={field.ref}
       autoCapitalize="none"
       onChangeText={field.onChange}
-      value={(field.value as string) || ''}
+      value={(field.value as string) || ""}
       {...inputProps}
       error={fieldState.error?.message}
     />

@@ -6,11 +6,7 @@
   "exports": {
     ".": "./src/index.ts"
   },
-  "files": [
-    "tailwind.config.ts",
-    "postcss.config.js",
-    "globals.css"
-  ],
+  "files": ["tailwind.config.ts", "postcss.config.js", "globals.css"],
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "dev": "storybook dev -p 6006",

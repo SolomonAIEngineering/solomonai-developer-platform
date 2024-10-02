@@ -1,7 +1,7 @@
 enum environment {
-  PRODUCTION = 'production',
-  DEVELOPMENT = 'development',
-  TEST = 'test',
+  PRODUCTION = "production",
+  DEVELOPMENT = "development",
+  TEST = "test",
 }
 
-export default environment
+export default environment;

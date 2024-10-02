@@ -4,9 +4,9 @@ import {
   type Middleware,
   type RequestContext,
   type ResponseContext,
-} from 'client-typescript-sdk'
+} from "client-typescript-sdk";
 
-import { Logger } from './logger.ts'
+import { Logger } from "./logger.ts";
 
 /**
  * Middleware that adds custom headers to outgoing requests.
@@ -20,15 +20,15 @@ export const addCustomHeaderMiddleware: Middleware = {
    */
   pre: async (context: RequestContext): Promise<FetchParams | void> => {
     const customHeaders = {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      'X-Content-Type-Options': 'nosniff',
-      'X-Frame-Options': 'DENY',
-      'X-XSS-Protection': '1; mode=block',
-      'Referrer-Policy': 'no-referrer',
-      'X-Platform': 'SolomonAI',
-      'X-Request-ID': generateRequestId(),
-    }
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "X-XSS-Protection": "1; mode=block",
+      "Referrer-Policy": "no-referrer",
+      "X-Platform": "SolomonAI",
+      "X-Request-ID": generateRequestId(),
+    };
 
     const modifiedInit: RequestInit = {
       ...context.init,
@@ -36,17 +36,17 @@ export const addCustomHeaderMiddleware: Middleware = {
         ...context.init.headers,
         ...customHeaders,
       },
-    }
+    };
 
-    Logger.debug('Outgoing request', {
+    Logger.debug("Outgoing request", {
       url: context.url,
       method: context.init.method,
       headers: modifiedInit.headers,
-    })
+    });
 
-    return { url: context.url, init: modifiedInit }
+    return { url: context.url, init: modifiedInit };
   },
-}
+};
 
 /**
  * Middleware that handles errors and logs responses.
@@ -60,28 +60,28 @@ export const errorHandlingMiddleware: Middleware = {
    * @throws {Error} If the response is not OK.
    */
   post: async (context: ResponseContext): Promise<Response | void> => {
-    const { response } = context
+    const { response } = context;
 
-    Logger.debug('Received response', {
+    Logger.debug("Received response", {
       url: response.url,
       status: response.status,
       statusText: response.statusText,
-    })
+    });
 
     if (!response.ok) {
-      const errorBody = await response.text()
-      const error = new Error(`HTTP error! status: ${response.status}`)
+      const errorBody = await response.text();
+      const error = new Error(`HTTP error! status: ${response.status}`);
 
-      Logger.error('API request failed', error, {
+      Logger.error("API request failed", error, {
         url: response.url,
         status: response.status,
         body: errorBody,
-      })
+      });
 
-      throw error
+      throw error;
     }
 
-    return response
+    return response;
   },
 
   /**
@@ -90,18 +90,18 @@ export const errorHandlingMiddleware: Middleware = {
    * @throws {Error} The caught error.
    */
   onError: async (context: ErrorContext): Promise<Response | void> => {
-    const { error } = context
+    const { error } = context;
 
-    Logger.error('Network or other error occurred', error as Error)
+    Logger.error("Network or other error occurred", error as Error);
 
-    throw error
+    throw error;
   },
-}
+};
 
 /**
  * Generates a unique request ID.
  * @returns {string} A unique request ID.
  */
 function generateRequestId(): string {
-  return `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+  return `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 }

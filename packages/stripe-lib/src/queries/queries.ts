@@ -1,8 +1,8 @@
-import { unstable_cache as cache } from 'next/cache'
+import { unstable_cache as cache } from "next/cache";
 
-import { SupabaseClient } from '@supabase/supabase-js'
+import { SupabaseClient } from "@supabase/supabase-js";
 
-import { Database as BusinessDatabase } from '@v1/db/types'
+import { Database as BusinessDatabase } from "@v1/db/types";
 
 /**
  * Fetches the subscription data for the specified client.
@@ -14,13 +14,13 @@ const getSubscriptionQuery = async <T extends BusinessDatabase>(
   client: SupabaseClient<T>,
 ) => {
   const { data: subscription, error } = await client
-    .from('subscriptions')
-    .select('*, prices(*, products(*))')
-    .in('status', ['trialing', 'active'])
-    .maybeSingle()
+    .from("subscriptions")
+    .select("*, prices(*, products(*))")
+    .in("status", ["trialing", "active"])
+    .maybeSingle();
 
-  return subscription
-}
+  return subscription;
+};
 
 /**
  * Fetches the products data for the specified client.
@@ -32,15 +32,15 @@ const getProductsQuery = async <T extends BusinessDatabase>(
   client: SupabaseClient<T>,
 ) => {
   const { data: products, error } = await client
-    .from('products')
-    .select('*, prices(*)')
-    .eq('active', true)
-    .eq('prices.active', true)
-    .order('metadata->index')
-    .order('unit_amount', { foreignTable: 'prices' })
+    .from("products")
+    .select("*, prices(*)")
+    .eq("active", true)
+    .eq("prices.active", true)
+    .order("metadata->index")
+    .order("unit_amount", { foreignTable: "prices" });
 
-  return products
-}
+  return products;
+};
 
 /**
  * Fetches the user subscriptions for the specified client.
@@ -56,20 +56,20 @@ const getUserSubscriptions = async <T extends BusinessDatabase>(
   invalidateCache = false,
 ) => {
   if (invalidateCache) {
-    return getSubscriptionQuery(client)
+    return getSubscriptionQuery(client);
   }
 
   return cache(
     async () => {
-      return getSubscriptionQuery(client)
+      return getSubscriptionQuery(client);
     },
-    ['user', 'subscriptions', userId],
+    ["user", "subscriptions", userId],
     {
       tags: [`user_subscriptions_${userId}`],
       revalidate: 180,
     },
-  )()
-}
+  )();
+};
 
 /**
  * Fetches the products data for the specified client.
@@ -83,19 +83,19 @@ const getProducts = async <T extends BusinessDatabase>(
   invalidateCache = false,
 ) => {
   if (invalidateCache) {
-    return getProductsQuery(client)
+    return getProductsQuery(client);
   }
 
   return cache(
     async () => {
-      return getProductsQuery(client)
+      return getProductsQuery(client);
     },
-    ['products'],
+    ["products"],
     {
-      tags: ['products'],
+      tags: ["products"],
       revalidate: 180,
     },
-  )()
-}
+  )();
+};
 
-export { getProducts, getUserSubscriptions }
+export { getProducts, getUserSubscriptions };

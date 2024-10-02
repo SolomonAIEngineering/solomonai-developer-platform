@@ -1,44 +1,44 @@
-import { memo } from 'react'
+import { memo } from "react";
 
-import * as Popover from '@radix-ui/react-popover'
-import { BubbleMenu, Editor } from '@tiptap/react'
+import * as Popover from "@radix-ui/react-popover";
+import { BubbleMenu, Editor } from "@tiptap/react";
 
-import { Icon } from '@/components/editor/editorAtom/icon'
-import { Surface } from '@/components/editor/editorAtom/surface'
-import { Toolbar } from '@/components/editor/editorAtom/toolbar'
-import { ColorPicker } from '@/components/editor/panels'
+import { Icon } from "@/components/editor/editorAtom/icon";
+import { Surface } from "@/components/editor/editorAtom/surface";
+import { Toolbar } from "@/components/editor/editorAtom/toolbar";
+import { ColorPicker } from "@/components/editor/panels";
 
-import { AIDropdown } from './components/aiDropdown'
-import { ContentTypePicker } from './components/contentTypePicker'
-import { EditLinkPopover } from './components/editLinkPopover'
-import { FontFamilyPicker } from './components/fontFamilyPicker'
-import { FontSizePicker } from './components/fontSizePicker'
-import { useTextmenuCommands } from './hooks/useTextmenuCommands'
-import { useTextmenuContentTypes } from './hooks/useTextmenuContentTypes'
-import { useTextmenuStates } from './hooks/useTextmenuStates'
+import { AIDropdown } from "./components/aiDropdown";
+import { ContentTypePicker } from "./components/contentTypePicker";
+import { EditLinkPopover } from "./components/editLinkPopover";
+import { FontFamilyPicker } from "./components/fontFamilyPicker";
+import { FontSizePicker } from "./components/fontSizePicker";
+import { useTextmenuCommands } from "./hooks/useTextmenuCommands";
+import { useTextmenuContentTypes } from "./hooks/useTextmenuContentTypes";
+import { useTextmenuStates } from "./hooks/useTextmenuStates";
 
 // We memorize the button so each button is not rerendered
 // on every editor state change
-const MemoButton = memo(Toolbar.Button)
-const MemoColorPicker = memo(ColorPicker)
-const MemoFontFamilyPicker = memo(FontFamilyPicker)
-const MemoFontSizePicker = memo(FontSizePicker)
-const MemoContentTypePicker = memo(ContentTypePicker)
+const MemoButton = memo(Toolbar.Button);
+const MemoColorPicker = memo(ColorPicker);
+const MemoFontFamilyPicker = memo(FontFamilyPicker);
+const MemoFontSizePicker = memo(FontSizePicker);
+const MemoContentTypePicker = memo(ContentTypePicker);
 
 export type TextMenuProps = {
-  editor: Editor
-}
+  editor: Editor;
+};
 
 export const TextMenu = ({ editor }: TextMenuProps) => {
-  const commands = useTextmenuCommands(editor)
-  const states = useTextmenuStates(editor)
-  const blockOptions = useTextmenuContentTypes(editor)
+  const commands = useTextmenuCommands(editor);
+  const states = useTextmenuStates(editor);
+  const blockOptions = useTextmenuContentTypes(editor);
 
   return (
     <BubbleMenu
-      tippyOptions={{ popperOptions: { placement: 'top-start' } }}
+      tippyOptions={{ popperOptions: { placement: "top-start" } }}
       editor={editor}
-      pluginKey='textMenu'
+      pluginKey="textMenu"
       shouldShow={states.shouldShow}
       updateDelay={100}
     >
@@ -58,68 +58,68 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
         <MemoContentTypePicker options={blockOptions} />
         <MemoFontFamilyPicker
           onChange={commands.onSetFont}
-          value={states.currentFont || ''}
+          value={states.currentFont || ""}
         />
         <MemoFontSizePicker
           onChange={commands.onSetFontSize}
-          value={states.currentSize || ''}
+          value={states.currentSize || ""}
         />
         <Toolbar.Divider />
         <MemoButton
-          tooltip='Bold'
-          tooltipShortcut={['Mod', 'B']}
+          tooltip="Bold"
+          tooltipShortcut={["Mod", "B"]}
           onClick={commands.onBold}
           active={states.isBold}
         >
-          <Icon name='Bold' />
+          <Icon name="Bold" />
         </MemoButton>
         <MemoButton
-          tooltip='Italic'
-          tooltipShortcut={['Mod', 'I']}
+          tooltip="Italic"
+          tooltipShortcut={["Mod", "I"]}
           onClick={commands.onItalic}
           active={states.isItalic}
         >
-          <Icon name='Italic' />
+          <Icon name="Italic" />
         </MemoButton>
         <MemoButton
-          tooltip='Underline'
-          tooltipShortcut={['Mod', 'U']}
+          tooltip="Underline"
+          tooltipShortcut={["Mod", "U"]}
           onClick={commands.onUnderline}
           active={states.isUnderline}
         >
-          <Icon name='Underline' />
+          <Icon name="Underline" />
         </MemoButton>
         <MemoButton
-          tooltip='Strikehrough'
-          tooltipShortcut={['Mod', 'Shift', 'S']}
+          tooltip="Strikehrough"
+          tooltipShortcut={["Mod", "Shift", "S"]}
           onClick={commands.onStrike}
           active={states.isStrike}
         >
-          <Icon name='Strikethrough' />
+          <Icon name="Strikethrough" />
         </MemoButton>
         <MemoButton
-          tooltip='Code'
-          tooltipShortcut={['Mod', 'E']}
+          tooltip="Code"
+          tooltipShortcut={["Mod", "E"]}
           onClick={commands.onCode}
           active={states.isCode}
         >
-          <Icon name='Code' />
+          <Icon name="Code" />
         </MemoButton>
-        <MemoButton tooltip='Code block' onClick={commands.onCodeBlock}>
-          <Icon name='Code2' />
+        <MemoButton tooltip="Code block" onClick={commands.onCodeBlock}>
+          <Icon name="Code2" />
         </MemoButton>
         <EditLinkPopover onSetLink={commands.onLink} />
         <Popover.Root>
           <Popover.Trigger asChild>
             <MemoButton
               active={!!states.currentHighlight}
-              tooltip='Highlight text'
+              tooltip="Highlight text"
             >
-              <Icon name='Highlighter' />
+              <Icon name="Highlighter" />
             </MemoButton>
           </Popover.Trigger>
-          <Popover.Content side='top' sideOffset={8} asChild>
-            <Surface className='p-1'>
+          <Popover.Content side="top" sideOffset={8} asChild>
+            <Surface className="p-1">
               <MemoColorPicker
                 color={states.currentHighlight}
                 onChange={commands.onChangeHighlight}
@@ -130,12 +130,12 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
         </Popover.Root>
         <Popover.Root>
           <Popover.Trigger asChild>
-            <MemoButton active={!!states.currentColor} tooltip='Text color'>
-              <Icon name='Palette' />
+            <MemoButton active={!!states.currentColor} tooltip="Text color">
+              <Icon name="Palette" />
             </MemoButton>
           </Popover.Trigger>
-          <Popover.Content side='top' sideOffset={8} asChild>
-            <Surface className='p-1'>
+          <Popover.Content side="top" sideOffset={8} asChild>
+            <Surface className="p-1">
               <MemoColorPicker
                 color={states.currentColor}
                 onChange={commands.onChangeColor}
@@ -146,65 +146,65 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
         </Popover.Root>
         <Popover.Root>
           <Popover.Trigger asChild>
-            <MemoButton tooltip='More options'>
-              <Icon name='MoreVertical' />
+            <MemoButton tooltip="More options">
+              <Icon name="MoreVertical" />
             </MemoButton>
           </Popover.Trigger>
-          <Popover.Content side='top' asChild>
+          <Popover.Content side="top" asChild>
             <Toolbar.Wrapper>
               <MemoButton
-                tooltip='Subscript'
-                tooltipShortcut={['Mod', '.']}
+                tooltip="Subscript"
+                tooltipShortcut={["Mod", "."]}
                 onClick={commands.onSubscript}
                 active={states.isSubscript}
               >
-                <Icon name='Subscript' />
+                <Icon name="Subscript" />
               </MemoButton>
               <MemoButton
-                tooltip='Superscript'
-                tooltipShortcut={['Mod', ',']}
+                tooltip="Superscript"
+                tooltipShortcut={["Mod", ","]}
                 onClick={commands.onSuperscript}
                 active={states.isSuperscript}
               >
-                <Icon name='Superscript' />
+                <Icon name="Superscript" />
               </MemoButton>
               <Toolbar.Divider />
               <MemoButton
-                tooltip='Align left'
-                tooltipShortcut={['Shift', 'Mod', 'L']}
+                tooltip="Align left"
+                tooltipShortcut={["Shift", "Mod", "L"]}
                 onClick={commands.onAlignLeft}
                 active={states.isAlignLeft}
               >
-                <Icon name='AlignLeft' />
+                <Icon name="AlignLeft" />
               </MemoButton>
               <MemoButton
-                tooltip='Align center'
-                tooltipShortcut={['Shift', 'Mod', 'E']}
+                tooltip="Align center"
+                tooltipShortcut={["Shift", "Mod", "E"]}
                 onClick={commands.onAlignCenter}
                 active={states.isAlignCenter}
               >
-                <Icon name='AlignCenter' />
+                <Icon name="AlignCenter" />
               </MemoButton>
               <MemoButton
-                tooltip='Align right'
-                tooltipShortcut={['Shift', 'Mod', 'R']}
+                tooltip="Align right"
+                tooltipShortcut={["Shift", "Mod", "R"]}
                 onClick={commands.onAlignRight}
                 active={states.isAlignRight}
               >
-                <Icon name='AlignRight' />
+                <Icon name="AlignRight" />
               </MemoButton>
               <MemoButton
-                tooltip='Justify'
-                tooltipShortcut={['Shift', 'Mod', 'J']}
+                tooltip="Justify"
+                tooltipShortcut={["Shift", "Mod", "J"]}
                 onClick={commands.onAlignJustify}
                 active={states.isAlignJustify}
               >
-                <Icon name='AlignJustify' />
+                <Icon name="AlignJustify" />
               </MemoButton>
             </Toolbar.Wrapper>
           </Popover.Content>
         </Popover.Root>
       </Toolbar.Wrapper>
     </BubbleMenu>
-  )
-}
+  );
+};

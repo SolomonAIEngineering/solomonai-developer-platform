@@ -17,11 +17,11 @@ import { integer, sqliteTable } from "drizzle-orm/sqlite-core";
  * - Additional setting fields can be added to this table as needed for various configuration options.
  */
 export const settings = sqliteTable("settings", {
-    id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    userAccountId: integer("user_account_id")
-        .references(() => userAccounts.id)
-        .unique(),
-    businessAccountId: integer("business_account_id")
-        .references(() => businessAccounts.id, { onDelete: "cascade" })
-        .unique(),
+  id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+  userAccountId: integer("user_account_id")
+    .references(() => userAccounts.id)
+    .unique(),
+  businessAccountId: integer("business_account_id")
+    .references(() => businessAccounts.id, { onDelete: "cascade" })
+    .unique(),
 });

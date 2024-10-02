@@ -1,25 +1,25 @@
 // BankAccountCardHeader.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { AdvancedEditor } from './advanced-editor'
+import { AdvancedEditor } from "./advanced-editor";
 
 const meta: Meta<typeof AdvancedEditor> = {
   component: AdvancedEditor,
   decorators: [(Story) => <Story />],
-}
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof AdvancedEditor>
+type Story = StoryObj<typeof AdvancedEditor>;
 
-export const Default: Story = {}
+export const Default: Story = {};
 
 export const WithButton: Story = {
   args: {
-    label: 'save',
+    label: "save",
     callback: (content: string) => {
-      console.log(content)
+      console.log(content);
     },
   },
-}
+};

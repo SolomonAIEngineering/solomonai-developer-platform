@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 export const BalanceTrendAnalysisSchema = z.object({
   Month: z.number().int().min(202201).max(209912),
@@ -11,4 +11,4 @@ export const BalanceTrendAnalysisSchema = z.object({
   EndBalance: z.number(),
   UserId: z.string().uuid(),
   ProfileType: z.string(),
-})
+});

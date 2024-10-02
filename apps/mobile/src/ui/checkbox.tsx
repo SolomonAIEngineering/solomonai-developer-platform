@@ -1,16 +1,16 @@
-import { MotiView } from 'moti';
-import React, { useCallback } from 'react';
+import { MotiView } from "moti";
+import React, { useCallback } from "react";
 import {
   I18nManager,
   Pressable,
   type PressableProps,
   View,
-} from 'react-native';
-import Svg, { Path } from 'react-native-svg';
+} from "react-native";
+import Svg, { Path } from "react-native-svg";
 
-import colors from '@/ui/colors';
+import colors from "@/ui/colors";
 
-import { Text } from './text';
+import { Text } from "./text";
 
 const SIZE = 20;
 const WIDTH = 50;
@@ -19,7 +19,7 @@ const THUMB_HEIGHT = 22;
 const THUMB_WIDTH = 22;
 const THUMB_OFFSET = 4;
 
-export interface RootProps extends Omit<PressableProps, 'onPress'> {
+export interface RootProps extends Omit<PressableProps, "onPress"> {
   onChange: (checked: boolean) => void;
   checked?: boolean;
   className?: string;
@@ -35,7 +35,7 @@ export const Root = ({
   children,
   onChange,
   disabled,
-  className = '',
+  className = "",
   ...props
 }: RootProps) => {
   const handleChange = useCallback(() => {
@@ -46,7 +46,7 @@ export const Root = ({
     <Pressable
       onPress={handleChange}
       className={`flex-row items-center ${className} ${
-        disabled ? 'opacity-50' : ''
+        disabled ? "opacity-50" : ""
       }`}
       accessibilityState={{ checked }}
       disabled={disabled}
@@ -63,7 +63,7 @@ type LabelProps = {
   testID?: string;
 };
 
-const Label = ({ text, testID, className = '' }: LabelProps) => {
+const Label = ({ text, testID, className = "" }: LabelProps) => {
   return (
     <Text testID={testID} className={` ${className} pl-2`}>
       {text}
@@ -81,20 +81,20 @@ export const CheckboxIcon = ({ checked = false }: IconProps) => {
         borderColor: color,
       }}
       className="items-center justify-center rounded-[5px] border-2"
-      from={{ backgroundColor: 'transparent', borderColor: '#CCCFD6' }}
+      from={{ backgroundColor: "transparent", borderColor: "#CCCFD6" }}
       animate={{
-        backgroundColor: checked ? color : 'transparent',
+        backgroundColor: checked ? color : "transparent",
         borderColor: color,
       }}
       transition={{
-        backgroundColor: { type: 'timing', duration: 100 },
-        borderColor: { type: 'timing', duration: 100 },
+        backgroundColor: { type: "timing", duration: 100 },
+        borderColor: { type: "timing", duration: 100 },
       }}
     >
       <MotiView
         from={{ opacity: 0 }}
         animate={{ opacity: checked ? 1 : 0 }}
-        transition={{ opacity: { type: 'timing', duration: 100 } }}
+        transition={{ opacity: { type: "timing", duration: 100 } }}
       >
         <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
           <Path
@@ -152,19 +152,19 @@ export const RadioIcon = ({ checked = false }: IconProps) => {
         borderColor: color,
       }}
       className="items-center justify-center rounded-[20px] border-2 bg-transparent"
-      from={{ borderColor: '#CCCFD6' }}
+      from={{ borderColor: "#CCCFD6" }}
       animate={{
         borderColor: color,
       }}
-      transition={{ borderColor: { duration: 100, type: 'timing' } }}
+      transition={{ borderColor: { duration: 100, type: "timing" } }}
     >
       <MotiView
         className={`h-[10px] w-[10px] rounded-[10px] ${
-          checked && 'bg-primary-300'
+          checked && "bg-primary-300"
         } `}
         from={{ opacity: 0 }}
         animate={{ opacity: checked ? 1 : 0 }}
-        transition={{ opacity: { duration: 50, type: 'timing' } }}
+        transition={{ opacity: { duration: 50, type: "timing" } }}
       />
     </MotiView>
   );
@@ -219,11 +219,11 @@ export const SwitchIcon = ({ checked = false }: IconProps) => {
         />
       </View>
       <MotiView
-       style={{
+        style={{
           height: THUMB_HEIGHT,
           width: THUMB_WIDTH,
-          position: 'absolute',
-          backgroundColor: 'white',
+          position: "absolute",
+          backgroundColor: "white",
           borderRadius: 13,
           right: 0,
         }}

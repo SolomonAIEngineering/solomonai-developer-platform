@@ -1,20 +1,20 @@
 // BankAccountCardHeader.stories.tsx
 
-import React from 'react'
+import React from "react";
 
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { FormSchemaType, MinimalEditorForm } from './minimal-editor-form'
+import { FormSchemaType, MinimalEditorForm } from "./minimal-editor-form";
 
 const meta: Meta<typeof MinimalEditorForm> = {
   component: MinimalEditorForm,
-}
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof MinimalEditorForm>
+type Story = StoryObj<typeof MinimalEditorForm>;
 
-export const Default: Story = {}
+export const Default: Story = {};
 
 // export const WithButton: Story = {
 //     args: {

@@ -21,36 +21,40 @@ let isolateId = undefined;
  * Call this once before any hono handlers run.
  */
 export function init() {
-    return async (c, next) => {
-        if (!isolateId) {
-            isolateId = crypto.randomUUID();
-        }
-        c.set("isolateId", isolateId);
-        c.set("isolateCreatedAt", Date.now());
-        const requestId = newId("request");
-        c.set("requestId", requestId);
-        c.res.headers.set("API-Request-Id", requestId);
-        const logger = LoggerSingleton.getInstance(requestId, {
-            environment: c.env.ENVIRONMENT,
-            application: "api",
-            defaultFields: { environment: c.env.ENVIRONMENT },
-        });
-        const db = await DatabaseManager.getInstance(c.env.DB);
-        const metrics = c.env.EMIT_METRICS_LOGS
-            ? new LogdrainMetrics({
-                requestId,
-                environment: c.env.ENVIRONMENT,
-                isolateId,
-            })
-            : new NoopMetrics();
-        // initialize trigger client
-        const client = new TriggerClientWrapper(c.env.TRIGGER_CLIENT_ID, c.env.TRIGGER_API_KEY, c.env.TRIGGER_API_URL).getClient();
-        c.set("services", {
-            db,
-            metrics,
-            logger,
-            triggerClient: client,
-        });
-        await next();
-    };
+  return async (c, next) => {
+    if (!isolateId) {
+      isolateId = crypto.randomUUID();
+    }
+    c.set("isolateId", isolateId);
+    c.set("isolateCreatedAt", Date.now());
+    const requestId = newId("request");
+    c.set("requestId", requestId);
+    c.res.headers.set("API-Request-Id", requestId);
+    const logger = LoggerSingleton.getInstance(requestId, {
+      environment: c.env.ENVIRONMENT,
+      application: "api",
+      defaultFields: { environment: c.env.ENVIRONMENT },
+    });
+    const db = await DatabaseManager.getInstance(c.env.DB);
+    const metrics = c.env.EMIT_METRICS_LOGS
+      ? new LogdrainMetrics({
+          requestId,
+          environment: c.env.ENVIRONMENT,
+          isolateId,
+        })
+      : new NoopMetrics();
+    // initialize trigger client
+    const client = new TriggerClientWrapper(
+      c.env.TRIGGER_CLIENT_ID,
+      c.env.TRIGGER_API_KEY,
+      c.env.TRIGGER_API_URL,
+    ).getClient();
+    c.set("services", {
+      db,
+      metrics,
+      logger,
+      triggerClient: client,
+    });
+    await next();
+  };
 }

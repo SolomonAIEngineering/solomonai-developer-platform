@@ -1,8 +1,8 @@
 import { logger } from "@/utils/logger";
-import { setupAnalytics } from "@orbitkit/events/server";
+import { setupAnalytics } from "@v1/events/server";
 import { client as RedisClient } from "@internal/kv";
-import { getUser } from "@orbitkit/supabase/cached-queries";
-import { createClient } from "@orbitkit/supabase/server";
+import { getUser } from "@v1/supabase/cached-queries";
+import { createClient } from "@v1/supabase/server";
 import * as Sentry from "@sentry/nextjs";
 import { Ratelimit } from "@upstash/ratelimit";
 import {

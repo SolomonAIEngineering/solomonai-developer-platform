@@ -1,8 +1,8 @@
-import { Stack, useLocalSearchParams } from 'expo-router';
-import * as React from 'react';
+import { Stack, useLocalSearchParams } from "expo-router";
+import * as React from "react";
 
-import { usePost } from '@/api';
-import { ActivityIndicator, FocusAwareStatusBar, Text, View } from '@/ui';
+import { usePost } from "@/api";
+import { ActivityIndicator, FocusAwareStatusBar, Text, View } from "@/ui";
 
 export default function Post() {
   const local = useLocalSearchParams<{ id: string }>();
@@ -15,7 +15,7 @@ export default function Post() {
   if (isPending) {
     return (
       <View className="flex-1 justify-center  p-3">
-        <Stack.Screen options={{ title: 'Post', headerBackTitle: 'Feed' }} />
+        <Stack.Screen options={{ title: "Post", headerBackTitle: "Feed" }} />
         <FocusAwareStatusBar />
         <ActivityIndicator />
       </View>
@@ -24,7 +24,7 @@ export default function Post() {
   if (isError) {
     return (
       <View className="flex-1 justify-center p-3">
-        <Stack.Screen options={{ title: 'Post', headerBackTitle: 'Feed' }} />
+        <Stack.Screen options={{ title: "Post", headerBackTitle: "Feed" }} />
         <FocusAwareStatusBar />
         <Text className="text-center">Error loading post</Text>
       </View>
@@ -33,7 +33,7 @@ export default function Post() {
 
   return (
     <View className="flex-1 p-3 ">
-      <Stack.Screen options={{ title: 'Post', headerBackTitle: 'Feed' }} />
+      <Stack.Screen options={{ title: "Post", headerBackTitle: "Feed" }} />
       <FocusAwareStatusBar />
       <Text className="text-xl">{data.title}</Text>
       <Text>{data.body} </Text>

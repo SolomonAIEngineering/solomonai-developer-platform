@@ -1,80 +1,80 @@
-import React, { useCallback } from 'react'
+import React, { useCallback } from "react";
 
-import { BubbleMenu as BaseBubbleMenu } from '@tiptap/react'
+import { BubbleMenu as BaseBubbleMenu } from "@tiptap/react";
 
-import { Icon } from '@/components/editor/editorAtom/icon'
-import * as PopoverMenu from '@/components/editor/editorAtom/popoverMenu'
-import { Toolbar } from '@/components/editor/editorAtom/toolbar'
-import { MenuProps, ShouldShowProps } from '@/components/editor/menus/types'
+import { Icon } from "@/components/editor/editorAtom/icon";
+import * as PopoverMenu from "@/components/editor/editorAtom/popoverMenu";
+import { Toolbar } from "@/components/editor/editorAtom/toolbar";
+import { MenuProps, ShouldShowProps } from "@/components/editor/menus/types";
 
-import { isColumnGripSelected } from './utils'
+import { isColumnGripSelected } from "./utils";
 
 export const TableColumnMenu = React.memo(
   ({ editor, appendTo }: MenuProps): JSX.Element => {
     const shouldShow = useCallback(
       ({ view, state, from }: ShouldShowProps) => {
         if (!state) {
-          return false
+          return false;
         }
 
-        return isColumnGripSelected({ editor, view, state, from: from || 0 })
+        return isColumnGripSelected({ editor, view, state, from: from || 0 });
       },
       [editor],
-    )
+    );
 
     const onAddColumnBefore = useCallback(() => {
-      editor.chain().focus().addColumnBefore().run()
-    }, [editor])
+      editor.chain().focus().addColumnBefore().run();
+    }, [editor]);
 
     const onAddColumnAfter = useCallback(() => {
-      editor.chain().focus().addColumnAfter().run()
-    }, [editor])
+      editor.chain().focus().addColumnAfter().run();
+    }, [editor]);
 
     const onDeleteColumn = useCallback(() => {
-      editor.chain().focus().deleteColumn().run()
-    }, [editor])
+      editor.chain().focus().deleteColumn().run();
+    }, [editor]);
 
     return (
       <BaseBubbleMenu
         editor={editor}
-        pluginKey='tableColumnMenu'
+        pluginKey="tableColumnMenu"
         updateDelay={0}
         tippyOptions={{
           appendTo: () => {
-            return appendTo?.current
+            return appendTo?.current;
           },
           offset: [0, 15],
           popperOptions: {
-            modifiers: [{ name: 'flip', enabled: false }],
+            modifiers: [{ name: "flip", enabled: false }],
           },
         }}
         shouldShow={shouldShow}
       >
         <Toolbar.Wrapper isVertical>
           <PopoverMenu.Item
-            iconComponent={<Icon name='ArrowLeftToLine' />}
+            iconComponent={<Icon name="ArrowLeftToLine" />}
             close={false}
-            label='Add column before'
+            label="Add column before"
             onClick={onAddColumnBefore}
           />
           <PopoverMenu.Item
-            iconComponent={<Icon name='ArrowRightToLine' />}
+            iconComponent={<Icon name="ArrowRightToLine" />}
             close={false}
-            label='Add column after'
+            label="Add column after"
             onClick={onAddColumnAfter}
           />
           <PopoverMenu.Item
-            icon='Trash'
+            icon="Trash"
             close={false}
-            label='Delete column'
+            label="Delete column"
             onClick={onDeleteColumn}
           />
         </Toolbar.Wrapper>
       </BaseBubbleMenu>
-    )
+    );
   },
-)
+);
 
-TableColumnMenu.displayName = 'TableColumnMenu'
+TableColumnMenu.displayName = "TableColumnMenu";
 
-export default TableColumnMenu
+export default TableColumnMenu;

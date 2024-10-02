@@ -1,15 +1,15 @@
-import { create } from 'zustand'
+import { create } from "zustand";
 
 /**
  * Represents the state of the assistant feature.
  */
 interface AssistantState {
   /** Indicates whether the assistant is open or closed. */
-  isOpen: boolean
+  isOpen: boolean;
   /** The current message displayed by the assistant. */
-  message: string | undefined
+  message: string | undefined;
   /** Function to toggle the assistant's open state and set a message. */
-  setOpen: (message?: string) => void
+  setOpen: (message?: string) => void;
 }
 
 /**
@@ -25,4 +25,4 @@ export const useAssistantStore = create<AssistantState>()((set) => ({
   isOpen: false,
   message: undefined,
   setOpen: (message) => set((state) => ({ isOpen: !state.isOpen, message })),
-}))
+}));

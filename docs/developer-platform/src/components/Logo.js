@@ -2,9 +2,28 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Logo = Logo;
 function Logo(props) {
-    return (<svg version="1.0" xmlns="http://www.w3.org/2000/svg" width={props.width ? props.width : 50} height={props.height ? props.height : 35} {...props} viewBox="0 0 192.000000 192.000000">
-      <g transform="translate(0.000000,192.000000) scale(0.100000,-0.100000)" fill="currentColor" stroke="none" fillRule="evenodd" clipRule="evenodd">
-        <path fill="currentColor" stroke="none" fillRule="evenodd" clipRule="evenodd" d="M910 1390 c-28 -28 -26 -76 6 -105 l26 -24 -12 -138 c-6 -76 -15
+  return (
+    <svg
+      version="1.0"
+      xmlns="http://www.w3.org/2000/svg"
+      width={props.width ? props.width : 50}
+      height={props.height ? props.height : 35}
+      {...props}
+      viewBox="0 0 192.000000 192.000000"
+    >
+      <g
+        transform="translate(0.000000,192.000000) scale(0.100000,-0.100000)"
+        fill="currentColor"
+        stroke="none"
+        fillRule="evenodd"
+        clipRule="evenodd"
+      >
+        <path
+          fill="currentColor"
+          stroke="none"
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M910 1390 c-28 -28 -26 -76 6 -105 l26 -24 -12 -138 c-6 -76 -15
 -189 -20 -252 -5 -63 -11 -115 -12 -116 -2 -2 -31 -6 -65 -10 -46 -5 -63 -4
 -63 5 0 6 -43 110 -96 230 -92 212 -95 220 -83 254 24 66 -28 122 -90 96 -62
 -25 -57 -123 7 -136 26 -5 29 -11 56 -137 16 -73 42 -181 57 -240 18 -74 23
@@ -33,10 +52,22 @@ function Logo(props) {
 -43 80 106 -98 54 -64 107 -121 117 -127 28 -14 115 8 142 36 l21 23 -25 113
 c-35 156 -46 212 -42 217 4 4 43 -79 90 -194 40 -95 63 -133 86 -140 33 -11
 128 14 140 36 6 11 15 80 20 152 6 73 13 139 16 147 4 8 12 -52 19 -135 12
--138 15 -152 38 -171z"/>
+-138 15 -152 38 -171z"
+        />
       </g>
-      <g transform="translate(0.000000,192.000000) scale(0.100000,-0.100000)" fill="currentColor" stroke="none" fillRule="evenodd" clipRule="evenodd">
-        <path fill="currentColor" stroke="none" fillRule="evenodd" clipRule="evenodd" d="M910 1390 c-28 -28 -26 -76 6 -105 l26 -24 -12 -138 c-6 -76 -15
+      <g
+        transform="translate(0.000000,192.000000) scale(0.100000,-0.100000)"
+        fill="currentColor"
+        stroke="none"
+        fillRule="evenodd"
+        clipRule="evenodd"
+      >
+        <path
+          fill="currentColor"
+          stroke="none"
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M910 1390 c-28 -28 -26 -76 6 -105 l26 -24 -12 -138 c-6 -76 -15
 -189 -20 -252 -5 -63 -11 -115 -12 -116 -2 -2 -31 -6 -65 -10 -46 -5 -63 -4
 -63 5 0 6 -43 110 -96 230 -92 212 -95 220 -83 254 24 66 -28 122 -90 96 -62
 -25 -57 -123 7 -136 26 -5 29 -11 56 -137 16 -73 42 -181 57 -240 18 -74 23
@@ -65,7 +96,9 @@ c-35 156 -46 212 -42 217 4 4 43 -79 90 -194 40 -95 63 -133 86 -140 33 -11
 -43 80 106 -98 54 -64 107 -121 117 -127 28 -14 115 8 142 36 l21 23 -25 113
 c-35 156 -46 212 -42 217 4 4 43 -79 90 -194 40 -95 63 -133 86 -140 33 -11
 128 14 140 36 6 11 15 80 20 152 6 73 13 139 16 147 4 8 12 -52 19 -135 12
--138 15 -152 38 -171z"/>
+-138 15 -152 38 -171z"
+        />
       </g>
-    </svg>);
+    </svg>
+  );
 }

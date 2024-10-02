@@ -1,4 +1,4 @@
-import type { AssistantThreadStartedEvent, WebClient } from '@slack/web-api'
+import type { AssistantThreadStartedEvent, WebClient } from "@slack/web-api";
 
 export async function assistantThreadStarted(
   event: AssistantThreadStartedEvent,
@@ -10,8 +10,8 @@ export async function assistantThreadStarted(
       message: "What's my profit?",
     },
     {
-      title: 'What did I spend on software last month?',
-      message: 'How much did I spend on software last month?',
+      title: "What did I spend on software last month?",
+      message: "How much did I spend on software last month?",
     },
     {
       title: "What's my burn rate?",
@@ -25,7 +25,7 @@ export async function assistantThreadStarted(
       title: "What's my revenue?",
       message: "What's my revenue?",
     },
-  ]
+  ];
 
   try {
     // Post welcome message
@@ -33,21 +33,21 @@ export async function assistantThreadStarted(
       channel: event.assistant_thread.channel_id,
       thread_ts: event.assistant_thread.thread_ts,
       text: "Welcome! I'm your financial assistant. Here are some suggestions on what you can do:",
-    })
+    });
 
     // Set suggested prompts
     await client.assistant.threads.setSuggestedPrompts({
       channel_id: event.assistant_thread.channel_id,
       thread_ts: event.assistant_thread.thread_ts,
       prompts: prompts.sort(() => 0.5 - Math.random()).slice(0, 4),
-    })
+    });
   } catch (error) {
-    console.error('Error handling assistant thread start:', error)
+    console.error("Error handling assistant thread start:", error);
     // Set an error status if something goes wrong
     await client.assistant.threads.setStatus({
       channel_id: event.assistant_thread.channel_id,
       thread_ts: event.assistant_thread.thread_ts,
-      status: 'Something went wrong',
-    })
+      status: "Something went wrong",
+    });
   }
 }

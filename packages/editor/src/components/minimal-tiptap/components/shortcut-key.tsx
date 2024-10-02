@@ -1,10 +1,10 @@
-import { cn } from '@/lib/editor/utils'
+import { cn } from "@/lib/editor/utils";
 
-import { getShortcutKeys } from '../utils'
+import { getShortcutKeys } from "../utils";
 
 interface ShortcutKeyProps extends React.HTMLAttributes<HTMLSpanElement> {
-  keys: string[]
-  withBg?: boolean
+  keys: string[];
+  withBg?: boolean;
 }
 
 const ShortcutKey = ({
@@ -15,20 +15,20 @@ const ShortcutKey = ({
 }: ShortcutKeyProps) => {
   return (
     <span
-      className={cn('text-xs tracking-widest opacity-60', className)}
+      className={cn("text-xs tracking-widest opacity-60", className)}
       {...props}
     >
       <span
-        className={cn('ml-4', {
-          'self-end rounded bg-accent p-1 leading-3': withBg,
+        className={cn("ml-4", {
+          "self-end rounded bg-accent p-1 leading-3": withBg,
         })}
       >
         {getShortcutKeys(keys)}
       </span>
     </span>
-  )
-}
+  );
+};
 
-ShortcutKey.displayName = 'ShortcutKey'
+ShortcutKey.displayName = "ShortcutKey";
 
-export { ShortcutKey }
+export { ShortcutKey };

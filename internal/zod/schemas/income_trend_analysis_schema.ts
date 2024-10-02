@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 export const IncomeTrendAnalysisSchema = z.object({
   Month: z.number().int(),
@@ -7,4 +7,4 @@ export const IncomeTrendAnalysisSchema = z.object({
   MaxIncome: z.number(),
   MinIncome: z.number(),
   UserId: z.string().uuid(),
-})
+});

@@ -1,42 +1,46 @@
-import type { AnalyzeResultOperationOutput } from '@azure-rest/ai-document-intelligence'
-import type { Processor } from '../../interface'
-import type { GetDocumentRequest } from '../../types'
+import type { AnalyzeResultOperationOutput } from "@azure-rest/ai-document-intelligence";
+import type { Processor } from "../../interface";
+import type { GetDocumentRequest } from "../../types";
 
 import {
   getLongRunningPoller,
   isUnexpected,
-} from '@azure-rest/ai-document-intelligence'
-import { capitalCase } from 'change-case'
+} from "@azure-rest/ai-document-intelligence";
+import { capitalCase } from "change-case";
 
-import { client } from '../../provider/azure'
-import { extractRootDomain, getCurrency, getDomainFromEmail } from '../../utils'
-import { LlmProcessor } from '../llm/llm-processor'
+import { client } from "../../provider/azure";
+import {
+  extractRootDomain,
+  getCurrency,
+  getDomainFromEmail,
+} from "../../utils";
+import { LlmProcessor } from "../llm/llm-processor";
 
 export class InvoiceProcessor implements Processor {
   async #processDocument(content: string) {
     const initialResponse = await client
-      .path('/documentModels/{modelId}:analyze', 'prebuilt-invoice')
+      .path("/documentModels/{modelId}:analyze", "prebuilt-invoice")
       .post({
-        contentType: 'application/json',
+        contentType: "application/json",
         body: {
           base64Source: content,
         },
         queryParameters: {
-          features: ['queryFields'],
-          queryFields: ['VendorEmail', 'CustomerEmail'],
-          split: 'none',
+          features: ["queryFields"],
+          queryFields: ["VendorEmail", "CustomerEmail"],
+          split: "none",
         },
-      })
+      });
 
     if (isUnexpected(initialResponse)) {
-      throw initialResponse.body.error
+      throw initialResponse.body.error;
     }
 
-    const poller = await getLongRunningPoller(client, initialResponse)
+    const poller = await getLongRunningPoller(client, initialResponse);
     const result = (await poller.pollUntilDone())
-      .body as AnalyzeResultOperationOutput
+      .body as AnalyzeResultOperationOutput;
 
-    return this.#extractData(result)
+    return this.#extractData(result);
   }
 
   #getWebsiteFromFields(
@@ -49,16 +53,16 @@ export class InvoiceProcessor implements Processor {
       fields?.Website?.valueString ||
       // Then try to get the website from the content
       extractRootDomain(content) ||
-      null
+      null;
 
-    return website
+    return website;
   }
 
   async #extractData(data: AnalyzeResultOperationOutput) {
-    const fields = data.analyzeResult?.documents?.[0]?.fields
-    const content = data.analyzeResult?.content
+    const fields = data.analyzeResult?.documents?.[0]?.fields;
+    const content = data.analyzeResult?.content;
 
-    const website = this.#getWebsiteFromFields(fields, content)
+    const website = this.#getWebsiteFromFields(fields, content);
 
     const result = {
       name:
@@ -69,16 +73,16 @@ export class InvoiceProcessor implements Processor {
         fields?.DueDate?.valueDate || fields?.InvoiceDate?.valueDate || null,
       currency: getCurrency(fields?.InvoiceTotal),
       amount: fields?.InvoiceTotal?.valueCurrency?.amount ?? null,
-      type: 'invoice',
+      type: "invoice",
       website,
-    }
+    };
 
     // Return if all values are not null
     if (Object.values(result).every((value) => value !== null)) {
-      return result
+      return result;
     }
 
-    const fallback = content ? await this.#fallbackToLlm(content) : null
+    const fallback = content ? await this.#fallbackToLlm(content) : null;
 
     // Only replace null values from LLM
     const mappedResult = Object.fromEntries(
@@ -86,22 +90,22 @@ export class InvoiceProcessor implements Processor {
         key,
         value ?? fallback?.[key as keyof typeof result] ?? null,
       ]),
-    )
+    );
 
     return {
       ...mappedResult,
       // We only have description from LLM
       description: fallback?.description ?? null,
-    }
+    };
   }
 
   async #fallbackToLlm(content: string) {
-    const llm = new LlmProcessor()
-    const fallbackData = await llm.getStructuredData(content)
-    return { ...fallbackData, type: 'invoice' }
+    const llm = new LlmProcessor();
+    const fallbackData = await llm.getStructuredData(content);
+    return { ...fallbackData, type: "invoice" };
   }
 
   public async getDocument(params: GetDocumentRequest) {
-    return this.#processDocument(params.content)
+    return this.#processDocument(params.content);
   }
 }

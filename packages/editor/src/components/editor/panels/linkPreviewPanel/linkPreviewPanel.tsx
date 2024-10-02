@@ -1,13 +1,13 @@
-import { Icon } from '@/components/editor/editorAtom/icon'
-import { Surface } from '@/components/editor/editorAtom/surface'
-import { Toolbar } from '@/components/editor/editorAtom/toolbar'
-import Tooltip from '@/components/editor/editorAtom/tooltip'
+import { Icon } from "@/components/editor/editorAtom/icon";
+import { Surface } from "@/components/editor/editorAtom/surface";
+import { Toolbar } from "@/components/editor/editorAtom/toolbar";
+import Tooltip from "@/components/editor/editorAtom/tooltip";
 
 export type LinkPreviewPanelProps = {
-  url: string
-  onEdit: () => void
-  onClear: () => void
-}
+  url: string;
+  onEdit: () => void;
+  onClear: () => void;
+};
 
 export const LinkPreviewPanel = ({
   onClear,
@@ -15,26 +15,26 @@ export const LinkPreviewPanel = ({
   url,
 }: LinkPreviewPanelProps) => {
   return (
-    <Surface className='flex items-center gap-2 p-2'>
+    <Surface className="flex items-center gap-2 p-2">
       <a
         href={url}
-        target='_blank'
-        rel='noopener noreferrer'
-        className='break-all text-sm underline'
+        target="_blank"
+        rel="noopener noreferrer"
+        className="break-all text-sm underline"
       >
         {url}
       </a>
       <Toolbar.Divider />
-      <Tooltip title='Edit link'>
+      <Tooltip title="Edit link">
         <Toolbar.Button onClick={onEdit}>
-          <Icon name='Pen' />
+          <Icon name="Pen" />
         </Toolbar.Button>
       </Tooltip>
-      <Tooltip title='Remove link'>
+      <Tooltip title="Remove link">
         <Toolbar.Button onClick={onClear}>
-          <Icon name='Trash2' />
+          <Icon name="Trash2" />
         </Toolbar.Button>
       </Tooltip>
     </Surface>
-  )
-}
+  );
+};

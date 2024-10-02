@@ -1,32 +1,32 @@
-'use client'
+"use client";
 
-import { RefObject, useMemo, useRef } from 'react'
+import { RefObject, useMemo, useRef } from "react";
 
-import { EditorContent, PureEditorContent } from '@tiptap/react'
+import { EditorContent, PureEditorContent } from "@tiptap/react";
 
-import { LinkMenu } from '@/components/editor/menus'
+import { LinkMenu } from "@/components/editor/menus";
 import {
   useBlockEditor,
   UseBlockEditorProps,
-} from '@/hooks/editor/useBlockEditor'
+} from "@/hooks/editor/useBlockEditor";
 
-import '@/styles/index.css'
+import "@/styles/index.css";
 
-import { PlusIcon } from 'lucide-react'
-import { createPortal } from 'react-dom'
+import { PlusIcon } from "lucide-react";
+import { createPortal } from "react-dom";
 
-import { Loader } from '@/components/editor/editorAtom/loader'
-import { Sidebar } from '@/components/editor/sidebar'
-import { EditorContext } from '@/context/editor/editorContext'
-import ImageBlockMenu from '@/extensions/imageBlock/components/imageBlockMenu'
-import { ColumnsMenu } from '@/extensions/multiColumn/menus'
-import { TableColumnMenu, TableRowMenu } from '@/extensions/table/menus'
-import { useAIState } from '@/hooks/editor/useAIState'
+import { Loader } from "@/components/editor/editorAtom/loader";
+import { Sidebar } from "@/components/editor/sidebar";
+import { EditorContext } from "@/context/editor/editorContext";
+import ImageBlockMenu from "@/extensions/imageBlock/components/imageBlockMenu";
+import { ColumnsMenu } from "@/extensions/multiColumn/menus";
+import { TableColumnMenu, TableRowMenu } from "@/extensions/table/menus";
+import { useAIState } from "@/hooks/editor/useAIState";
 
-import { ContentItemMenu } from '../menus/contentItemMenu'
-import { TextMenu } from '../menus/textMenu'
-import { EditorHeader } from './components/editorHeader'
-import { TiptapProps } from './types'
+import { ContentItemMenu } from "../menus/contentItemMenu";
+import { TextMenu } from "../menus/textMenu";
+import { EditorHeader } from "./components/editorHeader";
+import { TiptapProps } from "./types";
 
 export const BlockEditor = ({
   aiToken,
@@ -38,9 +38,9 @@ export const BlockEditor = ({
   onContentChange,
   label,
 }: TiptapProps) => {
-  const aiState = useAIState()
-  const menuContainerRef = useRef(null)
-  const editorRef = useRef<PureEditorContent | null>(null)
+  const aiState = useAIState();
+  const menuContainerRef = useRef(null);
+  const editorRef = useRef<PureEditorContent | null>(null);
 
   const editorProps: UseBlockEditorProps = {
     aiToken,
@@ -50,12 +50,12 @@ export const BlockEditor = ({
     aiBaseUrl,
     content,
     onContentChange,
-  }
+  };
 
   const { editor, users, characterCount, collabState, leftSidebar } =
-    useBlockEditor(editorProps)
+    useBlockEditor(editorProps);
 
-  const displayedUsers = users.slice(0, 3)
+  const displayedUsers = users.slice(0, 3);
 
   const providerValue = useMemo(() => {
     return {
@@ -63,34 +63,34 @@ export const BlockEditor = ({
       aiError: aiState.aiError,
       setIsAiLoading: aiState.setIsAiLoading,
       setAiError: aiState.setAiError,
-    }
-  }, [aiState])
+    };
+  }, [aiState]);
 
   if (!editor) {
-    return null
+    return null;
   }
 
   const aiLoaderPortal = createPortal(
-    <Loader label='AI is now doing its job.' />,
+    <Loader label="AI is now doing its job." />,
     document.body,
-  )
+  );
 
   return (
     <EditorContext.Provider value={providerValue}>
-      <div className='flex h-full' ref={menuContainerRef}>
+      <div className="flex h-full" ref={menuContainerRef}>
         <Sidebar
           isOpen={leftSidebar.isOpen}
           onClose={leftSidebar.close}
           editor={editor}
         />
-        <div className='relative flex h-full flex-1 flex-col overflow-hidden'>
+        <div className="relative flex h-full flex-1 flex-col overflow-hidden">
           {label && onContentChange && (
-            <div className='py-5'>
+            <div className="py-5">
               <button
                 onClick={() => onContentChange(editor.getHTML())}
-                className='flex w-fit flex-1 gap-2 rounded-2xl border bg-zinc-950 p-3 text-sm text-white dark:bg-white dark:text-zinc-950'
+                className="flex w-fit flex-1 gap-2 rounded-2xl border bg-zinc-950 p-3 text-sm text-white dark:bg-white dark:text-zinc-950"
               >
-                <PlusIcon className='h-5 w-5' />
+                <PlusIcon className="h-5 w-5" />
                 {label}
               </button>
             </div>
@@ -106,7 +106,7 @@ export const BlockEditor = ({
           <EditorContent
             editor={editor}
             ref={editorRef as unknown as RefObject<HTMLDivElement>}
-            className='flex-1 overflow-y-auto'
+            className="flex-1 overflow-y-auto"
           />
           <ContentItemMenu editor={editor} />
           <LinkMenu editor={editor} appendTo={menuContainerRef} />
@@ -119,7 +119,7 @@ export const BlockEditor = ({
       </div>
       {aiState.isAiLoading && aiLoaderPortal}
     </EditorContext.Provider>
-  )
-}
+  );
+};
 
-export default BlockEditor
+export default BlockEditor;

@@ -1,24 +1,24 @@
 enum LogLevel {
-  ERROR = 'ERROR',
-  WARN = 'WARN',
-  INFO = 'INFO',
-  DEBUG = 'DEBUG',
+  ERROR = "ERROR",
+  WARN = "WARN",
+  INFO = "INFO",
+  DEBUG = "DEBUG",
 }
 
 interface LogMetadata {
-  [key: string]: any
+  [key: string]: any;
 }
 
 export class Logger {
-  private static logLevel: LogLevel = LogLevel.INFO
+  private static logLevel: LogLevel = LogLevel.INFO;
 
   private static setLogLevel(level: LogLevel) {
-    this.logLevel = level
+    this.logLevel = level;
   }
 
   private static shouldLog(level: LogLevel): boolean {
-    const levels = Object.values(LogLevel)
-    return levels.indexOf(level) <= levels.indexOf(this.logLevel)
+    const levels = Object.values(LogLevel);
+    return levels.indexOf(level) <= levels.indexOf(this.logLevel);
   }
 
   private static formatMessage(
@@ -26,12 +26,12 @@ export class Logger {
     message: string,
     metadata?: LogMetadata,
   ): string {
-    const timestamp = new Date().toISOString()
-    let formattedMessage = `${timestamp} [${level}] ${message}`
+    const timestamp = new Date().toISOString();
+    let formattedMessage = `${timestamp} [${level}] ${message}`;
     if (metadata) {
-      formattedMessage += '\n' + JSON.stringify(metadata, null, 2)
+      formattedMessage += "\n" + JSON.stringify(metadata, null, 2);
     }
-    return formattedMessage
+    return formattedMessage;
   }
 
   private static log(
@@ -40,20 +40,20 @@ export class Logger {
     metadata?: LogMetadata,
   ): void {
     if (this.shouldLog(level)) {
-      const formattedMessage = this.formatMessage(level, message, metadata)
+      const formattedMessage = this.formatMessage(level, message, metadata);
       switch (level) {
         case LogLevel.ERROR:
-          console.error(formattedMessage)
-          break
+          console.error(formattedMessage);
+          break;
         case LogLevel.WARN:
-          console.warn(formattedMessage)
-          break
+          console.warn(formattedMessage);
+          break;
         case LogLevel.INFO:
-          console.info(formattedMessage)
-          break
+          console.info(formattedMessage);
+          break;
         case LogLevel.DEBUG:
-          console.debug(formattedMessage)
-          break
+          console.debug(formattedMessage);
+          break;
       }
     }
   }
@@ -62,22 +62,22 @@ export class Logger {
     this.log(LogLevel.ERROR, message, {
       ...metadata,
       error: error?.stack || error?.message,
-    })
+    });
   }
 
   static warn(message: string, metadata?: LogMetadata): void {
-    this.log(LogLevel.WARN, message, metadata)
+    this.log(LogLevel.WARN, message, metadata);
   }
 
   static info(message: string, metadata?: LogMetadata): void {
-    this.log(LogLevel.INFO, message, metadata)
+    this.log(LogLevel.INFO, message, metadata);
   }
 
   static debug(message: string, metadata?: LogMetadata): void {
-    this.log(LogLevel.DEBUG, message, metadata)
+    this.log(LogLevel.DEBUG, message, metadata);
   }
 
   static setLevel(level: keyof typeof LogLevel): void {
-    this.setLogLevel(LogLevel[level])
+    this.setLogLevel(LogLevel[level]);
   }
 }

@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+import { Metadata } from "next";
 
 /**
  * Represents a navigation item in the site's menu.
@@ -6,12 +6,12 @@ import { Metadata } from 'next'
  */
 type NavItem = {
   /** The display text for the navigation item */
-  title: string
+  title: string;
   /** The URL or path that the navigation item links to */
-  href: string
+  href: string;
   /** Optional flag to indicate if the item should only be shown when authenticated */
-  showOnAuth?: boolean
-}
+  showOnAuth?: boolean;
+};
 
 /**
  * Contains URLs for various social media and documentation links.
@@ -19,14 +19,14 @@ type NavItem = {
  */
 type Links = {
   /** URL for the Twitter profile */
-  twitter: string
+  twitter: string;
   /** URL for the GitHub repository */
-  github: string
+  github: string;
   /** URL for the documentation site */
-  docs: string
+  docs: string;
   /** URL for the YouTube channel */
-  youtube: string
-}
+  youtube: string;
+};
 
 /**
  * Contains information related to payment subscriptions.
@@ -34,8 +34,8 @@ type Links = {
  */
 type Payments = {
   /** URL for the subscription management page */
-  subscriptionLink: string
-}
+  subscriptionLink: string;
+};
 
 /**
  * Contains information related to billing management.
@@ -43,8 +43,8 @@ type Payments = {
  */
 type Billings = {
   /** URL for the customer billing portal */
-  customerBillingPortalLink: string
-}
+  customerBillingPortalLink: string;
+};
 
 /**
  * Represents metadata specific to Twitter cards.
@@ -52,19 +52,19 @@ type Billings = {
  */
 type TwitterMetadata = {
   /** The title of the Twitter card */
-  title: string
+  title: string;
   /** A brief description for the Twitter card */
-  description: string
+  description: string;
   /** An array of images to be used in the Twitter card */
   images: Array<{
     /** The URL of the image */
-    url: string
+    url: string;
     /** The width of the image in pixels */
-    width: number
+    width: number;
     /** The height of the image in pixels */
-    height: number
-  }>
-}
+    height: number;
+  }>;
+};
 
 /**
  * Represents metadata for Open Graph protocol, extending TwitterMetadata.
@@ -72,27 +72,27 @@ type TwitterMetadata = {
  */
 type OpenGraphMetadata = TwitterMetadata & {
   /** The canonical URL of the page */
-  url: string
+  url: string;
   /** The name of the overall site */
-  siteName: string
+  siteName: string;
   /** The locale of the resource */
-  locale: string
+  locale: string;
   /** The type of content (e.g., 'website', 'article') */
-  type: string
-}
+  type: string;
+};
 
 /**
  * Represents the site's metadata, extending Next.js Metadata.
  * @interface
  */
-type SiteMetadata = Omit<Metadata, 'twitter' | 'openGraph'> & {
+type SiteMetadata = Omit<Metadata, "twitter" | "openGraph"> & {
   /** The base URL for all relative URLs in the metadata */
-  metadataBase: URL
+  metadataBase: URL;
   /** Twitter-specific metadata */
-  twitter: TwitterMetadata
+  twitter: TwitterMetadata;
   /** Open Graph metadata */
-  openGraph: OpenGraphMetadata
-}
+  openGraph: OpenGraphMetadata;
+};
 
 /**
  * Represents the viewport configuration for the site.
@@ -100,19 +100,19 @@ type SiteMetadata = Omit<Metadata, 'twitter' | 'openGraph'> & {
  */
 type Viewport = {
   /** The width of the viewport */
-  width: string
+  width: string;
   /** The initial scale of the viewport */
-  initialScale: number
+  initialScale: number;
   /** The maximum scale allowed for the viewport */
-  maximumScale: number
+  maximumScale: number;
   /** Whether the user can scale the viewport */
-  userScalable: boolean
+  userScalable: boolean;
   /** An array of theme color configurations */
   themeColor: Array<{
     /** The media query for when this theme color should be applied */
-    media: string
-  }>
-}
+    media: string;
+  }>;
+};
 
 /**
  * Represents a pricing plan for the service.
@@ -120,19 +120,19 @@ type Viewport = {
  */
 interface PricingPlan {
   /** Unique identifier for the plan */
-  id: string
+  id: string;
   /** Name of the pricing plan */
-  name: string
+  name: string;
   /** Brief description of the plan */
-  description: string
+  description: string;
   /** Array of features included in the plan */
-  features: string[]
+  features: string[];
   /** Monthly price of the plan */
-  monthlyPrice: number
+  monthlyPrice: number;
   /** Yearly price of the plan */
-  yearlyPrice: number
+  yearlyPrice: number;
   /** Flag indicating if this is the most popular plan */
-  isMostPopular: boolean
+  isMostPopular: boolean;
 }
 
 /**
@@ -141,11 +141,11 @@ interface PricingPlan {
  */
 interface FinancialEngineConfig {
   /** Base URL for the production environment */
-  baseUrlProd: string
+  baseUrlProd: string;
   /** Base URL for the development environment */
-  baseUrlDev: string
+  baseUrlDev: string;
   /** Bearer token for authentication with the financial engine */
-  bearerToken: string
+  bearerToken: string;
 }
 
 /**
@@ -154,52 +154,52 @@ interface FinancialEngineConfig {
  */
 type SiteConfig = {
   /** The host of the platform */
-  platformHost: string
+  platformHost: string;
   /** The company name */
-  company: string
+  company: string;
   /** The name of the site or application */
-  name: string
+  name: string;
   /** Email configuration */
-  email: { from: string }
+  email: { from: string };
   /** The title of the site */
-  title: string
+  title: string;
   /** A brief description of the site */
-  description: string
+  description: string;
   /** URL of the platform */
-  platformUrl: string
+  platformUrl: string;
   /** URL of the web application */
-  webUrl: string
+  webUrl: string;
   /** URL of the desktop application */
-  desktopUrl: string
+  desktopUrl: string;
   /** Slug for the Dub project */
-  dubProjectSlug: string
+  dubProjectSlug: string;
   /** Issuer for Multi-Factor Authentication */
-  mfaIssuer: string
+  mfaIssuer: string;
   /** URL for the uptime status page */
-  uptimeUrl: string
+  uptimeUrl: string;
   /** Array of main navigation items */
-  mainNav: NavItem[]
+  mainNav: NavItem[];
   /** Social and documentation links */
-  links: Links
+  links: Links;
   /** Email address for support */
-  supportEmail: string
+  supportEmail: string;
   /** URL for the help/support page */
-  helpUrl: string
+  helpUrl: string;
   /** Intercom app ID for customer support integration */
-  intercomAppId: string
+  intercomAppId: string;
   /** Payment-related configuration */
-  payments: Payments
+  payments: Payments;
   /** Billing-related configuration */
-  billings: Billings
+  billings: Billings;
   /** Site metadata */
-  metadata: Metadata
+  metadata: Metadata;
   /** Viewport configuration */
-  viewport: Viewport
+  viewport: Viewport;
   /** Array of pricing plans */
-  pricing: PricingPlan[]
+  pricing: PricingPlan[];
   /** Financial engine configuration */
-  financialEngine: FinancialEngineConfig
-}
+  financialEngine: FinancialEngineConfig;
+};
 
 export type {
   Billings,
@@ -212,4 +212,4 @@ export type {
   SiteMetadata,
   TwitterMetadata,
   Viewport,
-}
+};

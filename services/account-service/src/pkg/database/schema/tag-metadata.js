@@ -16,7 +16,7 @@ import { tags } from "./tags.js";
  * - Consider adding an index on the tagId column if you frequently query metadata by tag.
  */
 export const tagMetadata = sqliteTable("tag_metadata", {
-    id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    tagId: integer("tag_id").references(() => tags.id),
-    metadata: text("metadata").notNull(),
+  id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+  tagId: integer("tag_id").references(() => tags.id),
+  metadata: text("metadata").notNull(),
 });

@@ -1,19 +1,19 @@
-import { PlaidAccountTransaction } from 'client-typescript-sdk'
+import { PlaidAccountTransaction } from "client-typescript-sdk";
 
 /**
  * Represents the financial metrics calculated by the TransactionAnalyzer.
  */
 interface FinancialMetrics {
   /** The total value of current assets */
-  currentAssets: number
+  currentAssets: number;
   /** The total value of current liabilities */
-  currentLiabilities: number
+  currentLiabilities: number;
   /** The total cost of goods sold */
-  costOfGoodsSold: number
+  costOfGoodsSold: number;
   /** The total revenue */
-  revenue: number
+  revenue: number;
   /** The total expenses */
-  expenses: number
+  expenses: number;
 }
 
 /**
@@ -21,73 +21,73 @@ interface FinancialMetrics {
  * This class processes Plaid account transactions to compute various financial metrics.
  */
 class TransactionAnalyzer {
-  private transactions: PlaidAccountTransaction[]
+  private transactions: PlaidAccountTransaction[];
 
   // Category mappings
   private static readonly ASSET_CATEGORIES = [
-    'TRANSFER_IN_CASH_ADVANCES_AND_LOANS',
-    'TRANSFER_IN_DEPOSIT',
-    'TRANSFER_IN_INVESTMENT_AND_RETIREMENT_FUNDS',
-    'TRANSFER_IN_SAVINGS',
-    'TRANSFER_IN_ACCOUNT_TRANSFER',
-    'TRANSFER_IN_OTHER_TRANSFER_IN',
-  ]
+    "TRANSFER_IN_CASH_ADVANCES_AND_LOANS",
+    "TRANSFER_IN_DEPOSIT",
+    "TRANSFER_IN_INVESTMENT_AND_RETIREMENT_FUNDS",
+    "TRANSFER_IN_SAVINGS",
+    "TRANSFER_IN_ACCOUNT_TRANSFER",
+    "TRANSFER_IN_OTHER_TRANSFER_IN",
+  ];
 
   private static readonly LIABILITY_CATEGORIES = [
-    'LOAN_PAYMENTS_CAR_PAYMENT',
-    'LOAN_PAYMENTS_CREDIT_CARD_PAYMENT',
-    'LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT',
-    'LOAN_PAYMENTS_MORTGAGE_PAYMENT',
-    'LOAN_PAYMENTS_STUDENT_LOAN_PAYMENT',
-    'LOAN_PAYMENTS_OTHER_PAYMENT',
-  ]
+    "LOAN_PAYMENTS_CAR_PAYMENT",
+    "LOAN_PAYMENTS_CREDIT_CARD_PAYMENT",
+    "LOAN_PAYMENTS_PERSONAL_LOAN_PAYMENT",
+    "LOAN_PAYMENTS_MORTGAGE_PAYMENT",
+    "LOAN_PAYMENTS_STUDENT_LOAN_PAYMENT",
+    "LOAN_PAYMENTS_OTHER_PAYMENT",
+  ];
 
   private static readonly COGS_CATEGORIES = [
-    'GENERAL_MERCHANDISE_DISCOUNT_STORES',
-    'GENERAL_MERCHANDISE_ONLINE_MARKETPLACES',
-    'GENERAL_MERCHANDISE_SUPERSTORES',
-  ]
+    "GENERAL_MERCHANDISE_DISCOUNT_STORES",
+    "GENERAL_MERCHANDISE_ONLINE_MARKETPLACES",
+    "GENERAL_MERCHANDISE_SUPERSTORES",
+  ];
 
   private static readonly REVENUE_CATEGORIES = [
-    'INCOME_DIVIDENDS',
-    'INCOME_INTEREST_EARNED',
-    'INCOME_RETIREMENT_PENSION',
-    'INCOME_TAX_REFUND',
-    'INCOME_UNEMPLOYMENT',
-    'INCOME_WAGES',
-    'INCOME_OTHER_INCOME',
-  ]
+    "INCOME_DIVIDENDS",
+    "INCOME_INTEREST_EARNED",
+    "INCOME_RETIREMENT_PENSION",
+    "INCOME_TAX_REFUND",
+    "INCOME_UNEMPLOYMENT",
+    "INCOME_WAGES",
+    "INCOME_OTHER_INCOME",
+  ];
 
   private static readonly EXPENSE_CATEGORIES = [
-    'BANK_FEES_ATM_FEES',
-    'BANK_FEES_FOREIGN_TRANSACTION_FEES',
-    'BANK_FEES_INSUFFICIENT_FUNDS',
-    'BANK_FEES_INTEREST_CHARGE',
-    'BANK_FEES_OVERDRAFT_FEES',
-    'BANK_FEES_OTHER_BANK_FEES',
-    'FOOD_AND_DRINK_GROCERIES',
-    'GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_PLANNING',
-    'GENERAL_SERVICES_AUTOMOTIVE',
-    'GENERAL_SERVICES_CONSULTING_AND_LEGAL',
-    'GENERAL_SERVICES_INSURANCE',
-    'GENERAL_SERVICES_POSTAGE_AND_SHIPPING',
-    'GENERAL_SERVICES_STORAGE',
-    'GENERAL_SERVICES_OTHER_GENERAL_SERVICES',
-    'RENT_AND_UTILITIES_GAS_AND_ELECTRICITY',
-    'RENT_AND_UTILITIES_INTERNET_AND_CABLE',
-    'RENT_AND_UTILITIES_RENT',
-    'RENT_AND_UTILITIES_SEWAGE_AND_WASTE_MANAGEMENT',
-    'RENT_AND_UTILITIES_TELEPHONE',
-    'RENT_AND_UTILITIES_WATER',
-    'RENT_AND_UTILITIES_OTHER_UTILITIES',
-  ]
+    "BANK_FEES_ATM_FEES",
+    "BANK_FEES_FOREIGN_TRANSACTION_FEES",
+    "BANK_FEES_INSUFFICIENT_FUNDS",
+    "BANK_FEES_INTEREST_CHARGE",
+    "BANK_FEES_OVERDRAFT_FEES",
+    "BANK_FEES_OTHER_BANK_FEES",
+    "FOOD_AND_DRINK_GROCERIES",
+    "GENERAL_SERVICES_ACCOUNTING_AND_FINANCIAL_PLANNING",
+    "GENERAL_SERVICES_AUTOMOTIVE",
+    "GENERAL_SERVICES_CONSULTING_AND_LEGAL",
+    "GENERAL_SERVICES_INSURANCE",
+    "GENERAL_SERVICES_POSTAGE_AND_SHIPPING",
+    "GENERAL_SERVICES_STORAGE",
+    "GENERAL_SERVICES_OTHER_GENERAL_SERVICES",
+    "RENT_AND_UTILITIES_GAS_AND_ELECTRICITY",
+    "RENT_AND_UTILITIES_INTERNET_AND_CABLE",
+    "RENT_AND_UTILITIES_RENT",
+    "RENT_AND_UTILITIES_SEWAGE_AND_WASTE_MANAGEMENT",
+    "RENT_AND_UTILITIES_TELEPHONE",
+    "RENT_AND_UTILITIES_WATER",
+    "RENT_AND_UTILITIES_OTHER_UTILITIES",
+  ];
 
   /**
    * Creates a new TransactionAnalyzer instance.
    * @param transactions - An array of Plaid account transactions to analyze.
    */
   constructor(transactions: PlaidAccountTransaction[]) {
-    this.transactions = transactions
+    this.transactions = transactions;
   }
 
   /**
@@ -101,7 +101,7 @@ class TransactionAnalyzer {
       costOfGoodsSold: this.computeCostOfGoodsSold(),
       revenue: this.computeRevenue(),
       expenses: this.computeExpenses(),
-    }
+    };
   }
 
   /**
@@ -109,7 +109,7 @@ class TransactionAnalyzer {
    * @returns The sum of all transactions categorized as assets.
    */
   private computeCurrentAssets(): number {
-    return this.sumTransactions(TransactionAnalyzer.ASSET_CATEGORIES)
+    return this.sumTransactions(TransactionAnalyzer.ASSET_CATEGORIES);
   }
 
   /**
@@ -117,7 +117,7 @@ class TransactionAnalyzer {
    * @returns The sum of all transactions categorized as liabilities.
    */
   private computeCurrentLiabilities(): number {
-    return this.sumTransactions(TransactionAnalyzer.LIABILITY_CATEGORIES)
+    return this.sumTransactions(TransactionAnalyzer.LIABILITY_CATEGORIES);
   }
 
   /**
@@ -125,7 +125,7 @@ class TransactionAnalyzer {
    * @returns The sum of all transactions categorized as cost of goods sold.
    */
   private computeCostOfGoodsSold(): number {
-    return this.sumTransactions(TransactionAnalyzer.COGS_CATEGORIES)
+    return this.sumTransactions(TransactionAnalyzer.COGS_CATEGORIES);
   }
 
   /**
@@ -133,7 +133,7 @@ class TransactionAnalyzer {
    * @returns The sum of all transactions categorized as revenue.
    */
   private computeRevenue(): number {
-    return this.sumTransactions(TransactionAnalyzer.REVENUE_CATEGORIES)
+    return this.sumTransactions(TransactionAnalyzer.REVENUE_CATEGORIES);
   }
 
   /**
@@ -141,7 +141,7 @@ class TransactionAnalyzer {
    * @returns The sum of all transactions categorized as expenses.
    */
   private computeExpenses(): number {
-    return this.sumTransactions(TransactionAnalyzer.EXPENSE_CATEGORIES)
+    return this.sumTransactions(TransactionAnalyzer.EXPENSE_CATEGORIES);
   }
 
   /**
@@ -154,9 +154,9 @@ class TransactionAnalyzer {
       .filter(
         (t) =>
           t.amount !== undefined &&
-          categories.includes(t.personalFinanceCategoryDetailed || ''),
+          categories.includes(t.personalFinanceCategoryDetailed || ""),
       )
-      .reduce((sum, t) => sum + Math.abs(t.amount!), 0)
+      .reduce((sum, t) => sum + Math.abs(t.amount!), 0);
   }
 
   /**
@@ -170,9 +170,9 @@ class TransactionAnalyzer {
     endDate: Date,
   ): PlaidAccountTransaction[] {
     return this.transactions.filter((t) => {
-      const transactionDate = new Date(t.currentDate!)
-      return transactionDate >= startDate && transactionDate <= endDate
-    })
+      const transactionDate = new Date(t.currentDate!);
+      return transactionDate >= startDate && transactionDate <= endDate;
+    });
   }
 
   /**
@@ -194,20 +194,20 @@ class TransactionAnalyzer {
     const period1Transactions = this.getTransactionsInDateRange(
       period1Start,
       period1End,
-    )
+    );
     const period2Transactions = this.getTransactionsInDateRange(
       period2Start,
       period2End,
-    )
+    );
 
-    const period1Analyzer = new TransactionAnalyzer(period1Transactions)
-    const period2Analyzer = new TransactionAnalyzer(period2Transactions)
+    const period1Analyzer = new TransactionAnalyzer(period1Transactions);
+    const period2Analyzer = new TransactionAnalyzer(period2Transactions);
 
-    const period1Metric = period1Analyzer.computeFinancialMetrics()[metric]
-    const period2Metric = period2Analyzer.computeFinancialMetrics()[metric]
+    const period1Metric = period1Analyzer.computeFinancialMetrics()[metric];
+    const period2Metric = period2Analyzer.computeFinancialMetrics()[metric];
 
-    return period2Metric - period1Metric
+    return period2Metric - period1Metric;
   }
 }
 
-export default TransactionAnalyzer
+export default TransactionAnalyzer;

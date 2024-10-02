@@ -1,33 +1,37 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from "react";
 
-import * as Dropdown from '@radix-ui/react-dropdown-menu'
-import { ImageOptions } from '@tiptap-pro/extension-ai'
-import { Extension, NodeViewWrapper, NodeViewWrapperProps } from '@tiptap/react'
-import toast from 'react-hot-toast'
-import { v4 as uuid } from 'uuid'
+import * as Dropdown from "@radix-ui/react-dropdown-menu";
+import { ImageOptions } from "@tiptap-pro/extension-ai";
+import {
+  Extension,
+  NodeViewWrapper,
+  NodeViewWrapperProps,
+} from "@tiptap/react";
+import toast from "react-hot-toast";
+import { v4 as uuid } from "uuid";
 
-import { Button } from '@/components/editor/editorAtom/button'
-import { DropdownButton } from '@/components/editor/editorAtom/dropdown'
-import { Icon } from '@/components/editor/editorAtom/icon'
-import { Loader } from '@/components/editor/editorAtom/loader'
-import { Panel, PanelHeadline } from '@/components/editor/editorAtom/panel'
-import { Surface } from '@/components/editor/editorAtom/surface'
-import { Textarea } from '@/components/editor/editorAtom/textarea'
-import { Toolbar } from '@/components/editor/editorAtom/toolbar'
+import { Button } from "@/components/editor/editorAtom/button";
+import { DropdownButton } from "@/components/editor/editorAtom/dropdown";
+import { Icon } from "@/components/editor/editorAtom/icon";
+import { Loader } from "@/components/editor/editorAtom/loader";
+import { Panel, PanelHeadline } from "@/components/editor/editorAtom/panel";
+import { Surface } from "@/components/editor/editorAtom/surface";
+import { Textarea } from "@/components/editor/editorAtom/textarea";
+import { Toolbar } from "@/components/editor/editorAtom/toolbar";
 
 const imageStyles = [
-  { name: 'photorealistic', label: 'Photorealistic', value: 'photorealistic' },
-  { name: 'digital-art', label: 'Digital art', value: 'digital_art' },
-  { name: 'comic-book', label: 'Comic book', value: 'comic_book' },
-  { name: 'neon-punk', label: 'Neon punk', value: 'neon_punk' },
-  { name: 'isometric', label: 'Isometric', value: 'isometric' },
-  { name: 'line-art', label: 'Line art', value: 'line_art' },
-  { name: '3d-model', label: '3D model', value: '3d_model' },
-]
+  { name: "photorealistic", label: "Photorealistic", value: "photorealistic" },
+  { name: "digital-art", label: "Digital art", value: "digital_art" },
+  { name: "comic-book", label: "Comic book", value: "comic_book" },
+  { name: "neon-punk", label: "Neon punk", value: "neon_punk" },
+  { name: "isometric", label: "Isometric", value: "isometric" },
+  { name: "line-art", label: "Line art", value: "line_art" },
+  { name: "3d-model", label: "3D model", value: "3d_model" },
+];
 
 interface Data {
-  text: string
-  imageStyle?: ImageOptions
+  text: string;
+  imageStyle?: ImageOptions;
 }
 
 export const AiImageView = ({
@@ -37,72 +41,74 @@ export const AiImageView = ({
   deleteNode,
 }: NodeViewWrapperProps) => {
   const aiOptions = editor.extensionManager.extensions.find(
-    (ext: Extension) => ext.name === 'ai',
-  ).options
+    (ext: Extension) => ext.name === "ai",
+  ).options;
 
   const [data, setData] = useState<Data>({
-    text: '',
+    text: "",
     imageStyle: undefined,
-  })
-  const currentImageStyle = imageStyles.find((t) => t.value === data.imageStyle)
+  });
+  const currentImageStyle = imageStyles.find(
+    (t) => t.value === data.imageStyle,
+  );
   const [previewImage, setPreviewImage] = useState<string | undefined>(
     undefined,
-  )
-  const [isFetching, setIsFetching] = useState(false)
-  const textareaId = useMemo(() => uuid(), [])
+  );
+  const [isFetching, setIsFetching] = useState(false);
+  const textareaId = useMemo(() => uuid(), []);
 
   const generateImage = useCallback(async () => {
     if (!data.text) {
-      toast.error('Please enter a description for the image')
+      toast.error("Please enter a description for the image");
 
-      return
+      return;
     }
 
-    setIsFetching(true)
+    setIsFetching(true);
 
     const payload = {
       text: data.text,
       style: data.imageStyle,
-    }
+    };
 
     try {
-      const { baseUrl, appId, token } = aiOptions
+      const { baseUrl, appId, token } = aiOptions;
       const response = await fetch(`${baseUrl}/image/prompt`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          accept: 'application.json',
-          'Content-Type': 'application/json',
-          'X-App-Id': appId.trim(),
+          accept: "application.json",
+          "Content-Type": "application/json",
+          "X-App-Id": appId.trim(),
           Authorization: `Bearer ${token.trim()}`,
         },
         body: JSON.stringify(payload),
-      })
+      });
 
-      const json = await response.json()
-      const url = json.response
+      const json = await response.json();
+      const url = json.response;
 
       if (!url.length) {
-        return
+        return;
       }
 
-      setPreviewImage(url)
+      setPreviewImage(url);
 
-      setIsFetching(false)
+      setIsFetching(false);
     } catch (errPayload: any) {
-      const errorMessage = errPayload?.response?.data?.error
+      const errorMessage = errPayload?.response?.data?.error;
       const message =
-        errorMessage !== 'An error occurred'
+        errorMessage !== "An error occurred"
           ? `An error has occured: ${errorMessage}`
-          : errorMessage
+          : errorMessage;
 
-      setIsFetching(false)
-      toast.error(message)
+      setIsFetching(false);
+      toast.error(message);
     }
-  }, [data, aiOptions])
+  }, [data, aiOptions]);
 
   const insert = useCallback(() => {
     if (!previewImage?.length) {
-      return
+      return;
     }
 
     editor
@@ -110,25 +116,25 @@ export const AiImageView = ({
       .insertContent(`<img src="${previewImage}" alt="" />`)
       .deleteRange({ from: getPos(), to: getPos() })
       .focus()
-      .run()
+      .run();
 
-    setIsFetching(false)
-  }, [editor, previewImage, getPos])
+    setIsFetching(false);
+  }, [editor, previewImage, getPos]);
 
   const discard = useCallback(() => {
-    deleteNode()
-  }, [deleteNode])
+    deleteNode();
+  }, [deleteNode]);
 
   const handleTextareaChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) =>
       setData((prevData) => ({ ...prevData, text: e.target.value })),
     [],
-  )
+  );
 
   const onUndoClick = useCallback(() => {
-    setData((prevData) => ({ ...prevData, imageStyle: undefined }))
-    setPreviewImage(undefined)
-  }, [])
+    setData((prevData) => ({ ...prevData, imageStyle: undefined }));
+    setPreviewImage(undefined);
+  }, []);
 
   const createItemClickHandler = useCallback(
     (style: { name: string; label: string; value: string }) => {
@@ -136,26 +142,26 @@ export const AiImageView = ({
         setData((prevData) => ({
           ...prevData,
           imageStyle: style.value as ImageOptions,
-        }))
+        }));
     },
     [],
-  )
+  );
 
   return (
     <NodeViewWrapper data-drag-handle>
-      <Panel noShadow className='w-full'>
-        <div className='flex flex-col p-1'>
-          {isFetching && <Loader label='AI is now doing its job!' />}
+      <Panel noShadow className="w-full">
+        <div className="flex flex-col p-1">
+          {isFetching && <Loader label="AI is now doing its job!" />}
           {previewImage && (
             <>
               <PanelHeadline>Preview</PanelHeadline>
               <div
-                className='mb-4 aspect-square w-full rounded border border-black bg-white bg-contain bg-center bg-no-repeat dark:border-neutral-700'
+                className="mb-4 aspect-square w-full rounded border border-black bg-white bg-contain bg-center bg-no-repeat dark:border-neutral-700"
                 style={{ backgroundImage: `url(${previewImage})` }}
               />
             </>
           )}
-          <div className='row flex items-center justify-between gap-2'>
+          <div className="row flex items-center justify-between gap-2">
             <PanelHeadline asChild>
               <label htmlFor={textareaId}>Prompt</label>
             </PanelHeadline>
@@ -166,28 +172,28 @@ export const AiImageView = ({
             onChange={handleTextareaChange}
             placeholder={`Describe the image that you want me to generate.`}
             required
-            className='mb-2'
+            className="mb-2"
           />
-          <div className='flex flex-row items-center justify-between gap-1'>
-            <div className='flex w-auto justify-between gap-1'>
+          <div className="flex flex-row items-center justify-between gap-1">
+            <div className="flex w-auto justify-between gap-1">
               <Dropdown.Root>
                 <Dropdown.Trigger asChild>
-                  <Button variant='tertiary'>
-                    <Icon name='Image' />
-                    {currentImageStyle?.label || 'Image style'}
-                    <Icon name='ChevronDown' />
+                  <Button variant="tertiary">
+                    <Icon name="Image" />
+                    {currentImageStyle?.label || "Image style"}
+                    <Icon name="ChevronDown" />
                   </Button>
                 </Dropdown.Trigger>
                 <Dropdown.Portal>
-                  <Dropdown.Content side='bottom' align='start' asChild>
-                    <Surface className='min-w-[12rem] p-2'>
+                  <Dropdown.Content side="bottom" align="start" asChild>
+                    <Surface className="min-w-[12rem] p-2">
                       {!!data.imageStyle && (
                         <>
                           <DropdownButton
                             isActive={data.imageStyle === undefined}
                             onClick={onUndoClick}
                           >
-                            <Icon name='Undo2' />
+                            <Icon name="Undo2" />
                             Reset
                           </DropdownButton>
                           <Toolbar.Divider horizontal />
@@ -207,35 +213,35 @@ export const AiImageView = ({
                 </Dropdown.Portal>
               </Dropdown.Root>
             </div>
-            <div className='flex flex-row items-center justify-between gap-1'>
+            <div className="flex flex-row items-center justify-between gap-1">
               {previewImage && (
                 <Button
-                  variant='ghost'
-                  className='text-red-500 hover:bg-red-500/10 hover:text-red-500'
+                  variant="ghost"
+                  className="text-red-500 hover:bg-red-500/10 hover:text-red-500"
                   onClick={discard}
                 >
-                  <Icon name='Trash' />
+                  <Icon name="Trash" />
                   Discard
                 </Button>
               )}
               {previewImage && (
-                <Button variant='ghost' onClick={insert}>
-                  <Icon name='Check' />
+                <Button variant="ghost" onClick={insert}>
+                  <Icon name="Check" />
                   Insert
                 </Button>
               )}
-              <Button variant='primary' onClick={generateImage}>
+              <Button variant="primary" onClick={generateImage}>
                 {previewImage ? (
-                  <Icon name='Repeat' />
+                  <Icon name="Repeat" />
                 ) : (
-                  <Icon name='Sparkles' />
+                  <Icon name="Sparkles" />
                 )}
-                {previewImage ? 'Regenerate' : 'Generate image'}
+                {previewImage ? "Regenerate" : "Generate image"}
               </Button>
             </div>
           </div>
         </div>
       </Panel>
     </NodeViewWrapper>
-  )
-}
+  );
+};

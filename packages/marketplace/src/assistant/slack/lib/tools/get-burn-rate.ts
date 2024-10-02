@@ -1,9 +1,9 @@
-import type { Client } from '@v1/supabase/types'
+import type { Client } from "@v1/supabase/types";
 
-import { startOfMonth } from 'date-fns'
-import { z } from 'zod'
+import { startOfMonth } from "date-fns";
+import { z } from "zod";
 
-import { getBurnRateQuery } from '@v1/dbes'
+import { getBurnRateQuery } from "@v1/dbes";
 
 export function getBurnRateTool({
   defaultValues,
@@ -11,26 +11,26 @@ export function getBurnRateTool({
   teamId,
 }: {
   defaultValues: {
-    from: string
-    to: string
-  }
-  supabase: Client
-  teamId: string
+    from: string;
+    to: string;
+  };
+  supabase: Client;
+  teamId: string;
 }) {
   return {
-    description: 'Get burn rate',
+    description: "Get burn rate",
     parameters: z.object({
       startDate: z.coerce
         .date()
-        .describe('The start date of the burn rate, in ISO-8601 format')
+        .describe("The start date of the burn rate, in ISO-8601 format")
         .default(new Date(defaultValues.from)),
       endDate: z.coerce
         .date()
-        .describe('The end date of the burn rate, in ISO-8601 format')
+        .describe("The end date of the burn rate, in ISO-8601 format")
         .default(new Date(defaultValues.to)),
       currency: z
         .string()
-        .describe('The currency for the burn rate')
+        .describe("The currency for the burn rate")
         .optional(),
     }),
     execute: async ({
@@ -38,31 +38,31 @@ export function getBurnRateTool({
       startDate,
       endDate,
     }: {
-      currency?: string
-      startDate: Date
-      endDate: Date
+      currency?: string;
+      startDate: Date;
+      endDate: Date;
     }) => {
       const { data } = await getBurnRateQuery(supabase, {
         currency,
         from: startOfMonth(startDate).toISOString(),
         to: endDate.toISOString(),
         teamId,
-      })
+      });
 
       if (!data) {
-        return 'No burn rate found'
+        return "No burn rate found";
       }
 
       const averageBurnRate =
-        data?.reduce((acc, curr) => acc + curr.value, 0) / data?.length
+        data?.reduce((acc, curr) => acc + curr.value, 0) / data?.length;
 
       return `Based on your historical data, your average burn rate is ${Intl.NumberFormat(
-        'en-US',
+        "en-US",
         {
-          style: 'currency',
+          style: "currency",
           currency: data.at(0)?.currency,
         },
-      ).format(averageBurnRate)} per month.`
+      ).format(averageBurnRate)} per month.`;
     },
-  }
+  };
 }

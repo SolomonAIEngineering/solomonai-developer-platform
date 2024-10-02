@@ -1,150 +1,150 @@
-import React from 'react'
+import React from "react";
 
-import { render } from '@react-email/render'
-import { Resend as Client } from 'resend'
+import { render } from "@react-email/render";
+import { Resend as Client } from "resend";
 
-import { PaymentIssue } from '../emails/payment_issue.tsx'
-import { SecretScanningKeyDetected } from '../emails/secret_scanning_key_detected.tsx'
-import { SubscriptionEnded } from '../emails/subscription_ended.tsx'
-import { TrialEnded } from '../emails/trial_ended.tsx'
-import { WelcomeEmail } from '../emails/welcome_email.tsx'
+import { PaymentIssue } from "../emails/payment_issue.tsx";
+import { SecretScanningKeyDetected } from "../emails/secret_scanning_key_detected.tsx";
+import { SubscriptionEnded } from "../emails/subscription_ended.tsx";
+import { TrialEnded } from "../emails/trial_ended.tsx";
+import { WelcomeEmail } from "../emails/welcome_email.tsx";
 
 export class Resend {
-  public readonly client: Client
-  private readonly replyTo = 'support@inbox.solomon-ai.app'
+  public readonly client: Client;
+  private readonly replyTo = "support@inbox.solomon-ai.app";
 
   constructor(opts: { apiKey: string }) {
-    this.client = new Client(opts.apiKey)
+    this.client = new Client(opts.apiKey);
   }
 
   public async sendTrialEnded(req: {
-    email: string
-    name: string
-    workspace: string
+    email: string;
+    name: string;
+    workspace: string;
   }): Promise<void> {
     const html = render(
       <TrialEnded username={req.name} workspaceName={req.workspace} />,
-    )
+    );
     try {
       const result = await this.client.emails.send({
         to: req.email,
-        from: 'founder@inbox.solomon-ai.app',
+        from: "founder@inbox.solomon-ai.app",
         reply_to: this.replyTo,
-        subject: 'Your Solomon AI trial has ended',
+        subject: "Your Solomon AI trial has ended",
         html,
-      })
+      });
 
       if (!result.error) {
-        return
+        return;
       }
-      throw result.error
+      throw result.error;
     } catch (error) {
       console.error(
-        'Error occurred sending subscription email ',
+        "Error occurred sending subscription email ",
         JSON.stringify(error),
-      )
+      );
     }
   }
 
   public async sendSubscriptionEnded(req: {
-    email: string
-    name: string
+    email: string;
+    name: string;
   }): Promise<void> {
-    const html = render(<SubscriptionEnded username={req.name} />)
+    const html = render(<SubscriptionEnded username={req.name} />);
     try {
       const result = await this.client.emails.send({
         to: req.email,
-        from: 'founder@inbox.solomon-ai.app',
+        from: "founder@inbox.solomon-ai.app",
         reply_to: this.replyTo,
-        subject: 'Your Solomon AI trial has ended',
+        subject: "Your Solomon AI trial has ended",
         html,
-      })
+      });
       if (!result.error) {
-        return
+        return;
       }
-      throw result.error
+      throw result.error;
     } catch (error) {
       console.error(
-        'Error occurred sending subscription email ',
+        "Error occurred sending subscription email ",
         JSON.stringify(error),
-      )
+      );
     }
   }
 
   public async sendWelcomeEmail(req: { email: string }) {
-    const html = render(<WelcomeEmail />)
+    const html = render(<WelcomeEmail />);
     try {
       const result = await this.client.emails.send({
         to: req.email,
-        from: 'founder@inbox.solomon-ai.app',
+        from: "founder@inbox.solomon-ai.app",
         reply_to: this.replyTo,
-        subject: 'Welcome to Solomon AI',
+        subject: "Welcome to Solomon AI",
         html,
-      })
+      });
       if (!result.error) {
-        return
+        return;
       }
-      throw result.error
+      throw result.error;
     } catch (error) {
       console.error(
-        'Error occurred sending welcome email ',
+        "Error occurred sending welcome email ",
         JSON.stringify(error),
-      )
+      );
     }
   }
 
   public async sendPaymentIssue(req: {
-    email: string
-    name: string
-    date: Date
+    email: string;
+    name: string;
+    date: Date;
   }): Promise<void> {
     const html = render(
       <PaymentIssue username={req.name} date={req.date.toDateString()} />,
-    )
+    );
     try {
       const result = await this.client.emails.send({
         to: req.email,
-        from: 'founder@inbox.solomon-ai.app',
+        from: "founder@inbox.solomon-ai.app",
         reply_to: this.replyTo,
-        subject: 'There was an issue with your payment',
+        subject: "There was an issue with your payment",
         html,
-      })
+      });
       if (!result.error) {
-        return
+        return;
       }
-      throw result.error
+      throw result.error;
     } catch (error) {
       console.error(
-        'Error occurred sending payment issue email ',
+        "Error occurred sending payment issue email ",
         JSON.stringify(error),
-      )
+      );
     }
   }
   public async sendLeakedKeyEmail(req: {
-    email: string
-    date: string
-    source: string
-    url: string
+    email: string;
+    date: string;
+    source: string;
+    url: string;
   }): Promise<void> {
-    const { date, email, source, url } = req
+    const { date, email, source, url } = req;
     const html = render(
       <SecretScanningKeyDetected date={date} source={source} url={url} />,
-    )
+    );
 
     try {
       const result = await this.client.emails.send({
         to: email,
-        from: 'founder@inbox.solomon-ai.app',
+        from: "founder@inbox.solomon-ai.app",
         reply_to: this.replyTo,
-        subject: 'Solomon AI root key exposed in public Github repository',
+        subject: "Solomon AI root key exposed in public Github repository",
         html: html,
-      })
+      });
       if (!result.error) {
-        return
+        return;
       }
-      throw result.error
+      throw result.error;
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 }

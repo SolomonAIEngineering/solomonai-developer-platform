@@ -1,8 +1,8 @@
-import * as React from 'react';
+import * as React from "react";
 
-import type { TxKeyPath } from '@/core';
-import { Pressable, Text, View } from '@/ui';
-import { ArrowRight } from '@/ui/icons';
+import type { TxKeyPath } from "@/core";
+import { Pressable, Text, View } from "@/ui";
+import { ArrowRight } from "@/ui/icons";
 
 type ItemProps = {
   text: TxKeyPath;
@@ -16,7 +16,7 @@ export const Item = ({ text, value, icon, onPress }: ItemProps) => {
   return (
     <Pressable
       onPress={onPress}
-      pointerEvents={isPressable ? 'auto' : 'none'}
+      pointerEvents={isPressable ? "auto" : "none"}
       className="flex-1 flex-row items-center justify-between px-4 py-2"
     >
       <View className="flex-row items-center">

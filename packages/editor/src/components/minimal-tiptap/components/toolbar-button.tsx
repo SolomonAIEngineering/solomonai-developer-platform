@@ -1,22 +1,22 @@
-import { forwardRef } from 'react'
+import { forwardRef } from "react";
 
-import type { TooltipContentProps } from '@radix-ui/react-tooltip'
+import type { TooltipContentProps } from "@radix-ui/react-tooltip";
 
-import { Toggle } from '@v1/ui/toggle'
+import { Toggle } from "@v1/ui/toggle";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@v1/ui/tooltip'
+} from "@v1/ui/tooltip";
 
-import { cn } from '@/lib/editor/utils'
+import { cn } from "@/lib/editor/utils";
 
 interface ToolbarButtonProps
   extends React.ComponentPropsWithoutRef<typeof Toggle> {
-  isActive?: boolean
-  tooltip?: string
-  tooltipOptions?: TooltipContentProps
+  isActive?: boolean;
+  tooltip?: string;
+  tooltipOptions?: TooltipContentProps;
 }
 
 const ToolbarButton = forwardRef<HTMLButtonElement, ToolbarButtonProps>(
@@ -29,13 +29,13 @@ const ToolbarButton = forwardRef<HTMLButtonElement, ToolbarButtonProps>(
         <Tooltip>
           <TooltipTrigger asChild>
             <Toggle
-              size='sm'
+              size="sm"
               {...props}
               ref={ref}
               className={cn(
-                'rounded disabled:pointer-events-auto disabled:cursor-not-allowed disabled:text-muted-foreground disabled:hover:bg-transparent data-[state=open]:bg-primary/10 data-[state=open]:text-primary',
+                "rounded disabled:pointer-events-auto disabled:cursor-not-allowed disabled:text-muted-foreground disabled:hover:bg-transparent data-[state=open]:bg-primary/10 data-[state=open]:text-primary",
                 {
-                  'bg-primary/10 text-primary hover:bg-primary/10 hover:text-primary':
+                  "bg-primary/10 text-primary hover:bg-primary/10 hover:text-primary":
                     isActive,
                 },
                 className,
@@ -46,17 +46,17 @@ const ToolbarButton = forwardRef<HTMLButtonElement, ToolbarButtonProps>(
           </TooltipTrigger>
           {tooltip && (
             <TooltipContent {...tooltipOptions}>
-              <div className='flex flex-col items-center text-center'>
+              <div className="flex flex-col items-center text-center">
                 {tooltip}
               </div>
             </TooltipContent>
           )}
         </Tooltip>
       </TooltipProvider>
-    )
+    );
   },
-)
+);
 
-ToolbarButton.displayName = 'ToolbarButton'
+ToolbarButton.displayName = "ToolbarButton";
 
-export { ToolbarButton }
+export { ToolbarButton };

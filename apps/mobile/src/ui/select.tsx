@@ -2,51 +2,51 @@
 import {
   BottomSheetFlatList,
   type BottomSheetModal,
-} from '@gorhom/bottom-sheet';
-import { FlashList } from '@shopify/flash-list';
-import { useColorScheme } from 'nativewind';
-import * as React from 'react';
-import type { FieldValues } from 'react-hook-form';
-import { useController } from 'react-hook-form';
-import { Platform, TouchableOpacity, View } from 'react-native';
-import { Pressable, type PressableProps } from 'react-native';
-import type { SvgProps } from 'react-native-svg';
-import Svg, { Path } from 'react-native-svg';
-import { tv } from 'tailwind-variants';
+} from "@gorhom/bottom-sheet";
+import { FlashList } from "@shopify/flash-list";
+import { useColorScheme } from "nativewind";
+import * as React from "react";
+import type { FieldValues } from "react-hook-form";
+import { useController } from "react-hook-form";
+import { Platform, TouchableOpacity, View } from "react-native";
+import { Pressable, type PressableProps } from "react-native";
+import type { SvgProps } from "react-native-svg";
+import Svg, { Path } from "react-native-svg";
+import { tv } from "tailwind-variants";
 
-import colors from '@/ui/colors';
-import { CaretDown } from '@/ui/icons';
+import colors from "@/ui/colors";
+import { CaretDown } from "@/ui/icons";
 
-import type { InputControllerType } from './input';
-import { useModal } from './modal';
-import { Modal } from './modal';
-import { Text } from './text';
+import type { InputControllerType } from "./input";
+import { useModal } from "./modal";
+import { Modal } from "./modal";
+import { Text } from "./text";
 
 const selectTv = tv({
   slots: {
-    container: 'mb-4',
-    label: 'text-grey-100 mb-1 text-lg dark:text-neutral-100',
+    container: "mb-4",
+    label: "text-grey-100 mb-1 text-lg dark:text-neutral-100",
     input:
-      'border-grey-50 mt-0 flex-row items-center justify-center rounded-xl border-[0.5px] p-3  dark:border-neutral-500 dark:bg-neutral-800',
-    inputValue: 'dark:text-neutral-100',
+      "border-grey-50 mt-0 flex-row items-center justify-center rounded-xl border-[0.5px] p-3  dark:border-neutral-500 dark:bg-neutral-800",
+    inputValue: "dark:text-neutral-100",
   },
 
   variants: {
     focused: {
       true: {
-        input: 'border-neutral-600',
+        input: "border-neutral-600",
       },
     },
     error: {
       true: {
-        input: 'border-danger-600',
-        label: 'text-danger-600 dark:text-danger-600',
-        inputValue: 'text-danger-600',
+        input: "border-danger-600",
+        label: "text-danger-600 dark:text-danger-600",
+        inputValue: "text-danger-600",
       },
     },
     disabled: {
       true: {
-        input: 'bg-neutral-200',
+        input: "bg-neutral-200",
       },
     },
   },
@@ -56,7 +56,7 @@ const selectTv = tv({
   },
 });
 
-const List = Platform.OS === 'web' ? FlashList : BottomSheetFlatList;
+const List = Platform.OS === "web" ? FlashList : BottomSheetFlatList;
 
 export type OptionType = { label: string; value: string | number };
 
@@ -76,7 +76,7 @@ export const Options = React.forwardRef<BottomSheetModal, OptionsProps>(
     const height = options.length * 70 + 100;
     const snapPoints = React.useMemo(() => [height], [height]);
     const { colorScheme } = useColorScheme();
-    const isDark = colorScheme === 'dark';
+    const isDark = colorScheme === "dark";
 
     const renderSelectItem = React.useCallback(
       ({ item }: { item: OptionType }) => (
@@ -88,7 +88,7 @@ export const Options = React.forwardRef<BottomSheetModal, OptionsProps>(
           testID={testID ? `${testID}-item-${item.value}` : undefined}
         />
       ),
-      [onSelect, value, testID]
+      [onSelect, value, testID],
     );
 
     return (
@@ -109,7 +109,7 @@ export const Options = React.forwardRef<BottomSheetModal, OptionsProps>(
         />
       </Modal>
     );
-  }
+  },
 );
 
 const Option = React.memo(
@@ -130,7 +130,7 @@ const Option = React.memo(
         {selected && <Check />}
       </Pressable>
     );
-  }
+  },
 );
 
 export interface SelectProps {
@@ -153,7 +153,7 @@ export const Select = (props: SelectProps) => {
     value,
     error,
     options = [],
-    placeholder = 'select...',
+    placeholder = "select...",
     disabled = false,
     onSelect,
     testID,
@@ -165,7 +165,7 @@ export const Select = (props: SelectProps) => {
       onSelect?.(option.value);
       modal.dismiss();
     },
-    [modal, onSelect]
+    [modal, onSelect],
   );
 
   const styles = React.useMemo(
@@ -174,7 +174,7 @@ export const Select = (props: SelectProps) => {
         error: Boolean(error),
         disabled,
       }),
-    [error, disabled]
+    [error, disabled],
   );
 
   const textValue = React.useMemo(
@@ -182,7 +182,7 @@ export const Select = (props: SelectProps) => {
       value !== undefined
         ? options?.filter((t) => t.value === value)?.[0]?.label ?? placeholder
         : placeholder,
-    [value, options, placeholder]
+    [value, options, placeholder],
   );
 
   return (
@@ -228,7 +228,7 @@ export const Select = (props: SelectProps) => {
 
 // only used with react-hook-form
 export function ControlledSelect<T extends FieldValues>(
-  props: ControlledSelectProps<T>
+  props: ControlledSelectProps<T>,
 ) {
   const { name, control, rules, onSelect: onNSelect, ...selectProps } = props;
 
@@ -238,7 +238,7 @@ export function ControlledSelect<T extends FieldValues>(
       field.onChange(value);
       onNSelect?.(value);
     },
-    [field, onNSelect]
+    [field, onNSelect],
   );
   return (
     <Select

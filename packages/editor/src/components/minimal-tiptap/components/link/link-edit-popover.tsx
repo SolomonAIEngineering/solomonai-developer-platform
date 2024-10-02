@@ -1,54 +1,54 @@
-import { useState } from 'react'
+import { useState } from "react";
 
-import type { Editor } from '@tiptap/core'
+import type { Editor } from "@tiptap/core";
 
-import { Link2Icon } from '@radix-ui/react-icons'
+import { Link2Icon } from "@radix-ui/react-icons";
 
-import { Popover, PopoverContent, PopoverTrigger } from '@v1/ui/popover'
+import { Popover, PopoverContent, PopoverTrigger } from "@v1/ui/popover";
 
-import { LinkProps } from '../../types'
-import { ToolbarButton } from '../toolbar-button'
-import { LinkEditBlock } from './link-edit-block'
+import { LinkProps } from "../../types";
+import { ToolbarButton } from "../toolbar-button";
+import { LinkEditBlock } from "./link-edit-block";
 
 const LinkEditPopover = ({ editor }: { editor: Editor }) => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   const setLink = ({ url, text, openInNewTab }: LinkProps) => {
     editor
       .chain()
-      .extendMarkRange('link')
+      .extendMarkRange("link")
       .insertContent({
-        type: 'text',
+        type: "text",
         text: text || url,
         marks: [
           {
-            type: 'link',
+            type: "link",
             attrs: {
               href: url,
-              target: openInNewTab ? '_blank' : '',
+              target: openInNewTab ? "_blank" : "",
             },
           },
         ],
       })
       .setLink({ href: url })
       .focus()
-      .run()
+      .run();
 
-    editor.commands.enter()
-  }
+    editor.commands.enter();
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <ToolbarButton
-          isActive={editor.isActive('link')}
-          tooltip='Link'
-          disabled={editor.isActive('codeBlock')}
+          isActive={editor.isActive("link")}
+          tooltip="Link"
+          disabled={editor.isActive("codeBlock")}
         >
-          <Link2Icon className='size-5' />
+          <Link2Icon className="size-5" />
         </ToolbarButton>
       </PopoverTrigger>
-      <PopoverContent className='w-full min-w-80' align='start' side='bottom'>
+      <PopoverContent className="w-full min-w-80" align="start" side="bottom">
         <LinkEditBlock
           editor={editor}
           close={() => setOpen(false)}
@@ -56,7 +56,7 @@ const LinkEditPopover = ({ editor }: { editor: Editor }) => {
         />
       </PopoverContent>
     </Popover>
-  )
-}
+  );
+};
 
-export { LinkEditPopover }
+export { LinkEditPopover };

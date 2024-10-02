@@ -6,7 +6,7 @@ const rootPath = process.cwd();
 
 interface PackageAnswers {
   name: string;
-  type: "react-library" | "regular";
+  type: "react-library" | "regular" | "app";
 }
 
 export default function generator(plop: PlopTypes.NodePlopAPI): void {
@@ -17,13 +17,18 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
         type: "input",
         name: "name",
         message: "What is the name of the package?",
-        validate: (input: string) => {
+        validate: (input: string, answers?: PackageAnswers) => {
           if (!input.trim()) {
             return "Package name cannot be empty";
           }
-          const packagePath = path.join(rootPath, "packages", input.replace(/^@react-package\//, ""));
+          const basePath = answers?.type === "app" ? "apps" : "packages";
+          const packagePath = path.join(
+            rootPath,
+            basePath,
+            input.replace(/^@react-package\//, ""),
+          );
           if (fs.existsSync(packagePath)) {
-            return "A package with this name already exists";
+            return "A package or app with this name already exists";
           }
           return true;
         },
@@ -35,6 +40,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
         choices: [
           { name: "React Library", value: "react-library" },
           { name: "Regular Package", value: "regular" },
+          { name: "App", value: "app" },
         ],
       },
     ],
@@ -42,31 +48,45 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
       const actions: PlopTypes.ActionType[] = [
         // Sanitize package name
         (answers) => {
-          if (answers && typeof answers === 'object' && 'name' in answers) {
-            answers.name = (answers.name as string).replace(/^@react-package\//, "").trim();
-            answers.fullName = answers.type === "react-library" ? `@react-package/${answers.name}` : answers.name;
+          if (answers && typeof answers === "object" && "name" in answers) {
+            answers.name = (answers.name as string)
+              .replace(/^@react-package\//, "")
+              .trim();
+            answers.fullName =
+              answers.type === "react-library"
+                ? `@react-package/${answers.name}`
+                : answers.name;
           }
           return "Config sanitized";
         },
-        // Create package directory
+        // Create package or app directory
         {
           type: "add",
-          path: path.join(rootPath, "packages", "{{name}}", ".gitkeep"),
+          path: path.join(
+            rootPath,
+            answers.type === "app" ? "apps" : "packages",
+            "{{name}}",
+            ".gitkeep",
+          ),
           template: "",
           force: true,
         },
         // Add all files for the selected package type
         {
           type: "addMany",
-          destination: path.join(rootPath, "packages", "{{name}}"),
-          base: `templates/${answers?.type === "react-library" ? "react-package" : "package"}`,
-          templateFiles: `templates/${answers?.type === "react-library" ? "react-package" : "package"}/**/*`,
+          destination: path.join(
+            rootPath,
+            answers.type === "app" ? "apps" : "packages",
+            "{{name}}",
+          ),
+          base: `templates/${answers.type === "react-library" ? "react-package" : answers.type === "app" ? "app" : "package"}`,
+          templateFiles: `templates/${answers.type === "react-library" ? "react-package" : answers.type === "app" ? "app" : "package"}/**/*`,
           globOptions: {
             dot: true,
           },
           force: true,
         },
-        // Update root package.json to include new package
+        // Update root package.json to include new package or app
         {
           type: "modify",
           path: path.join(rootPath, "package.json"),
@@ -76,7 +96,9 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
               if (!packageJson.workspaces) {
                 packageJson.workspaces = [];
               }
-              packageJson.workspaces.push(`packages/${answers.name}`);
+              packageJson.workspaces.push(
+                `${answers.type === "app" ? "apps" : "packages"}/${answers.name}`,
+              );
               return JSON.stringify(packageJson, null, 2);
             } catch (error) {
               console.error("Error updating package.json:", error);
@@ -84,11 +106,19 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
             }
           },
         },
-        // Update package.json in the new package to use the correct name
+        // Update package.json in the new package or app to use the correct name
         {
           type: "modify",
-          path: path.join(rootPath, "packages", "{{name}}", "package.json"),
-          transform: (content: string, answers: PackageAnswers & { fullName: string }) => {
+          path: path.join(
+            rootPath,
+            answers.type === "app" ? "apps" : "packages",
+            "{{name}}",
+            "package.json",
+          ),
+          transform: (
+            content: string,
+            answers: PackageAnswers & { fullName: string },
+          ) => {
             try {
               const packageJson = JSON.parse(content);
               packageJson.name = answers.fullName;
@@ -102,14 +132,22 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
       ];
 
       // Add React-specific files for react-library type
-      if (answers?.type === "react-library") {
+      if (answers.type === "react-library") {
         actions.push(
           // Add turbo/generators/hook-templates files
           {
             type: "addMany",
-            destination: path.join(rootPath, "packages", "{{name}}", "turbo", "generators", "hook-templates"),
+            destination: path.join(
+              rootPath,
+              "packages",
+              "{{name}}",
+              "turbo",
+              "generators",
+              "hook-templates",
+            ),
             base: "templates/react-package/turbo/generators/hook-templates",
-            templateFiles: "templates/react-package/turbo/generators/hooktemplates/*.hbs",
+            templateFiles:
+              "templates/react-package/turbo/generators/hooktemplates/*.hbs",
             globOptions: {
               dot: true,
             },
@@ -118,14 +156,22 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
           // Add turbo/generators/templates files
           {
             type: "addMany",
-            destination: path.join(rootPath, "packages", "{{name}}", "turbo", "generators", "templates"),
+            destination: path.join(
+              rootPath,
+              "packages",
+              "{{name}}",
+              "turbo",
+              "generators",
+              "templates",
+            ),
             base: "templates/react-package/turbo/generators/templates",
-            templateFiles: "templates/react-package/turbo/generators/templates/*.hbs",
+            templateFiles:
+              "templates/react-package/turbo/generators/templates/*.hbs",
             globOptions: {
               dot: true,
             },
             force: true,
-          }
+          },
         );
       }
 
@@ -136,15 +182,22 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
     },
   });
 
-  plop.setActionType('postRun', (answers: unknown) => {
+  plop.setActionType("postRun", (answers: unknown) => {
     const typedAnswers = answers as PackageAnswers;
-    const packagePath = path.join(rootPath, "packages", typedAnswers.name);
+    const basePath = typedAnswers.type === "app" ? "apps" : "packages";
+    const packagePath = path.join(rootPath, basePath, typedAnswers.name);
     if (fs.existsSync(packagePath)) {
-      console.log(`Package directory created: ${packagePath}`);
+      console.log(
+        `${typedAnswers.type === "app" ? "App" : "Package"} directory created: ${packagePath}`,
+      );
       const files = fs.readdirSync(packagePath);
-      console.log(`Files in the package directory: ${files.join(', ')}`);
+      console.log(
+        `Files in the ${typedAnswers.type === "app" ? "app" : "package"} directory: ${files.join(", ")}`,
+      );
     } else {
-      console.error(`Failed to create package directory: ${packagePath}`);
+      console.error(
+        `Failed to create ${typedAnswers.type === "app" ? "app" : "package"} directory: ${packagePath}`,
+      );
     }
     return "Post-run checks completed";
   });

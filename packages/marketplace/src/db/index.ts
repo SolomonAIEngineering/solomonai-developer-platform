@@ -1,17 +1,17 @@
-import { createClient } from '@v1/supabase/server'
+import { createClient } from "@v1/supabase/server";
 
 export async function createApp(params: any) {
-  const client = createClient({ admin: true })
+  const client = createClient({ admin: true });
 
   const { data, error } = await client
-    .from('apps')
+    .from("apps")
     .upsert(params)
     .select()
-    .single()
+    .single();
 
   if (error) {
-    throw new Error(error.message)
+    throw new Error(error.message);
   }
 
-  return data
+  return data;
 }

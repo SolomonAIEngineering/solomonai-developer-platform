@@ -1,4 +1,4 @@
-import { integer, sqliteTable, uniqueIndex, } from "drizzle-orm/sqlite-core";
+import { integer, sqliteTable, uniqueIndex } from "drizzle-orm/sqlite-core";
 import { businessAccounts } from "./business-accounts.js";
 import { tags } from "./tags.js";
 /**
@@ -14,9 +14,18 @@ import { tags } from "./tags.js";
  * This table uses a composite primary key consisting of both 'businessAccountId' and 'tagId'.
  * This ensures that each business account-tag combination is unique.
  */
-export const businessAccountsTags = sqliteTable("business_accounts_tags", {
-    businessAccountId: integer("business_account_id").references(() => businessAccounts.id),
+export const businessAccountsTags = sqliteTable(
+  "business_accounts_tags",
+  {
+    businessAccountId: integer("business_account_id").references(
+      () => businessAccounts.id,
+    ),
     tagId: integer("tag_id").references(() => tags.id),
-}, (t) => ({
-    pk: uniqueIndex("business_accounts_tags_pkey").on(t.businessAccountId, t.tagId),
-}));
+  },
+  (t) => ({
+    pk: uniqueIndex("business_accounts_tags_pkey").on(
+      t.businessAccountId,
+      t.tagId,
+    ),
+  }),
+);

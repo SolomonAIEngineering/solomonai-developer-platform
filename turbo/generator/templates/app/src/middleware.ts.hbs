@@ -1,5 +1,5 @@
-import { updateSession } from "@orbitkit/supabase/middleware"; import {
-createClient } from "@orbitkit/supabase/server"; import { createI18nMiddleware }
+import { updateSession } from "@v1/supabase/middleware"; import {
+createClient } from "@v1/supabase/server"; import { createI18nMiddleware }
 from "next-international/middleware"; import { NextRequest, NextResponse } from
 "next/server"; const I18nMiddleware = createI18nMiddleware({ locales: ["en"],
 defaultLocale: "en", urlMappingStrategy: "rewrite", }); export async function

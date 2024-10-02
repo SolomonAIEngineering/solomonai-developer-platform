@@ -2,28 +2,28 @@
 /* eslint-disable @typescript-eslint/no-extraneous-class */
 // api-service-factory.ts
 
-import { Middleware } from 'client-typescript-sdk'
+import { Middleware } from "client-typescript-sdk";
 
-import { ApiService } from './api-service.ts'
-import { ConfigValidator } from './config-validator.ts'
-import { ApiConfig, getApiConfig } from './config.ts'
-import { Logger } from './logger.ts'
+import { ApiService } from "./api-service.ts";
+import { ConfigValidator } from "./config-validator.ts";
+import { ApiConfig, getApiConfig } from "./config.ts";
+import { Logger } from "./logger.ts";
 import {
   addCustomHeaderMiddleware,
   errorHandlingMiddleware,
-} from './middleware.ts'
+} from "./middleware.ts";
 
 /**
  * Factory class for creating and managing ApiService instances.
  * This class follows the Singleton pattern with additional flexibility.
  */
 export class ApiServiceFactory {
-  private static instance: ApiService | null = null
-  private static config: ApiConfig | null = null
+  private static instance: ApiService | null = null;
+  private static config: ApiConfig | null = null;
   private static middlewares: Middleware[] = [
     addCustomHeaderMiddleware,
     errorHandlingMiddleware,
-  ]
+  ];
 
   /**
    * Private constructor to prevent direct construction calls with the `new` operator.
@@ -39,15 +39,15 @@ export class ApiServiceFactory {
   public static getInstance(forceNew = false): ApiService {
     if (!this.instance || forceNew) {
       if (!this.config) {
-        this.config = getApiConfig()
+        this.config = getApiConfig();
       }
-      ConfigValidator.validateApiConfig(this.config)
-      this.instance = new ApiService(this.config, this.middlewares)
-      Logger.info('ApiService instance created', {
+      ConfigValidator.validateApiConfig(this.config);
+      this.instance = new ApiService(this.config, this.middlewares);
+      Logger.info("ApiService instance created", {
         config: this.sanitizeConfig(this.config),
-      })
+      });
     }
-    return this.instance
+    return this.instance;
   }
 
   /**
@@ -60,15 +60,15 @@ export class ApiServiceFactory {
     config: ApiConfig,
     additionalMiddlewares?: Middleware[],
   ): void {
-    ConfigValidator.validateApiConfig(config)
-    this.config = config
+    ConfigValidator.validateApiConfig(config);
+    this.config = config;
     if (additionalMiddlewares) {
-      this.middlewares = [...this.middlewares, ...additionalMiddlewares]
+      this.middlewares = [...this.middlewares, ...additionalMiddlewares];
     }
-    this.instance = new ApiService(config, this.middlewares)
-    Logger.info('ApiService initialized', {
+    this.instance = new ApiService(config, this.middlewares);
+    Logger.info("ApiService initialized", {
       config: this.sanitizeConfig(config),
-    })
+    });
   }
 
   /**
@@ -76,10 +76,10 @@ export class ApiServiceFactory {
    * Useful for testing or when a completely fresh instance is needed.
    */
   public static resetInstance(): void {
-    this.instance = null
-    this.config = null
-    this.middlewares = [addCustomHeaderMiddleware, errorHandlingMiddleware]
-    Logger.info('ApiService instance reset')
+    this.instance = null;
+    this.config = null;
+    this.middlewares = [addCustomHeaderMiddleware, errorHandlingMiddleware];
+    Logger.info("ApiService instance reset");
   }
 
   /**
@@ -87,7 +87,7 @@ export class ApiServiceFactory {
    * @returns {ApiConfig | null} The current configuration or null if not set.
    */
   public static getConfig(): ApiConfig | null {
-    return this.config ? this.sanitizeConfig(this.config) : null
+    return this.config ? this.sanitizeConfig(this.config) : null;
   }
 
   /**
@@ -95,9 +95,9 @@ export class ApiServiceFactory {
    * @param {Middleware} middleware - The middleware to add.
    */
   public static addMiddleware(middleware: Middleware): void {
-    this.middlewares.push(middleware)
-    this.recreateInstance()
-    Logger.info('New middleware added')
+    this.middlewares.push(middleware);
+    this.recreateInstance();
+    Logger.info("New middleware added");
   }
 
   /**
@@ -106,14 +106,14 @@ export class ApiServiceFactory {
    * @returns {boolean} True if the middleware was found and removed, false otherwise.
    */
   public static removeMiddleware(middleware: Middleware): boolean {
-    const index = this.middlewares.indexOf(middleware)
+    const index = this.middlewares.indexOf(middleware);
     if (index > -1) {
-      this.middlewares.splice(index, 1)
-      this.recreateInstance()
-      Logger.info('Middleware removed')
-      return true
+      this.middlewares.splice(index, 1);
+      this.recreateInstance();
+      Logger.info("Middleware removed");
+      return true;
     }
-    return false
+    return false;
   }
 
   /**
@@ -122,12 +122,12 @@ export class ApiServiceFactory {
    * @returns {ApiConfig} A sanitized copy of the configuration.
    */
   private static sanitizeConfig(config: ApiConfig): ApiConfig {
-    const sanitizedConfig = { ...config }
+    const sanitizedConfig = { ...config };
     if (sanitizedConfig.apiKey) {
-      sanitizedConfig.apiKey = '******'
+      sanitizedConfig.apiKey = "******";
     }
     // Add more fields to sanitize if needed
-    return sanitizedConfig
+    return sanitizedConfig;
   }
 
   /**
@@ -136,8 +136,8 @@ export class ApiServiceFactory {
    */
   private static recreateInstance(): void {
     if (this.config) {
-      this.instance = new ApiService(this.config, this.middlewares)
-      Logger.info('ApiService instance recreated with updated middlewares')
+      this.instance = new ApiService(this.config, this.middlewares);
+      Logger.info("ApiService instance recreated with updated middlewares");
     }
   }
 }

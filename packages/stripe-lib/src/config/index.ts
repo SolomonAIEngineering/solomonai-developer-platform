@@ -1,5 +1,5 @@
-import { BusinessConfig } from '@internal/config'
-import Stripe from 'stripe'
+import { BusinessConfig } from "@internal/config";
+import Stripe from "stripe";
 
 /**
  * Stripe instance for handling payment processing and related operations.
@@ -27,7 +27,7 @@ import Stripe from 'stripe'
  * ```
  */
 export const stripe = new Stripe(
-  process.env.STRIPE_SECRET_KEY_LIVE ?? process.env.STRIPE_SECRET_KEY ?? '',
+  process.env.STRIPE_SECRET_KEY_LIVE ?? process.env.STRIPE_SECRET_KEY ?? "",
   {
     // https://github.com/stripe/stripe-node#configuration
     // https://stripe.com/docs/api/versioning
@@ -37,8 +37,8 @@ export const stripe = new Stripe(
     // https://stripe.com/docs/building-plugins#setappinfo
     appInfo: {
       name: BusinessConfig.company,
-      version: '0.0.0',
+      version: "0.0.0",
       url: BusinessConfig.platformUrl,
     },
   },
-)
+);

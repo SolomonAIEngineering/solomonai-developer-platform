@@ -1,9 +1,9 @@
-import { IntegrationCategory, IntegrationConfig } from '../../types'
-import { Logo } from './assets/logo'
+import { IntegrationCategory, IntegrationConfig } from "../../types";
+import { Logo } from "./assets/logo";
 
 const dynamics365App: IntegrationConfig = {
-  name: 'Dynamics 365 Sales',
-  id: 'dynamics-365-sales',
+  name: "Dynamics 365 Sales",
+  id: "dynamics-365-sales",
   category: IntegrationCategory.CRM,
   active: false,
   logo: Logo,
@@ -16,6 +16,6 @@ const dynamics365App: IntegrationConfig = {
   },
   settings: [],
   config: {},
-}
+};
 
-export default dynamics365App
+export default dynamics365App;

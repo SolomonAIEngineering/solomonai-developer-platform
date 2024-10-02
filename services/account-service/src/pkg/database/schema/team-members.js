@@ -1,4 +1,4 @@
-import { integer, sqliteTable, uniqueIndex, } from "drizzle-orm/sqlite-core";
+import { integer, sqliteTable, uniqueIndex } from "drizzle-orm/sqlite-core";
 import { businessAccounts } from "./business-accounts.js";
 import { teams } from "./teams.js";
 import { userAccounts } from "./user-accounts.js";
@@ -16,10 +16,20 @@ import { userAccounts } from "./user-accounts.js";
  *   and a team can have multiple users and businesses as members.
  * - Consider adding additional fields like 'joinedAt' or 'role' to capture more information about team membership.
  */
-export const teamMembers = sqliteTable("team_members", {
+export const teamMembers = sqliteTable(
+  "team_members",
+  {
     teamId: integer("team_id").references(() => teams.id),
     userAccountId: integer("user_account_id").references(() => userAccounts.id),
-    businessAccountId: integer("business_account_id").references(() => businessAccounts.id),
-}, (t) => ({
-    pk: uniqueIndex("team_members_pkey").on(t.teamId, t.userAccountId, t.businessAccountId),
-}));
+    businessAccountId: integer("business_account_id").references(
+      () => businessAccounts.id,
+    ),
+  },
+  (t) => ({
+    pk: uniqueIndex("team_members_pkey").on(
+      t.teamId,
+      t.userAccountId,
+      t.businessAccountId,
+    ),
+  }),
+);

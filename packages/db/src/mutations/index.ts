@@ -1,31 +1,31 @@
-import type { Client } from '../types'
+import type { Client } from "../types";
 
-import { addDays } from 'date-fns'
+import { addDays } from "date-fns";
 
-import { getAccessValidForDays } from '@v1/engine/src/providers/gocardless/utils'
+import { getAccessValidForDays } from "@v1/engine/src/providers/gocardless/utils";
 
-import { getCurrentUserTeamQuery, getUserInviteQuery } from '../queries'
+import { getCurrentUserTeamQuery, getUserInviteQuery } from "../queries";
 
 type CreateBankAccountsPayload = {
   accounts: {
-    account_id: string
-    institution_id: string
-    logo_url: string
-    name: string
-    bank_name: string
-    currency: string
-    enabled: boolean
-    balance: number
-    type: 'depository' | 'credit' | 'other_asset' | 'loan' | 'other_liability'
-  }[]
-  balance: number
-  accessToken?: string
-  enrollmentId?: string
-  referenceId?: string
-  teamId: string
-  userId: string
-  provider: 'gocardless' | 'teller' | 'plaid'
-}
+    account_id: string;
+    institution_id: string;
+    logo_url: string;
+    name: string;
+    bank_name: string;
+    currency: string;
+    enabled: boolean;
+    balance: number;
+    type: "depository" | "credit" | "other_asset" | "loan" | "other_liability";
+  }[];
+  balance: number;
+  accessToken?: string;
+  enrollmentId?: string;
+  referenceId?: string;
+  teamId: string;
+  userId: string;
+  provider: "gocardless" | "teller" | "plaid";
+};
 
 export async function createBankAccounts(
   supabase: Client,
@@ -40,23 +40,23 @@ export async function createBankAccounts(
   }: CreateBankAccountsPayload,
 ) {
   // Get first account to create a bank connection
-  const account = accounts?.at(0)
+  const account = accounts?.at(0);
 
   if (!account) {
-    return
+    return;
   }
 
   // NOTE: GoCardLess connection expires after 90-180 days
   const expiresAt =
-    provider === 'gocardless'
+    provider === "gocardless"
       ? addDays(
           new Date(),
           getAccessValidForDays({ institutionId: account.institution_id }),
         ).toDateString()
-      : undefined
+      : undefined;
 
   const bankConnection = await supabase
-    .from('bank_connections')
+    .from("bank_connections")
     .upsert(
       {
         institution_id: account.institution_id,
@@ -70,14 +70,14 @@ export async function createBankAccounts(
         expires_at: expiresAt,
       },
       {
-        onConflict: 'institution_id, team_id',
+        onConflict: "institution_id, team_id",
       },
     )
     .select()
-    .single()
+    .single();
 
   return supabase
-    .from('bank_accounts')
+    .from("bank_accounts")
     .upsert(
       accounts.map(
         (account) => ({
@@ -92,27 +92,27 @@ export async function createBankAccounts(
           balance: account.balance ?? 0,
         }),
         {
-          onConflict: 'account_id',
+          onConflict: "account_id",
         },
       ),
     )
-    .select()
+    .select();
 }
 
 type UpdateBankConnectionData = {
-  id: string
-  referenceId?: string
-}
+  id: string;
+  referenceId?: string;
+};
 
 // NOTE: Only GoCardLess needs to be updated
 export async function updateBankConnection(
   supabase: Client,
   data: UpdateBankConnectionData,
 ) {
-  const { id, referenceId } = data
+  const { id, referenceId } = data;
 
   return await supabase
-    .from('bank_connections')
+    .from("bank_connections")
     .update({
       expires_at: addDays(
         new Date(),
@@ -120,28 +120,28 @@ export async function updateBankConnection(
       ).toDateString(),
       reference_id: referenceId,
     })
-    .eq('id', id)
+    .eq("id", id)
     .select()
-    .single()
+    .single();
 }
 
 type CreateTransactionsData = {
-  transactions: any[]
-  teamId: string
-}
+  transactions: any[];
+  teamId: string;
+};
 
 export async function createTransactions(
   supabase: Client,
   data: CreateTransactionsData,
 ) {
-  const { transactions, teamId } = data
+  const { transactions, teamId } = data;
 
-  return supabase.from('transactions').insert(
+  return supabase.from("transactions").insert(
     transactions.map((transaction) => ({
       ...transaction,
       team_id: teamId,
     })),
-  )
+  );
 }
 
 export async function updateTransaction(
@@ -150,333 +150,333 @@ export async function updateTransaction(
   data: any,
 ) {
   return supabase
-    .from('transactions')
+    .from("transactions")
     .update(data)
-    .eq('id', id)
-    .select('id, category, category_slug, team_id, name, status')
-    .single()
+    .eq("id", id)
+    .select("id, category, category_slug, team_id, name, status")
+    .single();
 }
 
 export async function updateUser(supabase: Client, data: any) {
   const {
     data: { session },
-  } = await supabase.auth.getSession()
+  } = await supabase.auth.getSession();
 
   if (!session?.user) {
-    return
+    return;
   }
 
   return supabase
-    .from('users')
+    .from("users")
     .update(data)
-    .eq('id', session.user.id)
+    .eq("id", session.user.id)
     .select()
-    .single()
+    .single();
 }
 
 export async function deleteUser(supabase: Client) {
   const {
     data: { session },
-  } = await supabase.auth.getSession()
+  } = await supabase.auth.getSession();
 
   if (!session?.user) {
-    return
+    return;
   }
 
   await Promise.all([
     supabase.auth.admin.deleteUser(session.user.id),
-    supabase.from('users').delete().eq('id', session.user.id),
+    supabase.from("users").delete().eq("id", session.user.id),
     supabase.auth.signOut(),
-  ])
+  ]);
 
-  return session.user.id
+  return session.user.id;
 }
 
 export async function updateTeam(supabase: Client, data: any) {
-  const { data: userData } = await getCurrentUserTeamQuery(supabase)
+  const { data: userData } = await getCurrentUserTeamQuery(supabase);
 
   return supabase
-    .from('teams')
+    .from("teams")
     .update(data)
-    .eq('id', userData?.team_id)
-    .select('*')
-    .maybeSingle()
+    .eq("id", userData?.team_id)
+    .select("*")
+    .maybeSingle();
 }
 
 type UpdateUserTeamRoleParams = {
-  role: 'owner' | 'member'
-  userId: string
-  teamId: string
-}
+  role: "owner" | "member";
+  userId: string;
+  teamId: string;
+};
 
 export async function updateUserTeamRole(
   supabase: Client,
   params: UpdateUserTeamRoleParams,
 ) {
-  const { role, userId, teamId } = params
+  const { role, userId, teamId } = params;
 
   return supabase
-    .from('users_on_team')
+    .from("users_on_team")
     .update({
       role,
     })
-    .eq('user_id', userId)
-    .eq('team_id', teamId)
+    .eq("user_id", userId)
+    .eq("team_id", teamId)
     .select()
-    .single()
+    .single();
 }
 
 export async function deleteTeam(supabase: Client, teamId: string) {
-  return supabase.from('teams').delete().eq('id', teamId)
+  return supabase.from("teams").delete().eq("id", teamId);
 }
 
 type DeleteTeamMemberParams = {
-  userId: string
-  teamId: string
-}
+  userId: string;
+  teamId: string;
+};
 
 export async function deleteTeamMember(
   supabase: Client,
   params: DeleteTeamMemberParams,
 ) {
   return supabase
-    .from('users_on_team')
+    .from("users_on_team")
     .delete()
-    .eq('user_id', params.userId)
-    .eq('team_id', params.teamId)
+    .eq("user_id", params.userId)
+    .eq("team_id", params.teamId)
     .select()
-    .single()
+    .single();
 }
 
 export async function deleteBankAccount(supabase: Client, id: string) {
   return await supabase
-    .from('bank_accounts')
+    .from("bank_accounts")
     .delete()
-    .eq('id', id)
+    .eq("id", id)
     .select()
-    .single()
+    .single();
 }
 
 type UpdateBankAccountParams = {
-  id: string
-  teamId: string
-  name: string
-  type: 'depository' | 'credit' | 'other_asset' | 'loan' | 'other_liability'
-}
+  id: string;
+  teamId: string;
+  name: string;
+  type: "depository" | "credit" | "other_asset" | "loan" | "other_liability";
+};
 
 export async function updateBankAccount(
   supabase: Client,
   params: UpdateBankAccountParams,
 ) {
-  const { id, teamId, ...data } = params
+  const { id, teamId, ...data } = params;
 
   return await supabase
-    .from('bank_accounts')
+    .from("bank_accounts")
     .update(data)
-    .eq('id', id)
-    .eq('team_id', teamId)
+    .eq("id", id)
+    .eq("team_id", teamId)
     .select()
-    .single()
+    .single();
 }
 
 type UpdateSimilarTransactionsCategoryParams = {
-  id: string
-  team_id: string
-}
+  id: string;
+  team_id: string;
+};
 
 export async function updateSimilarTransactionsCategory(
   supabase: Client,
   params: UpdateSimilarTransactionsCategoryParams,
 ) {
-  const { id, team_id } = params
+  const { id, team_id } = params;
 
   const transaction = await supabase
-    .from('transactions')
-    .select('name, category_slug')
-    .eq('id', id)
-    .single()
+    .from("transactions")
+    .select("name, category_slug")
+    .eq("id", id)
+    .single();
 
   if (!transaction?.data?.category_slug) {
-    return null
+    return null;
   }
 
   return supabase
-    .from('transactions')
+    .from("transactions")
     .update({ category_slug: transaction.data.category_slug })
-    .textSearch('fts_vector', `'${transaction.data.name}'`)
-    .eq('team_id', team_id)
-    .select('id, team_id')
+    .textSearch("fts_vector", `'${transaction.data.name}'`)
+    .eq("team_id", team_id)
+    .select("id, team_id");
 }
 
 type UpdateSimilarTransactionsRecurringParams = {
-  id: string
-  team_id: string
-}
+  id: string;
+  team_id: string;
+};
 
 export async function updateSimilarTransactionsRecurring(
   supabase: Client,
   params: UpdateSimilarTransactionsRecurringParams,
 ) {
-  const { id, team_id } = params
+  const { id, team_id } = params;
 
   const transaction = await supabase
-    .from('transactions')
-    .select('name, recurring, frequency')
-    .eq('id', id)
-    .single()
+    .from("transactions")
+    .select("name, recurring, frequency")
+    .eq("id", id)
+    .single();
 
   return supabase
-    .from('transactions')
+    .from("transactions")
     .update({
       recurring: transaction.data?.recurring,
       frequency: transaction.data?.frequency,
     })
-    .textSearch('fts_vector', `'${transaction.data.name}'`)
-    .eq('team_id', team_id)
-    .select('id, team_id')
+    .textSearch("fts_vector", `'${transaction.data.name}'`)
+    .eq("team_id", team_id)
+    .select("id, team_id");
 }
 
 export type Attachment = {
-  type: string
-  name: string
-  size: number
-  path: string[]
-  transaction_id: string
-}
+  type: string;
+  name: string;
+  size: number;
+  path: string[];
+  transaction_id: string;
+};
 
 export async function createAttachments(
   supabase: Client,
   attachments: Attachment[],
 ) {
-  const { data: userData } = await getCurrentUserTeamQuery(supabase)
+  const { data: userData } = await getCurrentUserTeamQuery(supabase);
 
   const { data } = await supabase
-    .from('transaction_attachments')
+    .from("transaction_attachments")
     .insert(
       attachments.map((attachment) => ({
         ...attachment,
         team_id: userData?.team_id,
       })),
     )
-    .select()
+    .select();
 
-  return data
+  return data;
 }
 
 export async function deleteAttachment(supabase: Client, id: string) {
   const { data } = await supabase
-    .from('transaction_attachments')
+    .from("transaction_attachments")
     .delete()
-    .eq('id', id)
-    .select('id, transaction_id, name, team_id')
-    .single()
+    .eq("id", id)
+    .select("id, transaction_id, name, team_id")
+    .single();
 
-  return data
+  return data;
 }
 
 type CreateTeamParams = {
-  name: string
-}
+  name: string;
+};
 
 export async function createTeam(supabase: Client, params: CreateTeamParams) {
-  const { data } = await supabase.rpc('create_team', {
+  const { data } = await supabase.rpc("create_team", {
     name: params.name,
-  })
+  });
 
-  return data
+  return data;
 }
 
 type LeaveTeamParams = {
-  userId: string
-  teamId: string
-}
+  userId: string;
+  teamId: string;
+};
 
 export async function leaveTeam(supabase: Client, params: LeaveTeamParams) {
   await supabase
-    .from('users')
+    .from("users")
     .update({
       team_id: null,
     })
-    .eq('id', params.userId)
-    .eq('team_id', params.teamId)
+    .eq("id", params.userId)
+    .eq("team_id", params.teamId);
 
   return supabase
-    .from('users_on_team')
+    .from("users_on_team")
     .delete()
-    .eq('team_id', params.teamId)
-    .eq('user_id', params.userId)
+    .eq("team_id", params.teamId)
+    .eq("user_id", params.userId)
     .select()
-    .single()
+    .single();
 }
 
 export async function joinTeamByInviteCode(supabase: Client, code: string) {
   const {
     data: { session },
-  } = await supabase.auth.getSession()
+  } = await supabase.auth.getSession();
 
   if (!session?.user.email) {
-    return
+    return;
   }
 
   const { data: inviteData } = await getUserInviteQuery(supabase, {
     code,
     email: session.user.email,
-  })
+  });
 
   if (inviteData) {
     // Add user team
-    await supabase.from('users_on_team').insert({
+    await supabase.from("users_on_team").insert({
       user_id: session.user.id,
       team_id: inviteData?.team_id,
       role: inviteData.role,
-    })
+    });
 
     // Set current team
     const { data } = await supabase
-      .from('users')
+      .from("users")
       .update({
         team_id: inviteData?.team_id,
       })
-      .eq('id', session.user.id)
+      .eq("id", session.user.id)
       .select()
-      .single()
+      .single();
 
     // remove invite
-    await supabase.from('user_invites').delete().eq('code', code)
+    await supabase.from("user_invites").delete().eq("code", code);
 
-    return data
+    return data;
   }
 
-  return null
+  return null;
 }
 
 type UpdateInboxByIdParams = {
-  id: string
-  display_name?: string
-  status?: 'deleted'
-  attachment_id?: string
-  transaction_id?: string
-  teamId: string
-}
+  id: string;
+  display_name?: string;
+  status?: "deleted";
+  attachment_id?: string;
+  transaction_id?: string;
+  teamId: string;
+};
 
 export async function updateInboxById(
   supabase: Client,
   params: UpdateInboxByIdParams,
 ) {
-  const { id, teamId, ...data } = params
+  const { id, teamId, ...data } = params;
 
   const inbox = await supabase
-    .from('inbox')
+    .from("inbox")
     .update(data)
-    .eq('id', id)
+    .eq("id", id)
     .select()
-    .single()
+    .single();
 
-  const { data: inboxData } = inbox
+  const { data: inboxData } = inbox;
 
   if (inboxData && params.transaction_id) {
     const { data: attachmentData } = await supabase
-      .from('transaction_attachments')
+      .from("transaction_attachments")
       .insert({
         type: inboxData.content_type,
         path: inboxData.file_path,
@@ -486,49 +486,49 @@ export async function updateInboxById(
         team_id: teamId,
       })
       .select()
-      .single()
+      .single();
 
     if (attachmentData) {
       return supabase
-        .from('inbox')
+        .from("inbox")
         .update({ attachment_id: attachmentData.id })
-        .eq('id', params.id)
+        .eq("id", params.id)
         .select()
-        .single()
+        .single();
     }
   } else {
     if (inboxData?.attachment_id) {
       return supabase
-        .from('transaction_attachments')
+        .from("transaction_attachments")
         .delete()
-        .eq('id', inboxData.attachment_id)
+        .eq("id", inboxData.attachment_id);
     }
   }
 
-  return inbox
+  return inbox;
 }
 
 type CreateProjectParams = {
-  name: string
-  description?: string
-  estimate?: number
-  billable?: boolean
-  rate?: number
-  currency?: string
-}
+  name: string;
+  description?: string;
+  estimate?: number;
+  billable?: boolean;
+  rate?: number;
+  currency?: string;
+};
 
 export async function createProject(
   supabase: Client,
   params: CreateProjectParams,
 ) {
-  const { data: userData } = await getCurrentUserTeamQuery(supabase)
+  const { data: userData } = await getCurrentUserTeamQuery(supabase);
 
   return supabase
-    .from('tracker_projects')
+    .from("tracker_projects")
     .insert({
       ...params,
       team_id: userData?.team_id,
     })
     .select()
-    .single()
+    .single();
 }
