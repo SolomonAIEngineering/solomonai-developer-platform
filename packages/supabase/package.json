@@ -1,6 +1,6 @@
 {
   "name": "@v1/supabase",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
@@ -26,7 +26,5 @@
     "./middleware": "./src/clients/middleware.ts",
     "./queries": "./src/queries/index.ts",
     "./types": "./src/types/index.ts"
-  },
-  "author": "Yoan Yomba",
-  "license": "GNU AFFERO GENERAL PUBLIC LICENSE"
+  }
 }

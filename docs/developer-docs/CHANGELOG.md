@@ -1,4 +1,4 @@
-# @orbitkit/docs
+# @v1/docs
 
 ## 0.4.3
 

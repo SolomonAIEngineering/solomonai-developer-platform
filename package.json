@@ -7,7 +7,8 @@
     "tooling/*",
     "services/*",
     "docs/*",
-    "tooling/config/*"
+    "tooling/config/*",
+    "internal/*"
   ],
   "scripts": {
     "bump-versions": "bun changeset version && bun install",

@@ -1,0 +1,35 @@
+{
+  "name": "@v1/stripe-lib",
+  "version": "0.1.0",
+  "private": true,
+  "keywords": [],
+  "license": "AGPL-3.0",
+  "author": "Yoan Yomba",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "src/*"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "clean": "rm -rf .turbo node_modules",
+    "format": "biome format --write .",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@internal/config": "workspace:*",
+    "@v1/db": "workspace:*",
+    "@stripe/stripe-js": "^4.3.0",
+    "stripe": "^16.12.0"
+  },
+  "devDependencies": {
+    "@v1/typescript": "workspace:*",
+    "typescript": "^5.5.3"
+  }
+}

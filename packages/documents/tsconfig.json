@@ -1,0 +1,5 @@
+{
+  "extends": "@v1/typescript/nextjs.json",
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
