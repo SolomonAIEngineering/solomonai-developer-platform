@@ -1,5 +1,7 @@
 {
-  "extends": ["@v1/typescript/next.json"],
+  "extends": [
+    "@v1/typescript/nextjs.json"
+  ],
   "compilerOptions": {
     "plugins": [
       {
@@ -8,7 +10,9 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "src/*"
+      ]
     }
   },
   "include": [
@@ -26,5 +30,8 @@
     "**/*.cjsx",
     "**/*.mjs",
     "**/*.mjsx"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

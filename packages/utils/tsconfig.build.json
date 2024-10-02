@@ -1,5 +1,5 @@
 {
-  "extends": ["./tsconfig.json", "@orbitkit/tsconfig/build.json"],
+  "extends": ["./tsconfig.json", "@v1/typescript/build.json"],
   "compilerOptions": {
     "incremental": true,
     "tsBuildInfoFile": "./dist/.tsbuildinfo"

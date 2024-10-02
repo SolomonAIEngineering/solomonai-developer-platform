@@ -1,4 +1,5 @@
 import { ArchiveIcon } from "@radix-ui/react-icons";
+import { Check, Copy, Loader2, LogOut } from "lucide-react";
 import { FaXTwitter } from "react-icons/fa6";
 import { FiGithub } from "react-icons/fi";
 import {
@@ -107,6 +108,8 @@ import {
 import { PiDiscordLogo } from "react-icons/pi";
 
 export const Icons = {
+  Loader: Loader2,
+  SignOut: LogOut,
   LogoSmall: (props: any) => (
     <svg
       version="1.1"
