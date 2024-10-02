@@ -13,14 +13,15 @@
     "./file": "./src/file.ts"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
     "clean": "bun run rm -rf dist *.tsbuildinfo",
     "dev": "tsc -w -p tsconfig.build.json",
     "lint": "eslint .  --max-warnings 0",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "build": "tsup"
   },
   "devDependencies": {
     "@v1/eslint": "workspace:*",
-    "@v1/typescript": "workspace:*"
+    "@v1/typescript": "workspace:*",
+    "tsup": "^8.0.2"
   }
 }
