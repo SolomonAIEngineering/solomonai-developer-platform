@@ -6,7 +6,7 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {
-    "build": "tsup"
+    "build": "tsc --noEmit"
   },
   "dependencies": {
     "@internal/encoding": "workspace:^",

@@ -7,7 +7,7 @@
   "types": "./src/index.ts",
   "scripts": {
     "test": "vitest run",
-    "build": "tsup"
+    "build": "tsc --noEmit"
   },
   "dependencies": {
     "@internal/hash": "workspace:^",

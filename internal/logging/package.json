@@ -9,7 +9,7 @@
   "types": "src/index.ts",
   "scripts": {
     "test": "vitest run -c ./vitest.config.ts",
-    "build": "tsup"
+    "build": "tsc --noEmit"
   },
   "dependencies": {
     "@internal/metrics": "workspace:^",
