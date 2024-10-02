@@ -1,23 +1,28 @@
 {
   "name": "@v1/email",
-  "version": "0.1.1",
+  "version": "1.0.1",
   "private": true,
+  "main": "index.ts",
   "scripts": {
-    "clean": "rm -rf .turbo node_modules",
-    "lint": "biome check .",
-    "format": "biome format --write .",
-    "typecheck": "tsc --noEmit",
-    "dev": "email dev -p 3003",
     "build": "email build",
-    "start": "email start"
+    "clean": "rm -rf .turbo node_modules",
+    "dev": "email dev -p 3003",
+    "format": "biome format --write .",
+    "lint": "biome check .",
+    "start": "email start",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@react-email/components": "^0.0.24",
-    "@react-email/tailwind": "^0.1.0"
+    "@v1/ui": "workspace:*",
+    "@react-email/components": "0.0.22",
+    "@react-email/render": "^0.0.17",
+    "@react-email/tailwind": "0.0.19",
+    "date-fns": "^3.6.0",
+    "react-email": "2.1.4",
+    "responsive-react-email": "^0.0.5"
   },
   "devDependencies": {
-    "react-email": "^3.0.1"
-  },
-  "author": "Yoan Yomba",
-  "license": "GNU AFFERO GENERAL PUBLIC LICENSE"
+    "typescript": "^5.5.4",
+    "@v1/typescript": "workspace:*"
+  }
 }

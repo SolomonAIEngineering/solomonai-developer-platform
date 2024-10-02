@@ -1,38 +1,22 @@
-import {
-  Body,
-  Container,
-  Font,
-  Heading,
-  Html,
-  Img,
-  Link,
-  Preview,
-  Tailwind,
-  Text,
-} from '@react-email/components'
-
-import { Footer } from '../components/footer'
-import { GetStarted } from '../components/get-started'
-import { Logo } from '../components/logo'
-
-interface WelcomeProps {
-  fullName: string
-}
-
+'use strict'
+Object.defineProperty(exports, '__esModule', { value: true })
+exports.WelcomeEmail = void 0
+const components_1 = require('@react-email/components')
+const footer_1 = require('../components/footer')
+const get_started_1 = require('../components/get-started')
+const logo_1 = require('../components/logo')
 const baseUrl =
   process.env.VERCEL_ENV === 'production'
     ? 'https://solomon-ai.app/email'
     : 'http://localhost:3000/email'
-
-export const WelcomeEmail = ({ fullName = 'Viktor Hofte' }: WelcomeProps) => {
+const WelcomeEmail = ({ fullName = 'Viktor Hofte' }) => {
   const firstName = fullName.split(' ').at(0)
   const text = `Hi ${firstName}, Welcome to Solomon AI! I'm Yoan, one of the founders. It's really important to us that you have a great experience ramping up.`
-
   return (
-    <Html>
-      <Tailwind>
+    <components_1.Html>
+      <components_1.Tailwind>
         <head>
-          <Font
+          <components_1.Font
             fontFamily='Geist'
             fallbackFontFamily='Helvetica'
             webFont={{
@@ -43,7 +27,7 @@ export const WelcomeEmail = ({ fullName = 'Viktor Hofte' }: WelcomeProps) => {
             fontStyle='normal'
           />
 
-          <Font
+          <components_1.Font
             fontFamily='Geist'
             fallbackFontFamily='Helvetica'
             webFont={{
@@ -54,22 +38,22 @@ export const WelcomeEmail = ({ fullName = 'Viktor Hofte' }: WelcomeProps) => {
             fontStyle='normal'
           />
         </head>
-        <Preview>{text}</Preview>
+        <components_1.Preview>{text}</components_1.Preview>
 
-        <Body className='mx-auto my-auto bg-[#fff] font-sans'>
-          <Container
+        <components_1.Body className='mx-auto my-auto bg-[#fff] font-sans'>
+          <components_1.Container
             className='mx-auto my-[40px] max-w-[600px] border-transparent p-[20px] md:border-[#E8E7E1]'
             style={{ borderStyle: 'solid', borderWidth: 1 }}
           >
-            <Logo baseUrl={baseUrl} />
-            <Heading className='mx-0 my-[30px] p-0 text-center text-[21px] font-normal text-[#121212]'>
+            <logo_1.Logo baseUrl={baseUrl} />
+            <components_1.Heading className='mx-0 my-[30px] p-0 text-center text-[21px] font-normal text-[#121212]'>
               Welcome to Solomon AI
-            </Heading>
+            </components_1.Heading>
 
             <br />
 
             <span className='font-medium'>Hi {firstName},</span>
-            <Text className='text-[#121212]'>
+            <components_1.Text className='text-[#121212]'>
               Welcome to Solomon AI! I'm Yoan, one of the founders.
               <br />
               <br />
@@ -85,38 +69,40 @@ export const WelcomeEmail = ({ fullName = 'Viktor Hofte' }: WelcomeProps) => {
               <br />
               Should you have any questions, please don't hesitate to reply
               directly to this email or to{' '}
-              <Link
+              <components_1.Link
                 href='https://cal.com/solomonai/15min'
                 className='text-[#121212] underline'
               >
                 schedule a call with me
-              </Link>
+              </components_1.Link>
               .
-            </Text>
+            </components_1.Text>
 
             <br />
 
-            <Img
+            <components_1.Img
               src={`${baseUrl}/founders.jpeg`}
               alt='Founders'
               className='mx-auto my-0 block w-full'
             />
 
-            <Text className='text-[#707070]'>Best regards, founders</Text>
+            <components_1.Text className='text-[#707070]'>
+              Best regards, founders
+            </components_1.Text>
 
             <br />
             <br />
 
-            <GetStarted />
+            <get_started_1.GetStarted />
 
             <br />
 
-            <Footer baseUrl={baseUrl} />
-          </Container>
-        </Body>
-      </Tailwind>
-    </Html>
+            <footer_1.Footer baseUrl={baseUrl} />
+          </components_1.Container>
+        </components_1.Body>
+      </components_1.Tailwind>
+    </components_1.Html>
   )
 }
-
-export default WelcomeEmail
+exports.WelcomeEmail = WelcomeEmail
+exports.default = exports.WelcomeEmail

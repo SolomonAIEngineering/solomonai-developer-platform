@@ -1,22 +1,25 @@
 import {
   Body,
+  Button,
   Container,
   Font,
   Heading,
   Html,
-  Img,
-  Link,
   Preview,
+  Section,
   Tailwind,
   Text,
 } from '@react-email/components'
+import { addDays, formatDistance } from 'date-fns'
 
 import { Footer } from '../components/footer'
-import { GetStarted } from '../components/get-started'
 import { Logo } from '../components/logo'
 
 interface WelcomeProps {
   fullName: string
+  expiresAt: string
+  bankName: string
+  teamName: string
 }
 
 const baseUrl =
@@ -24,9 +27,14 @@ const baseUrl =
     ? 'https://solomon-ai.app/email'
     : 'http://localhost:3000/email'
 
-export const WelcomeEmail = ({ fullName = 'Viktor Hofte' }: WelcomeProps) => {
+export const ConnectionExpireEmail = ({
+  fullName = 'Yoan Yomba',
+  expiresAt = addDays(new Date(), 4).toISOString(),
+  bankName = 'Revolut',
+  teamName = 'Solomon AI',
+}: WelcomeProps) => {
   const firstName = fullName.split(' ').at(0)
-  const text = `Hi ${firstName}, Welcome to Solomon AI! I'm Yoan, one of the founders. It's really important to us that you have a great experience ramping up.`
+  const text = `Hi ${firstName}, We wanted to inform you that our connection to your bank ${bankName} for your team ${teamName} will expire in ${formatDistance(new Date(expiresAt), new Date())}.`
 
   return (
     <Html>
@@ -63,51 +71,35 @@ export const WelcomeEmail = ({ fullName = 'Viktor Hofte' }: WelcomeProps) => {
           >
             <Logo baseUrl={baseUrl} />
             <Heading className='mx-0 my-[30px] p-0 text-center text-[21px] font-normal text-[#121212]'>
-              Welcome to Solomon AI
+              Bank Connection Expiring Soon
             </Heading>
 
             <br />
 
             <span className='font-medium'>Hi {firstName},</span>
             <Text className='text-[#121212]'>
-              Welcome to Solomon AI! I'm Yoan, one of the founders.
+              We hope you're having a great day!
               <br />
               <br />
-              We've been working on Solomon AI for the past months, and during
-              this time, we've implemented the basic functionality to get
-              started. However, with your feedback, we can make the right
-              decisions to help run your business smarter.
+              We wanted to inform you that our connection to your bank{' '}
+              <strong>{bankName}</strong> for your team{' '}
+              <strong>{teamName}</strong> will expire in{' '}
+              {formatDistance(new Date(expiresAt), new Date())}. To ensure that
+              Solomon AI continues to run smoothly, please reconnect your bank.
               <br />
               <br />
-              During our beta phase, you may encounter some bugs, but we
-              genuinely want all your feedback.
-              <br />
-              <br />
-              Should you have any questions, please don't hesitate to reply
-              directly to this email or to{' '}
-              <Link
-                href='https://cal.com/solomonai/15min'
-                className='text-[#121212] underline'
-              >
-                schedule a call with me
-              </Link>
-              .
+              The good news? It only takes 60 seconds to get everything back on
+              track!
             </Text>
 
-            <br />
-
-            <Img
-              src={`${baseUrl}/founders.jpeg`}
-              alt='Founders'
-              className='mx-auto my-0 block w-full'
-            />
-
-            <Text className='text-[#707070]'>Best regards, founders</Text>
-
-            <br />
-            <br />
-
-            <GetStarted />
+            <Section className='mb-[50px] mt-[50px] text-center'>
+              <Button
+                className='rounded-md border border-solid border-[#121212] bg-transparent px-6 py-3 text-center text-[14px] font-medium text-[#121212] text-primary no-underline'
+                href='https://solomon-ai.app/'
+              >
+                Reconnect
+              </Button>
+            </Section>
 
             <br />
 
@@ -119,4 +111,4 @@ export const WelcomeEmail = ({ fullName = 'Viktor Hofte' }: WelcomeProps) => {
   )
 }
 
-export default WelcomeEmail
+export default ConnectionExpireEmail
