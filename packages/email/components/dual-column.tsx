@@ -1,18 +1,17 @@
-import React from 'react'
-
-import { Section } from '@react-email/section'
+import { Section } from "@react-email/section";
+import React from "react";
 
 interface DualColumnProps {
   styles?: Omit<
     React.CSSProperties,
-    'padding' | 'paddingLeft' | 'paddingRight' | 'paddingTop' | 'paddingBottom'
-  >
-  pX?: number
-  pY?: number
-  columnOneContent: React.ReactNode
-  columnOneStyles?: React.CSSProperties
-  columnTwoContent: React.ReactNode
-  columnTwoStyles?: React.CSSProperties
+    "padding" | "paddingLeft" | "paddingRight" | "paddingTop" | "paddingBottom"
+  >;
+  pX?: number;
+  pY?: number;
+  columnOneContent: React.ReactNode;
+  columnOneStyles?: React.CSSProperties;
+  columnTwoContent: React.ReactNode;
+  columnTwoStyles?: React.CSSProperties;
 }
 
 export const DualColumn: React.FC<DualColumnProps> = ({
@@ -24,7 +23,7 @@ export const DualColumn: React.FC<DualColumnProps> = ({
   columnTwoStyles,
   styles,
 }) => {
-  const colMaxWidth = pX ? (600 - 2 * pX) / 2 : 600 / 2
+  const colMaxWidth = pX ? (600 - 2 * pX) / 2 : 600 / 2;
 
   return (
     <Section
@@ -45,5 +44,5 @@ export const DualColumn: React.FC<DualColumnProps> = ({
         {columnTwoContent}
       </Section>
     </Section>
-  )
-}
+  );
+};

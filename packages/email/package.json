@@ -1,28 +1,29 @@
 {
   "name": "@v1/email",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "private": true,
   "main": "index.ts",
   "scripts": {
-    "build": "email build",
     "clean": "rm -rf .turbo node_modules",
-    "dev": "email dev -p 3003",
-    "format": "biome format --write .",
     "lint": "biome check .",
-    "start": "email start",
-    "typecheck": "tsc --noEmit"
+    "format": "biome format --write .",
+    "typecheck": "tsc --noEmit",
+    "dev": "email dev -p 3003",
+    "build": "email build",
+    "start": "email start"
   },
   "dependencies": {
     "@v1/ui": "workspace:*",
-    "@react-email/components": "0.0.22",
-    "@react-email/render": "^0.0.17",
-    "@react-email/tailwind": "0.0.19",
+    "@internal/config": "workspace:*",
+    "@react-email/components": "0.0.25",
+    "@react-email/render": "^1.0.1",
+    "@react-email/tailwind": "0.1.0",
     "date-fns": "^3.6.0",
-    "react-email": "2.1.4",
+    "react-email": "3.0.1",
     "responsive-react-email": "^0.0.5"
   },
   "devDependencies": {
-    "typescript": "^5.5.4",
+    "typescript": "^5.6.2",
     "@v1/typescript": "workspace:*"
   }
 }
