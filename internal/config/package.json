@@ -16,7 +16,8 @@
     "dev": "storybook dev -p 6006",
     "format": "biome --write .",
     "lint": "biome check .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "build": "tsup"
   },
   "dependencies": {
     "typescript": "^5.4.5"
@@ -24,6 +25,7 @@
   "devDependencies": {
     "@microsoft/api-extractor": "^7.44.1",
     "@v1/typescript": "workspace:*",
-    "@types/node": "^20.12.12"
+    "@types/node": "^20.12.12",
+    "tsup": "^8.0.2"
   }
 }

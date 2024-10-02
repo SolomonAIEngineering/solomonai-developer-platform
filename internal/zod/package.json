@@ -10,6 +10,10 @@
     "zod-openapi": "^2.19.0"
   },
   "devDependencies": {
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.3",
+    "tsup": "^8.0.2"
+  },
+  "scripts": {
+    "build": "tsup"
   }
 }

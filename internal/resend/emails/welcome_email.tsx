@@ -12,7 +12,7 @@ import { Section } from '@react-email/section'
 import { Tailwind } from '@react-email/tailwind'
 import { Text } from '@react-email/text'
 
-import tailwindConfig from '../tailwind.config'
+import tailwindConfig from '@v1/ui/tailwind.config.ts'
 
 export type Props = {
   username: string
@@ -26,7 +26,7 @@ export function WelcomeEmail() {
         <Head />
         <Section className='bg-white'>
           <Container className='container mx-auto'>
-            <Heading className='text-semibold font-sans text-2xl'>
+            <Heading className='font-sans text-2xl text-semibold'>
               Welcome to Solomon AI!
             </Heading>
             <Text>Hi there!</Text>

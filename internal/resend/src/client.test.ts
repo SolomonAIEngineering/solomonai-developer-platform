@@ -1,7 +1,7 @@
 import { render } from '@react-email/render'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { Resend } from './client'
+import { Resend } from './client.tsx'
 
 // Mock the external dependencies
 vi.mock('@react-email/render', () => ({

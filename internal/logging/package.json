@@ -8,7 +8,8 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
-    "test": "vitest run -c ./vitest.config.ts"
+    "test": "vitest run -c ./vitest.config.ts",
+    "build": "tsup"
   },
   "dependencies": {
     "@internal/metrics": "workspace:^",
@@ -18,6 +19,7 @@
   "devDependencies": {
     "@v1/typescript": "workspace:*",
     "@types/node": "^20.14.11",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.3",
+    "tsup": "^8.0.2"
   }
 }

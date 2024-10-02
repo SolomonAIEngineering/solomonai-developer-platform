@@ -4,8 +4,7 @@ exports.default = NotFound;
 const Button_1 = require("@/components/Button");
 const HeroPattern_1 = require("@/components/HeroPattern");
 function NotFound() {
-  return (
-    <>
+    return (<>
       <HeroPattern_1.HeroPattern />
       <div className="mx-auto flex h-full max-w-xl flex-col items-center justify-center py-16 text-center">
         <p className="text-sm font-semibold text-zinc-900 dark:text-white">
@@ -21,6 +20,5 @@ function NotFound() {
           Back to docs
         </Button_1.Button>
       </div>
-    </>
-  );
+    </>);
 }

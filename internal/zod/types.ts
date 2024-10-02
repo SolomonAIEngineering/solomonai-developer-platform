@@ -24,9 +24,6 @@ export type ExpenseDistributionByPaymentChannel = z.infer<
   typeof schemas.ExpenseDistributionByPaymentChannelSchema
 >
 
-export type LargeTransactionsAnalysis = z.infer<
-  typeof schemas.LargeTransactionsAnalysisSchema
->
 
 export type WeeklyExpenseVolatility = z.infer<
   typeof schemas.WeeklyExpenseVolatilitySchema

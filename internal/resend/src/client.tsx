@@ -3,11 +3,11 @@ import React from 'react'
 import { render } from '@react-email/render'
 import { Resend as Client } from 'resend'
 
-import { PaymentIssue } from '../emails/payment_issue'
-import { SecretScanningKeyDetected } from '../emails/secret_scanning_key_detected'
-import { SubscriptionEnded } from '../emails/subscription_ended'
-import { TrialEnded } from '../emails/trial_ended'
-import { WelcomeEmail } from '../emails/welcome_email'
+import { PaymentIssue } from '../emails/payment_issue.tsx'
+import { SecretScanningKeyDetected } from '../emails/secret_scanning_key_detected.tsx'
+import { SubscriptionEnded } from '../emails/subscription_ended.tsx'
+import { TrialEnded } from '../emails/trial_ended.tsx'
+import { WelcomeEmail } from '../emails/welcome_email.tsx'
 
 export class Resend {
   public readonly client: Client
