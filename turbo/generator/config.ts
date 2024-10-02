@@ -52,34 +52,18 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
           type: "add",
           path: path.join(rootPath, "packages", "{{name}}", ".gitkeep"),
           template: "",
+          force: true,
         },
-        // Create package.json
+        // Add all files for the selected package type
         {
-          type: "add",
-          path: path.join(rootPath, "packages", "{{name}}", "package.json"),
-          templateFile: answers.type === "react-library"
-            ? "templates/react-package/package.json.hbs"
-            : "templates/package/package.json.hbs",
-        },
-        // Create tsconfig.json
-        {
-          type: "add",
-          path: path.join(rootPath, "packages", "{{name}}", "tsconfig.json"),
-          templateFile: answers.type === "react-library"
-            ? "templates/react-package/tsconfig.json.hbs"
-            : "templates/package/tsconfig.json.hbs",
-        },
-        // Create index.ts
-        {
-          type: "add",
-          path: path.join(rootPath, "packages", "{{name}}", "index.ts"),
-          template: "export * from './src';",
-        },
-        // Create src/index.ts
-        {
-          type: "add",
-          path: path.join(rootPath, "packages", "{{name}}", "src", "index.ts"),
-          template: "export const name = '{{name}}';",
+          type: "addMany",
+          destination: path.join(rootPath, "packages", "{{name}}"),
+          base: `templates/${answers?.type === "react-library" ? "react-package" : "package"}`,
+          templateFiles: `templates/${answers?.type === "react-library" ? "react-package" : "package"}/**/*`,
+          globOptions: {
+            dot: true,
+          },
+          force: true,
         },
         // Update root package.json to include new package
         {
@@ -102,12 +86,31 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
       ];
 
       // Add React-specific files for react-library type
-      if (answers.type === "react-library") {
-        actions.push({
-          type: "add",
-          path: path.join(rootPath, "packages", "{{name}}", "next.config.js"),
-          templateFile: "templates/react-package/next.config.json.hbs",
-        });
+      if (answers?.type === "react-library") {
+        actions.push(
+          // Add turbo/generators/hook-templates files
+          {
+            type: "addMany",
+            destination: path.join(rootPath, "packages", "{{name}}", "turbo", "generators", "hook-templates"),
+            base: "templates/react-package/turbo/generators/hook-templates",
+            templateFiles: "templates/react-package/turbo/generators/hooktemplates/*.hbs",
+            globOptions: {
+              dot: true,
+            },
+            force: true,
+          },
+          // Add turbo/generators/templates files
+          {
+            type: "addMany",
+            destination: path.join(rootPath, "packages", "{{name}}", "turbo", "generators", "templates"),
+            base: "templates/react-package/turbo/generators/templates",
+            templateFiles: "templates/react-package/turbo/generators/templates/*.hbs",
+            globOptions: {
+              dot: true,
+            },
+            force: true,
+          }
+        );
       }
 
       // Log the actions for debugging
