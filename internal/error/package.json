@@ -1,0 +1,29 @@
+{
+  "name": "@internal/error",
+  "version": "0.2.0",
+  "private": false,
+  "description": "",
+  "keywords": [],
+  "author": "Yoan Yomba",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "./dist/**"
+  ],
+  "scripts": {
+    "build": "tsup"
+  },
+  "dependencies": {
+    "zod": "^3.23.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "tsup": "^8.0.2",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

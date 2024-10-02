@@ -1,0 +1,12 @@
+{
+  "name": "@internal/encoding",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Yoan Yomba",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "devDependencies": {
+    "typescript": "^5.5.3",
+    "vitest": "^1.6.0"
+  }
+}
