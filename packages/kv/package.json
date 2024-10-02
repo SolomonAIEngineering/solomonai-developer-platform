@@ -18,6 +18,6 @@
     "@upstash/redis": "^1.34.0",
     "server-only": "^0.0.1"
   },
-  "author": "yoan yomba",
+  "author": "Yoan Yomba",
   "license": "GNU AFFERO GENERAL PUBLIC LICENSE"
 }

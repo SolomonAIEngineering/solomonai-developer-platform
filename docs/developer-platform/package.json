@@ -65,5 +65,6 @@
     "@v1/eslint": "workspace:^",
     "@v1/tailwind": "workspace:^",
     "@v1/typescript": "workspace:^"
-  }
+  },
+  "author": "Yoan Yomba"
 }

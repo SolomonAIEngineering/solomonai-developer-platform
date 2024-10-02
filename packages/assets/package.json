@@ -4,6 +4,8 @@
   "private": true,
   "description": "Solomon AI's assets package",
   "license": "MIT",
-  "author": "Solomon AI",
-  "files": ["**/*"]
+  "author": "Yoan Yomba",
+  "files": [
+    "**/*"
+  ]
 }

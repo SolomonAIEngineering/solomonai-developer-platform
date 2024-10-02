@@ -4,7 +4,7 @@
   "private": true,
   "description": "Tailwindcss preset for OrbitKit workspace",
   "license": "MIT",
-  "author": "OrbitKit",
+  "author": "Yoan Yomba",
   "type": "module",
   "exports": {
     ".": "./src/preset.ts"

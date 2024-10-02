@@ -20,6 +20,6 @@
     "@types/jest": "^27.0.1",
     "ts-jest": "^27.0.5"
   },
-  "author": "yoan yomba",
+  "author": "Yoan Yomba",
   "license": "GNU AFFERO GENERAL PUBLIC LICENSE"
 }

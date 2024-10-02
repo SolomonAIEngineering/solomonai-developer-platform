@@ -290,7 +290,11 @@
     "./widget/surveys-widget": "./src/components/widget/surveys-widget.tsx",
     "./wrapper/assistant-provider-wrapper": "./src/wrapper/assistant-provider-wrapper.tsx"
   },
-  "files": ["tailwind.config.ts", "postcss.config.js", "globals.css"],
+  "files": [
+    "tailwind.config.ts",
+    "postcss.config.js",
+    "globals.css"
+  ],
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "dev": "storybook dev -p 6006",
@@ -389,5 +393,6 @@
     "react-dom": "18.3.1",
     "storybook": "^8.3.1",
     "typescript": "^5.6.2"
-  }
+  },
+  "author": "Yoan Yomba"
 }

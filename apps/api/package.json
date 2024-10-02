@@ -12,6 +12,6 @@
   "dependencies": {
     "supabase": "^1.191.3"
   },
-  "author": "yoan yomba",
+  "author": "Yoan Yomba",
   "license": "GNU AFFERO GENERAL PUBLIC LICENSE"
 }

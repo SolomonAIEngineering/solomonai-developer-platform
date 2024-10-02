@@ -4,7 +4,7 @@
   "private": true,
   "description": "Common utilities for v1",
   "license": "MIT",
-  "author": "v1",
+  "author": "Yoan Yomba",
   "sideEffects": false,
   "type": "module",
   "exports": {
