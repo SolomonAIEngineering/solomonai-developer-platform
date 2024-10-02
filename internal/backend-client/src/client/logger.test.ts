@@ -1,6 +1,6 @@
 // logger.test.ts
 
-import { Logger } from './logger'
+import { Logger } from './logger.ts'
 
 describe('Logger', () => {
   let consoleErrorSpy: jest.SpyInstance

@@ -1,8 +1,8 @@
 // config-validator.test.ts
 
-import { ApiConfig } from './config'
-import { ConfigValidator } from './config-validator'
-import { Logger } from './logger'
+import { ConfigValidator } from './config-validator.ts'
+import { ApiConfig } from './config.ts'
+import { Logger } from './logger.ts'
 
 // Mock the Logger
 jest.mock('./logger', () => ({

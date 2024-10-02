@@ -4,14 +4,14 @@
 
 import { Middleware } from 'client-typescript-sdk'
 
-import { ApiService } from './api-service'
-import { ApiConfig, getApiConfig } from './config'
-import { ConfigValidator } from './config-validator'
-import { Logger } from './logger'
+import { ApiService } from './api-service.ts'
+import { ConfigValidator } from './config-validator.ts'
+import { ApiConfig, getApiConfig } from './config.ts'
+import { Logger } from './logger.ts'
 import {
   addCustomHeaderMiddleware,
   errorHandlingMiddleware,
-} from './middleware'
+} from './middleware.ts'
 
 /**
  * Factory class for creating and managing ApiService instances.

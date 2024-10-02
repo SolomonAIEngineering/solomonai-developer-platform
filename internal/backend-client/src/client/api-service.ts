@@ -9,9 +9,9 @@ import {
   WorkspaceServiceRestApi,
 } from 'client-typescript-sdk'
 
-import { ApiConfig } from './config'
-import { Logger } from './logger'
-import { IApiService } from './types'
+import { ApiConfig } from './config.ts'
+import { Logger } from './logger.ts'
+import { IApiService } from './types.ts'
 
 /**
  * ApiService class that implements IApiService interface.

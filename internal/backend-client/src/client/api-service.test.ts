@@ -9,9 +9,9 @@ import {
   WorkspaceServiceRestApi,
 } from 'client-typescript-sdk'
 
-import { ApiService } from './api-service'
-import { ApiConfig } from './config'
-import { Logger } from './logger'
+import { ApiService } from './api-service.ts'
+import { ApiConfig } from './config.ts'
+import { Logger } from './logger.ts'
 
 // Mock the dependencies
 jest.mock('client-typescript-sdk')

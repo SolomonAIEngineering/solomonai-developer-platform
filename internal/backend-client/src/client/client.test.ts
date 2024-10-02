@@ -8,7 +8,7 @@ import {
   WorkspaceServiceRestApi,
 } from 'client-typescript-sdk'
 
-import { BackendClient, getConfiguration, SingletonHttpClient } from './client'
+import { BackendClient, getConfiguration, SingletonHttpClient } from './client.ts'
 
 // Mock the client-typescript-sdk
 jest.mock('client-typescript-sdk', () => {

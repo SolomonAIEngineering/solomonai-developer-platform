@@ -1,7 +1,7 @@
 // config-validator.ts
 
-import { ApiConfig } from './config'
-import { Logger } from './logger'
+import { ApiConfig } from './config.ts'
+import { Logger } from './logger.ts'
 
 /**
  * ConfigValidator class for validating API configurations.

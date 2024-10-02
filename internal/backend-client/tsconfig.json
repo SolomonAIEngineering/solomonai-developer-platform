@@ -4,9 +4,19 @@
     "incremental": true,
     "tsBuildInfoFile": ".tsbuildinfo",
     "noImplicitAny": false,
-    "jsx": "preserve",
-    "moduleResolution": "Bundler",
-    "exactOptionalPropertyTypes": false
+    "jsx": "react",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
   },
   "include": ["**/*.ts", "**/*.js"]
 }

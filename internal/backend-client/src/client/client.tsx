@@ -13,7 +13,7 @@ import {
 import {
   addCustomHeaderMiddleware,
   errorHandlingMiddleware,
-} from './middleware'
+} from './middleware.ts'
 
 /**
  * Returns a Configuration object with the specified API URL, token, and

@@ -1,7 +1,7 @@
 /* eslint-disable turbo/no-undeclared-env-vars */
 // config.test.ts
 
-import { ApiConfig, getApiConfig } from './config'
+import { ApiConfig, getApiConfig } from './config.ts'
 
 describe('API Configuration', () => {
   const originalEnv = process.env

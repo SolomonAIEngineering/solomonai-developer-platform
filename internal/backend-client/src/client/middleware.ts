@@ -6,7 +6,7 @@ import {
   type ResponseContext,
 } from 'client-typescript-sdk'
 
-import { Logger } from './logger'
+import { Logger } from './logger.ts'
 
 /**
  * Middleware that adds custom headers to outgoing requests.
