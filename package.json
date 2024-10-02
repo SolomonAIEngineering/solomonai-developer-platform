@@ -1,12 +1,7 @@
 {
   "name": "typescript-saas-template",
   "private": true,
-  "workspaces": [
-    "packages/*",
-    "apps/*",
-    "tooling/*",
-    "services/*"
-  ],
+  "workspaces": ["packages/*", "apps/*", "tooling/*", "services/*"],
   "scripts": {
     "bump-versions": "bun changeset version && bun install",
     "changeset": "bunx changeset",
@@ -39,9 +34,7 @@
     "commit": "git-cz"
   },
   "lint-staged": {
-    "**/*.{md,mdx}": [
-      "bun run lint:md"
-    ]
+    "**/*.{md,mdx}": ["bun run lint:md"]
   },
   "config": {
     "commitizen": {
