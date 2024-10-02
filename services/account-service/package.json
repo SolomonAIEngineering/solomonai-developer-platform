@@ -1,6 +1,6 @@
 {
   "name": "@v1/account-service",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "base": ".",
   "type": "module",
