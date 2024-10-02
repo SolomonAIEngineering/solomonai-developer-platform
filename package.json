@@ -8,26 +8,7 @@
     "services/*",
     "docs/*",
     "tooling/config/*",
-    "internal/*",
-    "packages/test",
-    "packages/test",
-    "packages/test",
-    "packages/tester",
-    "packages/test",
-    "packages/yoan",
-    "packages/yoan",
-    "packages/yoan",
-    "packages/yoan",
-    "packages/yoan",
-    "packages/yoan",
-    "packages/yoan",
-    "packages/yoan",
-    "packages/yooo",
-    "packages/yazzz",
-    "packages/noval",
-    "packages/yoa",
-    "packages/zoy",
-    "packages/zo"
+    "internal/*"
   ],
   "scripts": {
     "bump-versions": "bun changeset version && bun install",
@@ -62,7 +43,9 @@
     "type-check": "tsc  --noemit"
   },
   "lint-staged": {
-    "**/*.{md,mdx}": ["bun run lint:md"]
+    "**/*.{md,mdx}": [
+      "bun run lint:md"
+    ]
   },
   "config": {
     "commitizen": {
