@@ -24,7 +24,6 @@
     "typecheck": "turbo typecheck",
     "prepare": "husky",
     "gen": "turbo gen --config 'turbo/generator/config.ts'",
-    "gateway:format": "cd services/gateway && bun run format:check || (bun run format && return 1) && cd ../../",
     "saas-site": "turbo dev --filter=@v1/saas-site",
     "startup-site": "turbo dev --filter=@v1/startup-site",
     "web": "turbo dev --filter=@v1/web",
@@ -60,5 +59,8 @@
     "yargs": "^17.7.2",
     "husky": "^9.1.5"
   },
-  "packageManager": "bun@1.1.26"
+  "packageManager": "bun@1.1.26",
+  "dependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.5.13"
+  }
 }

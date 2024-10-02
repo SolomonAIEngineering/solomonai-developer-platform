@@ -1,1 +1,2 @@
-bun commitlint --edit ${1}
+#!/bin/sh
+cd "$(dirname "$0")/.." && bunx --no -- commitlint --edit $1
