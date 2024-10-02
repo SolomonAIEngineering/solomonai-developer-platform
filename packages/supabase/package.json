@@ -13,7 +13,7 @@
     "@v1/logger": "workspace:*",
     "react": "^18.3.1",
     "server-only": "^0.0.1",
-    "supabase": "^1.191.3"
+    "supabase": "1.88.0"
   },
   "devDependencies": {
     "@supabase/supabase-js": "^2.45.3",
@@ -26,5 +26,9 @@
     "./middleware": "./src/clients/middleware.ts",
     "./queries": "./src/queries/index.ts",
     "./types": "./src/types/index.ts"
+  },
+  "overrides": {
+    "tar": "6.1.13",
+    "mkdirp": "1.0.4"
   }
 }

@@ -73,7 +73,9 @@
     "typescript": "^5.5.4",
     "yargs": "^17.7.2",
     "husky": "^9.1.5",
-    "@playwright/test": "^1.46.1"
+    "@playwright/test": "^1.46.1",
+    "tar": "6.1.13",
+    "mkdirp": "1.0.4"
   },
   "packageManager": "bun@1.1.26",
   "dependencies": {

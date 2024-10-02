@@ -9,7 +9,7 @@ export default create({
 
   brandTitle: "Solomon AI | Storybook",
   brandUrl: "https://solomon-ai.app",
-  brandImage: "https://cdn.midday.ai/opengraph-image.jpg",
+  brandImage: "https://cdn.solomon-ai.ai/opengraph-image.jpg",
   brandTarget: "_self",
 
   //

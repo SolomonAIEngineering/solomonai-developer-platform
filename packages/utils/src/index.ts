@@ -1,3 +1,3 @@
-export * from "./file.ts";
-export * from "./filesystem.ts";
-export * from "./url.ts";
+export * from "./file";
+export * from "./filesystem";
+export * from "./url";
