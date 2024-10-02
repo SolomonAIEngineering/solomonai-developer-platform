@@ -1,9 +1,13 @@
 {
   "name": "typescript-saas-template",
   "private": true,
-  "workspaces": ["packages/*", "apps/*", "tooling/*", "services/*"],
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "tooling/*",
+    "services/*"
+  ],
   "scripts": {
-    "commit": "git-cz",
     "lint:md": "markdownlint \"**/*.md\" --dot --ignore node_modules --ignore .changeset --ignore services --ignore .github",
     "lint:spell": "cspell \"**\" --gitignore --dot --no-progress --cache --unique ",
     "release": "turbo run build lint typecheck && changeset version && changeset publish",
@@ -27,10 +31,15 @@
     "saas-site": "turbo dev --filter=@v1/saas-site",
     "startup-site": "turbo dev --filter=@v1/startup-site",
     "web": "turbo dev --filter=@v1/web",
-    "app": "turbo dev --filter=@v1/app"
+    "app": "turbo dev --filter=@v1/app",
+    "tailwind-config-viewer": " tailwind-config-viewer -c ./index.js -o -p 3333",
+    "compile-tw-config": "tsc --noEmitOnError tooling/tailwind-config/index.ts --outDir  ./",
+    "commit": "git-cz"
   },
   "lint-staged": {
-    "**/*.{md,mdx}": ["bun run lint:md"]
+    "**/*.{md,mdx}": [
+      "bun run lint:md"
+    ]
   },
   "config": {
     "commitizen": {
@@ -61,6 +70,7 @@
   },
   "packageManager": "bun@1.1.26",
   "dependencies": {
-    "@cloudflare/vitest-pool-workers": "^0.5.13"
+    "@cloudflare/vitest-pool-workers": "^0.5.13",
+    "tailwind-config-viewer": "^2.0.4"
   }
 }

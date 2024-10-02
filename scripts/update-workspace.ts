@@ -55,6 +55,11 @@ const argv = yargs(hideBin(process.argv))
     demandOption: false,
     description: 'Include the root package.json',
   })
+  .help('h')
+  .alias('h', 'help')
+  .usage('Usage: $0 [options]')
+  .example('$0 -n @newnamespace -v 1.0.0', 'Update namespace and version')
+  .epilog('For more information, visit https://github.com/your-repo')
   .parse()
 
 const newLicense = argv.license
