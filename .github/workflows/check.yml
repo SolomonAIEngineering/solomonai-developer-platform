@@ -1,4 +1,6 @@
 name: Check
+env:
+  TIPTAP_PRO_TOKEN: ${{ secrets.TIPTAP_PRO_TOKEN }}
 on:
   push:
     paths:
