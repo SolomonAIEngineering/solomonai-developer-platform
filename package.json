@@ -41,7 +41,9 @@
     "commit": "git-cz"
   },
   "lint-staged": {
-    "**/*.{md,mdx}": ["bun run lint:md"]
+    "**/*.{md,mdx}": [
+      "bun run lint:md"
+    ]
   },
   "config": {
     "commitizen": {
@@ -68,7 +70,8 @@
     "turbo": "2.1.1",
     "typescript": "^5.5.4",
     "yargs": "^17.7.2",
-    "husky": "^9.1.5"
+    "husky": "^9.1.5",
+    "@playwright/test": "^1.46.1"
   },
   "packageManager": "bun@1.1.26",
   "dependencies": {
