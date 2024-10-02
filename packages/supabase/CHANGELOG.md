@@ -1,9 +1,7 @@
-# @v1/supabase
+# @orbitkit/supabase
 
-## 1.0.1
+## 2.0.0
 
-### Patch Changes
+### Major Changes
 
-- 11aa7be: update the repo
-- Updated dependencies [11aa7be]
-  - @v1/logger@0.1.1
+- 2a890e2: release first major version

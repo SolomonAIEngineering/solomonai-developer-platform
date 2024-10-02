@@ -1,7 +1,6 @@
+import { getUser } from "@v1/supabase/cached-queries";
+import { NextRequest, NextResponse } from "next/server";
 import { createPaymentIntent } from "../index";
-import { getUser } from "@v1/supabase/queries";
-import { NextResponse } from "next/server";
-import { NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
   const user = await getUser();
@@ -18,11 +17,17 @@ export async function POST(request: NextRequest) {
       { status: 400 },
     );
   }
-
   try {
-    const paymentIntent = await createPaymentIntent(user.id, amount, currency);
+    if (!user.data?.id) {
+      return NextResponse.json(
+        { error: "User ID not found" },
+        { status: 400 }
+      );
+    }
+    const paymentIntent = await createPaymentIntent(user.data.id, amount, currency);
     return NextResponse.json(paymentIntent);
   } catch (error) {
+    console.error("Error creating payment intent:", error);
     return NextResponse.json(
       { error: "Failed to create payment intent" },
       { status: 500 },

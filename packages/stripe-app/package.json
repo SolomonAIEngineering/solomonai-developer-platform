@@ -1,0 +1,29 @@
+{
+  "name": "@v1/stripe-app",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Test",
+  "license": "~~proprietary~~",
+  "scripts": {
+    "lint": "eslint --ext ts,tsx src",
+    "test": "jest"
+  },
+  "eslintConfig": {
+    "extends": [
+      "./node_modules/@stripe/ui-extension-tools/eslintrc.ui-extension.js"
+    ]
+  },
+  "resolutions": {
+    "@types/react": "^17.0.2"
+  },
+  "dependencies": {
+    "@stripe/ui-extension-sdk": "^8.8.1",
+    "stripe": "^13.11.0"
+  },
+  "devDependencies": {
+    "@stripe/ui-extension-tools": "^0.0.1"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}

@@ -1,357 +1,974 @@
-import "server-only";
-import { unstable_cache } from "next/cache";
-import { cache } from "react";
-import { createClient } from "@v1/supabase/server";
-import { logger } from "@v1/logger";
+import 'server-only'
+
+import { cache } from 'react'
+import { unstable_cache } from 'next/cache'
+
+import type {
+  GetBurnRateQueryParams,
+  GetCategoriesParams,
+  GetExpensesQueryParams,
+  GetMetricsParams,
+  GetRunwayQueryParams,
+  GetSpendingParams,
+  GetTeamBankAccountsParams,
+  GetTrackerProjectsQueryParams,
+  GetTrackerRecordsByRangeParams,
+  GetTransactionsParams,
+} from '../queries'
+import type {
+  GetDailyExpensesQueryParams,
+  GetExpenseAnomaliesQueryParams,
+  GetExpenseComparisonQueryParams,
+  GetExpenseDistributionByDayOfWeekQueryParams,
+  GetExpenseForecastQueryParams,
+  GetExpenseGrowthRateQueryParams,
+  GetExpensesByCategoryQueryParams,
+  GetExpensesByMerchantQueryParams,
+  GetExpensesByPaymentChannelQueryParams,
+  GetExpenseTrendsByTimeOfDayQueryParams,
+  GetMonthlyExpensesQueryParams,
+  GetRecurringExpensesQueryParams,
+  GetTopExpenseCategoriesQueryParams,
+  GetWeeklyExpenseTrendsQueryParams,
+} from './analytic-queries'
+
+import { createClient } from '../client/server'
 import {
-  User,
-  Post,
-  Customer,
-  Subscription,
-  Price,
-  Product,
-  UserWithPosts,
-  UserWithSubscriptions,
-  SubscriptionWithUserAndPrice,
-  ProductWithPrices,
-} from "../types/db-types";
-import {
-  getActivePricesWithProductsQuery,
-  getCustomerByStripeIdQuery,
-  getCustomersQuery,
-  getPostByIdQuery,
-  getPostsQuery,
-  getPricesQuery,
-  getProductsWithPricesQuery,
-  getSubscriptionsQuery,
-  getSubscriptionWithUserAndPriceQuery,
-  getUser,
+  getBankAccountsCurrenciesQuery,
+  getBankConnectionsByTeamIdQuery,
+  getBurnRateQuery,
+  getCategoriesQuery,
+  getExpensesQuery,
+  getMetricsQuery,
+  GetRecentTransactionsParams,
+  getRecentTransactionsQuery,
+  getRunwayQuery,
+  getSpendingQuery,
+  getTeamBankAccountsQuery,
+  getTeamInvitesQuery,
+  getTeamMembersQuery,
+  getTeamsByUserIdQuery,
+  getTeamSettingsQuery,
+  getTeamUserQuery,
+  getTrackerProjectsQuery,
+  getTrackerRecordsByRangeQuery,
+  getTransactionsByBankAccountQuery,
+  GetTransactionsByBankAccountQueryParams,
+  getTransactionsQuery,
+  getUserInvitesQuery,
   getUserQuery,
-  getUsersQuery,
-} from "./queries";
+  getUserSubscriptionsQuery,
+} from '../queries'
+import {
+  getDailyExpensesQuery,
+  getExpenseAnomaliesQuery,
+  getExpenseBreakdownByLocationQuery,
+  GetExpenseBreakdownByLocationQueryParams,
+  getExpenseComparisonQuery,
+  getExpenseDistributionByDayOfWeekQuery,
+  getExpenseForecastQuery,
+  getExpenseGrowthRateQuery,
+  getExpensesByCategoryQuery,
+  getExpensesByMerchantQuery,
+  getExpensesByPaymentChannelQuery,
+  getExpenseTrendsByTimeOfDayQuery,
+  getInventoryCostAnalysisQuery,
+  GetInventoryCostAnalysisQueryParams,
+  getMonthlyExpensesQuery,
+  getRecurringExpensesQuery,
+  getTopExpenseCategoriesQuery,
+  getWeeklyExpenseTrendsQuery,
+} from './analytic-queries'
 
-const supabase = createClient();
+export const getUserSubscriptions = async (invalidateCache = false) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const userId = user?.data?.id
 
-/**
- * Cached function to get user subscriptions
- * @param invalidateCache Whether to bypass the cache
- * @returns User subscriptions or null if user is not authenticated
- */
-export const getCachedUserSubscriptions = cache(
-  async (invalidateCache = false) => {
-    const user = await getUser();
-    const userId = user?.id;
-
-    if (!userId) {
-      return null;
-    }
-
-    if (invalidateCache) {
-      return getUserSubscriptionsQuery(userId);
-    }
-
-    return unstable_cache(
-      async () => getUserSubscriptionsQuery(userId),
-      ["user", "subscriptions", userId],
-      {
-        tags: [`user_subscriptions_${userId}`],
-        revalidate: 180,
-      },
-    )();
-  },
-);
-
-async function getUserSubscriptionsQuery(
-  userId: string,
-): Promise<SubscriptionWithUserAndPrice[] | null> {
-  try {
-    const { data, error } = await supabase
-      .from("subscriptions")
-      .select(`
-        *,
-        user:users (*),
-        price:prices (*, product:products (*))
-      `)
-      .eq("user_id", userId);
-    if (error) throw error;
-    return data as SubscriptionWithUserAndPrice[];
-  } catch (error) {
-    logger.error(`Error fetching subscriptions for user ${userId}:`, error);
-    return null;
+  if (!userId) {
+    return null
   }
-}
 
-/**
- * Cached function to get user with posts
- * @param userId The user ID
- * @param invalidateCache Whether to bypass the cache
- * @returns User with posts or null if not found
- */
-export const getCachedUserWithPosts = cache(
-  async (userId: string, invalidateCache = false) => {
-    if (invalidateCache) {
-      return getUserWithPostsQuery(userId);
-    }
-
-    return unstable_cache(
-      async () => getUserWithPostsQuery(userId),
-      ["user", "posts", userId],
-      {
-        tags: [`user_posts_${userId}`],
-        revalidate: 60,
-      },
-    )();
-  },
-);
-
-async function getUserWithPostsQuery(
-  userId: string,
-): Promise<UserWithPosts | null> {
-  try {
-    const { data, error } = await supabase
-      .from("users")
-      .select(`
-        *,
-        posts (*)
-      `)
-      .eq("id", userId)
-      .single();
-    if (error) throw error;
-    return data as UserWithPosts;
-  } catch (error) {
-    logger.error(`Error fetching user with posts for id ${userId}:`, error);
-    return null;
-  }
-}
-
-/**
- * Cached function to get all posts
- * @param invalidateCache Whether to bypass the cache
- * @returns Array of posts
- */
-export const getCachedPosts = cache(async (invalidateCache = false) => {
   if (invalidateCache) {
-    return getPostsQuery();
-  }
-
-  return unstable_cache(async () => getPostsQuery(), ["posts"], {
-    tags: ["all_posts"],
-    revalidate: 300,
-  })();
-});
-
-/**
- * Cached function to get a specific post by ID
- * @param postId The post ID
- * @param invalidateCache Whether to bypass the cache
- * @returns Post object or null if not found
- */
-export const getCachedPostById = cache(
-  async (postId: string, invalidateCache = false) => {
-    if (invalidateCache) {
-      return getPostByIdQuery(postId);
-    }
-
-    return unstable_cache(
-      async () => getPostByIdQuery(postId),
-      ["post", postId],
-      {
-        tags: [`post_${postId}`],
-        revalidate: 60,
-      },
-    )();
-  },
-);
-
-/**
- * Cached function to get all users
- * @param invalidateCache Whether to bypass the cache
- * @returns Array of users
- */
-export const getCachedUsers = cache(async (invalidateCache = false) => {
-  if (invalidateCache) {
-    return getUsersQuery();
-  }
-
-  return unstable_cache(async () => getUsersQuery(), ["users"], {
-    tags: ["all_users"],
-    revalidate: 300,
-  })();
-});
-
-/**
- * Cached function to get all customers
- * @param invalidateCache Whether to bypass the cache
- * @returns Array of customers
- */
-export const getCachedCustomers = cache(async (invalidateCache = false) => {
-  if (invalidateCache) {
-    return getCustomersQuery();
-  }
-
-  return unstable_cache(async () => getCustomersQuery(), ["customers"], {
-    tags: ["all_customers"],
-    revalidate: 300,
-  })();
-});
-
-/**
- * Cached function to get a customer by Stripe ID
- * @param stripeCustomerId The Stripe customer ID
- * @param invalidateCache Whether to bypass the cache
- * @returns Customer object or null if not found
- */
-export const getCachedCustomerByStripeId = cache(
-  async (stripeCustomerId: string, invalidateCache = false) => {
-    if (invalidateCache) {
-      return getCustomerByStripeIdQuery(stripeCustomerId);
-    }
-
-    return unstable_cache(
-      async () => getCustomerByStripeIdQuery(stripeCustomerId),
-      ["customer", "stripe", stripeCustomerId],
-      {
-        tags: [`customer_stripe_${stripeCustomerId}`],
-        revalidate: 60,
-      },
-    )();
-  },
-);
-
-/**
- * Cached function to get all subscriptions
- * @param invalidateCache Whether to bypass the cache
- * @returns Array of subscriptions
- */
-export const getCachedSubscriptions = cache(async (invalidateCache = false) => {
-  if (invalidateCache) {
-    return getSubscriptionsQuery();
+    return getUserSubscriptionsQuery(supabase, userId)
   }
 
   return unstable_cache(
-    async () => getSubscriptionsQuery(),
-    ["subscriptions"],
-    {
-      tags: ["all_subscriptions"],
-      revalidate: 300,
+    async () => {
+      return getUserSubscriptionsQuery(supabase, userId)
     },
-  )();
-});
+    ['user', 'subscriptions', userId],
+    {
+      tags: [`user_subscriptions_${userId}`],
+      revalidate: 180,
+    },
+  )()
+}
 
-/**
- * Cached function to get a subscription with user and price information
- * @param subscriptionId The subscription ID
- * @param invalidateCache Whether to bypass the cache
- * @returns SubscriptionWithUserAndPrice object or null if not found
- */
-export const getCachedSubscriptionWithUserAndPrice = cache(
-  async (subscriptionId: string, invalidateCache = false) => {
-    if (invalidateCache) {
-      return getSubscriptionWithUserAndPriceQuery(subscriptionId);
-    }
+export const getTransactions = async (
+  params: Omit<GetTransactionsParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
 
-    return unstable_cache(
-      async () => getSubscriptionWithUserAndPriceQuery(subscriptionId),
-      ["subscription", "user", "price", subscriptionId],
-      {
-        tags: [`subscription_${subscriptionId}`],
-        revalidate: 60,
-      },
-    )();
-  },
-);
-
-/**
- * Cached function to get all prices
- * @param invalidateCache Whether to bypass the cache
- * @returns Array of prices
- */
-export const getCachedPrices = cache(async (invalidateCache = false) => {
-  if (invalidateCache) {
-    return getPricesQuery();
+  if (!teamId) {
+    return null
   }
 
-  return unstable_cache(async () => getPricesQuery(), ["prices"], {
-    tags: ["all_prices"],
-    revalidate: 3600,
-  })();
-});
-/**
- * Cached function to get all active prices with their associated products
- * @param invalidateCache Whether to bypass the cache
- * @returns Array of Price objects with associated Product information
- */
-export const getCachedActivePricesWithProducts = cache(
-  async (invalidateCache = false) => {
-    if (invalidateCache) {
-      return getActivePricesWithProductsQuery();
-    }
-
-    return unstable_cache(
-      async () => getActivePricesWithProductsQuery(),
-      ["active_prices", "products"],
-      {
-        tags: ["active_prices_with_products"],
-        revalidate: 3600,
-      },
-    )();
-  },
-);
+  return unstable_cache(
+    async () => {
+      return getTransactionsQuery(supabase, { ...params, teamId })
+    },
+    ['transactions', teamId],
+    {
+      revalidate: 180,
+      tags: [`transactions_${teamId}`],
+    },
+  )(params)
+}
 
 /**
- * Cached function to get all products with prices
- * @param invalidateCache Whether to bypass the cache
- * @returns Array of products with prices
+ * Fetches recent transactions for a team, with caching.
+ *
+ * @async
+ * @function getRecentTransactions
+ * @param {Omit<GetRecentTransactionsParams, "teamId">} params - Parameters for the query, excluding teamId.
+ * @returns {Promise<RecentTransactionsResult | null>} A promise that resolves to the recent transactions or null if no team is found.
+ *
+ * @description
+ * This function retrieves recent transactions for the current user's team. It uses Next.js's
+ * unstable_cache for performance optimization. The function performs the following steps:
+ * 1. Creates a Supabase client.
+ * 2. Fetches the current user and extracts the team ID.
+ * 3. If no team ID is found, it returns null.
+ * 4. Otherwise, it calls the getRecentTransactionsQuery with caching applied.
+ *
+ * @example
+ * ```typescript
+ * const recentTransactions = await getRecentTransactions({ limit: 10, accountId: "sdlhsadghlads" });
+ * if (recentTransactions) {
+ *   console.log(recentTransactions);
+ * } else {
+ *   console.log("No team found or error occurred");
+ * }
+ * ```
+ *
+ * @throws Will throw an error if the database query fails.
+ *
+ * @see {@link GetRecentTransactionsParams} for the full list of accepted parameters.
+ * @see {@link getRecentTransactionsQuery} for the underlying query function.
  */
-export const getCachedProductsWithPrices = cache(
-  async (invalidateCache = false) => {
-    if (invalidateCache) {
-      return getProductsWithPricesQuery();
-    }
+export const getRecentTransactions = async (
+  params: Omit<GetRecentTransactionsParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
 
-    return unstable_cache(
-      async () => getProductsWithPricesQuery(),
-      ["products", "prices"],
-      {
-        tags: ["products_with_prices"],
-        revalidate: 3600,
-      },
-    )();
-  },
-);
+  if (!teamId) {
+    return null
+  }
 
-/**
- * Cached function to get a user by ID
- * @param userId The user ID
- * @param invalidateCache Whether to bypass the cache
- * @returns User object or null if not found
- */
-export const getCachedUser = cache(
-  async (userId: string, invalidateCache = false) => {
-    if (invalidateCache) {
-      return getUserQuery(userId);
-    }
+  // we convert the params to a string to make the cache key unique
+  const paramsString = JSON.stringify(params)
 
-    return unstable_cache(async () => getUserQuery(userId), ["user", userId], {
+  return unstable_cache(
+    async () => {
+      return getRecentTransactionsQuery(supabase, { ...params, teamId })
+    },
+    ['recent_transactions', teamId],
+    {
+      revalidate: 180,
+      tags: [`recent_transactions_${teamId}_${paramsString}`],
+    },
+  )(params)
+}
+
+export const getSession = cache(async () => {
+  const supabase = createClient()
+
+  return supabase.auth.getSession()
+})
+
+export const getUser = async () => {
+  const {
+    data: { session },
+  } = await getSession()
+  const userId = session?.user?.id
+
+  if (!userId) {
+    return null
+  }
+
+  const supabase = createClient()
+
+  return unstable_cache(
+    async () => {
+      return getUserQuery(supabase, userId)
+    },
+    ['user', userId],
+    {
       tags: [`user_${userId}`],
-      revalidate: 60,
-    })();
-  },
-);
+      revalidate: 180,
+    },
+  )(userId)
+}
+
+export const getTeamUser = async () => {
+  const supabase = createClient()
+  const { data } = await getUser()
+
+  return unstable_cache(
+    async () => {
+      return getTeamUserQuery(supabase, {
+        userId: data.id,
+        teamId: data.team_id,
+      })
+    },
+    ['team', 'user', data.id],
+    {
+      tags: [`team_user_${data.id}`],
+      revalidate: 180,
+    },
+  )(data.id)
+}
+
+export const getBankConnectionsByTeamId = async () => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getBankConnectionsByTeamIdQuery(supabase, teamId)
+    },
+    ['bank_connections', teamId],
+    {
+      tags: [`bank_connections_${teamId}`],
+      revalidate: 3600,
+    },
+  )(teamId)
+}
+
+export const getTeamBankAccounts = async (
+  params?: Omit<GetTeamBankAccountsParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getTeamBankAccountsQuery(supabase, { ...params, teamId })
+    },
+    ['bank_accounts', teamId],
+    {
+      tags: [`bank_accounts_${teamId}`],
+      revalidate: 180,
+    },
+  )(params)
+}
+
+export const getTeamMembers = async () => {
+  const supabase = createClient()
+
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getTeamMembersQuery(supabase, teamId)
+    },
+    ['team_members', teamId],
+    {
+      tags: [`team_members_${teamId}`],
+      revalidate: 180,
+    },
+  )(teamId)
+}
+
+export const getSpending = async (
+  params: Omit<GetSpendingParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getSpendingQuery(supabase, { ...params, teamId })
+    },
+    ['spending', teamId],
+    {
+      tags: [`spending_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
+
+export const getBankAccountsCurrencies = async () => {
+  const supabase = createClient()
+
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getBankAccountsCurrenciesQuery(supabase, {
+        teamId,
+      })
+    },
+    ['bank_accounts_currencies', teamId],
+    {
+      tags: [`bank_accounts_currencies_${teamId}`],
+      revalidate: 180,
+    },
+  )()
+}
+
+export const getMetrics = async (params: Omit<GetMetricsParams, 'teamId'>) => {
+  const supabase = createClient()
+
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getMetricsQuery(supabase, { ...params, teamId })
+    },
+    ['metrics', teamId],
+    {
+      tags: [`metrics_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
+
+export const getExpenses = async (params: GetExpensesQueryParams) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getExpensesQuery(supabase, { ...params, teamId })
+    },
+    ['expenses', teamId],
+    {
+      tags: [`expenses_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
+
+export const getTeams = async () => {
+  const supabase = createClient()
+
+  const user = await getUser()
+  const userId = user?.data?.id
+
+  if (!userId) {
+    return
+  }
+
+  return unstable_cache(
+    async () => {
+      return getTeamsByUserIdQuery(supabase, userId)
+    },
+    ['teams', userId],
+    {
+      tags: [`teams_${userId}`],
+      revalidate: 180,
+    },
+  )()
+}
+
+export const getTeamInvites = async () => {
+  const supabase = createClient()
+
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return
+  }
+
+  return unstable_cache(
+    async () => {
+      return getTeamInvitesQuery(supabase, teamId)
+    },
+    ['team', 'invites', teamId],
+    {
+      tags: [`team_invites_${teamId}`],
+      revalidate: 180,
+    },
+  )()
+}
+
+export const getUserInvites = async () => {
+  const supabase = createClient()
+
+  const user = await getUser()
+  const email = user?.data?.email
+
+  return unstable_cache(
+    async () => {
+      return getUserInvitesQuery(supabase, email)
+    },
+    ['user', 'invites', email],
+    {
+      tags: [`user_invites_${email}`],
+      revalidate: 180,
+    },
+  )()
+}
+
+export const getTrackerProjects = async (
+  params: GetTrackerProjectsQueryParams,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  return unstable_cache(
+    async () => {
+      return getTrackerProjectsQuery(supabase, { ...params, teamId })
+    },
+    ['tracker_projects', teamId],
+    {
+      tags: [`tracker_projects_${teamId}`],
+      revalidate: 180,
+    },
+  )(params)
+}
+
+export const getTrackerRecordsByRange = async (
+  params: GetTrackerRecordsByRangeParams,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  return unstable_cache(
+    async () => {
+      return getTrackerRecordsByRangeQuery(supabase, { ...params, teamId })
+    },
+    ['tracker_entries', teamId],
+    {
+      tags: [`tracker_entries_${teamId}`],
+      revalidate: 180,
+    },
+  )(params)
+}
+
+export const getBurnRate = async (
+  params: Omit<GetBurnRateQueryParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  return unstable_cache(
+    async () => {
+      return getBurnRateQuery(supabase, { ...params, teamId })
+    },
+    ['burn_rate', teamId],
+    {
+      tags: [`burn_rate_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
+
+export const getRunway = async (
+  params: Omit<GetRunwayQueryParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  return unstable_cache(
+    async () => {
+      return getRunwayQuery(supabase, { ...params, teamId })
+    },
+    ['runway', teamId],
+    {
+      tags: [`runway_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
+
+export const getCategories = async (
+  params?: Omit<GetCategoriesParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  return unstable_cache(
+    async () => {
+      return getCategoriesQuery(supabase, { ...params, teamId })
+    },
+    ['transaction_categories', teamId],
+    {
+      tags: [`transaction_categories_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
+
+export const getTeamSettings = async () => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getTeamSettingsQuery(supabase, teamId)
+    },
+    ['team_settings', teamId],
+    {
+      tags: [`team_settings_${teamId}`],
+      revalidate: 3600,
+    },
+  )()
+}
+
+export const getMonthlyExpenses = async (
+  params: Omit<GetMonthlyExpensesQueryParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getMonthlyExpensesQuery(supabase, { ...params, teamId })
+    },
+    ['monthly_expenses', teamId],
+    {
+      tags: [`monthly_expenses_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
+
+export const getExpensesByCategory = async (
+  params: Omit<GetExpensesByCategoryQueryParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getExpensesByCategoryQuery(supabase, { ...params, teamId })
+    },
+    ['expenses_by_category', teamId],
+    {
+      tags: [`expenses_by_category_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
+
+export const getExpensesByLocation = async (
+  params: Omit<GetExpenseBreakdownByLocationQueryParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getExpenseBreakdownByLocationQuery(supabase, {
+        ...params,
+        teamId,
+      })
+    },
+    ['expenses_by_location', teamId],
+    {
+      tags: [`expenses_by_location_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
+
+export const getDailyExpenses = async (
+  params: Omit<GetDailyExpensesQueryParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getDailyExpensesQuery(supabase, { ...params, teamId })
+    },
+    ['daily_expenses', teamId],
+    {
+      tags: [`daily_expenses_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
+
+export const getTopExpenseCategories = async (
+  params: Omit<GetTopExpenseCategoriesQueryParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getTopExpenseCategoriesQuery(supabase, { ...params, teamId })
+    },
+    ['top_expense_categories', teamId],
+    {
+      tags: [`top_expense_categories_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
+
+export const getExpensesByMerchant = async (
+  params: Omit<GetExpensesByMerchantQueryParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getExpensesByMerchantQuery(supabase, { ...params, teamId })
+    },
+    ['expenses_by_merchant', teamId],
+    {
+      tags: [`expenses_by_merchant_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
+
+export const getWeeklyExpenseTrends = async (
+  params: Omit<GetWeeklyExpenseTrendsQueryParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getWeeklyExpenseTrendsQuery(supabase, { ...params, teamId })
+    },
+    ['weekly_expense_trends', teamId],
+    {
+      tags: [`weekly_expense_trends_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
+
+export const getExpensesByPaymentChannel = async (
+  params: Omit<GetExpensesByPaymentChannelQueryParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getExpensesByPaymentChannelQuery(supabase, { ...params, teamId })
+    },
+    ['expenses_by_payment_channel', teamId],
+    {
+      tags: [`expenses_by_payment_channel_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
+
+export const getExpenseComparison = async (
+  params: Omit<GetExpenseComparisonQueryParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getExpenseComparisonQuery(supabase, { ...params, teamId })
+    },
+    ['expense_anomalies', teamId],
+    {
+      tags: [`expense_comparison_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
+
+export const getRecurringExpenses = async (
+  params: Omit<GetRecurringExpensesQueryParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getRecurringExpensesQuery(supabase, { ...params, teamId })
+    },
+    ['recurring_expenses', teamId],
+    {
+      tags: [`recurring_expenses_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
+
+export const getExpenseDistributionByDayOfWeek = async (
+  params: Omit<GetExpenseDistributionByDayOfWeekQueryParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getExpenseDistributionByDayOfWeekQuery(supabase, {
+        ...params,
+        teamId,
+      })
+    },
+    ['expense_distribution_by_day_of_week', teamId],
+    {
+      tags: [`expense_distribution_by_day_of_week_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
+
+export const getExpenseGrowthRate = async (
+  params: Omit<GetExpenseGrowthRateQueryParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getExpenseGrowthRateQuery(supabase, { ...params, teamId })
+    },
+    ['expense_growth_rate', teamId],
+    {
+      tags: [`expense_growth_rate_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
+
+export const getExpenseForecast = async (
+  params: Omit<GetExpenseForecastQueryParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getExpenseForecastQuery(supabase, { ...params, teamId })
+    },
+    ['expense_forecast', teamId],
+    {
+      tags: [`expense_forecast_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
+
+export const getExpenseAnomalies = async (
+  params: Omit<GetExpenseAnomaliesQueryParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getExpenseAnomaliesQuery(supabase, { ...params, teamId })
+    },
+    ['expense_anomalies', teamId],
+    {
+      tags: [`expense_anomalies_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
+
+export const getExpenseTrendsByTimeOfDay = async (
+  params: Omit<GetExpenseTrendsByTimeOfDayQueryParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getExpenseTrendsByTimeOfDayQuery(supabase, { ...params, teamId })
+    },
+    ['expense_trends_by_time_of_day', teamId],
+    {
+      tags: [`expense_trends_by_time_of_day_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
+
+export const getInventoryCostAnalysis = async (
+  params: Omit<GetInventoryCostAnalysisQueryParams, 'teamId'>,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
+
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getInventoryCostAnalysisQuery(supabase, { ...params, teamId })
+    },
+    ['inventory_cost_analysis', teamId],
+    {
+      tags: [`inventory_cost_analysis_${teamId}`],
+      revalidate: 3600,
+    },
+  )(params)
+}
 
 /**
- * Cached function to get the authenticated user
- * @param invalidateCache Whether to bypass the cache
- * @returns User object or null if not found
+ * Cached query to get transactions by bank account ID
+ * @param supabase - Supabase client
+ * @param bankAccountId - Bank account ID
+ * @param limit - Number of transactions to fetch (default: 5)
+ * @returns Promise resolving to an array of transactions
  */
-export const getCachedAuthenticatedUser = cache(
-  async (invalidateCache = false) => {
-    if (invalidateCache) {
-      return getUser();
-    }
+export const getCachedTransactionsByBankAccountId = async (
+  params: GetTransactionsByBankAccountQueryParams,
+) => {
+  const supabase = createClient()
+  const user = await getUser()
+  const teamId = user?.data?.team_id
 
-    return unstable_cache(async () => getUser(), ["user"], {
+  if (!teamId) {
+    return null
+  }
+
+  return unstable_cache(
+    async () => {
+      return getTransactionsByBankAccountQuery(supabase, params)
+    },
+    ['transactions_by_bank_account', teamId],
+    {
+      tags: [`transactions_by_bank_account_${teamId}`],
       revalidate: 3600,
-    });
-  },
-);
+    },
+  )(params)
+}

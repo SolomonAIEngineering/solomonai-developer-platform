@@ -1,0 +1,61 @@
+{
+  "id": "solomon-ai.app",
+  "version": "0.0.1",
+  "name": "Solomon AI Financial Analytics",
+  "icon": "./logo.png",
+  "permissions": [
+    {
+      "permission": "customer_read",
+      "purpose": "Allows Solomon AI to read customer information for financial analysis."
+    },
+    {
+      "permission": "subscription_read",
+      "purpose": "Allows Solomon AI to read subscription information for revenue analysis."
+    },
+    {
+      "permission": "invoice_read",
+      "purpose": "Allows Solomon AI to read invoice information for financial reporting."
+    },
+    {
+      "permission": "checkout_session_read",
+      "purpose": "Allows Solomon AI to read checkout session information for transaction analysis."
+    },
+    {
+      "permission": "user_email_read",
+      "purpose": "Access current user's email address to identify within Solomon AI."
+    },
+    {
+      "permission": "connected_account_read",
+      "purpose": "Allows reading basic data from connected accounts for financial aggregation."
+    },
+    {
+      "permission": "webhook_read",
+      "purpose": "Allows Solomon AI to read webhook information for real-time updates."
+    },
+    {
+      "permission": "event_read",
+      "purpose": "Allows Solomon AI to read event information for financial trend analysis."
+    },
+    {
+      "permission": "balance_read",
+      "purpose": "Allows Solomon AI to read balance information for cash flow analysis."
+    },
+    {
+      "permission": "payment_method_read",
+      "purpose": "Allows Solomon AI to read payment method information for financial planning."
+    }
+  ],
+  "ui_extension": {
+    "content_security_policy": {
+      "connect-src": null,
+      "image-src": null,
+      "purpose": "Ensure secure connections for Solomon AI's financial analytics dashboard."
+    }
+  },
+  "allowed_redirect_uris": [
+    "https://app-business.solomon-ai.app/api/stripe/connect/callback",
+    "https://preview.solomon-ai.app/api/stripe/connect/callback"
+  ],
+  "stripe_api_access_type": "oauth",
+  "distribution_type": "public"
+}
