@@ -2,7 +2,7 @@ import type { Client } from '../types'
 
 import { addDays } from 'date-fns'
 
-import { getAccessValidForDays } from '@orbitkit/engine/src/providers/gocardless/utils'
+import { getAccessValidForDays } from '@v1/engine/src/providers/gocardless/utils'
 
 import { getCurrentUserTeamQuery, getUserInviteQuery } from '../queries'
 

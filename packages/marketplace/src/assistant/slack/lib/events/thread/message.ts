@@ -4,7 +4,7 @@ import { openai } from '@ai-sdk/openai'
 import { generateText } from 'ai'
 import { startOfMonth, subMonths } from 'date-fns'
 
-import { createClient } from '@orbitkit/supabase/server'
+import { createClient } from '@v1/supabase/server'
 
 import {
   getBurnRateTool,

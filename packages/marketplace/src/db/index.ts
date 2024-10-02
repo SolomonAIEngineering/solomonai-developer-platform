@@ -1,4 +1,4 @@
-import { createClient } from '@orbitkit/supabase/server'
+import { createClient } from '@v1/supabase/server'
 
 export async function createApp(params: any) {
   const client = createClient({ admin: true })

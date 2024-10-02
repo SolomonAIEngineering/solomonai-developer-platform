@@ -4,7 +4,7 @@ import { decode } from 'base64-arraybuffer'
 import convert from 'heic-convert'
 import sharp from 'sharp'
 
-import { stripSpecialCharacters } from '@orbitkit/utils'
+import { stripSpecialCharacters } from '@v1/utils'
 
 const MAX_SIZE = 1500
 
