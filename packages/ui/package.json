@@ -3,7 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "sideEffects": false,
-  "files": ["tailwind.config.ts", "postcss.config.js", "globals.css"],
+  "files": [
+    "tailwind.config.ts",
+    "postcss.config.js",
+    "globals.css"
+  ],
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "lint": "biome check .",
@@ -37,5 +41,7 @@
     "lucide-react": "^0.438.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7"
-  }
+  },
+  "author": "yoan yomba",
+  "license": "GNU AFFERO GENERAL PUBLIC LICENSE"
 }

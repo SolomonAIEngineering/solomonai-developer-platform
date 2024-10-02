@@ -26,5 +26,7 @@
     "./middleware": "./src/clients/middleware.ts",
     "./queries": "./src/queries/index.ts",
     "./types": "./src/types/index.ts"
-  }
+  },
+  "author": "yoan yomba",
+  "license": "GNU AFFERO GENERAL PUBLIC LICENSE"
 }

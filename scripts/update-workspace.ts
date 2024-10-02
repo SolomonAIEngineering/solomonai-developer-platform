@@ -1,6 +1,5 @@
 import type { PackageJson } from 'pkg-types'
 
-import { $ } from 'bun'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
@@ -10,6 +9,11 @@ import {
   updateNamespaceInPrettierConfig,
   updateWorkspacePackages,
 } from './utils'
+
+import { exec } from 'child_process'
+import { promisify } from 'util'
+
+const execAsync = promisify(exec)
 
 // ------------------------------------------------------------------
 
@@ -281,15 +285,16 @@ if (newNamespace) {
       // Find and replace package names in all files
       return findAndReplacePackageNames();
     })
-    .catch((error) => {
-      console.error('Error updating workspace:', error);
+    .then(() => {
+      // Run final commands
+      return execAsync('bun format && bun turbo clean && bun install');
+    })
+    .then(() => {
+      console.log(
+        '🎉 Done! Workspace namespaces have successfully been updated. You may wish to reload your IDE, to remove any errors.',
+      )
+    })
+    .catch((error: Error) => {
+      console.error('Error updating workspace or running final commands:', error.message);
     });
-  // Done
-  $`bun format && bun turbo clean && bun install`.then(() => {
-    console.log(
-      '🎉 Done! Workspace namespaces have successfully been updated. You may wish to reload your IDE, to remove any errors.',
-    )
-  }).catch((error) => {
-    console.error('Error running final commands:', error)
-  })
 }

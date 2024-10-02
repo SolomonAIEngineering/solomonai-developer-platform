@@ -19,5 +19,7 @@
     "jest": "^27.0.6",
     "@types/jest": "^27.0.1",
     "ts-jest": "^27.0.5"
-  }
+  },
+  "author": "yoan yomba",
+  "license": "GNU AFFERO GENERAL PUBLIC LICENSE"
 }

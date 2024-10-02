@@ -19,5 +19,7 @@
     "./server": "./src/server.ts",
     "./client": "./src/client.tsx",
     "./events": "./src/events.ts"
-  }
+  },
+  "author": "yoan yomba",
+  "license": "GNU AFFERO GENERAL PUBLIC LICENSE"
 }

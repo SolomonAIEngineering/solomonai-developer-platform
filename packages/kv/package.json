@@ -17,5 +17,7 @@
     "@upstash/ratelimit": "^2.0.2",
     "@upstash/redis": "^1.34.0",
     "server-only": "^0.0.1"
-  }
+  },
+  "author": "yoan yomba",
+  "license": "GNU AFFERO GENERAL PUBLIC LICENSE"
 }
