@@ -13,14 +13,14 @@
  * we use dotenv to load the correct variables from the .env file based on the APP_ENV variable (default is development)
  * APP_ENV is passed as an inline variable while executing the command, for example: APP_ENV=staging pnpm build:android
  */
-const z = require('zod');
+const z = require("zod");
 
-const packageJSON = require('./package.json');
-const path = require('path');
-const APP_ENV = process.env.APP_ENV ?? 'development';
+const packageJSON = require("./package.json");
+const path = require("path");
+const APP_ENV = process.env.APP_ENV ?? "development";
 const envPath = path.resolve(__dirname, `.env.${APP_ENV}`);
 
-require('dotenv').config({
+require("dotenv").config({
   path: envPath,
 });
 
@@ -34,12 +34,12 @@ require('dotenv').config({
 
 // TODO: Replace these values with your own
 
-const BUNDLE_ID = 'com.mobile'; // ios bundle id
-const PACKAGE = 'com.mobile'; // android package name
-const NAME = 'mobile'; // app name
-const EXPO_ACCOUNT_OWNER = 'expo-owner'; // expo account owner
-const EAS_PROJECT_ID = 'c3e1075b-6fe7-4686-aa49-35b46a229044'; // eas project id
-const SCHEME = 'mobile'; // app scheme
+const BUNDLE_ID = "com.mobile"; // ios bundle id
+const PACKAGE = "com.mobile"; // android package name
+const NAME = "mobile"; // app name
+const EXPO_ACCOUNT_OWNER = "expo-owner"; // expo account owner
+const EAS_PROJECT_ID = "c3e1075b-6fe7-4686-aa49-35b46a229044"; // eas project id
+const SCHEME = "mobile"; // app scheme
 
 /**
  * We declare a function withEnvSuffix that will add a suffix to the variable name based on the APP_ENV
@@ -49,7 +49,7 @@ const SCHEME = 'mobile'; // app scheme
  */
 
 const withEnvSuffix = (name) => {
-  return APP_ENV === 'production' ? name : `${name}.${APP_ENV}`;
+  return APP_ENV === "production" ? name : `${name}.${APP_ENV}`;
 };
 
 /**
@@ -71,7 +71,7 @@ const withEnvSuffix = (name) => {
  */
 
 const client = z.object({
-  APP_ENV: z.enum(['development', 'staging', 'production']),
+  APP_ENV: z.enum(["development", "staging", "production"]),
   NAME: z.string(),
   SCHEME: z.string(),
   BUNDLE_ID: z.string(),
@@ -105,7 +105,7 @@ const _clientEnv = {
   // ADD YOUR ENV VARS HERE TOO
   API_URL: process.env.API_URL,
   VAR_NUMBER: Number(process.env.VAR_NUMBER),
-  VAR_BOOL: process.env.VAR_BOOL === 'true',
+  VAR_BOOL: process.env.VAR_BOOL === "true",
 };
 
 /**
@@ -134,14 +134,14 @@ const parsed = merged.safeParse(_env);
 
 if (parsed.success === false) {
   console.error(
-    '❌ Invalid environment variables:',
+    "❌ Invalid environment variables:",
     parsed.error.flatten().fieldErrors,
 
     `\n❌ Missing variables in .env.${APP_ENV} file, Make sure all required variables are defined in the .env.${APP_ENV} file.`,
-    `\n💡 Tip: If you recently updated the .env.${APP_ENV} file and the error still persists, try restarting the server with the -cc flag to clear the cache.`
+    `\n💡 Tip: If you recently updated the .env.${APP_ENV} file and the error still persists, try restarting the server with the -cc flag to clear the cache.`,
   );
   throw new Error(
-    'Invalid environment variables, Check terminal for more details '
+    "Invalid environment variables, Check terminal for more details ",
   );
 }
 

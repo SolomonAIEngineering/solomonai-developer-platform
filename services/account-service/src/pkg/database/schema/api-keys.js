@@ -1,5 +1,10 @@
 import { relations, sql } from "drizzle-orm";
-import { integer, sqliteTable, text, uniqueIndex, } from "drizzle-orm/sqlite-core";
+import {
+  integer,
+  sqliteTable,
+  text,
+  uniqueIndex,
+} from "drizzle-orm/sqlite-core";
 import { businessAccounts } from "./business-accounts.js";
 import { apiKeyStatusEnum } from "./enums.js";
 import { userAccounts } from "./user-accounts.js";
@@ -19,23 +24,35 @@ import { userAccounts } from "./user-accounts.js";
  * @property {number | null} userAccountId - The ID of the associated user account (if applicable).
  * @property {number | null} businessAccountId - The ID of the associated business account (if applicable).
  */
-export const apiKeys = sqliteTable("api_keys", {
+export const apiKeys = sqliteTable(
+  "api_keys",
+  {
     id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
     key: text("key", { length: 64 }).notNull().unique(),
     name: text("name", { length: 255 }).notNull(),
     status: apiKeyStatusEnum,
     expiresAt: text("expires_at"),
     lastUsedAt: text("last_used_at"),
-    createdAt: text("createdAt").default(sql `(CURRENT_TIMESTAMP)`),
-    updatedAt: text("updatedAt").default(sql `(CURRENT_TIMESTAMP)`),
+    createdAt: text("createdAt").default(sql`(CURRENT_TIMESTAMP)`),
+    updatedAt: text("updatedAt").default(sql`(CURRENT_TIMESTAMP)`),
     userAccountId: integer("user_account_id").references(() => userAccounts.id),
-    businessAccountId: integer("business_account_id").references(() => businessAccounts.id),
-}, (table) => {
+    businessAccountId: integer("business_account_id").references(
+      () => businessAccounts.id,
+    ),
+  },
+  (table) => {
     return {
-        userAccountIdx: uniqueIndex("user_account_idx").on(table.userAccountId, table.name),
-        businessAccountIdx: uniqueIndex("business_account_idx").on(table.businessAccountId, table.name),
+      userAccountIdx: uniqueIndex("user_account_idx").on(
+        table.userAccountId,
+        table.name,
+      ),
+      businessAccountIdx: uniqueIndex("business_account_idx").on(
+        table.businessAccountId,
+        table.name,
+      ),
     };
-});
+  },
+);
 /**
  * Defines the relationships between the apiKeys table and other tables.
  *
@@ -45,12 +62,12 @@ export const apiKeys = sqliteTable("api_keys", {
  *                                        Links an API key to its associated business account.
  */
 export const apiKeysRelations = relations(apiKeys, ({ one }) => ({
-    userAccount: one(userAccounts, {
-        fields: [apiKeys.userAccountId],
-        references: [userAccounts.id],
-    }),
-    businessAccount: one(businessAccounts, {
-        fields: [apiKeys.businessAccountId],
-        references: [businessAccounts.id],
-    }),
+  userAccount: one(userAccounts, {
+    fields: [apiKeys.userAccountId],
+    references: [userAccounts.id],
+  }),
+  businessAccount: one(businessAccounts, {
+    fields: [apiKeys.businessAccountId],
+    references: [businessAccounts.id],
+  }),
 }));

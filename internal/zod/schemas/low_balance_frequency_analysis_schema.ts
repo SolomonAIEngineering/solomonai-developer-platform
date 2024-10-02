@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 export const LowBalanceFrequencyAnalysisSchema = z.object({
   Month: z.number().int(),
@@ -9,4 +9,4 @@ export const LowBalanceFrequencyAnalysisSchema = z.object({
   LowBalanceFrequency: z.number(),
   UserId: z.string().uuid(),
   ProfileType: z.string(),
-})
+});

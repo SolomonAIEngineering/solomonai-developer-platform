@@ -1,23 +1,23 @@
-import { Novu } from '@novu/node'
-import { nanoid } from 'nanoid'
+import { Novu } from "@novu/node";
+import { nanoid } from "nanoid";
 
-const novu = new Novu(process.env['NOVU_API_KEY']!)
+const novu = new Novu(process.env["NOVU_API_KEY"]!);
 
-const API_ENDPOINT = 'https://api.novu.co/v1'
+const API_ENDPOINT = "https://api.novu.co/v1";
 
 export enum TriggerEvents {
-  TransactionNewInApp = 'transaction_new_in_app',
-  TransactionsNewInApp = 'transactions_new_in_app',
-  TransactionNewEmail = 'transaction_new_email',
-  InboxNewInApp = 'inbox_new_in_app',
-  MatchNewInApp = 'match_in_app',
+  TransactionNewInApp = "transaction_new_in_app",
+  TransactionsNewInApp = "transactions_new_in_app",
+  TransactionNewEmail = "transaction_new_email",
+  InboxNewInApp = "inbox_new_in_app",
+  MatchNewInApp = "match_in_app",
 }
 
 export enum NotificationTypes {
-  Transaction = 'transaction',
-  Transactions = 'transactions',
-  Inbox = 'inbox',
-  Match = 'match',
+  Transaction = "transaction",
+  Transactions = "transactions",
+  Inbox = "inbox",
+  Match = "match",
 }
 
 /**
@@ -25,15 +25,15 @@ export enum NotificationTypes {
  */
 interface TriggerUser {
   /** Unique identifier for the subscriber */
-  subscriberId: string
+  subscriberId: string;
   /** Email address of the user */
-  email: string
+  email: string;
   /** Full name of the user */
-  fullName: string
+  fullName: string;
   /** Optional URL for the user's avatar */
-  avatarUrl?: string
+  avatarUrl?: string;
   /** Identifier for the team the user belongs to */
-  teamId: string
+  teamId: string;
 }
 
 /**
@@ -41,15 +41,15 @@ interface TriggerUser {
  */
 interface TriggerPayload {
   /** The event name to trigger */
-  name: TriggerEvents
+  name: TriggerEvents;
   /** Additional data to be sent with the notification */
-  payload: any
+  payload: any;
   /** User information for the notification recipient */
-  user: TriggerUser
+  user: TriggerUser;
   /** Optional email address to set as reply-to */
-  replyTo?: string
+  replyTo?: string;
   /** Optional tenant identifier */
-  tenant?: string // NOTE: Currently no way to listen for messages with tenant, we use team_id + user_id for unique
+  tenant?: string; // NOTE: Currently no way to listen for messages with tenant, we use team_id + user_id for unique
 }
 
 /**
@@ -72,13 +72,13 @@ export async function trigger(data: TriggerPayload): Promise<void> {
         email: {
           replyTo: data.replyTo,
           headers: {
-            'X-Entity-Ref-ID': nanoid(),
+            "X-Entity-Ref-ID": nanoid(),
           },
         },
       },
-    })
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
@@ -104,14 +104,14 @@ export async function triggerBulk(events: TriggerPayload[]): Promise<void> {
           email: {
             replyTo: data.replyTo || undefined,
             headers: {
-              'X-Entity-Ref-ID': nanoid(),
+              "X-Entity-Ref-ID": nanoid(),
             },
           },
         },
       })),
-    )
+    );
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
@@ -120,9 +120,9 @@ export async function triggerBulk(events: TriggerPayload[]): Promise<void> {
  */
 interface GetSubscriberPreferencesParams {
   /** The team identifier */
-  teamId: string
+  teamId: string;
   /** The subscriber identifier */
-  subscriberId: string
+  subscriberId: string;
 }
 
 /**
@@ -138,14 +138,14 @@ export async function getSubscriberPreferences({
   const response = await fetch(
     `${API_ENDPOINT}/subscribers/${teamId}_${subscriberId}/preferences`,
     {
-      method: 'GET',
+      method: "GET",
       headers: {
         Authorization: `ApiKey ${process.env.NOVU_API_KEY!}`,
       },
     },
-  )
+  );
 
-  return response.json()
+  return response.json();
 }
 
 /**
@@ -153,15 +153,15 @@ export async function getSubscriberPreferences({
  */
 interface UpdateSubscriberPreferenceParams {
   /** The subscriber identifier */
-  subscriberId: string
+  subscriberId: string;
   /** The team identifier */
-  teamId: string
+  teamId: string;
   /** The template identifier for the preference */
-  templateId: string
+  templateId: string;
   /** The type of notification channel */
-  type: string
+  type: string;
   /** Whether the notification type is enabled or disabled */
-  enabled: boolean
+  enabled: boolean;
 }
 
 /**
@@ -180,10 +180,10 @@ export async function updateSubscriberPreference({
   const response = await fetch(
     `${API_ENDPOINT}/subscribers/${teamId}_${subscriberId}/preferences/${templateId}`,
     {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
         Authorization: `ApiKey ${process.env.NOVU_API_KEY!}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         channel: {
@@ -192,7 +192,7 @@ export async function updateSubscriberPreference({
         },
       }),
     },
-  )
+  );
 
-  return response.json()
+  return response.json();
 }

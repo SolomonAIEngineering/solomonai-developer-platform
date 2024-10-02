@@ -1,20 +1,20 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { Env } from '@env';
-import { useColorScheme } from 'nativewind';
+import { Env } from "@env";
+import { useColorScheme } from "nativewind";
 
-import { Item } from '@/components/settings/item';
-import { ItemsContainer } from '@/components/settings/items-container';
-import { LanguageItem } from '@/components/settings/language-item';
-import { ThemeItem } from '@/components/settings/theme-item';
-import { translate, useAuth } from '@/core';
-import { colors, FocusAwareStatusBar, ScrollView, Text, View } from '@/ui';
-import { Github, Rate, Share, Support, Website } from '@/ui/icons';
+import { Item } from "@/components/settings/item";
+import { ItemsContainer } from "@/components/settings/items-container";
+import { LanguageItem } from "@/components/settings/language-item";
+import { ThemeItem } from "@/components/settings/theme-item";
+import { translate, useAuth } from "@/core";
+import { colors, FocusAwareStatusBar, ScrollView, Text, View } from "@/ui";
+import { Github, Rate, Share, Support, Website } from "@/ui/icons";
 
 export default function Settings() {
   const signOut = useAuth.use.signOut();
   const { colorScheme } = useColorScheme();
   const iconColor =
-    colorScheme === 'dark' ? colors.neutral[400] : colors.neutral[500];
+    colorScheme === "dark" ? colors.neutral[400] : colors.neutral[500];
   return (
     <>
       <FocusAwareStatusBar />
@@ -22,7 +22,7 @@ export default function Settings() {
       <ScrollView>
         <View className="flex-1 px-4 pt-16 ">
           <Text className="text-xl font-bold">
-            {translate('settings.title')}
+            {translate("settings.title")}
           </Text>
           <ItemsContainer title="settings.generale">
             <LanguageItem />

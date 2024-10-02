@@ -1,12 +1,12 @@
-import React from 'react'
+import React from "react";
 
-import { DropdownMenuProps } from '@radix-ui/react-dropdown-menu'
+import { DropdownMenuProps } from "@radix-ui/react-dropdown-menu";
 import {
   useLineHeightDropdownMenu,
   useLineHeightDropdownMenuState,
-} from '@udecode/plate-line-height'
+} from "@udecode/plate-line-height";
 
-import { Icons } from '../icons'
+import { Icons } from "../icons";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,36 +14,36 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
   useOpenState,
-} from './dropdown-menu'
-import { ToolbarButton } from './toolbar'
+} from "./dropdown-menu";
+import { ToolbarButton } from "./toolbar";
 
 export function LineHeightDropdownMenu({ ...props }: DropdownMenuProps) {
-  const openState = useOpenState()
-  const state = useLineHeightDropdownMenuState()
-  const { radioGroupProps } = useLineHeightDropdownMenu(state)
+  const openState = useOpenState();
+  const state = useLineHeightDropdownMenuState();
+  const { radioGroupProps } = useLineHeightDropdownMenu(state);
 
   return (
     <DropdownMenu modal={false} {...openState} {...props}>
       <DropdownMenuTrigger asChild>
         <ToolbarButton
           pressed={openState.open}
-          tooltip='Line height'
+          tooltip="Line height"
           isDropdown
         >
           <Icons.lineHeight />
         </ToolbarButton>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align='start' className='min-w-0'>
+      <DropdownMenuContent align="start" className="min-w-0">
         <DropdownMenuRadioGroup
-          className='flex flex-col gap-0.5'
+          className="flex flex-col gap-0.5"
           {...radioGroupProps}
         >
           {state.values.map((_value) => (
             <DropdownMenuRadioItem
               key={_value}
               value={_value}
-              className='min-w-[180px]'
+              className="min-w-[180px]"
             >
               {_value}
             </DropdownMenuRadioItem>
@@ -51,5 +51,5 @@ export function LineHeightDropdownMenu({ ...props }: DropdownMenuProps) {
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

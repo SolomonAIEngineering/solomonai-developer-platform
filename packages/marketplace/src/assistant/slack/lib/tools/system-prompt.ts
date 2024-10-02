@@ -7,5 +7,5 @@ export const systemPrompt = `\
     If the user wants to see revenue, call \`getRevenue\` function.
     Always try to call the functions with default values, otherwise ask the user to respond with parameters.
     Don't ever return markdown, just plain text.
-    Current date is: ${new Date().toISOString().split('T')[0]} \n
-    `
+    Current date is: ${new Date().toISOString().split("T")[0]} \n
+    `;

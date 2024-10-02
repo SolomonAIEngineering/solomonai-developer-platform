@@ -3,10 +3,10 @@ import { cronJobs } from "./cron.js";
 import { z } from "zod";
 // Define the environment variables we expect
 const EnvSchema = z.object({
-    CLOUDFLARE_API_TOKEN: z.string(),
-    ENVIRONMENT: z
-        .enum(["development", "staging", "production"])
-        .default("development"),
+  CLOUDFLARE_API_TOKEN: z.string(),
+  ENVIRONMENT: z
+    .enum(["development", "staging", "production"])
+    .default("development"),
 });
 /**
  * Safely executes a cron job and handles any errors that occur during execution.
@@ -24,16 +24,17 @@ const EnvSchema = z.object({
  * await safeExecute(job, logger);
  */
 async function safeExecute(job, logger) {
-    const startTime = Date.now();
-    try {
-        await job.handler();
-        const duration = Date.now() - startTime;
-        logger.info(`Completed job: ${job.name} in ${duration}ms`);
-    }
-    catch (error) {
-        const duration = Date.now() - startTime;
-        logger.error(`Job ${job.name} failed after ${duration}ms: ${error instanceof Error ? error.message : String(error)}`);
-    }
+  const startTime = Date.now();
+  try {
+    await job.handler();
+    const duration = Date.now() - startTime;
+    logger.info(`Completed job: ${job.name} in ${duration}ms`);
+  } catch (error) {
+    const duration = Date.now() - startTime;
+    logger.error(
+      `Job ${job.name} failed after ${duration}ms: ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
 }
 /**
  * Calls the Cloudflare API to retrieve IP information.
@@ -52,24 +53,25 @@ async function safeExecute(job, logger) {
  * }
  */
 async function callCloudflareAPI(apiToken, logger) {
-    try {
-        const resp = await fetch("https://api.cloudflare.com/client/v4/ips", {
-            headers: {
-                Authorization: `Bearer ${apiToken}`,
-                "Content-Type": "application/json",
-            },
-        });
-        if (!resp.ok) {
-            throw new Error(`API call failed with status: ${resp.status}`);
-        }
-        const data = await resp.json();
-        logger.debug(`Cloudflare API response: ${JSON.stringify(data)}`);
-        return data;
+  try {
+    const resp = await fetch("https://api.cloudflare.com/client/v4/ips", {
+      headers: {
+        Authorization: `Bearer ${apiToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+    if (!resp.ok) {
+      throw new Error(`API call failed with status: ${resp.status}`);
     }
-    catch (error) {
-        logger.error(`Error calling Cloudflare API: ${error instanceof Error ? error.message : String(error)}`);
-        throw error; // Re-throw to allow caller to handle
-    }
+    const data = await resp.json();
+    logger.debug(`Cloudflare API response: ${JSON.stringify(data)}`);
+    return data;
+  } catch (error) {
+    logger.error(
+      `Error calling Cloudflare API: ${error instanceof Error ? error.message : String(error)}`,
+    );
+    throw error; // Re-throw to allow caller to handle
+  }
 }
 /**
  * Executes a cron job based on the provided cron string.
@@ -90,44 +92,44 @@ async function callCloudflareAPI(apiToken, logger) {
  * };
  */
 const cron = async (event, env, ctx) => {
-    const logger = LoggerSingleton.getInstance();
-    try {
-        // Validate environment variables
-        const validatedEnv = EnvSchema.parse(env);
-        // Execute the cron job
-        const job = cronJobs[event.cron];
-        if (job) {
-            logger.info(`Starting job: ${job.name} - ${job.description}`);
-            await safeExecute(job, logger);
-        }
-        else {
-            logger.warn(`No job defined for cron: ${event.cron}`);
-            return; // Exit early if no job is found
-        }
-        // Call Cloudflare API (if needed)
-        if (job.requiresCloudflareAPI) {
-            try {
-                await callCloudflareAPI(validatedEnv.CLOUDFLARE_API_TOKEN, logger);
-            }
-            catch (error) {
-                // Handle API error (e.g., retry logic, notifications, etc.)
-                logger.warn(`Cloudflare API call failed, but job execution will continue`);
-            }
-        }
-        // Add any post-job operations here
-        logger.info(`Cron job execution completed successfully`);
+  const logger = LoggerSingleton.getInstance();
+  try {
+    // Validate environment variables
+    const validatedEnv = EnvSchema.parse(env);
+    // Execute the cron job
+    const job = cronJobs[event.cron];
+    if (job) {
+      logger.info(`Starting job: ${job.name} - ${job.description}`);
+      await safeExecute(job, logger);
+    } else {
+      logger.warn(`No job defined for cron: ${event.cron}`);
+      return; // Exit early if no job is found
     }
-    catch (error) {
-        logger.error(`Cron job error: ${error instanceof Error ? error.message : String(error)}`);
-        // Depending on your error handling strategy, you might want to:
-        // - Send an alert
-        // - Update a status in a database
-        // - Retry the job
-        // throw error; // Uncomment if you want to mark the cron execution as failed
+    // Call Cloudflare API (if needed)
+    if (job.requiresCloudflareAPI) {
+      try {
+        await callCloudflareAPI(validatedEnv.CLOUDFLARE_API_TOKEN, logger);
+      } catch (error) {
+        // Handle API error (e.g., retry logic, notifications, etc.)
+        logger.warn(
+          `Cloudflare API call failed, but job execution will continue`,
+        );
+      }
     }
-    finally {
-        // Perform any cleanup operations here
-        logger.info(`Cron job process finished`);
-    }
+    // Add any post-job operations here
+    logger.info(`Cron job execution completed successfully`);
+  } catch (error) {
+    logger.error(
+      `Cron job error: ${error instanceof Error ? error.message : String(error)}`,
+    );
+    // Depending on your error handling strategy, you might want to:
+    // - Send an alert
+    // - Update a status in a database
+    // - Retry the job
+    // throw error; // Uncomment if you want to mark the cron execution as failed
+  } finally {
+    // Perform any cleanup operations here
+    logger.info(`Cron job process finished`);
+  }
 };
 export default cron;

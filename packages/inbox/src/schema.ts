@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 export const inboxAttachment = z.object({
   Name: z.string(),
@@ -6,19 +6,19 @@ export const inboxAttachment = z.object({
   ContentType: z.string(),
   ContentID: z.string(),
   ContentLength: z.number(),
-})
+});
 
 export const inboxWebhookPostSchema = z.object({
   OriginalRecipient: z.union([
     z
-      .string({ required_error: 'OriginalRecipient is required' })
-      .email({ message: 'Invalid email format' })
-      .endsWith('@inbox.solomon-ai.app', { message: 'Invalid email domain' }),
+      .string({ required_error: "OriginalRecipient is required" })
+      .email({ message: "Invalid email format" })
+      .endsWith("@inbox.solomon-ai.app", { message: "Invalid email domain" }),
     z
-      .string({ required_error: 'OriginalRecipient is required' })
-      .email({ message: 'Invalid email format' })
-      .endsWith('@inbox.staging.solomon-ai.app', {
-        message: 'Invalid email domain',
+      .string({ required_error: "OriginalRecipient is required" })
+      .email({ message: "Invalid email format" })
+      .endsWith("@inbox.staging.solomon-ai.app", {
+        message: "Invalid email domain",
       }),
   ]),
   Attachments: z.array(inboxAttachment).optional(),
@@ -29,5 +29,5 @@ export const inboxWebhookPostSchema = z.object({
     Name: z.string(),
     Email: z.string(),
   }),
-  MessageID: z.string({ required_error: 'MessageID is required' }),
-})
+  MessageID: z.string({ required_error: "MessageID is required" }),
+});

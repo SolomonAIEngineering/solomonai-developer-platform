@@ -1,1 +1,1 @@
-export * from './quoteCaption'
+export * from "./quoteCaption";

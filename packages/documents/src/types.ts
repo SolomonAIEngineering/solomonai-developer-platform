@@ -1,44 +1,44 @@
 export type Document = {
-  Content: string
-  ContentType: string
-  ContentLength: number
-  Name: string
-}
+  Content: string;
+  ContentType: string;
+  ContentLength: number;
+  Name: string;
+};
 
-export type MimeType = 'application/pdf' | 'image/jpeg'
+export type MimeType = "application/pdf" | "image/jpeg";
 
 export type DocumentResponse = {
-  content: Buffer | ArrayBuffer
-  mimeType: MimeType
-  size: number
-  fileName: string
-  name: string
-}
+  content: Buffer | ArrayBuffer;
+  mimeType: MimeType;
+  size: number;
+  fileName: string;
+  name: string;
+};
 
 export type DocumentClientParams = {
-  contentType: string
-}
+  contentType: string;
+};
 
 export type GetDocumentRequest = {
-  content: string
-}
+  content: string;
+};
 
 export type GetDocumentResponse = {
-  name?: string | null
-  date?: string | null
-  amount?: number | null
-  currency?: string | null
-  website?: string | null
-  type?: string | null
-  description?: string | null
-}
+  name?: string | null;
+  date?: string | null;
+  amount?: number | null;
+  currency?: string | null;
+  website?: string | null;
+  type?: string | null;
+  description?: string | null;
+};
 
 export interface Attachment {
-  ContentLength: number
-  Content: string
-  Name: string
-  ContentType: string
-  ContentID: string
+  ContentLength: number;
+  Content: string;
+  Name: string;
+  ContentType: string;
+  ContentID: string;
 }
 
-export type Attachments = Attachment[]
+export type Attachments = Attachment[];

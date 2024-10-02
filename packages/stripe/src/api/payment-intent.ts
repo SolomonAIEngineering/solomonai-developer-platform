@@ -19,10 +19,7 @@ export async function POST(request: NextRequest) {
   }
   try {
     if (!user.id) {
-      return NextResponse.json(
-        { error: "User ID not found" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "User ID not found" }, { status: 400 });
     }
     const paymentIntent = await createPaymentIntent(user.id, amount, currency);
     return NextResponse.json(paymentIntent);

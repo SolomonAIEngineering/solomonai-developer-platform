@@ -1,18 +1,18 @@
-'use client'
+"use client";
 
-import React from 'react'
+import React from "react";
 
-import { DropdownMenuProps } from '@radix-ui/react-dropdown-menu'
-import { ELEMENT_BLOCKQUOTE } from '@udecode/plate-block-quote'
+import { DropdownMenuProps } from "@radix-ui/react-dropdown-menu";
+import { ELEMENT_BLOCKQUOTE } from "@udecode/plate-block-quote";
 import {
   focusEditor,
   insertEmptyElement,
   useEditorRef,
-} from '@udecode/plate-common'
-import { ELEMENT_H1, ELEMENT_H2, ELEMENT_H3 } from '@udecode/plate-heading'
-import { ELEMENT_PARAGRAPH } from '@udecode/plate-paragraph'
+} from "@udecode/plate-common";
+import { ELEMENT_H1, ELEMENT_H2, ELEMENT_H3 } from "@udecode/plate-heading";
+import { ELEMENT_PARAGRAPH } from "@udecode/plate-paragraph";
 
-import { Icons } from '../icons'
+import { Icons } from "../icons";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,41 +21,41 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   useOpenState,
-} from './dropdown-menu'
-import { ToolbarButton } from './toolbar'
+} from "./dropdown-menu";
+import { ToolbarButton } from "./toolbar";
 
 const items = [
   {
-    label: 'Basic blocks',
+    label: "Basic blocks",
     items: [
       {
         value: ELEMENT_PARAGRAPH,
-        label: 'Paragraph',
-        description: 'Paragraph',
+        label: "Paragraph",
+        description: "Paragraph",
         icon: Icons.paragraph,
       },
       {
         value: ELEMENT_H1,
-        label: 'Heading 1',
-        description: 'Heading 1',
+        label: "Heading 1",
+        description: "Heading 1",
         icon: Icons.h1,
       },
       {
         value: ELEMENT_H2,
-        label: 'Heading 2',
-        description: 'Heading 2',
+        label: "Heading 2",
+        description: "Heading 2",
         icon: Icons.h2,
       },
       {
         value: ELEMENT_H3,
-        label: 'Heading 3',
-        description: 'Heading 3',
+        label: "Heading 3",
+        description: "Heading 3",
         icon: Icons.h3,
       },
       {
         value: ELEMENT_BLOCKQUOTE,
-        label: 'Quote',
-        description: 'Quote (⌘+⇧+.)',
+        label: "Quote",
+        description: "Quote (⌘+⇧+.)",
         icon: Icons.blockquote,
       },
       // {
@@ -124,23 +124,23 @@ const items = [
   //     },
   //   ],
   // },
-]
+];
 
 export function InsertDropdownMenu(props: DropdownMenuProps) {
-  const editor = useEditorRef()
-  const openState = useOpenState()
+  const editor = useEditorRef();
+  const openState = useOpenState();
 
   return (
     <DropdownMenu modal={false} {...openState} {...props}>
       <DropdownMenuTrigger asChild>
-        <ToolbarButton pressed={openState.open} tooltip='Insert' isDropdown>
+        <ToolbarButton pressed={openState.open} tooltip="Insert" isDropdown>
           <Icons.add />
         </ToolbarButton>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
-        align='start'
-        className='flex max-h-[500px] min-w-0 flex-col gap-0.5 overflow-y-auto'
+        align="start"
+        className="flex max-h-[500px] min-w-0 flex-col gap-0.5 overflow-y-auto"
       >
         {items.map(({ items: nestedItems, label }, index) => (
           <React.Fragment key={label}>
@@ -151,7 +151,7 @@ export function InsertDropdownMenu(props: DropdownMenuProps) {
               ({ value: type, label: itemLabel, icon: Icon }) => (
                 <DropdownMenuItem
                   key={type}
-                  className='min-w-[180px]'
+                  className="min-w-[180px]"
                   onSelect={async () => {
                     switch (type) {
                       // case ELEMENT_CODE_BLOCK: {
@@ -202,14 +202,14 @@ export function InsertDropdownMenu(props: DropdownMenuProps) {
                         insertEmptyElement(editor, type, {
                           select: true,
                           nextBlock: true,
-                        })
+                        });
                       }
                     }
 
-                    focusEditor(editor)
+                    focusEditor(editor);
                   }}
                 >
-                  <Icon className='mr-2 size-5' />
+                  <Icon className="mr-2 size-5" />
                   {itemLabel}
                 </DropdownMenuItem>
               ),
@@ -218,5 +218,5 @@ export function InsertDropdownMenu(props: DropdownMenuProps) {
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

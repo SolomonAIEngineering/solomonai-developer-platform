@@ -1,1 +1,1 @@
-export * from './columnsMenu'
+export * from "./columnsMenu";

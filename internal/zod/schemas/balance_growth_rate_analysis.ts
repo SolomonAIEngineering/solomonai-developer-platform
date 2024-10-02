@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 export const BalanceGrowthRateAnalysisSchema = z.object({
   Month: z.number().int().min(202201).max(209912),
@@ -7,4 +7,4 @@ export const BalanceGrowthRateAnalysisSchema = z.object({
   GrowthRate: z.number(),
   UserId: z.string().uuid(),
   ProfileType: z.string(),
-})
+});

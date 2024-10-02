@@ -2,28 +2,28 @@ import type {
   BusinessAccount,
   MelodyFinancialContext,
   UserAccount,
-} from 'client-typescript-sdk'
+} from "client-typescript-sdk";
 
-import { FinancialUserProfile } from 'client-typescript-sdk'
-import { createStore } from 'zustand'
-import { createJSONStorage, devtools, persist } from 'zustand/middleware'
+import { FinancialUserProfile } from "client-typescript-sdk";
+import { createStore } from "zustand";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
 /**
  * Represents the properties of the user state.
  */
 export interface UserStateProps {
   /** Indicates whether the user is authenticated. */
-  authenticated: boolean
+  authenticated: boolean;
   /** The unique identifier of the user. */
-  userId: string
+  userId: string;
   /** The user's account information. */
-  userAccount: UserAccount | BusinessAccount
+  userAccount: UserAccount | BusinessAccount;
   /** The user's financial profile. */
-  userFinancialProfile: FinancialUserProfile
+  userFinancialProfile: FinancialUserProfile;
   /** The user's financial context. */
-  userFinancialContext: MelodyFinancialContext
+  userFinancialContext: MelodyFinancialContext;
   /** The authentication token for the user. */
-  token: string
+  token: string;
 }
 
 /**
@@ -31,37 +31,37 @@ export interface UserStateProps {
  */
 export interface UserState extends UserStateProps {
   /** Sets the authenticated state of the user. */
-  setAuthenticated: (authenticated: boolean) => void
+  setAuthenticated: (authenticated: boolean) => void;
   /** Sets the user ID. */
-  setUserId: (userId: string) => void
+  setUserId: (userId: string) => void;
   /** Sets the user's account information. */
-  setUserAccount: (userAccount: UserAccount | BusinessAccount) => void
+  setUserAccount: (userAccount: UserAccount | BusinessAccount) => void;
   /** Sets the user's financial profile. */
-  setUserFinancialProfile: (userFinancialProfile: FinancialUserProfile) => void
+  setUserFinancialProfile: (userFinancialProfile: FinancialUserProfile) => void;
   /** Sets the user's financial context. */
   setUserFinancialContext: (
     userFinancialContext: MelodyFinancialContext,
-  ) => void
+  ) => void;
   /** Sets the authentication token. */
-  setToken: (token: string) => void
+  setToken: (token: string) => void;
   /** Resets the user state to its initial values. */
-  reset: () => void
+  reset: () => void;
   /** Sets multiple user state properties at once. */
-  setData: (data: Partial<UserStateProps>) => void
+  setData: (data: Partial<UserStateProps>) => void;
 }
 
 /** The initial state for the user store. */
 const initialState: UserStateProps = {
   authenticated: false,
-  userId: '',
+  userId: "",
   userAccount: {},
   userFinancialProfile: {},
   userFinancialContext: {},
-  token: '',
-}
+  token: "",
+};
 
 /** The key used for persisting the user store in storage. */
-export const USER_STORE_KEY = 'userStore'
+export const USER_STORE_KEY = "userStore";
 
 /**
  * Creates a store for managing the user state.
@@ -79,39 +79,39 @@ export const USER_STORE_KEY = 'userStore'
 export const useUserStore = (initProps?: Partial<UserStateProps>) => {
   const DEFAULT_PROPS: UserStateProps = {
     ...initialState,
-  }
+  };
   return createStore<UserState>()(
     persist(
       (set) => ({
         ...DEFAULT_PROPS,
         ...initProps,
         setAuthenticated: (authenticated: boolean) => {
-          set({ authenticated })
+          set({ authenticated });
         },
         setUserId: (userId: string) => {
-          set({ userId })
+          set({ userId });
         },
         setUserAccount: (userAccount: UserAccount | BusinessAccount) => {
-          set({ userAccount })
+          set({ userAccount });
         },
         setUserFinancialProfile: (
           userFinancialProfile: FinancialUserProfile,
         ) => {
-          set({ userFinancialProfile })
+          set({ userFinancialProfile });
         },
         setUserFinancialContext: (
           userFinancialContext: MelodyFinancialContext,
         ) => {
-          set({ userFinancialContext })
+          set({ userFinancialContext });
         },
         setToken: (token: string) => {
-          set({ token })
+          set({ token });
         },
         setData: (data: Partial<UserStateProps>) => {
-          set({ ...data })
+          set({ ...data });
         },
         reset: () => {
-          set({ ...initialState })
+          set({ ...initialState });
         },
       }),
       {
@@ -119,5 +119,5 @@ export const useUserStore = (initProps?: Partial<UserStateProps>) => {
         storage: createJSONStorage(() => sessionStorage),
       },
     ),
-  )
-}
+  );
+};

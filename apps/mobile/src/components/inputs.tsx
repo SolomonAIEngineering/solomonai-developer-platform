@@ -1,15 +1,15 @@
-import React from 'react';
+import React from "react";
 
-import type { OptionType } from '@/ui';
-import { Input, Select, View } from '@/ui';
-import { Checkbox, Radio, Switch } from '@/ui';
+import type { OptionType } from "@/ui";
+import { Input, Select, View } from "@/ui";
+import { Checkbox, Radio, Switch } from "@/ui";
 
-import { Title } from './title';
+import { Title } from "./title";
 
 const options: OptionType[] = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' },
+  { value: "chocolate", label: "Chocolate" },
+  { value: "strawberry", label: "Strawberry" },
+  { value: "vanilla", label: "Vanilla" },
 ];
 
 export const Inputs = () => {

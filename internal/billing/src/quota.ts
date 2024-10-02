@@ -4,12 +4,12 @@
  */
 export type Quotas = {
   /** The maximum number of active keys allowed. */
-  maxActiveKeys: number
+  maxActiveKeys: number;
   /** The maximum number of verifications permitted. */
-  maxVerifications: number
+  maxVerifications: number;
   /** The maximum number of rate limits that can be set. */
-  maxRatelimits: number
-}
+  maxRatelimits: number;
+};
 
 /**
  * Defines the quota limits for different subscription tiers.
@@ -32,4 +32,4 @@ export const QUOTA = {
     maxVerifications: 2_500,
     maxRatelimits: 100_000,
   },
-} satisfies Record<string, Quotas>
+} satisfies Record<string, Quotas>;

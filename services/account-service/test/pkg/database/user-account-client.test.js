@@ -3,68 +3,78 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { UserAccountDatabaseClient } from "../../../src/pkg/database/user-account-client.js";
 import { DatabaseError } from "../../../src/pkg/errors/index.js";
 describe("UserAccountDatabaseClient", () => {
-    let db;
-    let client;
-    beforeEach(async () => {
-        db = env.DATABASE;
-        client = await UserAccountDatabaseClient.getInstance(db);
+  let db;
+  let client;
+  beforeEach(async () => {
+    db = env.DATABASE;
+    client = await UserAccountDatabaseClient.getInstance(db);
+  });
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+  describe("Email Validation", () => {
+    it("should validate correct email", () => {
+      const email = "test@example.com";
+      expect(() => client.validateEmail(email)).not.toThrow();
     });
-    afterEach(() => {
-        vi.clearAllMocks();
+    it("should throw error for invalid email", () => {
+      const invalidEmail = "invalid-email";
+      expect(() => client.validateEmail(invalidEmail)).toThrow(DatabaseError);
     });
-    describe("Email Validation", () => {
-        it("should validate correct email", () => {
-            const email = "test@example.com";
-            expect(() => client.validateEmail(email)).not.toThrow();
-        });
-        it("should throw error for invalid email", () => {
-            const invalidEmail = "invalid-email";
-            expect(() => client.validateEmail(invalidEmail)).toThrow(DatabaseError);
-        });
+  });
+  describe("Username Validation", () => {
+    it("should validate correct username", () => {
+      const username = "validuser";
+      expect(() => client.validateUsername(username)).not.toThrow();
     });
-    describe("Username Validation", () => {
-        it("should validate correct username", () => {
-            const username = "validuser";
-            expect(() => client.validateUsername(username)).not.toThrow();
-        });
-        it("should throw error for empty username", () => {
-            const emptyUsername = "";
-            expect(() => client.validateUsername(emptyUsername)).toThrow(DatabaseError);
-        });
+    it("should throw error for empty username", () => {
+      const emptyUsername = "";
+      expect(() => client.validateUsername(emptyUsername)).toThrow(
+        DatabaseError,
+      );
     });
-    describe("Supabase Auth0 User ID Validation", () => {
-        it("should validate correct Supabase Auth0 User ID", () => {
-            const id = "1234567890";
-            expect(() => client.validateSupabaseAuth0UserId(id)).not.toThrow();
-        });
-        it("should throw error for empty Supabase Auth0 User ID", () => {
-            const emptyId = "";
-            expect(() => client.validateSupabaseAuth0UserId(emptyId)).toThrow(DatabaseError);
-        });
+  });
+  describe("Supabase Auth0 User ID Validation", () => {
+    it("should validate correct Supabase Auth0 User ID", () => {
+      const id = "1234567890";
+      expect(() => client.validateSupabaseAuth0UserId(id)).not.toThrow();
     });
-    describe("Error Handling", () => {
-        it("should throw DatabaseError for invalid email", async () => {
-            await expect(client.createUserAccount({
-                email: "invalid-email",
-                username: "testuser",
-                supabaseAuth0UserId: "1234567890",
-            })).rejects.toThrow(DatabaseError);
-        });
-        it("should throw DatabaseError for empty username", async () => {
-            await expect(client.createUserAccount({
-                email: "test@example.com",
-                username: "",
-                supabaseAuth0UserId: "1234567890",
-            })).rejects.toThrow(DatabaseError);
-        });
-        it("should throw DatabaseError for empty Supabase Auth0 User ID", async () => {
-            await expect(client.createUserAccount({
-                email: "test@example.com",
-                username: "testuser",
-                supabaseAuth0UserId: "",
-            })).rejects.toThrow(DatabaseError);
-        });
+    it("should throw error for empty Supabase Auth0 User ID", () => {
+      const emptyId = "";
+      expect(() => client.validateSupabaseAuth0UserId(emptyId)).toThrow(
+        DatabaseError,
+      );
     });
+  });
+  describe("Error Handling", () => {
+    it("should throw DatabaseError for invalid email", async () => {
+      await expect(
+        client.createUserAccount({
+          email: "invalid-email",
+          username: "testuser",
+          supabaseAuth0UserId: "1234567890",
+        }),
+      ).rejects.toThrow(DatabaseError);
+    });
+    it("should throw DatabaseError for empty username", async () => {
+      await expect(
+        client.createUserAccount({
+          email: "test@example.com",
+          username: "",
+          supabaseAuth0UserId: "1234567890",
+        }),
+      ).rejects.toThrow(DatabaseError);
+    });
+    it("should throw DatabaseError for empty Supabase Auth0 User ID", async () => {
+      await expect(
+        client.createUserAccount({
+          email: "test@example.com",
+          username: "testuser",
+          supabaseAuth0UserId: "",
+        }),
+      ).rejects.toThrow(DatabaseError);
+    });
+  });
 });
 //   describe('User Account Operations', () => {
 //     const testUser = {

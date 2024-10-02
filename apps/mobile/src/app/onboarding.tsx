@@ -1,9 +1,9 @@
-import { useRouter } from 'expo-router';
-import React from 'react';
+import { useRouter } from "expo-router";
+import React from "react";
 
-import { Cover } from '@/components/cover';
-import { useIsFirstTime } from '@/core/hooks';
-import { Button, FocusAwareStatusBar, SafeAreaView, Text, View } from '@/ui';
+import { Cover } from "@/components/cover";
+import { useIsFirstTime } from "@/core/hooks";
+import { Button, FocusAwareStatusBar, SafeAreaView, Text, View } from "@/ui";
 export default function Onboarding() {
   const [_, setIsFirstTime] = useIsFirstTime();
   const router = useRouter();
@@ -22,7 +22,7 @@ export default function Onboarding() {
         </Text>
 
         <Text className="my-1 pt-6 text-left text-lg">
-          🚀 Production-ready{' '}
+          🚀 Production-ready{" "}
         </Text>
         <Text className="my-1 text-left text-lg">
           🥷 Developer experience + Productivity
@@ -39,7 +39,7 @@ export default function Onboarding() {
           label="Let's Get Started "
           onPress={() => {
             setIsFirstTime(false);
-            router.replace('/login');
+            router.replace("/login");
           }}
         />
       </SafeAreaView>

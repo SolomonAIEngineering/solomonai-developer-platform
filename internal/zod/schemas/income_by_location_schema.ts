@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 export const IncomeByLocationSchema = z.object({
   Month: z.number().int().min(202201).max(209912),
@@ -7,4 +7,4 @@ export const IncomeByLocationSchema = z.object({
   Country: z.string(),
   TotalIncome: z.number().nonnegative(),
   UserId: z.string().uuid(),
-})
+});

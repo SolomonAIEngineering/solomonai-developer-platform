@@ -5,12 +5,13 @@ const animated_text_1 = require("@/components/animated-text");
 const copy_text_1 = require("@/components/copy-text");
 const tooltip_1 = require("@v1/ui/tooltip");
 function Page() {
-    return (<div className="h-screen w-screen flex flex-col items-center justify-center relative overflow-hidden">
-      <div className="absolute -top-[118px] inset-0 bg-[linear-gradient(to_right,#222_1px,transparent_1px),linear-gradient(to_bottom,#222_1px,transparent_1px)] bg-[size:4.5rem_2rem] -z-10 [transform:perspective(1000px)_rotateX(-63deg)] h-[80%] pointer-events-none"/>
-      <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent pointer-events-none -z-10"/>
+  return (
+    <div className="h-screen w-screen flex flex-col items-center justify-center relative overflow-hidden">
+      <div className="absolute -top-[118px] inset-0 bg-[linear-gradient(to_right,#222_1px,transparent_1px),linear-gradient(to_bottom,#222_1px,transparent_1px)] bg-[size:4.5rem_2rem] -z-10 [transform:perspective(1000px)_rotateX(-63deg)] h-[80%] pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent pointer-events-none -z-10" />
 
       <h1 className="font-departure text-[40px] md:text-[84px] relative z-10 text-center h-[120px] md:h-auto leading-tight">
-        <animated_text_1.AnimatedText text="Production ready code"/>
+        <animated_text_1.AnimatedText text="Production ready code" />
       </h1>
 
       <p className="relative z-10 text-center max-w-[80%] mt-0 md:mt-4">
@@ -27,21 +28,33 @@ function Page() {
         </span> */}
 
       <div className="mt-10 mb-8">
-        <copy_text_1.CopyText value="bunx degit midday-ai/v1 v1"/>
+        <copy_text_1.CopyText value="bunx degit midday-ai/v1 v1" />
       </div>
 
       <tooltip_1.TooltipProvider delayDuration={0}>
         <tooltip_1.Tooltip>
           <tooltip_1.TooltipTrigger asChild>
-            <a href="https://news.ycombinator.com/item?id=41408929" target="_blank" rel="noreferrer">
+            <a
+              href="https://news.ycombinator.com/item?id=41408929"
+              target="_blank"
+              rel="noreferrer"
+            >
               <div className="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} fill="none">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width={16}
+                  height={16}
+                  fill="none"
+                >
                   <g clipPath="url(#a)">
-                    <path fill="#F60" d="M0 0v16h16V0H0Zm8.7 9.225v3.925H7.275V9.225L3.775 2.3h1.65L8 7.525 10.65 2.3h1.55L8.7 9.225Z"/>
+                    <path
+                      fill="#F60"
+                      d="M0 0v16h16V0H0Zm8.7 9.225v3.925H7.275V9.225L3.775 2.3h1.65L8 7.525 10.65 2.3h1.55L8.7 9.225Z"
+                    />
                   </g>
                   <defs>
                     <clipPath id="a">
-                      <path fill="#fff" d="M0 0h16v16H0z"/>
+                      <path fill="#fff" d="M0 0h16v16H0z" />
                     </clipPath>
                   </defs>
                 </svg>
@@ -49,13 +62,18 @@ function Page() {
               </div>
             </a>
           </tooltip_1.TooltipTrigger>
-          <tooltip_1.TooltipContent side="bottom" sideOffset={15} className="text-xs">
+          <tooltip_1.TooltipContent
+            side="bottom"
+            sideOffset={15}
+            className="text-xs"
+          >
             Show HN: V1 – An open-source starter kit for your next project
           </tooltip_1.TooltipContent>
         </tooltip_1.Tooltip>
       </tooltip_1.TooltipProvider>
 
-      <div className="absolute -bottom-[280px] inset-0 bg-[linear-gradient(to_right,#222_1px,transparent_1px),linear-gradient(to_bottom,#222_1px,transparent_1px)] bg-[size:4.5rem_2rem] -z-10 [transform:perspective(560px)_rotateX(63deg)] pointer-events-none"/>
-      <div className="absolute w-full bottom-[100px] h-1/2  bg-gradient-to-b from-background to-transparent pointer-events-none -z-10"/>
-    </div>);
+      <div className="absolute -bottom-[280px] inset-0 bg-[linear-gradient(to_right,#222_1px,transparent_1px),linear-gradient(to_bottom,#222_1px,transparent_1px)] bg-[size:4.5rem_2rem] -z-10 [transform:perspective(560px)_rotateX(63deg)] pointer-events-none" />
+      <div className="absolute w-full bottom-[100px] h-1/2  bg-gradient-to-b from-background to-transparent pointer-events-none -z-10" />
+    </div>
+  );
 }

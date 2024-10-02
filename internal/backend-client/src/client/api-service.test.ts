@@ -7,112 +7,112 @@ import {
   UserServiceV2Api,
   WorkspaceServiceApi,
   WorkspaceServiceRestApi,
-} from 'client-typescript-sdk'
+} from "client-typescript-sdk";
 
-import { ApiService } from './api-service.ts'
-import { ApiConfig } from './config.ts'
-import { Logger } from './logger.ts'
+import { ApiService } from "./api-service.ts";
+import { ApiConfig } from "./config.ts";
+import { Logger } from "./logger.ts";
 
 // Mock the dependencies
-jest.mock('client-typescript-sdk')
-jest.mock('./logger')
+jest.mock("client-typescript-sdk");
+jest.mock("./logger");
 
-describe('ApiService', () => {
+describe("ApiService", () => {
   const mockConfig: ApiConfig = {
-    apiUrl: 'https://api.example.com',
-    token: 'test-token',
-  }
-  const mockMiddlewares: Middleware[] = []
+    apiUrl: "https://api.example.com",
+    token: "test-token",
+  };
+  const mockMiddlewares: Middleware[] = [];
 
   beforeEach(() => {
-    jest.clearAllMocks()
-  })
+    jest.clearAllMocks();
+  });
 
-  test('constructor initializes properly', () => {
-    const apiService = new ApiService(mockConfig, mockMiddlewares)
-    expect(apiService).toBeDefined()
-    expect(Logger.info).toHaveBeenCalledWith('ApiService instance created', {
+  test("constructor initializes properly", () => {
+    const apiService = new ApiService(mockConfig, mockMiddlewares);
+    expect(apiService).toBeDefined();
+    expect(Logger.info).toHaveBeenCalledWith("ApiService instance created", {
       apiUrl: mockConfig.apiUrl,
-    })
-  })
+    });
+  });
 
-  test('setToken updates token and recreates configuration', () => {
-    const apiService = new ApiService(mockConfig, mockMiddlewares)
-    const newToken = 'new-token'
-    apiService.setToken(newToken)
-    expect(apiService.getToken()).toBe(newToken)
+  test("setToken updates token and recreates configuration", () => {
+    const apiService = new ApiService(mockConfig, mockMiddlewares);
+    const newToken = "new-token";
+    apiService.setToken(newToken);
+    expect(apiService.getToken()).toBe(newToken);
     expect(Logger.info).toHaveBeenCalledWith(
-      'New token set and configuration updated',
-    )
-  })
+      "New token set and configuration updated",
+    );
+  });
 
-  test('getToken returns the correct token', () => {
-    const apiService = new ApiService(mockConfig, mockMiddlewares)
-    expect(apiService.getToken()).toBe(mockConfig.token)
-  })
+  test("getToken returns the correct token", () => {
+    const apiService = new ApiService(mockConfig, mockMiddlewares);
+    expect(apiService.getToken()).toBe(mockConfig.token);
+  });
 
-  test('getUserServiceV2Api returns a new UserServiceV2Api instance', () => {
-    const apiService = new ApiService(mockConfig, mockMiddlewares)
-    const userService = apiService.getUserServiceV2Api()
-    expect(userService).toBeInstanceOf(UserServiceV2Api)
-  })
+  test("getUserServiceV2Api returns a new UserServiceV2Api instance", () => {
+    const apiService = new ApiService(mockConfig, mockMiddlewares);
+    const userService = apiService.getUserServiceV2Api();
+    expect(userService).toBeInstanceOf(UserServiceV2Api);
+  });
 
-  test('getAccountingServiceApi returns a new AccountingServiceApi instance', () => {
-    const apiService = new ApiService(mockConfig, mockMiddlewares)
-    const accountingService = apiService.getAccountingServiceApi()
-    expect(accountingService).toBeInstanceOf(AccountingServiceApi)
-  })
+  test("getAccountingServiceApi returns a new AccountingServiceApi instance", () => {
+    const apiService = new ApiService(mockConfig, mockMiddlewares);
+    const accountingService = apiService.getAccountingServiceApi();
+    expect(accountingService).toBeInstanceOf(AccountingServiceApi);
+  });
 
-  test('getFinancialServiceApi returns a new FinancialServiceApi instance', () => {
-    const apiService = new ApiService(mockConfig, mockMiddlewares)
-    const financialService = apiService.getFinancialServiceApi()
-    expect(financialService).toBeInstanceOf(FinancialServiceApi)
-  })
+  test("getFinancialServiceApi returns a new FinancialServiceApi instance", () => {
+    const apiService = new ApiService(mockConfig, mockMiddlewares);
+    const financialService = apiService.getFinancialServiceApi();
+    expect(financialService).toBeInstanceOf(FinancialServiceApi);
+  });
 
-  test('getSocialServiceApi returns a new SocialServiceApi instance', () => {
-    const apiService = new ApiService(mockConfig, mockMiddlewares)
-    const socialService = apiService.getSocialServiceApi()
-    expect(socialService).toBeInstanceOf(SocialServiceApi)
-  })
+  test("getSocialServiceApi returns a new SocialServiceApi instance", () => {
+    const apiService = new ApiService(mockConfig, mockMiddlewares);
+    const socialService = apiService.getSocialServiceApi();
+    expect(socialService).toBeInstanceOf(SocialServiceApi);
+  });
 
-  test('getWorkspaceServiceApi returns a new WorkspaceServiceApi instance', () => {
-    const apiService = new ApiService(mockConfig, mockMiddlewares)
-    const workspaceService = apiService.getWorkspaceServiceApi()
-    expect(workspaceService).toBeInstanceOf(WorkspaceServiceApi)
-  })
+  test("getWorkspaceServiceApi returns a new WorkspaceServiceApi instance", () => {
+    const apiService = new ApiService(mockConfig, mockMiddlewares);
+    const workspaceService = apiService.getWorkspaceServiceApi();
+    expect(workspaceService).toBeInstanceOf(WorkspaceServiceApi);
+  });
 
-  test('getWorkspaceServiceRestApi returns a new WorkspaceServiceRestApi instance', () => {
-    const apiService = new ApiService(mockConfig, mockMiddlewares)
-    const workspaceRestService = apiService.getWorkspaceServiceRestApi()
-    expect(workspaceRestService).toBeInstanceOf(WorkspaceServiceRestApi)
-  })
+  test("getWorkspaceServiceRestApi returns a new WorkspaceServiceRestApi instance", () => {
+    const apiService = new ApiService(mockConfig, mockMiddlewares);
+    const workspaceRestService = apiService.getWorkspaceServiceRestApi();
+    expect(workspaceRestService).toBeInstanceOf(WorkspaceServiceRestApi);
+  });
 
-  test('updateMiddlewares updates middlewares and recreates configuration', () => {
-    const apiService = new ApiService(mockConfig, mockMiddlewares)
-    const newMiddlewares: Middleware[] = []
-    apiService.updateMiddlewares(newMiddlewares)
+  test("updateMiddlewares updates middlewares and recreates configuration", () => {
+    const apiService = new ApiService(mockConfig, mockMiddlewares);
+    const newMiddlewares: Middleware[] = [];
+    apiService.updateMiddlewares(newMiddlewares);
     expect(Logger.info).toHaveBeenCalledWith(
-      'Middlewares updated and configuration recreated',
-    )
-  })
+      "Middlewares updated and configuration recreated",
+    );
+  });
 
-  test('getConfig returns the current API configuration', () => {
-    const apiService = new ApiService(mockConfig, mockMiddlewares)
-    expect(apiService.getConfig()).toEqual(mockConfig)
-  })
+  test("getConfig returns the current API configuration", () => {
+    const apiService = new ApiService(mockConfig, mockMiddlewares);
+    expect(apiService.getConfig()).toEqual(mockConfig);
+  });
 
-  test('createConfiguration creates correct Configuration object', () => {
-    const apiService = new ApiService(mockConfig, mockMiddlewares)
-    const configuration = (apiService as any).createConfiguration()
-    expect(configuration).toBeInstanceOf(Configuration)
+  test("createConfiguration creates correct Configuration object", () => {
+    const apiService = new ApiService(mockConfig, mockMiddlewares);
+    const configuration = (apiService as any).createConfiguration();
+    expect(configuration).toBeInstanceOf(Configuration);
     expect(Configuration).toHaveBeenCalledWith({
       basePath: mockConfig.apiUrl,
       accessToken: mockConfig.token,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${mockConfig.token}`,
       },
       middleware: mockMiddlewares,
-    })
-  })
-})
+    });
+  });
+});

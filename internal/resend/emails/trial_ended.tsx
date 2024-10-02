@@ -1,33 +1,33 @@
-'use client'
+"use client";
 
-import React from 'react'
+import React from "react";
 
-import { Button } from '@react-email/button'
-import { Container } from '@react-email/container'
-import { Head } from '@react-email/head'
-import { Heading } from '@react-email/heading'
-import { Hr } from '@react-email/hr'
-import { Html } from '@react-email/html'
-import { Link } from '@react-email/link'
-import { Section } from '@react-email/section'
-import { Tailwind } from '@react-email/tailwind'
-import { Text } from '@react-email/text'
+import { Button } from "@react-email/button";
+import { Container } from "@react-email/container";
+import { Head } from "@react-email/head";
+import { Heading } from "@react-email/heading";
+import { Hr } from "@react-email/hr";
+import { Html } from "@react-email/html";
+import { Link } from "@react-email/link";
+import { Section } from "@react-email/section";
+import { Tailwind } from "@react-email/tailwind";
+import { Text } from "@react-email/text";
 
-import tailwindConfig from '@v1/ui/tailwind.config.ts'
+import tailwindConfig from "@v1/ui/tailwind.config.ts";
 
 export type Props = {
-  username: string
-  workspaceName: string
-}
+  username: string;
+  workspaceName: string;
+};
 
 export function TrialEnded({ workspaceName, username }: Props) {
   return (
     <Tailwind config={tailwindConfig}>
-      <Html className='font-sans text-zinc-800'>
+      <Html className="font-sans text-zinc-800">
         <Head />
-        <Section className='bg-white'>
-          <Container className='container mx-auto'>
-            <Heading className='font-sans text-2xl text-semibold'>
+        <Section className="bg-white">
+          <Container className="container mx-auto">
+            <Heading className="font-sans text-2xl text-semibold">
               Your workspace <strong>{workspaceName}</strong> has reached the
               end of its trial.
             </Heading>
@@ -39,23 +39,23 @@ export function TrialEnded({ workspaceName, username }: Props) {
             </Text>
 
             <Section>
-              <Text className='font-semibold'>
-                When you upgrade to the Solomon AI Pro plan…it's simple:{' '}
+              <Text className="font-semibold">
+                When you upgrade to the Solomon AI Pro plan…it's simple:{" "}
               </Text>
               <Text>
                 <li>
-                  {' '}
+                  {" "}
                   1M monthly active keys included (free users get 1k total)
                 </li>
                 <li>
-                  {' '}
+                  {" "}
                   150k monthly verifications included (free users get 2.5k per
-                  month){' '}
+                  month){" "}
                 </li>
                 <li>
-                  {' '}
+                  {" "}
                   2.5M monthly ratelimits included (free users get 100k per
-                  month){' '}
+                  month){" "}
                 </li>
                 <li> Unlimited and free seats to invite your whole team</li>
                 <li> 90-day analytics retention</li>
@@ -64,10 +64,10 @@ export function TrialEnded({ workspaceName, username }: Props) {
               </Text>
             </Section>
 
-            <Container className='flex items-center justify-center my-8'>
+            <Container className="flex items-center justify-center my-8">
               <Button
-                href='https://app-business.solomon-ai.app/app/settings/billing'
-                className='px-4 py-2 text-white bg-black rounded'
+                href="https://app-business.solomon-ai.app/app/settings/billing"
+                className="px-4 py-2 text-white bg-black rounded"
               >
                 Upgrade Now
               </Button>
@@ -76,10 +76,10 @@ export function TrialEnded({ workspaceName, username }: Props) {
             <Hr />
 
             <Text>
-              Need help? Please reach out to{' '}
-              <Link href='mailto:support@inbox.solomon-ai.app'>
+              Need help? Please reach out to{" "}
+              <Link href="mailto:support@inbox.solomon-ai.app">
                 support@inbox.solomon-ai.app
-              </Link>{' '}
+              </Link>{" "}
               or just reply to this email.
             </Text>
 
@@ -92,12 +92,12 @@ export function TrialEnded({ workspaceName, username }: Props) {
         </Section>
       </Html>
     </Tailwind>
-  )
+  );
 }
 
 TrialEnded.PreviewProps = {
-  username: 'Spongebob Squarepants',
-  workspaceName: 'Krusty crab',
-} satisfies Props
+  username: "Spongebob Squarepants",
+  workspaceName: "Krusty crab",
+} satisfies Props;
 
-export default TrialEnded
+export default TrialEnded;

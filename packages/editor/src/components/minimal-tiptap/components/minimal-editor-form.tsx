@@ -1,10 +1,10 @@
-import React from 'react'
+import React from "react";
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Controller, useForm } from 'react-hook-form'
-import * as z from 'zod'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import * as z from "zod";
 
-import { Button } from '@v1/ui/button'
+import { Button } from "@v1/ui/button";
 import {
   Form,
   FormControl,
@@ -12,20 +12,20 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@v1/ui/form'
+} from "@v1/ui/form";
 
-import { MinimalTiptapEditor } from '../index'
+import { MinimalTiptapEditor } from "../index";
 
-import '@/minimal-editor.css'
+import "@/minimal-editor.css";
 
-import { cn } from '@/lib/editor/utils'
+import { cn } from "@/lib/editor/utils";
 
 /**
  * The shape of the form values.
  */
 interface FormValues {
   /** The description content of the editor. */
-  description: string
+  description: string;
 }
 
 /**
@@ -36,36 +36,36 @@ interface MinimalEditorProps {
    * Callback function called when the form is submitted.
    * @param values The form values.
    */
-  onSubmit: (values: FormValues) => void
+  onSubmit: (values: FormValues) => void;
 
   /**
    * The current value of the editor. Use this for controlled components.
    */
-  value?: string
+  value?: string;
 
   /**
    * Callback function called when the editor value changes. Use this for controlled components.
    * @param value The new value of the editor.
    */
-  onValueChange?: React.Dispatch<React.SetStateAction<string>>
+  onValueChange?: React.Dispatch<React.SetStateAction<string>>;
 
   /**
    * The format of the output value from the editor.
    * @default 'html'
    */
-  outputValue?: 'html' | 'json' | 'text'
+  outputValue?: "html" | "json" | "text";
 
   /**
    * Whether the editor is disabled.
    * @default false
    */
-  disabled?: boolean
+  disabled?: boolean;
 
   /**
    * The default description to use when the component is uncontrolled.
    * @default ''
    */
-  defaultDescription?: string
+  defaultDescription?: string;
 }
 
 /**
@@ -73,14 +73,14 @@ interface MinimalEditorProps {
  */
 const formSchema = z.object({
   description: z
-    .string({ required_error: 'Description is required' })
-    .min(1, 'Description is required'),
-})
+    .string({ required_error: "Description is required" })
+    .min(1, "Description is required"),
+});
 
 /**
  * Type definition for the form values, derived from the Zod schema.
  */
-export type FormSchemaType = z.infer<typeof formSchema>
+export type FormSchemaType = z.infer<typeof formSchema>;
 
 /**
  * MinimalEditorForm component.
@@ -114,14 +114,14 @@ export const MinimalEditorForm: React.FC<MinimalEditorProps> = ({
   onSubmit,
   value,
   onValueChange,
-  outputValue = 'html',
+  outputValue = "html",
   disabled = false,
-  defaultDescription = '',
+  defaultDescription = "",
 }) => {
   /**
    * Determines if the component is being used in a controlled manner.
    */
-  const isControlled = value !== undefined && onValueChange !== undefined
+  const isControlled = value !== undefined && onValueChange !== undefined;
 
   /**
    * Form instance created with react-hook-form.
@@ -131,31 +131,31 @@ export const MinimalEditorForm: React.FC<MinimalEditorProps> = ({
     defaultValues: {
       description: isControlled ? value : defaultDescription,
     },
-  })
+  });
 
   /**
    * Handles form submission.
    * @param values The form values.
    */
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    onSubmit(values)
-  }
+    onSubmit(values);
+  };
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className='w-full space-y-6'
+        className="w-full space-y-6"
       >
         <FormField
           control={form.control}
-          name='description'
+          name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className='sr-only'>Description</FormLabel>
+              <FormLabel className="sr-only">Description</FormLabel>
               <FormControl>
                 <Controller
-                  name='description'
+                  name="description"
                   control={form.control}
                   render={({ field }) => (
                     <MinimalTiptapEditor
@@ -163,14 +163,14 @@ export const MinimalEditorForm: React.FC<MinimalEditorProps> = ({
                       value={isControlled ? value : field.value}
                       onValueChange={(newValue) => {
                         if (isControlled) {
-                          onValueChange(newValue)
+                          onValueChange(newValue);
                         }
-                        field.onChange(newValue)
+                        field.onChange(newValue);
                       }}
                       outputValue={outputValue}
                       disabled={disabled}
-                      className={cn('min-h-[300px] w-full', {
-                        'border-red-500 focus-within:border-red-500':
+                      className={cn("min-h-[300px] w-full", {
+                        "border-red-500 focus-within:border-red-500":
                           form.formState.errors.description,
                       })}
                     />
@@ -182,14 +182,14 @@ export const MinimalEditorForm: React.FC<MinimalEditorProps> = ({
           )}
         />
         <Button
-          type='submit'
-          className='w-fit'
-          variant={'outline'}
+          type="submit"
+          className="w-fit"
+          variant={"outline"}
           disabled={disabled}
         >
           Submit
         </Button>
       </form>
     </Form>
-  )
-}
+  );
+};

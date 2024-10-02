@@ -36,24 +36,26 @@ import { userAccountsTags } from "./user-account-tags.js";
  * - The accountType field uses an enum to restrict possible values.
  */
 export const userAccounts = sqliteTable("user_accounts", {
-    id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    email: text("email").notNull().unique(),
-    bio: text("bio", { length: 200 }),
-    headline: text("headline"),
-    phoneNumber: text("phone_number"),
-    authnAccountId: integer("authn_account_id"),
-    isActive: integer("is_active", { mode: "boolean" }).default(true),
-    firstname: text("firstname"),
-    lastname: text("lastname"),
-    username: text("username").notNull().unique(),
-    isPrivate: integer("is_private", { mode: "boolean" }).default(false),
-    isEmailVerified: integer("is_email_verified", { mode: "boolean" }).default(false),
-    createdAt: text("createdAt").default(sql `(CURRENT_TIMESTAMP)`),
-    verifiedAt: text("verifiedAt").default(sql `(CURRENT_TIMESTAMP)`),
-    accountType: profileTypeEnum,
-    profileImageUrl: text("profile_image_url"),
-    supabaseAuth0UserId: text("supabase_auth0_user_id").unique(),
-    algoliaUserId: text("algolia_user_id"),
+  id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+  email: text("email").notNull().unique(),
+  bio: text("bio", { length: 200 }),
+  headline: text("headline"),
+  phoneNumber: text("phone_number"),
+  authnAccountId: integer("authn_account_id"),
+  isActive: integer("is_active", { mode: "boolean" }).default(true),
+  firstname: text("firstname"),
+  lastname: text("lastname"),
+  username: text("username").notNull().unique(),
+  isPrivate: integer("is_private", { mode: "boolean" }).default(false),
+  isEmailVerified: integer("is_email_verified", { mode: "boolean" }).default(
+    false,
+  ),
+  createdAt: text("createdAt").default(sql`(CURRENT_TIMESTAMP)`),
+  verifiedAt: text("verifiedAt").default(sql`(CURRENT_TIMESTAMP)`),
+  accountType: profileTypeEnum,
+  profileImageUrl: text("profile_image_url"),
+  supabaseAuth0UserId: text("supabase_auth0_user_id").unique(),
+  algoliaUserId: text("algolia_user_id"),
 });
 /**
  * Defines the relationships between the userAccounts table and other tables in the database.
@@ -73,17 +75,20 @@ export const userAccounts = sqliteTable("user_accounts", {
  * - The roles relationship allows for role-based access control.
  * - The apiKeys relationship allows users to have multiple API keys for different purposes.
  */
-export const userAccountsRelations = relations(userAccounts, ({ one, many }) => ({
+export const userAccountsRelations = relations(
+  userAccounts,
+  ({ one, many }) => ({
     address: one(addresses, {
-        fields: [userAccounts.id],
-        references: [addresses.userAccountId],
+      fields: [userAccounts.id],
+      references: [addresses.userAccountId],
     }),
     tags: many(userAccountsTags),
     settings: one(settings, {
-        fields: [userAccounts.id],
-        references: [settings.userAccountId],
+      fields: [userAccounts.id],
+      references: [settings.userAccountId],
     }),
     teams: many(teamMembers),
     roles: many(roles),
     apiKeys: many(apiKeys),
-}));
+  }),
+);

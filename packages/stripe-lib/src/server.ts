@@ -1,24 +1,24 @@
-'use server'
+"use server";
 
 // NOTE: don't change this import directive, it works, it may show red
 // due to how module resolution works in this package may have to fix that instead
-import { SupabaseClient } from '@supabase/supabase-js'
-import Stripe from 'stripe'
+import { SupabaseClient } from "@supabase/supabase-js";
+import Stripe from "stripe";
 
-import { createClient } from '@v1/db/server'
+import { createClient } from "@v1/db/server";
 
-import { createOrRetrieveCustomer } from './mutations/index'
-import { Database } from './types'
+import { createOrRetrieveCustomer } from "./mutations/index";
+import { Database } from "./types";
 import {
   calculateTrialEndUnixTimestamp,
   getErrorRedirect,
   getURL,
-} from './utils'
+} from "./utils";
 
 // Initialize Stripe with the secret key
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-06-20',
-})
+  apiVersion: "2024-06-20",
+});
 
 /**
  * Represents the response structure for the checkout process.
@@ -27,9 +27,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
  * @property {string} [sessionId] - The ID of the created Stripe checkout session.
  */
 type CheckoutResponse = {
-  errorRedirect?: string
-  sessionId?: string
-}
+  errorRedirect?: string;
+  sessionId?: string;
+};
 
 /**
  * Represents the structure of a price object used in the checkout process.
@@ -45,16 +45,16 @@ type CheckoutResponse = {
  * @property {number} unit_amount - The amount in cents for this price.
  */
 export type Price = {
-  description: string
-  id: string
-  interval: 'day' | 'week' | 'month' | 'year'
-  interval_count: number
-  metadata: Record<string, string>
-  product_id: string
-  trial_period_days: number
-  type: 'recurring' | 'one_time'
-  unit_amount: number
-}
+  description: string;
+  id: string;
+  interval: "day" | "week" | "month" | "year";
+  interval_count: number;
+  metadata: Record<string, string>;
+  product_id: string;
+  trial_period_days: number;
+  type: "recurring" | "one_time";
+  unit_amount: number;
+};
 
 /**
  * Initiates a checkout process with Stripe for a given price.
@@ -81,46 +81,46 @@ export type Price = {
  */
 export async function checkoutWithStripe<T extends Database>(
   price: Price,
-  redirectPath: string = '/teams',
-  errorRedirect: string = '/teams',
+  redirectPath: string = "/teams",
+  errorRedirect: string = "/teams",
 ): Promise<CheckoutResponse> {
-  const client = createClient()
+  const client = createClient();
   try {
     // Get the user from Supabase auth
     const {
       error,
       data: { user },
-    } = await client.auth.getUser()
+    } = await client.auth.getUser();
 
     if (error || !user) {
-      console.error(error)
-      throw new Error('Could not get user session.')
+      console.error(error);
+      throw new Error("Could not get user session.");
     }
 
-    console.log('user obtained', user)
+    console.log("user obtained", user);
 
     // Retrieve or create the customer in Stripe
-    let customer: string
+    let customer: string;
     try {
       customer = await createOrRetrieveCustomer({
         uuid: user.id,
-        email: user.email || '',
+        email: user.email || "",
         client,
-      })
+      });
 
-      console.log('customer obtained', customer)
+      console.log("customer obtained", customer);
     } catch (err) {
-      console.error(err)
-      throw new Error('Unable to access customer record.', { cause: err })
+      console.error(err);
+      throw new Error("Unable to access customer record.", { cause: err });
     }
 
     // Use the initialized stripe instance
     let params: Stripe.Checkout.SessionCreateParams = {
       allow_promotion_codes: true,
-      billing_address_collection: 'required',
+      billing_address_collection: "required",
       customer,
       customer_update: {
-        address: 'auto',
+        address: "auto",
       },
       line_items: [
         {
@@ -130,41 +130,41 @@ export async function checkoutWithStripe<T extends Database>(
       ],
       cancel_url: getURL(),
       success_url: getURL(redirectPath),
-    }
+    };
 
     console.log(
-      'Trial end:',
+      "Trial end:",
       calculateTrialEndUnixTimestamp(price.trial_period_days),
-    )
-    if (price.type === 'recurring') {
+    );
+    if (price.type === "recurring") {
       params = {
         ...params,
-        mode: 'subscription',
+        mode: "subscription",
         subscription_data: {
           trial_end: calculateTrialEndUnixTimestamp(price.trial_period_days),
         },
-      }
-    } else if (price.type === 'one_time') {
+      };
+    } else if (price.type === "one_time") {
       params = {
         ...params,
-        mode: 'payment',
-      }
+        mode: "payment",
+      };
     }
 
     // Create a checkout session in Stripe
-    let session
+    let session;
     try {
-      session = await stripe.checkout.sessions.create(params)
+      session = await stripe.checkout.sessions.create(params);
     } catch (err) {
-      console.error(err)
-      throw new Error('Unable to create checkout session.')
+      console.error(err);
+      throw new Error("Unable to create checkout session.");
     }
 
     // Return the session ID
     if (session) {
-      return { sessionId: session.id }
+      return { sessionId: session.id };
     } else {
-      throw new Error('Unable to create checkout session.')
+      throw new Error("Unable to create checkout session.");
     }
   } catch (error) {
     if (error instanceof Error) {
@@ -172,17 +172,17 @@ export async function checkoutWithStripe<T extends Database>(
         errorRedirect: getErrorRedirect(
           errorRedirect,
           error.message,
-          'Please try again later or contact a system administrator.',
+          "Please try again later or contact a system administrator.",
         ),
-      }
+      };
     } else {
       return {
         errorRedirect: getErrorRedirect(
           errorRedirect,
-          'An unknown error occurred.',
-          'Please try again later or contact a system administrator.',
+          "An unknown error occurred.",
+          "Please try again later or contact a system administrator.",
         ),
-      }
+      };
     }
   }
 }
@@ -222,60 +222,60 @@ export async function createStripePortal<T extends Database>(
     const {
       error,
       data: { user },
-    } = await client.auth.getUser()
+    } = await client.auth.getUser();
 
     if (!user) {
       if (error) {
-        console.error(error)
+        console.error(error);
       }
-      throw new Error('Could not get user session.')
+      throw new Error("Could not get user session.");
     }
 
-    let customer
+    let customer;
     try {
       customer = await createOrRetrieveCustomer({
-        uuid: user.id || '',
-        email: user.email || '',
+        uuid: user.id || "",
+        email: user.email || "",
         client,
-      })
+      });
     } catch (err) {
-      console.error(err)
-      throw new Error('Unable to access customer record.', { cause: err })
+      console.error(err);
+      throw new Error("Unable to access customer record.", { cause: err });
     }
 
     if (!customer) {
-      throw new Error('Could not get customer.')
+      throw new Error("Could not get customer.");
     }
 
     try {
-      const stripeReturnUrl = getURL('/account')
-      console.log('Return URL for stripe billing portal:', stripeReturnUrl)
+      const stripeReturnUrl = getURL("/account");
+      console.log("Return URL for stripe billing portal:", stripeReturnUrl);
       const { url } = await stripe.billingPortal.sessions.create({
         customer,
         return_url: stripeReturnUrl,
-      })
+      });
       if (!url) {
-        throw new Error('Could not create billing portal')
+        throw new Error("Could not create billing portal");
       }
-      return url
+      return url;
     } catch (err) {
-      console.error(err)
-      throw new Error('Could not create billing portal')
+      console.error(err);
+      throw new Error("Could not create billing portal");
     }
   } catch (error) {
     if (error instanceof Error) {
-      console.error(error)
+      console.error(error);
       return getErrorRedirect(
         currentPath,
         error.message,
-        'Please try again later or contact a system administrator.',
-      )
+        "Please try again later or contact a system administrator.",
+      );
     } else {
       return getErrorRedirect(
         currentPath,
-        'An unknown error occurred.',
-        'Please try again later or contact a system administrator.',
-      )
+        "An unknown error occurred.",
+        "Please try again later or contact a system administrator.",
+      );
     }
   }
 }

@@ -1,37 +1,38 @@
 import { createRoute, z } from "@hono/zod-openapi";
 import { openApiErrorResponses } from "../../pkg/errors/index.js";
 const postQueueRoute = createRoute({
-    tags: ["queue"],
-    operationId: "postToQueue",
-    method: "post",
-    path: "/v1/queue/{key}",
-    request: {
-        params: z.object({
-            key: z.string(),
-        }),
-        body: {
-            content: {
-                "text/plain": {
-                    schema: z.string(),
-                },
-            },
+  tags: ["queue"],
+  operationId: "postToQueue",
+  method: "post",
+  path: "/v1/queue/{key}",
+  request: {
+    params: z.object({
+      key: z.string(),
+    }),
+    body: {
+      content: {
+        "text/plain": {
+          schema: z.string(),
         },
+      },
     },
-    responses: {
-        202: {
-            description: "Item accepted into the queue",
-            content: {
-                "text/plain": {
-                    schema: z.string(),
-                },
-            },
+  },
+  responses: {
+    202: {
+      description: "Item accepted into the queue",
+      content: {
+        "text/plain": {
+          schema: z.string(),
         },
-        ...openApiErrorResponses,
+      },
     },
+    ...openApiErrorResponses,
+  },
 });
-export const registerV1WriteQueue = (app) => app.openapi(postQueueRoute, async (c) => {
+export const registerV1WriteQueue = (app) =>
+  app.openapi(postQueueRoute, async (c) => {
     const { key } = c.req.param();
     const value = await c.req.text();
     await c.env.QUEUE_PRODUCER.send({ key, value });
     return c.json({ message: "Item accepted into the queue" }, 202);
-});
+  });

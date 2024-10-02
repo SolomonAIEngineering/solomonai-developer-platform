@@ -1,4 +1,4 @@
-import '@testing-library/react-native/extend-expect';
+import "@testing-library/react-native/extend-expect";
 
 // react-hook form setup for testing
 // @ts-ignore

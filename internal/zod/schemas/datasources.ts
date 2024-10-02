@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 // TransactionInternal Schema
 export const TransactionInternalSchema = z.object({
@@ -45,7 +45,7 @@ export const TransactionInternalSchema = z.object({
   UserId: z.string().uuid(),
   Categories: z.array(z.string()),
   ProfileType: z.string(),
-})
+});
 
 // ReOccuringTransactionInternal Schema
 export const ReOccuringTransactionInternalSchema = z.object({
@@ -74,7 +74,7 @@ export const ReOccuringTransactionInternalSchema = z.object({
   UpdatedTime: z.string(),
   UserId: z.string().uuid(),
   ProfileType: z.string(),
-})
+});
 
 // AccountBalanceHistoryInternal Schema
 export const AccountBalanceHistoryInternalSchema = z.object({
@@ -86,4 +86,4 @@ export const AccountBalanceHistoryInternalSchema = z.object({
   Sign: z.number().int().min(-1).max(1),
   Id: z.string().uuid(),
   ProfileType: z.string(),
-})
+});

@@ -1,1 +1,1 @@
-export * from './slashCommand'
+export * from "./slashCommand";

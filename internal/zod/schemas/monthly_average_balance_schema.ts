@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 export const MonthlyAverageBalanceSchema = z.object({
   Month: z.number().int(),
@@ -7,4 +7,4 @@ export const MonthlyAverageBalanceSchema = z.object({
   AverageBalance: z.number(),
   UserId: z.string().uuid(),
   ProfileType: z.string(),
-})
+});

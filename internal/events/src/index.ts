@@ -1,12 +1,12 @@
-import { z } from 'zod'
+import { z } from "zod";
 
-export const eventTypesArr = ['verifications.usage.record', 'xx'] as const
+export const eventTypesArr = ["verifications.usage.record", "xx"] as const;
 
-export const eventType = z.enum(eventTypesArr)
+export const eventType = z.enum(eventTypesArr);
 
-export const event = z.discriminatedUnion('type', [
+export const event = z.discriminatedUnion("type", [
   z.object({
-    type: z.literal(eventType.enum['verifications.usage.record']),
+    type: z.literal(eventType.enum["verifications.usage.record"]),
     timestamp: z.string().datetime(),
     data: z.object({
       eventId: z.string(),
@@ -23,6 +23,6 @@ export const event = z.discriminatedUnion('type', [
       ),
     }),
   }),
-])
+]);
 
-export type Event = z.infer<typeof event>
+export type Event = z.infer<typeof event>;

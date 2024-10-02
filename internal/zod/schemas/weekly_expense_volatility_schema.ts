@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 // WeeklyExpenseVolatility
 export const WeeklyExpenseVolatilitySchema = z.object({
@@ -6,4 +6,4 @@ export const WeeklyExpenseVolatilitySchema = z.object({
   WeekStart: z.date(),
   ExpenseVolatility: z.number(),
   UserId: z.string().uuid(),
-})
+});

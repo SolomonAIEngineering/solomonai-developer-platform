@@ -1,1 +1,1 @@
-export * from './linkPreviewPanel'
+export * from "./linkPreviewPanel";

@@ -2,7 +2,7 @@
  * Represents the context object for errors.
  * It's a record with string keys and unknown values.
  */
-export type ErrorContext = Record<string, unknown>
+export type ErrorContext = Record<string, unknown>;
 
 /**
  * Abstract base class for custom error types.
@@ -17,25 +17,25 @@ export abstract class BaseError<
    * Indicates whether the operation that caused this error can be retried.
    * Implementing classes should define this property.
    */
-  public abstract readonly retry: boolean
+  public abstract readonly retry: boolean;
 
   /**
    * The error that caused this error, if any.
    * Useful for creating error chains.
    */
-  public readonly cause: BaseError | undefined
+  public readonly cause: BaseError | undefined;
 
   /**
    * Additional context information about the error.
    * Can be used to provide more details about the error's occurrence.
    */
-  public readonly context: TContext | undefined
+  public readonly context: TContext | undefined;
 
   /**
    * The name of the error.
    * Implementing classes should define this property to identify the error type.
    */
-  public abstract readonly name: string
+  public abstract readonly name: string;
 
   /**
    * Creates a new instance of BaseError.
@@ -46,13 +46,13 @@ export abstract class BaseError<
    * @param opts.context - Additional context information about the error.
    */
   constructor(opts: {
-    message: string
-    cause?: BaseError
-    context?: TContext
+    message: string;
+    cause?: BaseError;
+    context?: TContext;
   }) {
-    super(opts.message)
-    this.cause = opts.cause
-    this.context = opts.context
+    super(opts.message);
+    this.cause = opts.cause;
+    this.context = opts.context;
   }
 
   /**
@@ -64,6 +64,6 @@ export abstract class BaseError<
   public toString(): string {
     return `${this.name}: ${this.message} - ${JSON.stringify(
       this.context,
-    )} - caused by ${this.cause?.toString()}`
+    )} - caused by ${this.cause?.toString()}`;
   }
 }

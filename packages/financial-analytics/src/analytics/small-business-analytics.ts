@@ -1,46 +1,46 @@
-import { PlaidAccountTransaction } from 'client-typescript-sdk'
+import { PlaidAccountTransaction } from "client-typescript-sdk";
 
 /**
  * Represents the result of the small business analytics calculations.
  */
 type AnalyticsResult = {
-  totalRevenue: number
-  totalExpenses: number
-  netProfit: number
-  profitMargin: number
-  averageTransactionValue: number
-  monthlyRecurringRevenue: number
-  topExpenseCategory: string
-  topRevenueCategory: string
-  cashFlowPositive: boolean
-  pendingTransactionsCount: number
-  mostFrequentMerchant: string
-  averageTransactionTime: string
-  internationalTransactionsPercentage: number
-  onlineTransactionsPercentage: number
-  largestSingleExpense: number
-  largestSingleIncome: number
-  transactionsPerDay: number
-  uniqueMerchantsCount: number
-  averageTransactionsByDayOfWeek: Record<string, number>
-  categoriesDistribution: Record<string, number>
-}
+  totalRevenue: number;
+  totalExpenses: number;
+  netProfit: number;
+  profitMargin: number;
+  averageTransactionValue: number;
+  monthlyRecurringRevenue: number;
+  topExpenseCategory: string;
+  topRevenueCategory: string;
+  cashFlowPositive: boolean;
+  pendingTransactionsCount: number;
+  mostFrequentMerchant: string;
+  averageTransactionTime: string;
+  internationalTransactionsPercentage: number;
+  onlineTransactionsPercentage: number;
+  largestSingleExpense: number;
+  largestSingleIncome: number;
+  transactionsPerDay: number;
+  uniqueMerchantsCount: number;
+  averageTransactionsByDayOfWeek: Record<string, number>;
+  categoriesDistribution: Record<string, number>;
+};
 
 /**
  * A class that performs analytics on small business transactions.
  * It provides various methods to calculate financial metrics and insights.
  */
 class SmallBusinessAnalytics {
-  private transactions: PlaidAccountTransaction[]
-  private cachedResults: Map<string, Partial<AnalyticsResult>> = new Map()
+  private transactions: PlaidAccountTransaction[];
+  private cachedResults: Map<string, Partial<AnalyticsResult>> = new Map();
 
   /**
    * Creates an instance of SmallBusinessAnalytics.
    * @param transactions - An array of PlaidAccountTransaction objects to analyze.
    */
   constructor(transactions: PlaidAccountTransaction[]) {
-    this.transactions = transactions
-    this.preProcessTransactions()
+    this.transactions = transactions;
+    this.preProcessTransactions();
   }
 
   /**
@@ -50,12 +50,12 @@ class SmallBusinessAnalytics {
   private preProcessTransactions(): void {
     this.transactions.forEach((t) => {
       if (t.currentDate) {
-        t.currentDate = new Date(t.currentDate)
+        t.currentDate = new Date(t.currentDate);
       }
       if (t.time) {
-        t.time = new Date(t.time)
+        t.time = new Date(t.time);
       }
-    })
+    });
   }
 
   /**
@@ -65,16 +65,16 @@ class SmallBusinessAnalytics {
    * @returns An object containing all calculated analytics.
    */
   public getAnalytics(startDate?: Date, endDate?: Date): AnalyticsResult {
-    const cacheKey = this.getCacheKey(startDate, endDate)
+    const cacheKey = this.getCacheKey(startDate, endDate);
     if (!this.cachedResults.has(cacheKey)) {
       const filteredTransactions = this.getTransactionsInDateRange(
         startDate,
         endDate,
-      )
-      const results = this.calculateAnalytics(filteredTransactions)
-      this.cachedResults.set(cacheKey, results)
+      );
+      const results = this.calculateAnalytics(filteredTransactions);
+      this.cachedResults.set(cacheKey, results);
     }
-    return this.cachedResults.get(cacheKey) as AnalyticsResult
+    return this.cachedResults.get(cacheKey) as AnalyticsResult;
   }
 
   /**
@@ -84,7 +84,7 @@ class SmallBusinessAnalytics {
    * @returns A string representing the cache key.
    */
   private getCacheKey(startDate?: Date, endDate?: Date): string {
-    return `${startDate?.toISOString() || 'start'}_${endDate?.toISOString() || 'end'}`
+    return `${startDate?.toISOString() || "start"}_${endDate?.toISOString() || "end"}`;
   }
 
   /**
@@ -97,14 +97,14 @@ class SmallBusinessAnalytics {
     startDate?: Date,
     endDate?: Date,
   ): PlaidAccountTransaction[] {
-    if (!startDate && !endDate) return this.transactions
+    if (!startDate && !endDate) return this.transactions;
     return this.transactions.filter((t) => {
-      const transactionDate = t.currentDate!
+      const transactionDate = t.currentDate!;
       return (
         (!startDate || transactionDate >= startDate) &&
         (!endDate || transactionDate <= endDate)
-      )
-    })
+      );
+    });
   }
 
   /**
@@ -122,8 +122,8 @@ class SmallBusinessAnalytics {
       profitMargin: this.getProfitMargin(transactions),
       averageTransactionValue: this.getAverageTransactionValue(transactions),
       monthlyRecurringRevenue: this.getMonthlyRecurringRevenue(transactions),
-      topExpenseCategory: this.getTopCategory(transactions, 'expense'),
-      topRevenueCategory: this.getTopCategory(transactions, 'revenue'),
+      topExpenseCategory: this.getTopCategory(transactions, "expense"),
+      topRevenueCategory: this.getTopCategory(transactions, "revenue"),
       cashFlowPositive: this.isCashFlowPositive(transactions),
       pendingTransactionsCount: this.getPendingTransactionsCount(transactions),
       mostFrequentMerchant: this.getMostFrequentMerchant(transactions),
@@ -134,18 +134,18 @@ class SmallBusinessAnalytics {
         this.getOnlineTransactionsPercentage(transactions),
       largestSingleExpense: this.getLargestSingleTransaction(
         transactions,
-        'expense',
+        "expense",
       ),
       largestSingleIncome: this.getLargestSingleTransaction(
         transactions,
-        'income',
+        "income",
       ),
       transactionsPerDay: this.getTransactionsPerDay(transactions),
       uniqueMerchantsCount: this.getUniqueMerchantsCount(transactions),
       averageTransactionsByDayOfWeek:
         this.getAverageTransactionsByDayOfWeek(transactions),
       categoriesDistribution: this.getCategoriesDistribution(transactions),
-    }
+    };
   }
 
   /**
@@ -156,7 +156,7 @@ class SmallBusinessAnalytics {
   private getTotalRevenue(transactions: PlaidAccountTransaction[]): number {
     return transactions
       .filter((t) => t.amount !== undefined && t.amount < 0)
-      .reduce((sum, t) => sum + Math.abs(t.amount!), 0)
+      .reduce((sum, t) => sum + Math.abs(t.amount!), 0);
   }
 
   /**
@@ -167,7 +167,7 @@ class SmallBusinessAnalytics {
   private getTotalExpenses(transactions: PlaidAccountTransaction[]): number {
     return transactions
       .filter((t) => t.amount !== undefined && t.amount > 0)
-      .reduce((sum, t) => sum + t.amount!, 0)
+      .reduce((sum, t) => sum + t.amount!, 0);
   }
 
   /**
@@ -178,7 +178,7 @@ class SmallBusinessAnalytics {
   private getNetProfit(transactions: PlaidAccountTransaction[]): number {
     return (
       this.getTotalRevenue(transactions) - this.getTotalExpenses(transactions)
-    )
+    );
   }
 
   /**
@@ -187,8 +187,8 @@ class SmallBusinessAnalytics {
    * @returns The profit margin percentage.
    */
   private getProfitMargin(transactions: PlaidAccountTransaction[]): number {
-    const revenue = this.getTotalRevenue(transactions)
-    return revenue ? (this.getNetProfit(transactions) / revenue) * 100 : 0
+    const revenue = this.getTotalRevenue(transactions);
+    return revenue ? (this.getNetProfit(transactions) / revenue) * 100 : 0;
   }
 
   /**
@@ -202,8 +202,8 @@ class SmallBusinessAnalytics {
     const totalAmount = transactions.reduce(
       (sum, t) => sum + Math.abs(t.amount ?? 0),
       0,
-    )
-    return transactions.length ? totalAmount / transactions.length : 0
+    );
+    return transactions.length ? totalAmount / transactions.length : 0;
   }
 
   /**
@@ -214,7 +214,7 @@ class SmallBusinessAnalytics {
   private getMonthlyRecurringRevenue(
     transactions: PlaidAccountTransaction[],
   ): number {
-    const currentMonth = new Date().getMonth()
+    const currentMonth = new Date().getMonth();
     return transactions
       .filter(
         (t) =>
@@ -222,7 +222,7 @@ class SmallBusinessAnalytics {
           t.amount < 0 &&
           t.currentDate?.getMonth() === currentMonth,
       )
-      .reduce((sum, t) => sum + Math.abs(t.amount!), 0)
+      .reduce((sum, t) => sum + Math.abs(t.amount!), 0);
   }
 
   /**
@@ -233,25 +233,25 @@ class SmallBusinessAnalytics {
    */
   private getTopCategory(
     transactions: PlaidAccountTransaction[],
-    type: 'expense' | 'revenue',
+    type: "expense" | "revenue",
   ): string {
     const categories = transactions
       .filter(
         (t) =>
           t.amount !== undefined &&
-          (type === 'expense' ? t.amount > 0 : t.amount < 0),
+          (type === "expense" ? t.amount > 0 : t.amount < 0),
       )
       .reduce(
         (acc, t) => {
-          const category = t.personalFinanceCategoryPrimary || 'Uncategorized'
-          acc[category] = (acc[category] || 0) + Math.abs(t.amount!)
-          return acc
+          const category = t.personalFinanceCategoryPrimary || "Uncategorized";
+          acc[category] = (acc[category] || 0) + Math.abs(t.amount!);
+          return acc;
         },
         {} as Record<string, number>,
-      )
+      );
     return (
-      Object.entries(categories).sort((a, b) => b[1] - a[1])[0]?.[0] ?? 'None'
-    )
+      Object.entries(categories).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "None"
+    );
   }
 
   /**
@@ -260,7 +260,7 @@ class SmallBusinessAnalytics {
    * @returns True if cash flow is positive, false otherwise.
    */
   private isCashFlowPositive(transactions: PlaidAccountTransaction[]): boolean {
-    return this.getNetProfit(transactions) > 0
+    return this.getNetProfit(transactions) > 0;
   }
 
   /**
@@ -271,7 +271,7 @@ class SmallBusinessAnalytics {
   private getPendingTransactionsCount(
     transactions: PlaidAccountTransaction[],
   ): number {
-    return transactions.filter((t) => t.pending).length
+    return transactions.filter((t) => t.pending).length;
   }
 
   /**
@@ -284,16 +284,16 @@ class SmallBusinessAnalytics {
   ): string {
     const merchantCounts = transactions.reduce(
       (acc, t) => {
-        const merchant = t.merchantName || 'Unknown'
-        acc[merchant] = (acc[merchant] || 0) + 1
-        return acc
+        const merchant = t.merchantName || "Unknown";
+        acc[merchant] = (acc[merchant] || 0) + 1;
+        return acc;
       },
       {} as Record<string, number>,
-    )
+    );
     return (
       Object.entries(merchantCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ??
-      'None'
-    )
+      "None"
+    );
   }
 
   /**
@@ -306,13 +306,13 @@ class SmallBusinessAnalytics {
   ): string {
     const times = transactions
       .filter((t) => t.time)
-      .map((t) => t.time!.getHours() * 60 + t.time!.getMinutes())
+      .map((t) => t.time!.getHours() * 60 + t.time!.getMinutes());
     const avgMinutes = times.length
       ? times.reduce((sum, time) => sum + time, 0) / times.length
-      : 0
-    const hours = Math.floor(avgMinutes / 60)
-    const minutes = Math.round(avgMinutes % 60)
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
+      : 0;
+    const hours = Math.floor(avgMinutes / 60);
+    const minutes = Math.round(avgMinutes % 60);
+    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
   }
 
   /**
@@ -324,11 +324,11 @@ class SmallBusinessAnalytics {
     transactions: PlaidAccountTransaction[],
   ): number {
     const internationalCount = transactions.filter(
-      (t) => t.isoCurrencyCode && t.isoCurrencyCode !== 'USD',
-    ).length
+      (t) => t.isoCurrencyCode && t.isoCurrencyCode !== "USD",
+    ).length;
     return transactions.length
       ? (internationalCount / transactions.length) * 100
-      : 0
+      : 0;
   }
 
   /**
@@ -340,9 +340,9 @@ class SmallBusinessAnalytics {
     transactions: PlaidAccountTransaction[],
   ): number {
     const onlineCount = transactions.filter(
-      (t) => t.paymentChannel === 'online',
-    ).length
-    return transactions.length ? (onlineCount / transactions.length) * 100 : 0
+      (t) => t.paymentChannel === "online",
+    ).length;
+    return transactions.length ? (onlineCount / transactions.length) * 100 : 0;
   }
 
   /**
@@ -353,18 +353,18 @@ class SmallBusinessAnalytics {
    */
   private getLargestSingleTransaction(
     transactions: PlaidAccountTransaction[],
-    type: 'expense' | 'income',
+    type: "expense" | "income",
   ): number {
     return Math.max(
       ...transactions
         .filter(
           (t) =>
             t.amount !== undefined &&
-            (type === 'expense' ? t.amount > 0 : t.amount < 0),
+            (type === "expense" ? t.amount > 0 : t.amount < 0),
         )
         .map((t) => Math.abs(t.amount!)),
       0,
-    )
+    );
   }
 
   /**
@@ -376,8 +376,8 @@ class SmallBusinessAnalytics {
     transactions: PlaidAccountTransaction[],
   ): number {
     const days = new Set(transactions.map((t) => t.currentDate?.toDateString()))
-      .size
-    return days ? transactions.length / days : 0
+      .size;
+    return days ? transactions.length / days : 0;
   }
 
   /**
@@ -388,7 +388,7 @@ class SmallBusinessAnalytics {
   private getUniqueMerchantsCount(
     transactions: PlaidAccountTransaction[],
   ): number {
-    return new Set(transactions.map((t) => t.merchantName)).size
+    return new Set(transactions.map((t) => t.merchantName)).size;
   }
 
   /**
@@ -400,33 +400,33 @@ class SmallBusinessAnalytics {
     transactions: PlaidAccountTransaction[],
   ): Record<string, number> {
     const dayNames = [
-      'Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-    ]
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
     const dayCounts = dayNames.reduce(
       (acc, day) => {
-        acc[day] = 0
-        return acc
+        acc[day] = 0;
+        return acc;
       },
       {} as Record<string, number>,
-    )
+    );
 
     transactions.forEach((t) => {
       if (t.currentDate) {
-        const day = dayNames[t.currentDate.getDay()] || 'Sunday'
-        dayCounts[day]!++
+        const day = dayNames[t.currentDate.getDay()] || "Sunday";
+        dayCounts[day]!++;
       }
-    })
+    });
 
-    const weeks = Math.ceil(transactions.length / 7) || 1
+    const weeks = Math.ceil(transactions.length / 7) || 1;
     return Object.fromEntries(
       dayNames.map((day) => [day, dayCounts[day]! / weeks]),
-    )
+    );
   }
 
   /**
@@ -439,22 +439,22 @@ class SmallBusinessAnalytics {
   ): Record<string, number> {
     const categoryCounts = transactions.reduce(
       (acc, t) => {
-        const category = t.personalFinanceCategoryPrimary || 'Uncategorized'
-        acc[category] = (acc[category] || 0) + 1
-        return acc
+        const category = t.personalFinanceCategoryPrimary || "Uncategorized";
+        acc[category] = (acc[category] || 0) + 1;
+        return acc;
       },
       {} as Record<string, number>,
-    )
+    );
     const total = Object.values(categoryCounts).reduce(
       (sum, count) => sum + count,
       0,
-    )
+    );
     return Object.fromEntries(
       Object.entries(categoryCounts).map(([category, count]) => [
         category,
         total ? (count / total) * 100 : 0,
       ]),
-    )
+    );
   }
 
   /**
@@ -473,36 +473,36 @@ class SmallBusinessAnalytics {
   ): Record<
     keyof AnalyticsResult,
     {
-      period1: number | string
-      period2: number | string
-      change: number | string
+      period1: number | string;
+      period2: number | string;
+      change: number | string;
     }
   > {
-    const analytics1 = this.getAnalytics(period1Start, period1End)
-    const analytics2 = this.getAnalytics(period2Start, period2End)
+    const analytics1 = this.getAnalytics(period1Start, period1End);
+    const analytics2 = this.getAnalytics(period2Start, period2End);
 
-    const comparison: any = {}
+    const comparison: any = {};
     for (const key in analytics1) {
-      const value1 = analytics1[key as keyof AnalyticsResult]
-      const value2 = analytics2[key as keyof AnalyticsResult]
+      const value1 = analytics1[key as keyof AnalyticsResult];
+      const value2 = analytics2[key as keyof AnalyticsResult];
 
-      if (typeof value1 === 'number' && typeof value2 === 'number') {
+      if (typeof value1 === "number" && typeof value2 === "number") {
         comparison[key] = {
           period1: value1,
           period2: value2,
           change: value2 - value1,
-        }
+        };
       } else {
         comparison[key] = {
           period1: value1,
           period2: value2,
-          change: 'N/A',
-        }
+          change: "N/A",
+        };
       }
     }
 
-    return comparison
+    return comparison;
   }
 }
 
-export default SmallBusinessAnalytics
+export default SmallBusinessAnalytics;

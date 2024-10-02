@@ -1,1 +1,1 @@
-export * from './blockEditor'
+export * from "./blockEditor";

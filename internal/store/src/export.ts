@@ -1,13 +1,13 @@
-import { create } from 'zustand'
+import { create } from "zustand";
 
 /**
  * Represents the state for exporting data.
  */
 interface ExportState {
   /** The ID of the current export process. */
-  exportId: string | null
+  exportId: string | null;
   /** Function to set the export ID. */
-  setExportId: (exportId: string | null) => void
+  setExportId: (exportId: string | null) => void;
 }
 
 /**
@@ -25,4 +25,4 @@ interface ExportState {
 export const useExportStore = create<ExportState>()((set) => ({
   exportId: null,
   setExportId: (exportId) => set({ exportId }),
-}))
+}));

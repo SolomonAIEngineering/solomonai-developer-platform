@@ -1,14 +1,14 @@
-import type { RowSelectionState, Updater } from '@tanstack/react-table'
+import type { RowSelectionState, Updater } from "@tanstack/react-table";
 
-import { create } from 'zustand'
+import { create } from "zustand";
 
 interface TransactionsState {
-  canDelete?: boolean
-  columns: string[]
-  setColumns: (columns?: string[]) => void
-  setCanDelete: (canDelete?: boolean) => void
-  setRowSelection: (updater: Updater<RowSelectionState>) => void
-  rowSelection: Record<string, boolean>
+  canDelete?: boolean;
+  columns: string[];
+  setColumns: (columns?: string[]) => void;
+  setCanDelete: (canDelete?: boolean) => void;
+  setRowSelection: (updater: Updater<RowSelectionState>) => void;
+  rowSelection: Record<string, boolean>;
 }
 
 export const useTransactionsStore = create<TransactionsState>()((set) => ({
@@ -21,7 +21,7 @@ export const useTransactionsStore = create<TransactionsState>()((set) => ({
     set((state) => {
       return {
         rowSelection:
-          typeof updater === 'function' ? updater(state.rowSelection) : updater,
-      }
+          typeof updater === "function" ? updater(state.rowSelection) : updater,
+      };
     }),
-}))
+}));

@@ -1,11 +1,11 @@
-'use client'
+"use client";
 
-import * as React from 'react'
+import * as React from "react";
 
-import { ThemeProvider as NextThemesProvider } from 'next-themes'
-import { ThemeProviderProps } from 'next-themes/dist/types'
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { ThemeProviderProps } from "next-themes/dist/types";
 
-import { TooltipProvider } from '@/components/plate-editor/plate-ui/tooltip'
+import { TooltipProvider } from "@/components/plate-editor/plate-ui/tooltip";
 
 /**
  * Props for the PlateEditorTooltipProvider component.
@@ -15,17 +15,17 @@ export interface PlateEditorTooltipProviderProps extends ThemeProviderProps {
   /**
    * Optional prop to override the default delay duration for tooltips.
    */
-  customDelayDuration?: number
+  customDelayDuration?: number;
 
   /**
    * Optional prop to disable hoverable content in tooltips.
    */
-  disableHoverableContent?: boolean
+  disableHoverableContent?: boolean;
 
   /**
    * Optional prop to override the default skip delay duration for tooltips.
    */
-  skipDelayDuration?: number
+  skipDelayDuration?: number;
 }
 
 /**
@@ -55,7 +55,7 @@ export function PlateEditorTooltipProvider({
   ...props
 }: PlateEditorTooltipProviderProps) {
   // Use custom delay duration if provided, otherwise fallback to default
-  const delayDuration = customDelayDuration ?? 500
+  const delayDuration = customDelayDuration ?? 500;
 
   return (
     <NextThemesProvider {...props}>
@@ -67,7 +67,7 @@ export function PlateEditorTooltipProvider({
         {children}
       </TooltipProvider>
     </NextThemesProvider>
-  )
+  );
 }
 
 /**
@@ -80,6 +80,6 @@ export function PlateEditorTooltipProvider({
 export function usePlateEditorTooltipContext() {
   // Implementation would go here
   throw new Error(
-    'usePlateEditorTooltipContext must be used within a PlateEditorTooltipProvider',
-  )
+    "usePlateEditorTooltipContext must be used within a PlateEditorTooltipProvider",
+  );
 }

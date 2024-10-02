@@ -16,9 +16,13 @@ import { userAccounts } from "./user-accounts.js";
  * - If you need to store additional information about the association (e.g., tag relevance score),
  *   you can add more columns to this table.
  */
-export const userAccountsTags = sqliteTable("user_accounts_tags", {
+export const userAccountsTags = sqliteTable(
+  "user_accounts_tags",
+  {
     userAccountId: integer("user_account_id").references(() => userAccounts.id),
     tagId: integer("tag_id").references(() => tags.id),
-}, (t) => ({
+  },
+  (t) => ({
     pk: uniqueIndex("user_accounts_tags_pkey").on(t.userAccountId, t.tagId),
-}));
+  }),
+);

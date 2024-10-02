@@ -1,12 +1,12 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Stack } from 'expo-router';
-import * as React from 'react';
-import { useForm } from 'react-hook-form';
-import { showMessage } from 'react-native-flash-message';
-import { z } from 'zod';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Stack } from "expo-router";
+import * as React from "react";
+import { useForm } from "react-hook-form";
+import { showMessage } from "react-native-flash-message";
+import { z } from "zod";
 
-import { useAddPost } from '@/api';
-import { Button, ControlledInput, showErrorMessage, View } from '@/ui';
+import { useAddPost } from "@/api";
+import { Button, ControlledInput, showErrorMessage, View } from "@/ui";
 
 const schema = z.object({
   title: z.string().min(10),
@@ -28,24 +28,24 @@ export default function AddPost() {
       {
         onSuccess: () => {
           showMessage({
-            message: 'Post added successfully',
-            type: 'success',
+            message: "Post added successfully",
+            type: "success",
           });
           // here you can navigate to the post list and refresh the list data
           //queryClient.invalidateQueries(usePosts.getKey());
         },
         onError: () => {
-          showErrorMessage('Error adding post');
+          showErrorMessage("Error adding post");
         },
-      }
+      },
     );
   };
   return (
     <>
       <Stack.Screen
         options={{
-          title: 'Add Post',
-          headerBackTitle: 'Feed',
+          title: "Add Post",
+          headerBackTitle: "Feed",
         }}
       />
       <View className="flex-1 p-4 ">

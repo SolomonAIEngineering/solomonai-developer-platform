@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 export const RecurringExpenseDetectionSchema = z.object({
   MerchantName: z.string(),
@@ -6,4 +6,4 @@ export const RecurringExpenseDetectionSchema = z.object({
   AvgAmount: z.number(),
   TransactionCount: z.number().int(),
   UserId: z.string().uuid(),
-})
+});

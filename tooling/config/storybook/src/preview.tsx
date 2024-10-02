@@ -1,6 +1,6 @@
 import type { Preview } from "@storybook/react";
 
-import type { } from "@storybook/types";
+import type {} from "@storybook/types";
 
 import { withThemeByClassName } from "@storybook/addon-themes";
 import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";

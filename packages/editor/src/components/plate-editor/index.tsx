@@ -1,1 +1,1 @@
-export * from './plate-editor'
+export * from "./plate-editor";

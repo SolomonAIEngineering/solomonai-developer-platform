@@ -1,7 +1,7 @@
-import type { Result } from '@internal/error'
+import type { Result } from "@internal/error";
 
-import { Err, Ok, SchemaError } from '@internal/error'
-import { z } from 'zod'
+import { Err, Ok, SchemaError } from "@internal/error";
+import { z } from "zod";
 
 export const billingTier = z.object({
   firstUnit: z.number().int().min(1),
@@ -14,12 +14,12 @@ export const billingTier = z.object({
     .string()
     .regex(/^\d{1,15}(\.\d{1,12})?$/)
     .nullable(),
-})
+});
 
-export type BillingTier = z.infer<typeof billingTier>
+export type BillingTier = z.infer<typeof billingTier>;
 
 type TieredPrice = {
-  tiers: (BillingTier & { quantity: number })[]
+  tiers: (BillingTier & { quantity: number })[];
 
   /**
    * Here be dragons.
@@ -29,8 +29,8 @@ type TieredPrice = {
    * We're doing floating point operations here, so the result is likely not exact.
    * Use this only for displaying estimates to the user.
    */
-  totalCentsEstimate: number
-}
+  totalCentsEstimate: number;
+};
 /**
  * calculateTieredPrice calculates the price for a given number of units, based on a tiered pricing model.
  *
@@ -81,23 +81,23 @@ export function calculateTieredPrices(
   /**
    * Validation logic:
    */
-  const parsedTiers = billingTier.array().min(1).safeParse(rawTiers)
+  const parsedTiers = billingTier.array().min(1).safeParse(rawTiers);
   if (!parsedTiers.success) {
-    return Err(SchemaError.fromZod(parsedTiers.error, rawTiers))
+    return Err(SchemaError.fromZod(parsedTiers.error, rawTiers));
   }
-  const tiers = parsedTiers.data
+  const tiers = parsedTiers.data;
 
   for (let i = 0; i < tiers.length; i++) {
     if (i > 0) {
-      const currentTier = tiers[i]
-      const previousTier = tiers[i - 1]
+      const currentTier = tiers[i];
+      const previousTier = tiers[i - 1];
 
       if (currentTier?.firstUnit === undefined) {
         return Err(
           new SchemaError({
             message: `firstUnit is undefined for tier ${i}`,
           }),
-        )
+        );
       }
 
       if (previousTier?.lastUnit === undefined) {
@@ -105,24 +105,26 @@ export function calculateTieredPrices(
           new SchemaError({
             message: `lastUnit is undefined for tier ${i - 1}`,
           }),
-        )
+        );
       }
 
       if (previousTier.lastUnit === null) {
         return Err(
           new SchemaError({
-            message: 'Every tier except the last one must have a lastUnit',
+            message: "Every tier except the last one must have a lastUnit",
           }),
-        )
+        );
       }
 
       if (currentTier.firstUnit > previousTier.lastUnit + 1) {
-        return Err(new SchemaError({ message: 'There is a gap between tiers' }))
+        return Err(
+          new SchemaError({ message: "There is a gap between tiers" }),
+        );
       }
       if (currentTier.firstUnit < previousTier.lastUnit + 1) {
         return Err(
-          new SchemaError({ message: 'There is an overlap between tiers' }),
-        )
+          new SchemaError({ message: "There is an overlap between tiers" }),
+        );
       }
     }
   }
@@ -130,31 +132,31 @@ export function calculateTieredPrices(
   /**
    * Calculation logic:
    */
-  let remaining = units // make a copy, so we don't mutate the original
-  const res: TieredPrice = { tiers: [], totalCentsEstimate: 0 }
+  let remaining = units; // make a copy, so we don't mutate the original
+  const res: TieredPrice = { tiers: [], totalCentsEstimate: 0 };
   for (const tier of tiers) {
     if (remaining <= 0) {
-      break
+      break;
     }
 
     if (tier.firstUnit === undefined) {
       return Err(
         new SchemaError({
-          message: 'firstUnit must be defined for all tiers',
+          message: "firstUnit must be defined for all tiers",
         }),
-      )
+      );
     }
 
     const quantity =
       tier.lastUnit === null
         ? remaining
-        : Math.min(tier.lastUnit - tier.firstUnit + 1, remaining)
-    remaining -= quantity
-    res.tiers.push({ quantity, ...tier })
+        : Math.min(tier.lastUnit - tier.firstUnit + 1, remaining);
+    remaining -= quantity;
+    res.tiers.push({ quantity, ...tier });
     if (tier.centsPerUnit !== undefined) {
-      res.totalCentsEstimate += quantity * Number(tier.centsPerUnit)
+      res.totalCentsEstimate += quantity * Number(tier.centsPerUnit);
     }
   }
 
-  return Ok(res)
+  return Ok(res);
 }

@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
-import { HocuspocusProvider } from '@hocuspocus/provider'
-import { CodeBlockLowlight } from '@tiptap/extension-code-block-lowlight'
-import { lowlight } from 'lowlight'
+import { HocuspocusProvider } from "@hocuspocus/provider";
+import { CodeBlockLowlight } from "@tiptap/extension-code-block-lowlight";
+import { lowlight } from "lowlight";
 
 import {
   AiImage,
@@ -41,21 +41,21 @@ import {
   TrailingNode,
   Typography,
   Underline,
-} from '.'
-import { ImageUpload } from './imageUpload'
-import { TableOfContentsNode } from './tableOfContentsNode'
+} from ".";
+import { ImageUpload } from "./imageUpload";
+import { TableOfContentsNode } from "./tableOfContentsNode";
 
 interface ExtensionKitProps {
-  provider?: HocuspocusProvider | null
-  userId?: string
-  userName?: string
-  userColor?: string
+  provider?: HocuspocusProvider | null;
+  userId?: string;
+  userName?: string;
+  userColor?: string;
 }
 
 export const ExtensionKit = ({
   provider,
   userId,
-  userName = 'Maxi',
+  userName = "Maxi",
 }: ExtensionKitProps) => [
   Document,
   Columns,
@@ -109,10 +109,10 @@ export const ExtensionKit = ({
   ImageBlock,
   TextAlign.extend({
     addKeyboardShortcuts() {
-      return {}
+      return {};
     },
   }).configure({
-    types: ['heading', 'paragraph'],
+    types: ["heading", "paragraph"],
   }),
   Subscript,
   Superscript,
@@ -124,7 +124,7 @@ export const ExtensionKit = ({
   Placeholder.configure({
     includeChildren: true,
     showOnlyCurrent: false,
-    placeholder: () => '',
+    placeholder: () => "",
   }),
   SlashCommand,
   Focus,
@@ -132,8 +132,8 @@ export const ExtensionKit = ({
   BlockquoteFigure,
   Dropcursor.configure({
     width: 2,
-    class: 'ProseMirror-dropcursor border-black',
+    class: "ProseMirror-dropcursor border-black",
   }),
-]
+];
 
-export default ExtensionKit
+export default ExtensionKit;

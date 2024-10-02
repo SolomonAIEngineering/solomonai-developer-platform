@@ -1,9 +1,9 @@
-import { Database } from '../types'
+import { Database } from "../types";
 
 const toastKeyMap: { [key: string]: string[] } = {
-  status: ['status', 'status_description'],
-  error: ['error', 'error_description'],
-}
+  status: ["status", "status_description"],
+  error: ["error", "error_description"],
+};
 
 /**
  * Generates a redirect URL with toast parameters.
@@ -20,28 +20,28 @@ const getToastRedirect = (
   path: string,
   toastType: string,
   toastName: string,
-  toastDescription: string = '',
+  toastDescription: string = "",
   disableButton: boolean = false,
-  arbitraryParams: string = '',
+  arbitraryParams: string = "",
 ): string => {
-  const [nameKey, descriptionKey] = toastKeyMap[toastType] || []
+  const [nameKey, descriptionKey] = toastKeyMap[toastType] || [];
 
-  let redirectPath = `${path}?${nameKey}=${encodeURIComponent(toastName)}`
+  let redirectPath = `${path}?${nameKey}=${encodeURIComponent(toastName)}`;
 
   if (toastDescription) {
-    redirectPath += `&${descriptionKey}=${encodeURIComponent(toastDescription)}`
+    redirectPath += `&${descriptionKey}=${encodeURIComponent(toastDescription)}`;
   }
 
   if (disableButton) {
-    redirectPath += `&disable_button=true`
+    redirectPath += `&disable_button=true`;
   }
 
   if (arbitraryParams) {
-    redirectPath += `&${arbitraryParams}`
+    redirectPath += `&${arbitraryParams}`;
   }
 
-  return redirectPath
-}
+  return redirectPath;
+};
 
 /**
  * Generates a redirect URL with status toast parameters.
@@ -56,18 +56,18 @@ const getToastRedirect = (
 export const getStatusRedirect = (
   path: string,
   statusName: string,
-  statusDescription: string = '',
+  statusDescription: string = "",
   disableButton: boolean = false,
-  arbitraryParams: string = '',
+  arbitraryParams: string = "",
 ) =>
   getToastRedirect(
     path,
-    'status',
+    "status",
     statusName,
     statusDescription,
     disableButton,
     arbitraryParams,
-  )
+  );
 
 /**
  * Generates a redirect URL with error toast parameters.
@@ -82,18 +82,18 @@ export const getStatusRedirect = (
 export const getErrorRedirect = (
   path: string,
   errorName: string,
-  errorDescription: string = '',
+  errorDescription: string = "",
   disableButton: boolean = false,
-  arbitraryParams: string = '',
+  arbitraryParams: string = "",
 ) =>
   getToastRedirect(
     path,
-    'error',
+    "error",
     errorName,
     errorDescription,
     disableButton,
     arbitraryParams,
-  )
+  );
 
 /**
  * Constructs a complete URL based on environment variables and the provided path.
@@ -101,33 +101,33 @@ export const getErrorRedirect = (
  * @param path - Optional path to append to the base URL. Defaults to an empty string.
  * @returns A complete URL string.
  */
-export function getURL(path = ''): string {
+export function getURL(path = ""): string {
   // Try to get the site URL from environment variables, trimming any whitespace
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim()
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
   // If SITE_URL is not set, try to get the Vercel URL (automatically set by Vercel)
-  const vercelUrl = process.env.NEXT_PUBLIC_VERCEL_URL?.trim()
+  const vercelUrl = process.env.NEXT_PUBLIC_VERCEL_URL?.trim();
 
   // Use the first non-empty URL, or default to localhost if none are set
-  let baseUrl = siteUrl || vercelUrl || 'localhost:3001'
+  let baseUrl = siteUrl || vercelUrl || "localhost:3001";
 
   // Remove any existing protocol (http:// or https://) from the baseUrl
-  baseUrl = baseUrl.replace(/^(https?:\/\/)/, '')
+  baseUrl = baseUrl.replace(/^(https?:\/\/)/, "");
 
   // Remove any trailing slashes from the base URL
-  baseUrl = baseUrl.replace(/\/+$/, '')
+  baseUrl = baseUrl.replace(/\/+$/, "");
 
   // Add the appropriate protocol only if it's not already present
-  if (!baseUrl.startsWith('http://') && !baseUrl.startsWith('https://')) {
-    baseUrl = baseUrl.startsWith('localhost')
+  if (!baseUrl.startsWith("http://") && !baseUrl.startsWith("https://")) {
+    baseUrl = baseUrl.startsWith("localhost")
       ? `http://${baseUrl}`
-      : `https://${baseUrl}`
+      : `https://${baseUrl}`;
   }
 
   // Remove any leading slashes from the path to avoid double slashes
-  const cleanPath = path.replace(/^\/+/, '')
+  const cleanPath = path.replace(/^\/+/, "");
 
   // If there's a path, append it to the base URL; otherwise, just return the base URL
-  return cleanPath ? `${baseUrl}/${cleanPath}` : baseUrl
+  return cleanPath ? `${baseUrl}/${cleanPath}` : baseUrl;
 }
 
 /**
@@ -143,18 +143,18 @@ export const postData = async <T extends Database>({
   url,
   data,
 }: {
-  url: string
-  data?: { price: T['public']['Tables']['prices'] }
+  url: string;
+  data?: { price: T["public"]["Tables"]["prices"] };
 }) => {
   const res = await fetch(url, {
-    method: 'POST',
-    headers: new Headers({ 'Content-Type': 'application/json' }),
-    credentials: 'same-origin',
+    method: "POST",
+    headers: new Headers({ "Content-Type": "application/json" }),
+    credentials: "same-origin",
     body: JSON.stringify(data),
-  })
+  });
 
-  return res.json()
-}
+  return res.json();
+};
 
 /**
  * Calculates the Unix timestamp for the end of a trial period.
@@ -171,12 +171,12 @@ export const calculateTrialEndUnixTimestamp = (
     trialPeriodDays === undefined ||
     trialPeriodDays < 2
   ) {
-    return undefined
+    return undefined;
   }
 
-  const currentDate = new Date() // Current date and time
+  const currentDate = new Date(); // Current date and time
   const trialEnd = new Date(
     currentDate.getTime() + (trialPeriodDays + 1) * 24 * 60 * 60 * 1000,
-  ) // Add trial days
-  return Math.floor(trialEnd.getTime() / 1000) // Convert to Unix timestamp in seconds
-}
+  ); // Add trial days
+  return Math.floor(trialEnd.getTime() / 1000); // Convert to Unix timestamp in seconds
+};

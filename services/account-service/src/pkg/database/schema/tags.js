@@ -18,9 +18,9 @@ import { userAccountsTags } from "./user-account-tags.js";
  * - You might want to add additional fields like createdAt, updatedAt, or createdBy for auditing purposes.
  */
 export const tags = sqliteTable("tags", {
-    id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    tagName: text("tag_name", { length: 255 }).notNull(),
-    tagDescription: text("tag_description").notNull(),
+  id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+  tagName: text("tag_name", { length: 255 }).notNull(),
+  tagDescription: text("tag_description").notNull(),
 });
 /**
  * Defines the relationships between the tags table and other tables in the database.
@@ -37,7 +37,7 @@ export const tags = sqliteTable("tags", {
  * - The metadata relationship allows for extensible properties to be added to tags without modifying the main tags table.
  */
 export const tagsRelations = relations(tags, ({ many }) => ({
-    metadata: many(tagMetadata),
-    userAccounts: many(userAccountsTags),
-    businessAccounts: many(businessAccountsTags),
+  metadata: many(tagMetadata),
+  userAccounts: many(userAccountsTags),
+  businessAccounts: many(businessAccountsTags),
 }));

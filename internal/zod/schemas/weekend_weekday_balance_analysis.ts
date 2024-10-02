@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 export const WeekendWeekdayBalanceAnalysisSchema = z.object({
   Month: z.number().int(),
@@ -8,4 +8,4 @@ export const WeekendWeekdayBalanceAnalysisSchema = z.object({
   AvgWeekdayBalance: z.number(),
   UserId: z.string().uuid(),
   ProfileType: z.string(),
-})
+});

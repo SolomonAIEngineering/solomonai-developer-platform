@@ -1,4 +1,4 @@
-import type { Editor } from '@tiptap/core'
+import type { Editor } from "@tiptap/core";
 
 import {
   CaretDownIcon,
@@ -6,22 +6,22 @@ import {
   DividerHorizontalIcon,
   PlusIcon,
   QuoteIcon,
-} from '@radix-ui/react-icons'
+} from "@radix-ui/react-icons";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@v1/ui/dropdown-menu'
+} from "@v1/ui/dropdown-menu";
 
-import { cn } from '@/lib/editor/utils'
+import { cn } from "@/lib/editor/utils";
 
-import { activeItemClass, DropdownMenuItemClass } from '../utils'
-import { ImageEditDialog } from './image/image-edit-dialog'
-import { LinkEditPopover } from './link/link-edit-popover'
-import { ShortcutKey } from './shortcut-key'
-import { ToolbarButton } from './toolbar-button'
+import { activeItemClass, DropdownMenuItemClass } from "../utils";
+import { ImageEditDialog } from "./image/image-edit-dialog";
+import { LinkEditPopover } from "./link/link-edit-popover";
+import { ShortcutKey } from "./shortcut-key";
+import { ToolbarButton } from "./toolbar-button";
 
 export default function SectionFour({ editor }: { editor: Editor }) {
   return (
@@ -37,50 +37,50 @@ export default function SectionFour({ editor }: { editor: Editor }) {
         <DropdownMenuTrigger asChild>
           <ToolbarButton
             isActive={
-              editor.isActive('codeBlock') || editor.isActive('blockquote')
+              editor.isActive("codeBlock") || editor.isActive("blockquote")
             }
-            tooltip='Insert elements'
-            className='w-12'
+            tooltip="Insert elements"
+            className="w-12"
           >
-            <PlusIcon className='size-5' />
-            <CaretDownIcon className='size-5' />
+            <PlusIcon className="size-5" />
+            <CaretDownIcon className="size-5" />
           </ToolbarButton>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align='start' className='w-full'>
+        <DropdownMenuContent align="start" className="w-full">
           <DropdownMenuItem
             onClick={() => editor.chain().focus().toggleCodeBlock().run()}
             className={cn(DropdownMenuItemClass, {
-              [activeItemClass]: editor.isActive('codeBlock'),
+              [activeItemClass]: editor.isActive("codeBlock"),
             })}
           >
-            <span className='flex grow items-center'>
-              <CodeIcon className='mr-2 size-4' />
+            <span className="flex grow items-center">
+              <CodeIcon className="mr-2 size-4" />
               Code block
             </span>
-            <ShortcutKey keys={['```']} withBg />
+            <ShortcutKey keys={["```"]} withBg />
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
             className={cn(DropdownMenuItemClass, {
-              [activeItemClass]: editor.isActive('blockquote'),
+              [activeItemClass]: editor.isActive("blockquote"),
             })}
           >
-            <span className='flex grow items-center'>
-              <QuoteIcon className='mr-2 size-4' />
+            <span className="flex grow items-center">
+              <QuoteIcon className="mr-2 size-4" />
               Blockquote
             </span>
-            <ShortcutKey keys={['>']} withBg />
+            <ShortcutKey keys={[">"]} withBg />
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => editor.chain().focus().setHorizontalRule().run()}
           >
-            <span className='flex grow items-center'>
-              <DividerHorizontalIcon className='mr-2 size-4' />
+            <span className="flex grow items-center">
+              <DividerHorizontalIcon className="mr-2 size-4" />
               Divider
             </span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>
-  )
+  );
 }

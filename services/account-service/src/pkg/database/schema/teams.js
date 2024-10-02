@@ -19,12 +19,12 @@ import { teamMembers } from "./team-members.js";
  * - You might want to add a unique constraint on the 'name' field if team names should be unique across the system.
  */
 export const teams = sqliteTable("teams", {
-    id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    name: text("name").notNull(),
-    description: text("description"),
-    createdAt: text("created_at").default(sql `(CURRENT_TIMESTAMP)`),
-    updatedAt: text("updated_at").default(sql `(CURRENT_TIMESTAMP)`),
-    teamAdminId: integer("team_admin_id").references(() => businessAccounts.id),
+  id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+  name: text("name").notNull(),
+  description: text("description"),
+  createdAt: text("created_at").default(sql`(CURRENT_TIMESTAMP)`),
+  updatedAt: text("updated_at").default(sql`(CURRENT_TIMESTAMP)`),
+  teamAdminId: integer("team_admin_id").references(() => businessAccounts.id),
 });
 /**
  * Defines the relationships between the teams table and other tables in the database.
@@ -42,10 +42,10 @@ export const teams = sqliteTable("teams", {
  * - The 'roles' relationship allows for team-specific role management.
  */
 export const teamsRelations = relations(teams, ({ one, many }) => ({
-    admin: one(businessAccounts, {
-        fields: [teams.teamAdminId],
-        references: [businessAccounts.id],
-    }),
-    members: many(teamMembers),
-    roles: many(roles),
+  admin: one(businessAccounts, {
+    fields: [teams.teamAdminId],
+    references: [businessAccounts.id],
+  }),
+  members: many(teamMembers),
+  roles: many(roles),
 }));

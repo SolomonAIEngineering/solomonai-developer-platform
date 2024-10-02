@@ -1,3 +1,3 @@
-import { Database as BusinessDatabase } from '@v1/db/types'
+import { Database as BusinessDatabase } from "@v1/db/types";
 
-export type Database = BusinessDatabase
+export type Database = BusinessDatabase;

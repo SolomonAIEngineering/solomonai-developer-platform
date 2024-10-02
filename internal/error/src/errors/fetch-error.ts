@@ -1,4 +1,4 @@
-import { BaseError } from './base'
+import { BaseError } from "./base";
 
 /**
  * Represents an error that occurs during a fetch operation.
@@ -9,12 +9,12 @@ export class FetchError extends BaseError<FetchErrorContext> {
   /**
    * Indicates whether the fetch operation should be retried.
    */
-  public readonly retry: boolean
+  public readonly retry: boolean;
 
   /**
    * The name of the error class.
    */
-  public readonly name = FetchError.name
+  public readonly name = FetchError.name;
 
   /**
    * Creates a new instance of FetchError.
@@ -22,8 +22,8 @@ export class FetchError extends BaseError<FetchErrorContext> {
    * @param {FetchErrorOptions} opts - The options for creating the FetchError.
    */
   constructor(opts: FetchErrorOptions) {
-    super(opts)
-    this.retry = opts.retry
+    super(opts);
+    this.retry = opts.retry;
   }
 }
 
@@ -34,17 +34,17 @@ interface FetchErrorContext {
   /**
    * The URL that was being fetched when the error occurred.
    */
-  url: string
+  url: string;
 
   /**
    * The HTTP method used for the fetch request.
    */
-  method: string
+  method: string;
 
   /**
    * Additional context properties.
    */
-  [more: string]: unknown
+  [more: string]: unknown;
 }
 
 /**
@@ -54,20 +54,20 @@ interface FetchErrorOptions {
   /**
    * The error message.
    */
-  message: string
+  message: string;
 
   /**
    * Indicates whether the fetch operation should be retried.
    */
-  retry: boolean
+  retry: boolean;
 
   /**
    * The underlying cause of the error, if any.
    */
-  cause?: BaseError
+  cause?: BaseError;
 
   /**
    * Additional context for the fetch error.
    */
-  context?: FetchErrorContext
+  context?: FetchErrorContext;
 }
