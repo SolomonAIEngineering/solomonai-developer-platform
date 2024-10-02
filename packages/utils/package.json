@@ -8,18 +8,9 @@
   "sideEffects": false,
   "type": "module",
   "exports": {
-    "./filesystem": {
-      "types": "./dist/filesystem.d.ts",
-      "default": "./dist/filesystem.js"
-    },
-    "./url": {
-      "types": "./dist/url.d.ts",
-      "default": "./dist/url.js"
-    },
-    "./file": {
-      "types": "./dist/file.d.ts",
-      "default": "./dist/file.js"
-    }
+    "./filesystem": "./src/filesystem.ts",
+    "./url": "./src/url.ts",
+    "./file": "./src/file.ts"
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
@@ -29,7 +20,7 @@
     "typecheck": "tsc"
   },
   "devDependencies": {
-    "@v1/eslint": "workspace:^",
-    "@v1/typescript": "workspace:^"
+    "@v1/eslint": "workspace:*",
+    "@v1/typescript": "workspace:*"
   }
 }
