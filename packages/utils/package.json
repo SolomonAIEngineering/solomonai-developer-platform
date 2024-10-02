@@ -16,12 +16,10 @@
     "clean": "bun run rm -rf dist *.tsbuildinfo",
     "dev": "tsc -w -p tsconfig.build.json",
     "lint": "eslint .  --max-warnings 0",
-    "typecheck": "tsc",
-    "build": "tsup"
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@v1/eslint": "workspace:*",
-    "@v1/typescript": "workspace:*",
-    "tsup": "^8.0.2"
+    "@v1/typescript": "workspace:*"
   }
 }

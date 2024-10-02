@@ -4,7 +4,6 @@
     "incremental": true,
     "tsBuildInfoFile": ".tsbuildinfo",
     "noImplicitAny": false,
-    "jsx": "react",
     "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"]

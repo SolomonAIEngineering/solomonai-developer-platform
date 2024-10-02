@@ -6,7 +6,8 @@
   "scripts": {
     "push:datasources": "tb push datasources",
     "push:pipes": "tb push pipes",
-    "push:all": "npm run push:datasources && npm run push:pipes"
+    "push:all": "npm run push:datasources && npm run push:pipes",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@chronark/zod-bird": "^0.3.9",
