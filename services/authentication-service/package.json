@@ -1,6 +1,6 @@
 {
   "name": "@v1/authentication-service",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230419.0",
     "@typescript-eslint/eslint-plugin": "^5.52.0",

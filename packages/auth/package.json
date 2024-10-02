@@ -1,6 +1,6 @@
 {
   "name": "@v1/auth",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "src/index.ts",
   "dependencies": {
     "@v1/supabase": "workspace:*",
