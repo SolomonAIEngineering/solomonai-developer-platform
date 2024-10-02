@@ -1,9 +1,9 @@
-import type { Client } from '@orbitkit/supabase/types'
+import type { Client } from '@v1/supabase/types'
 
 import { startOfMonth } from 'date-fns'
 import { z } from 'zod'
 
-import { getMetricsQuery } from '@orbitkit/supabase/queries'
+import { getMetricsQuery } from '@v1/dbes'
 
 export function getRevenueTool({
   defaultValues,

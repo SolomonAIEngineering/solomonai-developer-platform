@@ -1,5 +1,5 @@
-import { createClient } from '@orbitkit/supabase/client'
-import { TransactionSchema } from '@orbitkit/supabase/types'
+import { createClient } from '@v1/db/client'
+import { TransactionSchema } from '@v1/db/types'
 
 export async function getTransactionsByBankAccountId({
   bankAccountId,

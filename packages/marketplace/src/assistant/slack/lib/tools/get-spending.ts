@@ -1,9 +1,9 @@
-import type { Client } from '@orbitkit/supabase/types'
+import type { Client } from '@v1/supabase/types'
 
 import { startOfMonth } from 'date-fns'
 import { z } from 'zod'
 
-import { getSpendingQuery } from '@orbitkit/supabase/queries'
+import { getSpendingQuery } from '@v1/dbes'
 
 export function getSpendingTool({
   defaultValues,

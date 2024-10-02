@@ -1,9 +1,9 @@
-import type { Client } from '@orbitkit/supabase/types'
+import type { Client } from '@v1/supabase/types'
 
 import { startOfMonth } from 'date-fns'
 import { z } from 'zod'
 
-import { getBurnRateQuery } from '@orbitkit/supabase/queries'
+import { getBurnRateQuery } from '@v1/dbes'
 
 export function getBurnRateTool({
   defaultValues,
