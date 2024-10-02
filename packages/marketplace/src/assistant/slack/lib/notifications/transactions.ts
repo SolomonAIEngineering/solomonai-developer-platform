@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { createClient } from '@orbitkit/supabase/server'
+import { createClient } from '@v1/db/server'
 
 import config from '../../config'
 import { createSlackWebClient } from '../client'

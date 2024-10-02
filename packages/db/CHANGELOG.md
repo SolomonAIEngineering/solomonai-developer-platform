@@ -1,4 +1,4 @@
-# @orbitkit/supabase
+# @v1/supabase
 
 ## 2.0.0
 

@@ -1,11 +1,11 @@
-# `@orbitkit/notification`
+# `@v1/notification`
 
-`@orbitkit/notification` is a library of notification schema configurations for the solomon-ai's web applications.
+`@v1/notification` is a library of notification schema configurations for the solomon-ai's web applications.
 
 ## Installation
 
 To install the package, run:
 
 ```bash
-bun i @orbitkit/db
+bun i @v1/db
 ```
