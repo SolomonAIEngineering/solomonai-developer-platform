@@ -1,0 +1,19 @@
+{
+  "name": "@internal/zod",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Yoan Yomba",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "dependencies": {
+    "@internal/logs": "workspace:^",
+    "zod-openapi": "^2.19.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3",
+    "tsup": "^8.0.2"
+  },
+  "scripts": {
+    "build": "tsup"
+  }
+}

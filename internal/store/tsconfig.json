@@ -1,0 +1,14 @@
+{
+  "extends": ["@v1/typescript/base.json"],
+  "compilerOptions": {
+    "jsx": "react",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "noImplicitAny": false,
+    "incremental": true,
+    "tsBuildInfoFile": "./tsconfig.tsbuildinfo"
+  },
+  "include": ["**/*.ts", "**/*.js"]
+}

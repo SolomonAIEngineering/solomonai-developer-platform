@@ -1,0 +1,23 @@
+{
+  "name": "@internal/metrics",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "license": "AGPL-3.0",
+  "author": "Yoan Yomba",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "test": "vitest run -c ./vitest.config.ts",
+    "build": "tsup"
+  },
+  "dependencies": {
+    "zod": "^3.23.5"
+  },
+  "devDependencies": {
+    "@v1/typescript": "workspace:*",
+    "@types/node": "^20.14.11",
+    "typescript": "^5.5.3",
+    "tsup": "^8.0.2"
+  }
+}
