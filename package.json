@@ -79,5 +79,6 @@
   "dependencies": {
     "@cloudflare/vitest-pool-workers": "^0.5.13",
     "tailwind-config-viewer": "^2.0.4"
-  }
+  },
+  "version": "1.0.1"
 }
