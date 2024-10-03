@@ -12,7 +12,7 @@ export function formatSize(bytes: number): string {
   const units = ["byte", "kilobyte", "megabyte", "gigabyte", "terabyte"];
   const unitIndex = Math.max(
     0,
-    Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1)
+    Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1),
   );
   return Intl.NumberFormat("en-US", {
     style: "unit",
@@ -142,7 +142,7 @@ export function formatAccountName({
 export function formatPercentage(
   value: number,
   locale: string,
-  options: Intl.NumberFormatOptions = {}
+  options: Intl.NumberFormatOptions = {},
 ): string {
   return new Intl.NumberFormat(locale, {
     style: "percent",

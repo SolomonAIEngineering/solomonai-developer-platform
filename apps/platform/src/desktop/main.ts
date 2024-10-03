@@ -1,4 +1,4 @@
-import { createClient } from "@v1/supabase/client";
+import { createClient } from "@v1/db/client";
 import {
   globalShortcut,
   nativeWindow,
@@ -21,7 +21,9 @@ async function main() {
   });
 
   await object.on("open-github", () => {
-    platform.os.openURL("https://github.com/SolomonAIEngineering/solomonai-platform");
+    platform.os.openURL(
+      "https://github.com/SolomonAIEngineering/solomonai-platform",
+    );
   });
 
   // Command menu

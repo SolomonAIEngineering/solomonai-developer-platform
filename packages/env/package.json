@@ -11,7 +11,8 @@
     "./web/server": "./src/web/server.ts",
     "./web/client": "./src/web/client.ts",
     "./web/db": "./src/web/db.ts",
-    "./marketing": "./src/marketing/index.ts"
+    "./marketing": "./src/marketing/index.ts",
+    "./platform": "./src/platform/index.ts"
   },
   "scripts": {
     "clean": "bun run rm -rf *.tsbuildinfo",

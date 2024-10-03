@@ -34,6 +34,8 @@ type TransactionCategories =
 type TransactionMethods = Database["public"]["Enums"]["transactionMethods"];
 type TransactionStatus = Database["public"]["Enums"]["transactionStatus"];
 type UserTier = Database["public"]["Enums"]["user_tier"];
+type InboxItem = Database["public"]["Tables"]["inbox"]["Insert"];
+type InboxUpdate = Database["public"]["Tables"]["inbox"]["Update"];
 
 export type {
   // Union types
@@ -43,9 +45,11 @@ export type {
   BankProviders,
   ConnectionStatus,
   DocumentSchema,
+  InboxItem,
   InboxSchema,
   InboxStatus,
   InboxType,
+  InboxUpdate,
   PriceSchema,
   PricingPlanInterval,
   PricingType,

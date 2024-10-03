@@ -1,4 +1,5 @@
-import { getUser } from '@v1/supabase/queries';
+"use server";
+import { getUser } from '@v1/db/cached-queries';
 import type { FileRouter } from 'uploadthing/next';
 import { createUploadthing } from 'uploadthing/next';
 import { UploadThingError } from 'uploadthing/server';
@@ -16,7 +17,7 @@ export const fileRouter = {
           code: 'BAD_REQUEST',
         });
       }
-      return { userId: session.id };
+      return { userId: session?.data?.id };
     })
     .onUploadComplete(({ metadata, file }) => {
       console.log('Upload complete for userId:', metadata.userId);

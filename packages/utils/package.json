@@ -3,15 +3,12 @@
   "version": "0.4.3",
   "private": true,
   "sideEffects": false,
-  "files": [
-    "tailwind.config.ts",
-    "postcss.config.js",
-    "globals.css"
-  ],
+  "files": ["tailwind.config.ts", "postcss.config.js", "globals.css"],
   "exports": {
     "./filesystem": "./src/filesystem.ts",
     "./url": "./src/url.ts",
     "./file": "./src/file.ts",
+    "./utils": "./src/utils.ts",
     ".": "./src/index.ts"
   },
   "scripts": {

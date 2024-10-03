@@ -348,7 +348,7 @@ export async function getTransactionsQuery(
     } else if (column === "category") {
       query.order("category(name)", { ascending });
     } else {
-      query.order(column, { ascending });
+      query.order(column as string, { ascending });
     }
   } else {
     query
@@ -427,27 +427,43 @@ export async function getTransactionsQuery(
   const { data, count } = await query.range(from, to);
 
   const totalAmount = data
-    ?.reduce((acc, { amount, currency }) => {
-      const existingCurrency = acc.find((item) => item.currency === currency);
+    ?.reduce((acc: { amount: number; currency: string }[], item) => {
+      if (
+        typeof item === "object" &&
+        item !== null &&
+        "amount" in item &&
+        "currency" in item
+      ) {
+        const { amount, currency } = item as {
+          amount: number;
+          currency: string;
+        };
+        const existingCurrency = acc.find((i) => i.currency === currency);
 
-      if (existingCurrency) {
-        existingCurrency.amount += amount;
-      } else {
-        acc.push({ amount, currency });
+        if (existingCurrency) {
+          existingCurrency.amount += amount;
+        } else {
+          acc.push({ amount, currency });
+        }
       }
       return acc;
     }, [])
-    .sort((a, b) => a?.amount - b?.amount);
+    .sort((a, b) => (a?.amount ?? 0) - (b?.amount ?? 0));
 
   return {
     meta: {
       totalAmount,
       count,
     },
-    data: data?.map((transaction) => ({
-      ...transaction,
-      category: transactionCategory(transaction),
-    })),
+    data: data?.map((transaction) => {
+      if (typeof transaction === "object" && transaction !== null) {
+        return {
+          ...(transaction as any),
+          category: transactionCategory(transaction),
+        };
+      }
+      return transaction;
+    }),
   };
 }
 
@@ -468,10 +484,13 @@ export async function getTransactionQuery(supabase: Client, id: string) {
     .single()
     .throwOnError();
 
-  return {
-    ...data,
-    category: transactionCategory(data),
-  };
+  if (data && typeof data === "object") {
+    return {
+      ...(data as any),
+      category: transactionCategory(data),
+    };
+  }
+  return data;
 }
 
 type GetSimilarTransactionsParams = {
@@ -636,10 +655,10 @@ export async function getMetricsQuery(
         date: record.date,
         precentage: {
           value: getPercentageIncrease(
-            Math.abs(prev?.value),
+            Math.abs(prev?.value ?? 0),
             Math.abs(record.value),
           ),
-          status: record.value > prev?.value ? "positive" : "negative",
+          status: record.value > (prev?.value ?? 0) ? "positive" : "negative",
         },
         current: {
           date: record.date,
@@ -693,7 +712,7 @@ export async function getExpensesQuery(
       type: "expense",
       currency: data?.at(0)?.currency,
     },
-    result: data.map((item) => ({
+    result: data?.map((item) => ({
       ...item,
       value: item.value,
       recurring: item.recurring_value,
@@ -830,8 +849,8 @@ export async function getVaultRecursiveQuery(
     basePath = `${basePath}/${folder}`;
   }
 
-  const items = [];
-  let folderContents: any = [];
+  const items: any[] = [];
+  let folderContents: any[] = [];
 
   for (;;) {
     const { data } = await supabase.storage.from("vault").list(basePath);
@@ -857,8 +876,8 @@ export async function getVaultRecursiveQuery(
     ),
   );
 
-  subFolderContents.map((subfolderContent) => {
-    subfolderContent.map((item) => items.push(item));
+  subFolderContents.forEach((subfolderContent) => {
+    subfolderContent.forEach((item: any) => items.push(item));
   });
 
   return items;
@@ -979,16 +998,28 @@ export async function getInboxQuery(
 
   return {
     data: data?.map((item) => {
-      const pending = isWithinInterval(new Date(), {
-        start: new Date(item.created_at),
-        end: addDays(new Date(item.created_at), 45),
-      });
+      if (
+        typeof item === "object" &&
+        item !== null &&
+        "created_at" in item &&
+        "transaction_id" in item
+      ) {
+        const typedItem = item as {
+          created_at: string;
+          transaction_id: string | null;
+        };
+        const pending = isWithinInterval(new Date(), {
+          start: new Date(typedItem.created_at),
+          end: addDays(new Date(typedItem.created_at), 45),
+        });
 
-      return {
-        ...item,
-        pending,
-        review: !pending && !item.transaction_id,
-      };
+        return {
+          ...typedItem,
+          pending,
+          review: !pending && !typedItem.transaction_id,
+        };
+      }
+      return item;
     }),
   };
 }
@@ -1029,9 +1060,8 @@ export async function getTrackerProjectsQuery(
   if (search?.query && search?.fuzzy) {
     query.ilike("name", `%${search.query}%`);
   }
-
   if (sort) {
-    const [column, value] = sort;
+    const { column, value } = sort;
     if (column === "time") {
       query.order("total_duration", { ascending: value === "asc" });
     } else {
@@ -1081,18 +1111,22 @@ export async function getTrackerRecordsByRangeQuery(
   }
 
   const { data } = await query;
-  const result = data?.reduce((acc, item) => {
-    const key = item.date;
-
-    if (!acc[key]) {
-      acc[key] = [];
-    }
-    acc[key].push(item);
-    return acc;
-  }, {});
+  const result = data?.reduce(
+    (acc: Record<string, any[]>, item) => {
+      if (item && item.date) {
+        const key = item.date;
+        if (!acc[key]) {
+          acc[key] = [];
+        }
+        acc[key].push(item);
+      }
+      return acc;
+    },
+    {} as Record<string, any[]>,
+  );
 
   const totalDuration = data?.reduce(
-    (duration, item) => item.duration + duration,
+    (duration, item) => (item?.duration ?? 0) + duration,
     0,
   );
 

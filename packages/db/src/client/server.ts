@@ -34,11 +34,37 @@ console.log = (...args) => {
   }
 };
 
+/**
+ * Options for creating a Supabase client.
+ */
 type CreateClientOptions = {
+  /**
+   * Whether to create an admin client with elevated privileges.
+   * @default false
+   */
   admin?: boolean;
+  /**
+   * The schema to use for the client.
+   * @default "public"
+   */
   schema?: "public" | "storage";
 };
 
+/**
+ * Creates a Supabase client for server-side operations.
+ *
+ * This function sets up a Supabase client with the appropriate configuration
+ * for server-side usage in a Next.js application. It handles cookie management
+ * and sets up authentication based on whether an admin client is requested.
+ *
+ * @param options - Configuration options for the client.
+ * @param options.admin - Whether to create an admin client. Defaults to false.
+ * @param options.schema - The schema to use. Can be "public" or "storage".
+ * @returns A configured Supabase client instance.
+ *
+ * @example
+ * const supabase = createClient({ admin: true, schema: "public" });
+ */
 export const createClient = (options?: CreateClientOptions) => {
   const { admin = false, ...rest } = options ?? {};
 
@@ -57,7 +83,7 @@ export const createClient = (options?: CreateClientOptions) => {
     : {};
 
   return createServerClient<Database>(
-    process.env["EXT_PUBLIC_SUPABASE_URL"]!,
+    process.env["NEXT_PUBLIC_SUPABASE_URL"]!,
     key,
     {
       ...rest,

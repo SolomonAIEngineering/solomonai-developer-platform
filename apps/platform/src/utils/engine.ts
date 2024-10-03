@@ -30,5 +30,6 @@ export const engine = new FinancialEngine({
     "x-api-key": process.env.MIDDAY_ENGINE_API_KEY ?? "SOLOMONAI",
     Authorization: `Bearer ${process.env.MIDDAY_ENGINE_API_KEY ?? "SOLOMONAI"}`,
   },
-  baseURL: process.env.ENGINE_API_ENDPOINT ?? "https://engine.solomon-ai-platform.com",
+  baseURL:
+    process.env.ENGINE_API_ENDPOINT ?? "https://engine.solomon-ai-platform.com",
 });

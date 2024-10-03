@@ -105,10 +105,26 @@ const menuConfig: Group[] = [
         label: "Income",
         icon: TrendingUp,
         submenus: [
-          { href: "/analytics/income/overview", label: "Overview", active: false },
-          { href: "/analytics/income/details", label: "Details", active: false },
-          { href: "/analytics/income/categories", label: "Categories", active: false },
-          { href: "/analytics/income/sources", label: "Sources", active: false },
+          {
+            href: "/analytics/income/overview",
+            label: "Overview",
+            active: false,
+          },
+          {
+            href: "/analytics/income/details",
+            label: "Details",
+            active: false,
+          },
+          {
+            href: "/analytics/income/categories",
+            label: "Categories",
+            active: false,
+          },
+          {
+            href: "/analytics/income/sources",
+            label: "Sources",
+            active: false,
+          },
         ],
         active: false,
       },
@@ -117,9 +133,21 @@ const menuConfig: Group[] = [
         label: "Expense",
         icon: TrendingDown,
         submenus: [
-          { href: "/analytics/expense/overview", label: "Overview", active: false },
-          { href: "/analytics/expense/details", label: "Details", active: false },
-          { href: "/analytics/expense/categories", label: "Categories", active: false },
+          {
+            href: "/analytics/expense/overview",
+            label: "Overview",
+            active: false,
+          },
+          {
+            href: "/analytics/expense/details",
+            label: "Details",
+            active: false,
+          },
+          {
+            href: "/analytics/expense/categories",
+            label: "Categories",
+            active: false,
+          },
         ],
         active: false,
       },
@@ -128,9 +156,21 @@ const menuConfig: Group[] = [
         label: "Revenue",
         icon: DollarSign,
         submenus: [
-          { href: "/analytics/revenue/overview", label: "Overview", active: false },
-          { href: "/analytics/revenue/details", label: "Details", active: false },
-          { href: "/analytics/revenue/categories", label: "Categories", active: false },
+          {
+            href: "/analytics/revenue/overview",
+            label: "Overview",
+            active: false,
+          },
+          {
+            href: "/analytics/revenue/details",
+            label: "Details",
+            active: false,
+          },
+          {
+            href: "/analytics/revenue/categories",
+            label: "Categories",
+            active: false,
+          },
         ],
         active: false,
       },
@@ -166,7 +206,11 @@ const menuConfig: Group[] = [
           { href: "/settings/accounts", label: "Accounts", active: false },
           { href: "/settings/members", label: "Team", active: false },
           { href: "/settings/categories", label: "Categories", active: false },
-          { href: "/settings/notifications", label: "Notifications", active: false },
+          {
+            href: "/settings/notifications",
+            label: "Notifications",
+            active: false,
+          },
         ],
         active: false,
       },
@@ -184,7 +228,7 @@ const menuConfig: Group[] = [
  */
 export function getMenuList(
   pathname: string,
-  config: Group[] = menuConfig
+  config: Group[] = menuConfig,
 ): Group[] {
   return config.map((group) => ({
     ...group,
