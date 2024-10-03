@@ -45,7 +45,7 @@
     "@v1/env": "workspace:*",
     "@v1/kv": "workspace:*",
     "@v1/stripe": "workspace:*",
-    "@v1/supabase": "workspace:*",
+    "@v1/db": "workspace:*",
     "@v1/ui": "workspace:*",
     "@v1/utils": "workspace:*",
     "ai": "3.3.40",

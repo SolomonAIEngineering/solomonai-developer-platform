@@ -1,4 +1,4 @@
-import { createClient } from "@v1/supabase/client";
+import { createClient } from "@v1/db/client";
 import {
   globalShortcut,
   nativeWindow,
