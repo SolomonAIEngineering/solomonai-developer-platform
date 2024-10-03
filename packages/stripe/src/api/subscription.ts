@@ -1,5 +1,5 @@
 import { createSubscription, manageSubscription } from "../index";
-import { getUser } from "@v1/supabase/queries";
+import { getUser } from "@v1/db/queries";
 import { NextResponse } from "next/server";
 import { createSubscriptionSchema, manageSubscriptionSchema } from "../types";
 import { NextRequest } from "next/server";

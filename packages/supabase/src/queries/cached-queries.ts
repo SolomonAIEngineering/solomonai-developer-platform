@@ -1,7 +1,7 @@
 import "server-only";
 import { unstable_cache } from "next/cache";
 import { cache } from "react";
-import { createClient } from "@v1/supabase/server";
+import { createClient } from "@v1/db/server";
 import { logger } from "@v1/logger";
 import {
   User,

@@ -118,7 +118,7 @@ export default async function Page(params: {
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen">
       <div className="md:py-[3%]">
-        <AnimatedText text="Welcome To Solomon AI" className="md:text-6xl font-bold leading-8" />
+        <AnimatedText text="Developer Platform" className="md:text-6xl font-bold leading-8" />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-between gap-8 md:gap-16">

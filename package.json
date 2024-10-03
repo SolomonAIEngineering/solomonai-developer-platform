@@ -19,6 +19,7 @@
     "reset:changelog": "bun run rm -rf */**/CHANGELOG.md",
     "update:workspace": "bun run ./scripts/update-workspace",
     "build": "turbo build",
+    "platform:build": "turbo build --filter=@apps/platform",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo clean",
     "dev": "turbo dev --parallel",
@@ -35,6 +36,7 @@
     "gen": "turbo gen --config 'turbo/generator/config.ts'",
     "saas-site": "turbo dev --filter=@v1/saas-site",
     "startup-site": "turbo dev --filter=@v1/startup-site",
+    "platform": "turbo dev --filter=@apps/platform",
     "web": "turbo dev --filter=@v1/web",
     "app": "turbo dev --filter=@v1/app",
     "tailwind-config-viewer": " tailwind-config-viewer -c ./index.js -o -p 3333",
@@ -43,7 +45,9 @@
     "type-check": "tsc  --noemit"
   },
   "lint-staged": {
-    "**/*.{md,mdx}": ["bun run lint:md"]
+    "**/*.{md,mdx}": [
+      "bun run lint:md"
+    ]
   },
   "config": {
     "commitizen": {

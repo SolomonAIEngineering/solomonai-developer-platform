@@ -1,4 +1,4 @@
-import { getUser } from "@v1/supabase/queries";
+import { getUser } from "@v1/db/queries";
 import { NextRequest, NextResponse } from "next/server";
 import { createPaymentIntent } from "../index";
 
