@@ -61,8 +61,17 @@ export async function createAttachments(
  * @param supabase - The Supabase client instance
  * @param id - The ID of the attachment to be deleted
  * @returns A Promise that resolves to the deleted attachment data, including id, transaction_id, name, and team_id
+ * @throws {Error} If there's an error during the deletion process
  */
-export async function deleteAttachment(supabase: Client, id: string) {
+export async function deleteAttachment(
+  supabase: Client,
+  id: string
+): Promise<{
+  id: string;
+  transaction_id: string;
+  name: string;
+  team_id: string;
+} | null> {
   const { data, error } = await supabase
     .from("transaction_attachments")
     .delete()
@@ -71,7 +80,48 @@ export async function deleteAttachment(supabase: Client, id: string) {
     .single();
 
   if (error) throw error;
-  return data;
+
+  if (!data) return null;
+
+  return {
+    id: data.id,
+    transaction_id: data.transaction_id || '',
+    name: data.name || '',
+    team_id: data.team_id || '',
+  };
+}
+
+/**
+ * Deletes multiple attachments by their IDs.
+ *
+ * @param supabase - The Supabase client instance
+ * @param ids - An array of attachment IDs to be deleted
+ * @returns A Promise that resolves to an array of deleted attachment data, including id, transaction_id, name, and team_id for each attachment
+ * @throws {Error} If there's an error during the deletion process
+ */
+export async function deleteMultipleAttachments(
+  supabase: Client,
+  ids: string[]
+): Promise<Array<{
+  id: string;
+  transaction_id: string;
+  name: string;
+  team_id: string;
+}>> {
+  const { data, error } = await supabase
+    .from("transaction_attachments")
+    .delete()
+    .in("id", ids)
+    .select("id, transaction_id, name, team_id");
+
+  if (error) throw error;
+
+  return data?.map(item => ({
+    id: item.id,
+    transaction_id: item.transaction_id || '',
+    name: item.name || '',
+    team_id: item.team_id || '',
+  })) || [];
 }
 
 /**
