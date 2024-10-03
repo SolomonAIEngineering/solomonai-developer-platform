@@ -1,9 +1,9 @@
 "use client";
 
+import { isDesktopApp } from "@todesktop/client-core/platform/todesktop";
 import { createClient } from "@v1/db/client";
 import { Button } from "@v1/ui/button";
 import { Icons } from "@v1/ui/icons";
-import { isDesktopApp } from "@todesktop/client-core/platform/todesktop";
 import { Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -59,7 +59,7 @@ export function GoogleSignIn() {
         <Loader2 className="h-4 w-4 animate-spin" strokeWidth={0.5} />
       ) : (
         <>
-            <Icons.Google strokeWidth={0.5} />
+          <Icons.Google strokeWidth={0.5} />
           <span>Continue with Google</span>
         </>
       )}

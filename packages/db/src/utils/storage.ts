@@ -53,19 +53,20 @@ export async function deleteFolder(
     .from(bucket)
     .list(decodeURIComponent(path.join("/")));
 
-  const filesToRemove = list?.flatMap((file) => {
-    // Folder, remove empty file before folder
-    if (!file.id) {
-      return [
-        `${decodeURIComponent(
-          [...path, file.name].join("/"),
-        )}/${EMPTY_FOLDER_PLACEHOLDER_FILE_NAME}`,
-        decodeURIComponent([...path, file.name].join("/")),
-      ];
-    }
+  const filesToRemove =
+    list?.flatMap((file) => {
+      // Folder, remove empty file before folder
+      if (!file.id) {
+        return [
+          `${decodeURIComponent(
+            [...path, file.name].join("/"),
+          )}/${EMPTY_FOLDER_PLACEHOLDER_FILE_NAME}`,
+          decodeURIComponent([...path, file.name].join("/")),
+        ];
+      }
 
-    return [decodeURIComponent([...path, file.name].join("/"))];
-  });
+      return [decodeURIComponent([...path, file.name].join("/"))];
+    }) || [];
 
   return client.storage.from(bucket).remove(filesToRemove);
 }

@@ -3,10 +3,11 @@ import Stripe from "stripe";
 import { createClient } from "@v1/db/client";
 import {
   deletePriceRecord,
-  deleteProductRecord, manageSubscriptionStatusChange,
+  deleteProductRecord,
+  manageSubscriptionStatusChange,
   stripe,
   upsertPriceRecord,
-  upsertProductRecord
+  upsertProductRecord,
 } from "@v1/stripe-lib";
 
 /**
@@ -49,7 +50,6 @@ export async function POST(req: Request) {
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
   let event: Stripe.Event;
   const client = createClient();
-
 
   try {
     if (!sig || !webhookSecret)

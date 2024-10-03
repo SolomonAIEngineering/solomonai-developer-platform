@@ -8,7 +8,7 @@ import { Suspense } from "react";
 
 export function Sidebar() {
   const initialItems = cookies().has(Cookies.MenuConfig)
-    ? JSON.parse(cookies().get(Cookies.MenuConfig)?.value ?? 'null')
+    ? JSON.parse(cookies().get(Cookies.MenuConfig)?.value ?? "null")
     : null;
 
   return (

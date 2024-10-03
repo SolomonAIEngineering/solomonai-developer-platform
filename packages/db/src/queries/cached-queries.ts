@@ -212,7 +212,7 @@ export const getUser = async () => {
     {
       tags: [`user_${userId}`],
       revalidate: 180,
-    }
+    },
   )();
 };
 
@@ -224,8 +224,8 @@ export const getTeamUser = async () => {
     return null;
   }
 
-  const userId = user.data.id as string
-  const teamId = user.data.team_id as string
+  const userId = user.data.id as string;
+  const teamId = user.data.team_id as string;
 
   return unstable_cache(
     async () => {
@@ -238,7 +238,7 @@ export const getTeamUser = async () => {
     {
       tags: [`team_user_${user.data.id}`],
       revalidate: 180,
-    }
+    },
   )();
 };
 
@@ -489,7 +489,10 @@ export const getTrackerRecordsByRange = async (
 
   return unstable_cache(
     async (params: GetTrackerRecordsByRangeParams) => {
-      return getTrackerRecordsByRangeQuery(supabase as any, { ...params, teamId });
+      return getTrackerRecordsByRangeQuery(supabase as any, {
+        ...params,
+        teamId,
+      });
     },
     ["tracker_entries", teamId],
     {
@@ -590,7 +593,10 @@ export const getMonthlyExpenses = async (
 
   return unstable_cache(
     async (queryParams: Omit<GetMonthlyExpensesQueryParams, "teamId">) => {
-      return getMonthlyExpensesQuery(supabase as any, { ...queryParams, teamId });
+      return getMonthlyExpensesQuery(supabase as any, {
+        ...queryParams,
+        teamId,
+      });
     },
     ["monthly_expenses", teamId],
     {
@@ -613,7 +619,10 @@ export const getExpensesByCategory = async (
 
   return unstable_cache(
     async (queryParams: Omit<GetExpensesByCategoryQueryParams, "teamId">) => {
-      return getExpensesByCategoryQuery(supabase as any, { ...queryParams, teamId });
+      return getExpensesByCategoryQuery(supabase as any, {
+        ...queryParams,
+        teamId,
+      });
     },
     ["expenses_by_category", teamId],
     {
@@ -635,7 +644,9 @@ export const getExpensesByLocation = async (
   }
 
   return unstable_cache(
-    async (queryParams: Omit<GetExpenseBreakdownByLocationQueryParams, "teamId">) => {
+    async (
+      queryParams: Omit<GetExpenseBreakdownByLocationQueryParams, "teamId">,
+    ) => {
       return getExpenseBreakdownByLocationQuery(supabase as any, {
         ...queryParams,
         teamId,
@@ -685,7 +696,10 @@ export const getTopExpenseCategories = async (
 
   return unstable_cache(
     async (queryParams: Omit<GetTopExpenseCategoriesQueryParams, "teamId">) => {
-      return getTopExpenseCategoriesQuery(supabase as any, { ...queryParams, teamId });
+      return getTopExpenseCategoriesQuery(supabase as any, {
+        ...queryParams,
+        teamId,
+      });
     },
     ["top_expense_categories", teamId],
     {
@@ -708,7 +722,10 @@ export const getExpensesByMerchant = async (
 
   return unstable_cache(
     async (queryParams: Omit<GetExpensesByMerchantQueryParams, "teamId">) => {
-      return getExpensesByMerchantQuery(supabase as any, { ...queryParams, teamId });
+      return getExpensesByMerchantQuery(supabase as any, {
+        ...queryParams,
+        teamId,
+      });
     },
     ["expenses_by_merchant", teamId],
     {
@@ -731,7 +748,10 @@ export const getWeeklyExpenseTrends = async (
 
   return unstable_cache(
     async (queryParams: Omit<GetWeeklyExpenseTrendsQueryParams, "teamId">) => {
-      return getWeeklyExpenseTrendsQuery(supabase as any, { ...queryParams, teamId });
+      return getWeeklyExpenseTrendsQuery(supabase as any, {
+        ...queryParams,
+        teamId,
+      });
     },
     ["weekly_expense_trends", teamId],
     {
@@ -753,8 +773,13 @@ export const getExpensesByPaymentChannel = async (
   }
 
   return unstable_cache(
-    async (queryParams: Omit<GetExpensesByPaymentChannelQueryParams, "teamId">) => {
-      return getExpensesByPaymentChannelQuery(supabase as any, { ...queryParams, teamId });
+    async (
+      queryParams: Omit<GetExpensesByPaymentChannelQueryParams, "teamId">,
+    ) => {
+      return getExpensesByPaymentChannelQuery(supabase as any, {
+        ...queryParams,
+        teamId,
+      });
     },
     ["expenses_by_payment_channel", teamId],
     {
@@ -777,7 +802,10 @@ export const getExpenseComparison = async (
 
   return unstable_cache(
     async (queryParams: Omit<GetExpenseComparisonQueryParams, "teamId">) => {
-      return getExpenseComparisonQuery(supabase as any, { ...queryParams, teamId });
+      return getExpenseComparisonQuery(supabase as any, {
+        ...queryParams,
+        teamId,
+      });
     },
     ["expense_anomalies", teamId],
     {
@@ -800,7 +828,10 @@ export const getRecurringExpenses = async (
 
   return unstable_cache(
     async (queryParams: Omit<GetRecurringExpensesQueryParams, "teamId">) => {
-      return getRecurringExpensesQuery(supabase as any, { ...queryParams, teamId });
+      return getRecurringExpensesQuery(supabase as any, {
+        ...queryParams,
+        teamId,
+      });
     },
     ["recurring_expenses", teamId],
     {
@@ -822,7 +853,9 @@ export const getExpenseDistributionByDayOfWeek = async (
   }
 
   return unstable_cache(
-    async (queryParams: Omit<GetExpenseDistributionByDayOfWeekQueryParams, "teamId">) => {
+    async (
+      queryParams: Omit<GetExpenseDistributionByDayOfWeekQueryParams, "teamId">,
+    ) => {
       return getExpenseDistributionByDayOfWeekQuery(supabase as any, {
         ...queryParams,
         teamId,
@@ -849,7 +882,10 @@ export const getExpenseGrowthRate = async (
 
   return unstable_cache(
     async (queryParams: Omit<GetExpenseGrowthRateQueryParams, "teamId">) => {
-      return getExpenseGrowthRateQuery(supabase as any, { ...queryParams, teamId });
+      return getExpenseGrowthRateQuery(supabase as any, {
+        ...queryParams,
+        teamId,
+      });
     },
     ["expense_growth_rate", teamId],
     {
@@ -872,7 +908,10 @@ export const getExpenseForecast = async (
 
   return unstable_cache(
     async (queryParams: Omit<GetExpenseForecastQueryParams, "teamId">) => {
-      return getExpenseForecastQuery(supabase as any, { ...queryParams, teamId });
+      return getExpenseForecastQuery(supabase as any, {
+        ...queryParams,
+        teamId,
+      });
     },
     ["expense_forecast", teamId],
     {
@@ -895,7 +934,10 @@ export const getExpenseAnomalies = async (
 
   return unstable_cache(
     async (queryParams: Omit<GetExpenseAnomaliesQueryParams, "teamId">) => {
-      return getExpenseAnomaliesQuery(supabase as any, { ...queryParams, teamId });
+      return getExpenseAnomaliesQuery(supabase as any, {
+        ...queryParams,
+        teamId,
+      });
     },
     ["expense_anomalies", teamId],
     {
@@ -917,8 +959,13 @@ export const getExpenseTrendsByTimeOfDay = async (
   }
 
   return unstable_cache(
-    async (queryParams: Omit<GetExpenseTrendsByTimeOfDayQueryParams, "teamId">) => {
-      return getExpenseTrendsByTimeOfDayQuery(supabase as any, { ...queryParams, teamId });
+    async (
+      queryParams: Omit<GetExpenseTrendsByTimeOfDayQueryParams, "teamId">,
+    ) => {
+      return getExpenseTrendsByTimeOfDayQuery(supabase as any, {
+        ...queryParams,
+        teamId,
+      });
     },
     ["expense_trends_by_time_of_day", teamId],
     {
@@ -940,8 +987,13 @@ export const getInventoryCostAnalysis = async (
   }
 
   return unstable_cache(
-    async (queryParams: Omit<GetInventoryCostAnalysisQueryParams, "teamId">) => {
-      return getInventoryCostAnalysisQuery(supabase as any, { ...queryParams, teamId });
+    async (
+      queryParams: Omit<GetInventoryCostAnalysisQueryParams, "teamId">,
+    ) => {
+      return getInventoryCostAnalysisQuery(supabase as any, {
+        ...queryParams,
+        teamId,
+      });
     },
     ["inventory_cost_analysis", teamId],
     {

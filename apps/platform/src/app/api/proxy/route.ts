@@ -53,7 +53,9 @@ function validateQuery(req: NextRequest) {
 }
 
 async function getAuthenticatedSession() {
-  const { data: { session } } = await getSession();
+  const {
+    data: { session },
+  } = await getSession();
 
   if (!session) {
     throw new Error("Unauthorized");
@@ -62,14 +64,17 @@ async function getAuthenticatedSession() {
   return session;
 }
 
-async function fetchFromSupabaseStorage(filePath: string, accessToken: string): Promise<Response> {
+async function fetchFromSupabaseStorage(
+  filePath: string,
+  accessToken: string,
+): Promise<Response> {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/${filePath}`,
     {
       headers: {
         authorization: `Bearer ${accessToken}`,
       },
-    }
+    },
   );
 
   if (!response.ok) {

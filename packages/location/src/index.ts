@@ -23,8 +23,15 @@ export function getCountryInfo() {
   const countryInfo = countries.find((x) => x.cca2 === country);
 
   const currencyCode =
-    countryInfo && Object.keys(countryInfo.currencies)?.at(0);
-  const currency = countryInfo?.currencies[currencyCode];
+    countryInfo?.currencies && Object.keys(countryInfo.currencies)[0];
+  const currency =
+    currencyCode &&
+    countryInfo?.currencies &&
+    currencyCode in countryInfo.currencies
+      ? countryInfo.currencies[
+          currencyCode as keyof typeof countryInfo.currencies
+        ]
+      : undefined;
   const languages =
     countryInfo && Object.values(countryInfo.languages).join(", ");
 
@@ -48,5 +55,5 @@ export function isEU() {
 export function getCountry() {
   const country = getCountryCode();
 
-  return flags[country];
+  return flags[country as keyof typeof flags];
 }

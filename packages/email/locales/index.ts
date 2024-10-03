@@ -3,8 +3,16 @@ import config from "../config/index";
 type Options = {
   locale?: string;
 };
+// Define a type for the translation keys
+type TranslationKeys = {
+  [key: string]: string;
+};
 
-function translations(locale: string, params?: any) {
+// Update the translations function to return the correct type
+function translations(
+  locale: string,
+  params?: any,
+): TranslationKeys | undefined {
   switch (locale) {
     case "en":
       return {
@@ -110,6 +118,9 @@ function translations(locale: string, params?: any) {
 
 export function getI18n({ locale = "en" }: Options) {
   return {
-    t: (key: string, params?: any) => translations(locale, params)[key],
+    t: (key: string, params?: any) => {
+      const trans = translations(locale, params);
+      return trans ? (trans as Record<string, string>)[key] : undefined;
+    },
   };
 }

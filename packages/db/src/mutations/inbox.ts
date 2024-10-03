@@ -1,8 +1,6 @@
 import type { Client, InboxItem, InboxUpdate } from "../types";
 import { Database } from "../types/db";
 
-
-
 /**
  * Parameters for updating an inbox item.
  * @typedef {Object} UpdateInboxByIdParams
@@ -41,7 +39,7 @@ type UpdateInboxByIdParams = {
  */
 export async function createInboxItem(
   supabase: Client,
-  inboxItem: InboxItem
+  inboxItem: InboxItem,
 ): Promise<InboxItem> {
   const { data, error } = await supabase
     .from("inbox")
@@ -72,7 +70,7 @@ export async function createInboxItem(
 export async function updateInboxItem(
   supabase: Client,
   id: string,
-  updates: InboxUpdate
+  updates: InboxUpdate,
 ): Promise<InboxItem> {
   const { data, error } = await supabase
     .from("inbox")
@@ -171,7 +169,7 @@ export async function updateInboxById(
  */
 export async function deleteInboxItem(
   supabase: Client,
-  id: string
+  id: string,
 ): Promise<InboxItem | null> {
   const { data, error } = await supabase
     .from("inbox")
@@ -201,7 +199,7 @@ export async function deleteInboxItem(
 export async function changeInboxItemStatus(
   supabase: Client,
   id: string,
-  status: Database['public']['Enums']['inbox_status']
+  status: Database["public"]["Enums"]["inbox_status"],
 ): Promise<InboxItem> {
   const { data, error } = await supabase
     .from("inbox")
@@ -235,7 +233,7 @@ export async function getInboxItemsForTeam(
   supabase: Client,
   teamId: string,
   limit: number = 50,
-  offset: number = 0
+  offset: number = 0,
 ): Promise<InboxItem[]> {
   const { data, error } = await supabase
     .from("inbox")

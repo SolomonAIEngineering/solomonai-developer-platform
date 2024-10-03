@@ -65,7 +65,7 @@ export async function createAttachments(
  */
 export async function deleteAttachment(
   supabase: Client,
-  id: string
+  id: string,
 ): Promise<{
   id: string;
   transaction_id: string;
@@ -85,9 +85,9 @@ export async function deleteAttachment(
 
   return {
     id: data.id,
-    transaction_id: data.transaction_id || '',
-    name: data.name || '',
-    team_id: data.team_id || '',
+    transaction_id: data.transaction_id || "",
+    name: data.name || "",
+    team_id: data.team_id || "",
   };
 }
 
@@ -101,13 +101,15 @@ export async function deleteAttachment(
  */
 export async function deleteMultipleAttachments(
   supabase: Client,
-  ids: string[]
-): Promise<Array<{
-  id: string;
-  transaction_id: string;
-  name: string;
-  team_id: string;
-}>> {
+  ids: string[],
+): Promise<
+  Array<{
+    id: string;
+    transaction_id: string;
+    name: string;
+    team_id: string;
+  }>
+> {
   const { data, error } = await supabase
     .from("transaction_attachments")
     .delete()
@@ -116,12 +118,14 @@ export async function deleteMultipleAttachments(
 
   if (error) throw error;
 
-  return data?.map(item => ({
-    id: item.id,
-    transaction_id: item.transaction_id || '',
-    name: item.name || '',
-    team_id: item.team_id || '',
-  })) || [];
+  return (
+    data?.map((item) => ({
+      id: item.id,
+      transaction_id: item.transaction_id || "",
+      name: item.name || "",
+      team_id: item.team_id || "",
+    })) || []
+  );
 }
 
 /**
@@ -135,7 +139,7 @@ export async function deleteMultipleAttachments(
 export async function updateAttachment(
   supabase: Client,
   id: string,
-  updates: Partial<Attachment>
+  updates: Partial<Attachment>,
 ) {
   const { data, error } = await supabase
     .from("transaction_attachments")
@@ -155,7 +159,10 @@ export async function updateAttachment(
  * @param transactionId - The ID of the transaction
  * @returns A Promise that resolves to the deleted attachment data
  */
-export async function deleteAttachmentsForTransaction(supabase: Client, transactionId: string) {
+export async function deleteAttachmentsForTransaction(
+  supabase: Client,
+  transactionId: string,
+) {
   const { data, error } = await supabase
     .from("transaction_attachments")
     .delete()

@@ -2,8 +2,9 @@ import { getCurrentUserTeamQuery } from "../queries";
 import type { Client } from "../types";
 import { Database } from "../types/db";
 
-type TrackerProject = Database['public']['Tables']['tracker_projects']['Row'];
-type UpdateProjectParams = Database['public']['Tables']['tracker_projects']['Update'];
+type TrackerProject = Database["public"]["Tables"]["tracker_projects"]["Row"];
+type UpdateProjectParams =
+  Database["public"]["Tables"]["tracker_projects"]["Update"];
 
 /**
  * Parameters for creating a new project.
@@ -68,7 +69,7 @@ export async function createProject(
 export async function updateProject(
   supabase: Client,
   id: string,
-  params: UpdateProjectParams
+  params: UpdateProjectParams,
 ): Promise<TrackerProject> {
   const { data, error } = await supabase
     .from("tracker_projects")
@@ -91,7 +92,7 @@ export async function updateProject(
  */
 export async function deleteProject(
   supabase: Client,
-  id: string
+  id: string,
 ): Promise<TrackerProject | null> {
   const { data, error } = await supabase
     .from("tracker_projects")
@@ -114,7 +115,7 @@ export async function deleteProject(
  */
 export async function getProjectById(
   supabase: Client,
-  id: string
+  id: string,
 ): Promise<TrackerProject | null> {
   const { data, error } = await supabase
     .from("tracker_projects")
@@ -136,7 +137,7 @@ export async function getProjectById(
  */
 export async function getProjectsByTeam(
   supabase: Client,
-  teamId: string
+  teamId: string,
 ): Promise<TrackerProject[]> {
   const { data, error } = await supabase
     .from("tracker_projects")
@@ -159,7 +160,7 @@ export async function getProjectsByTeam(
 export async function updateProjectStatus(
   supabase: Client,
   id: string,
-  status: Database['public']['Enums']['trackerStatus']
+  status: Database["public"]["Enums"]["trackerStatus"],
 ): Promise<TrackerProject> {
   const { data, error } = await supabase
     .from("tracker_projects")
@@ -184,7 +185,7 @@ export async function updateProjectStatus(
 export async function updateProjectEstimate(
   supabase: Client,
   id: string,
-  estimate: number
+  estimate: number,
 ): Promise<TrackerProject> {
   const { data, error } = await supabase
     .from("tracker_projects")
@@ -207,7 +208,7 @@ export async function updateProjectEstimate(
  */
 export async function getCompletedProjectsByTeam(
   supabase: Client,
-  teamId: string
+  teamId: string,
 ): Promise<TrackerProject[]> {
   const { data, error } = await supabase
     .from("tracker_projects")
@@ -229,7 +230,7 @@ export async function getCompletedProjectsByTeam(
  */
 export async function getInProgressProjectsByTeam(
   supabase: Client,
-  teamId: string
+  teamId: string,
 ): Promise<TrackerProject[]> {
   const { data, error } = await supabase
     .from("tracker_projects")

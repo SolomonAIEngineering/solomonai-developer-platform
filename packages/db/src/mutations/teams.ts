@@ -152,4 +152,3 @@ export async function leaveTeam(supabase: Client, params: LeaveTeamParams) {
     .select()
     .single();
 }
-

@@ -27,6 +27,7 @@
     "./banner": "./src/components/banner/index.tsx",
     "./banner/notification-banner": "./src/components/banner/notification-banner.tsx",
     "./banner/simple-notification-banner": "./src/components/banner/simple-notification-banner.tsx",
+    "./blur-image": "./src/components/blur-image.tsx",
     "./breadcrumb": "./src/components/breadcrumb.tsx",
     "./button": "./src/components/button.tsx",
     "./button/ask-solomon-button": "./src/components/button/ask-solomon-button.tsx",
@@ -41,6 +42,7 @@
     "./button/my-profile-button": "./src/components/button/my-profile-button.tsx",
     "./button/payment-portal-button": "./src/components/button/payment-portal-button.tsx",
     "./button/signup-button": "./src/components/button/signup-button.tsx",
+    "./client-only": "./src/components/client-only.tsx",
     "./calendar": "./src/components/calendar.tsx",
     "./calendar/calendar-date-picker": "./src/components/calendar/calendar-date-picker.tsx",
     "./calendar/calendar-picker": "./src/components/calendar/calendar-picker.tsx",
@@ -291,11 +293,7 @@
     "./widget/surveys-widget": "./src/components/widget/surveys-widget.tsx",
     "./wrapper/assistant-provider-wrapper": "./src/wrapper/assistant-provider-wrapper.tsx"
   },
-  "files": [
-    "tailwind.config.ts",
-    "postcss.config.js",
-    "globals.css"
-  ],
+  "files": ["tailwind.config.ts", "postcss.config.js", "globals.css"],
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "dev": "storybook dev -p 6006",

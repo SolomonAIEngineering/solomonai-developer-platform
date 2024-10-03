@@ -17,7 +17,7 @@ import { createBrowserClient } from "@supabase/ssr";
  * @example
  * const supabase = createClient();
  * const
-*/
+ */
 
 export const createClient = () =>
   createBrowserClient<Database>(

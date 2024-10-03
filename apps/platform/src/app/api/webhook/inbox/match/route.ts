@@ -81,7 +81,7 @@ export async function POST(req: Request) {
       id: inbox?.id as string,
       attachment_id: attachmentData?.id,
       transaction_id: body.record.id,
-      teamId: body.record.team_id
+      teamId: body.record.team_id,
     });
 
     revalidateTag(`transactions_${inbox?.team_id}`);

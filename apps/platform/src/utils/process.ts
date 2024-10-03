@@ -14,7 +14,11 @@
  * });
  * console.log(result); // [2, 4, 6, 8, 10]
  */
-export async function processPromisesBatch(items: any[], limit: number, fn: (batch: any[]) => Promise<any[]>): Promise<any[]> {
+export async function processPromisesBatch(
+  items: any[],
+  limit: number,
+  fn: (batch: any[]) => Promise<any[]>,
+): Promise<any[]> {
   const batches = [];
   let result: any[] = [];
 

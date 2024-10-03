@@ -60,9 +60,9 @@ export async function createBankAccounts(
   const expiresAt =
     provider === "gocardless"
       ? addDays(
-        new Date(),
-        getAccessValidForDays({ institutionId: account.institution_id }),
-      ).toDateString()
+          new Date(),
+          getAccessValidForDays({ institutionId: account.institution_id }),
+        ).toDateString()
       : undefined;
 
   const bankConnection = await supabase

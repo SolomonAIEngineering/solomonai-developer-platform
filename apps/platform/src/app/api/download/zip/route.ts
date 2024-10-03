@@ -25,7 +25,10 @@ export const dynamic = "force-dynamic";
  * 5. Adds successfully downloaded files to the zip archive.
  * 6. Finalizes and returns the zip archive as a Blob.
  */
-async function downloadAndZipFiles(teamId: string, path: string): Promise<Blob> {
+async function downloadAndZipFiles(
+  teamId: string,
+  path: string,
+): Promise<Blob> {
   // Create a Supabase client for database operations
   const supabase = createClient() as unknown as Client;
 
@@ -37,7 +40,7 @@ async function downloadAndZipFiles(teamId: string, path: string): Promise<Blob> 
     download(supabase, {
       bucket: "vault",
       path: `${file.basePath}/${file.name}`,
-    })
+    }),
   );
 
   // Wait for all downloads to complete
@@ -95,7 +98,9 @@ export async function GET(req: NextRequest): Promise<Response> {
 
   // Ensure the user is authenticated and associated with a team
   if (!teamId) {
-    return new Response("User not found or no team associated", { status: 401 });
+    return new Response("User not found or no team associated", {
+      status: 401,
+    });
   }
 
   try {
@@ -112,6 +117,8 @@ export async function GET(req: NextRequest): Promise<Response> {
   } catch (error) {
     // Log the error and return a generic error response
     console.error("Error creating zip file:", error);
-    return new Response("An error occurred while creating the zip file", { status: 500 });
+    return new Response("An error occurred while creating the zip file", {
+      status: 500,
+    });
   }
 }

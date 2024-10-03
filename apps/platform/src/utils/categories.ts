@@ -111,7 +111,7 @@ export function getColor(value: string, arrayLength: number): number {
 export function getColorFromName(value: string): string {
   const index = getColor(value, colors.length);
 
-  return colors[index] ?? '#000000'; // Fallback to black if color is undefined
+  return colors[index] ?? "#000000"; // Fallback to black if color is undefined
 }
 
 /**
@@ -121,5 +121,5 @@ export function getColorFromName(value: string): string {
  */
 export function getRandomColor(): string {
   const randomIndex = Math.floor(Math.random() * colors.length);
-  return colors[randomIndex] ?? '#000000'; // Fallback to black if color is undefined
+  return colors[randomIndex] ?? "#000000"; // Fallback to black if color is undefined
 }

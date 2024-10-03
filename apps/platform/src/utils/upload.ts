@@ -46,18 +46,21 @@ type ResumableUploadParams = {
  */
 export async function resumableUpload(
   client: SupabaseClient,
-  { file, path, bucket, onProgress }: ResumableUploadParams
+  { file, path, bucket, onProgress }: ResumableUploadParams,
 ) {
-  const { data: { session } } = await client.auth.getSession();
+  const {
+    data: { session },
+  } = await client.auth.getSession();
   const fullPath = decodeURIComponent(
-    [...path, stripSpecialCharacters(file.name)].join("/")
+    [...path, stripSpecialCharacters(file.name)].join("/"),
   );
 
   return new Promise((resolve, reject) => {
     const upload = new tus.Upload(file, {
-      endpoint: process.env.NODE_ENV === "production"
-        ? `https://${process.env.NEXT_PUBLIC_SUPABASE_ID}.supabase.co/storage/v1/upload/resumable`
-        : "http://127.0.0.1:54321/storage/v1/upload/resumable",
+      endpoint:
+        process.env.NODE_ENV === "production"
+          ? `https://${process.env.NEXT_PUBLIC_SUPABASE_ID}.supabase.co/storage/v1/upload/resumable`
+          : "http://127.0.0.1:54321/storage/v1/upload/resumable",
       retryDelays: [0, 3000, 5000, 10000],
       headers: {
         authorization: `Bearer ${session?.access_token}`,

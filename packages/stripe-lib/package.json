@@ -22,8 +22,8 @@
   },
   "dependencies": {
     "@internal/config": "workspace:*",
+    "@stripe/stripe-js": "^4.6.0",
     "@v1/db": "workspace:*",
-    "@stripe/stripe-js": "^4.3.0",
     "stripe": "^16.12.0"
   },
   "devDependencies": {
