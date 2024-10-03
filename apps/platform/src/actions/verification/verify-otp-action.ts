@@ -5,8 +5,16 @@ import { createClient } from "@v1/db/server";
 import { addYears } from "date-fns";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { z } from "zod";
 import { actionClient } from "../safe-action";
-import { verifyOtpSchema } from "../schema";
+
+/**
+ * The schema for verifying a one-time password (OTP) for email authentication.
+ */
+export const verifyOtpSchema = z.object({
+  token: z.string(),
+  email: z.string(),
+});
 
 /**
  * Verifies a one-time password (OTP) for email authentication.

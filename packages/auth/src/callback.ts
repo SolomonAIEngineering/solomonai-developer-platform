@@ -1,4 +1,4 @@
-import { createClient } from "@v1/supabase/server";
+import { createClient } from "@v1/db/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function handleAuthCallback(request: NextRequest) {

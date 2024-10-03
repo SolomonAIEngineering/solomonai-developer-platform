@@ -1,9 +1,10 @@
+import { logger } from "@/utils/logger";
 import * as Sentry from "@sentry/nextjs";
-import { setupAnalytics } from "@v1/analytics/server";
+import { Ratelimit } from "@upstash/ratelimit";
 import { getUser } from "@v1/db/cached-queries";
 import { createClient } from "@v1/db/server";
-import { ratelimit } from "@v1/kv/ratelimit";
-import { logger } from "@v1/logger";
+import { setupAnalytics } from "@v1/events/server";
+import { client as RedisClient } from "@v1/kv/client";
 import {
   DEFAULT_SERVER_ERROR_MESSAGE,
   createSafeActionClient,
@@ -11,22 +12,29 @@ import {
 import { headers } from "next/headers";
 import { z } from "zod";
 
-const handleServerError = (e: Error) => {
-  console.error("Action error:", e.message);
-
-  if (e instanceof Error) {
-    return e.message;
-  }
-
-  return DEFAULT_SERVER_ERROR_MESSAGE;
-};
+const ratelimit = new Ratelimit({
+  limiter: Ratelimit.fixedWindow(10, "10s"),
+  redis: RedisClient,
+});
 
 export const actionClient = createSafeActionClient({
-  handleServerError,
+  handleReturnedServerError(e) {
+    if (e instanceof Error) {
+      return e.message;
+    }
+
+    return DEFAULT_SERVER_ERROR_MESSAGE;
+  },
 });
 
 export const actionClientWithMeta = createSafeActionClient({
-  handleServerError,
+  handleReturnedServerError(e) {
+    if (e instanceof Error) {
+      return e.message;
+    }
+
+    return DEFAULT_SERVER_ERROR_MESSAGE;
+  },
   defineMetadataSchema() {
     return z.object({
       name: z.string(),
@@ -42,12 +50,12 @@ export const actionClientWithMeta = createSafeActionClient({
 
 export const authActionClient = actionClientWithMeta
   .use(async ({ next, clientInput, metadata }) => {
-    const result = await next({ ctx: {} });
+    const result = await next({ ctx: null });
 
     if (process.env.NODE_ENV === "development") {
-      logger.info(`Input -> ${JSON.stringify(clientInput)}`);
-      logger.info(`Result -> ${JSON.stringify(result.data)}`);
-      logger.info(`Metadata -> ${JSON.stringify(metadata)}`);
+      logger("Input ->", clientInput);
+      logger("Result ->", result.data);
+      logger("Metadata ->", metadata);
 
       return result;
     }
@@ -77,13 +85,14 @@ export const authActionClient = actionClientWithMeta
     const user = await getUser();
     const supabase = createClient();
 
-    if (!user) {
+    if (!user?.data) {
       throw new Error("Unauthorized");
     }
 
     if (metadata) {
       const analytics = await setupAnalytics({
-        userId: user.data?.id,
+        userId: user.data.id,
+        fullName: user.data.full_name,
       });
 
       if (metadata.track) {
@@ -95,7 +104,7 @@ export const authActionClient = actionClientWithMeta
       return next({
         ctx: {
           supabase,
-          user,
+          user: user.data,
         },
       });
     });

@@ -1,4 +1,4 @@
-import { createClient } from "@v1/supabase/server";
+import { createClient } from "@v1/db/server";
 
 export async function createApp(params: any) {
   const client = createClient({ admin: true });

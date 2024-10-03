@@ -1,5 +1,5 @@
 import { createCustomer } from "../index";
-import { getUser } from "@v1/supabase/queries";
+import { getUser } from "@v1/db/queries";
 import { NextRequest, NextResponse } from "next/server";
 import { createCustomerSchema } from "../types";
 

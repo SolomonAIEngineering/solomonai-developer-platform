@@ -1,6 +1,6 @@
 "use client";
 
-import { verifyOtpAction } from "@/actions/verification/verify-otp-action";
+import { verifyOtpAction } from "@/actions/verify-otp-action";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createClient } from "@v1/db/client";
 import { Button } from "@v1/ui/button";
@@ -84,7 +84,7 @@ export function OTPSignIn({ className }: Props) {
           <button
             onClick={() => setSent(false)}
             type="button"
-            className="text-sm font-medium underline text-primary"
+            className="text-sm text-primary underline font-medium"
           >
             Resend code
           </button>
@@ -120,7 +120,7 @@ export function OTPSignIn({ className }: Props) {
             className="active:scale-[0.98] bg-primary px-6 py-4 text-secondary font-medium flex space-x-2 h-[40px] w-full"
           >
             {isLoading ? (
-              <Loader2 className="w-4 h-4 animate-spin" strokeWidth={0.5} />
+              <Loader2 className="h-4 w-4 animate-spin" strokeWidth={0.5} />
             ) : (
               <span>Continue</span>
             )}

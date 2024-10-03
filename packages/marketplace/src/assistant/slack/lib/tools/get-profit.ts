@@ -1,4 +1,4 @@
-import type { Client } from "@v1/supabase/types";
+import type { Client } from "@v1/db/types";
 
 import { startOfMonth } from "date-fns";
 import { z } from "zod";

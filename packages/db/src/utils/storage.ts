@@ -2,7 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 export const EMPTY_FOLDER_PLACEHOLDER_FILE_NAME = ".emptyFolderPlaceholder";
 
-type UploadParams = {
+export type UploadParams = {
   file: File;
   path: string[];
   bucket: string;

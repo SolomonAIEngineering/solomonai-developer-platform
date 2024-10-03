@@ -1,24 +1,20 @@
 "use client";
 
-import { createClient } from "@v1/db/client";
-import { Button } from "@v1/ui/button";
-import { Icons } from "@v1/ui/icons";
+import { signOutAction } from "@/actions/sign-out-action";
+import { DropdownMenuItem } from "@v1/ui/dropdown-menu";
+import { useState } from "react";
 
 export function SignOut() {
-  const supabase = createClient();
+  const [isLoading, setLoading] = useState(false);
 
-  const handleSignOut = () => {
-    supabase.auth.signOut();
+  const handleSignOut = async () => {
+    setLoading(true);
+    signOutAction();
   };
 
   return (
-    <Button
-      onClick={handleSignOut}
-      variant="outline"
-      className="font-mono gap-2 flex items-center"
-    >
-      <Icons.SignOut className="size-4" />
-      <span>Sign out</span>
-    </Button>
+    <DropdownMenuItem onClick={handleSignOut}>
+      {isLoading ? "Loading..." : "Sign out"}
+    </DropdownMenuItem>
   );
 }

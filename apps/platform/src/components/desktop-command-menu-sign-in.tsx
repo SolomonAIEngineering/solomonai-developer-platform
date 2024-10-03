@@ -6,10 +6,10 @@ import { Icons } from "@v1/ui/icons";
 
 export function DesktopCommandMenuSignIn() {
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex h-full flex-col">
       <Icons.Logo className="absolute top-8 left-8" />
 
-      <div className="flex items-center justify-center w-full h-full">
+      <div className="flex items-center w-full justify-center h-full">
         <a href={config.desktopUrl}>
           <Button variant="outline">Login to {config.company}</Button>
         </a>
