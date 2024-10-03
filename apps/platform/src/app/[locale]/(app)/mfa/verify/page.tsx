@@ -1,6 +1,6 @@
 "use client";
 
-import { VerifyMfa } from "@/components/mfa/verify-mfa";
+import { VerifyMfa } from "@/components/verify-mfa";
 import config from "@/config";
 import { Icons } from "@v1/ui/icons";
 import Link from "next/link";
@@ -23,7 +23,7 @@ export default function Verify(): JSX.Element {
         </Link>
       </div>
 
-      <div className="flex min-h-screen justify-center items-center overflow-hidden p-6 md:p-0">
+      <div className="flex items-center justify-center min-h-screen p-6 overflow-hidden md:p-0">
         <div className="relative z-20 m-auto flex w-full max-w-[380px] flex-col">
           <VerifyMfa />
         </div>

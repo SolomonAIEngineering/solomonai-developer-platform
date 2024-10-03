@@ -1,12 +1,12 @@
 "use client";
 
-import { isDesktopApp } from "@todesktop/client-core/platform/todesktop";
 import { createClient } from "@v1/db/client";
 import { Button } from "@v1/ui/button";
 import { Icons } from "@v1/ui/icons";
+import { isDesktopApp } from "@todesktop/client-core/platform/todesktop";
 import { Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
 
 export function GoogleSignIn() {
   const [isLoading, setLoading] = useState(false);

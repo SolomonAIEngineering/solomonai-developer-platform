@@ -7,21 +7,7 @@ import { setupAnalytics } from "@v1/events/server";
 import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
-/**
- * Performs the sign-out action for the current user.
- *
- * This server-side function handles the following operations:
- * 1. Signs out the user from the Supabase client.
- * 2. Logs the sign-out event for analytics.
- * 3. Revalidates the user's cache tag.
- * 4. Redirects the user to the login page.
- *
- * @async
- * @function
- * @throws {Error} If there's an issue with Supabase signOut, analytics setup, or Next.js operations.
- * @returns {Promise<never>} The function doesn't actually return; it redirects to the login page.
- */
-export async function signOutAction(): Promise<never> {
+export async function signOutAction() {
   const supabase = createClient();
   const {
     data: { session },

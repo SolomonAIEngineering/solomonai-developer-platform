@@ -1,4 +1,4 @@
-import { SetupMfa } from "@/components/mfa/setup-mfa";
+import { SetupMfa } from "@/components/setup-mfa";
 import config from "@/config";
 import type { Metadata } from "next";
 

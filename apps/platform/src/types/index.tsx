@@ -1,5 +1,3 @@
-import { LucideIcon } from "lucide-react";
-
 /**
  * Represents a submenu item in the navigation structure.
  * @interface Submenu

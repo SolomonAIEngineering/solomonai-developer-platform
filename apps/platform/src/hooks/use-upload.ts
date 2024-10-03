@@ -24,7 +24,11 @@ export function useUpload() {
    * @param {UploadFileParams} params - The parameters for the file upload
    * @returns {Promise<UploadFileResult>} A promise that resolves to the upload result
    */
-  const uploadFile = async ({ file, path, bucket }: UploadParams): Promise<UploadFileResult> => {
+  const uploadFile = async ({
+    file,
+    path,
+    bucket,
+  }: UploadParams): Promise<UploadFileResult> => {
     setLoading(true);
 
     const url = await upload(supabase, {
