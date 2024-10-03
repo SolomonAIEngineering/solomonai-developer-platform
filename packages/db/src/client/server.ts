@@ -83,7 +83,7 @@ export const createClient = (options?: CreateClientOptions) => {
     : {};
 
   return createServerClient<Database>(
-    process.env["EXT_PUBLIC_SUPABASE_URL"]!,
+    process.env["NEXT_PUBLIC_SUPABASE_URL"]!,
     key,
     {
       ...rest,

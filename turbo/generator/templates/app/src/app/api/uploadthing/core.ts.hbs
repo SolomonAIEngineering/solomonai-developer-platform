@@ -1,3 +1,4 @@
+"use server";
 import { getUser } from '@v1/db/cached-queries';
 import type { FileRouter } from 'uploadthing/next';
 import { createUploadthing } from 'uploadthing/next';

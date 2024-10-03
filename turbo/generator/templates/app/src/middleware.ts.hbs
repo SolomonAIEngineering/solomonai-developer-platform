@@ -1,7 +1,7 @@
 import { updateSession } from "@v1/db/middleware";
 import { createClient } from "@v1/db/server";
 import { createI18nMiddleware } from "next-international/middleware";
-import { type NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const I18nMiddleware = createI18nMiddleware({
   locales: ["en", "fr"],
@@ -35,8 +35,9 @@ export async function middleware(request: NextRequest) {
     newUrl.pathname !== "/login" &&
     !newUrl.pathname.includes("/report")
   ) {
-    const encodedSearchParams = `${newUrl.pathname.substring(1)}${newUrl.search
-      }`;
+    const encodedSearchParams = `${newUrl.pathname.substring(1)}${
+      newUrl.search
+    }`;
 
     const url = new URL("/login", request.url);
 
@@ -81,7 +82,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/((?!_next/static|api|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|monitoring|api).*)"],
 };
