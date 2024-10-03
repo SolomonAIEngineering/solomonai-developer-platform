@@ -118,9 +118,6 @@ export const createFolderSchema = z.object({
   name: z.string(),
 });
 
-export const unenrollMfaSchema = z.object({
-  factorId: z.string(),
-});
 
 export const mfaVerifySchema = z.object({
   factorId: z.string(),
@@ -375,10 +372,7 @@ export const updateInstitutionUsageSchema = z.object({
   institutionId: z.string(),
 });
 
-export const verifyOtpSchema = z.object({
-  token: z.string(),
-  email: z.string(),
-});
+
 
 export const searchSchema = z.object({
   query: z.string().min(1),

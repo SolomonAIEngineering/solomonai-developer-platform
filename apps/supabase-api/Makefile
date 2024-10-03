@@ -56,10 +56,16 @@ precondition: ## Load environment variables
 local: precondition supabase-restart supabase-migrate ## Run local development setup
 
 setup: clean-supabase
-	@echo "Starting Supabase and seeding data..."
+	@echo "Starting Supabase..."
 	bun run supabase:start
 	bun run supabase:reset
 	bun run seed:local
+	supabase status
+
+setup-no-seed: clean-supabase
+	@echo "Starting Supabase without seeding..."
+	bun run supabase:start
+	bun run supabase:reset
 	supabase status
 
 clean-supabase: ## Stop Supabase and clean volumes if running, started, or in an unhealthy state

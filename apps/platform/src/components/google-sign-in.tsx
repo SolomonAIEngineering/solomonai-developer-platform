@@ -6,7 +6,7 @@ import { Button } from "@v1/ui/button";
 import { Icons } from "@v1/ui/icons";
 import { Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import React, { useState } from "react";
 
 export function GoogleSignIn() {
   const [isLoading, setLoading] = useState(false);

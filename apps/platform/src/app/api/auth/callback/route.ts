@@ -10,6 +10,16 @@ import { NextResponse } from "next/server";
 
 export const preferredRegion = ["fra1", "sfo1", "iad1"];
 
+/**
+ * Handles the GET request for the authentication callback.
+ *
+ * This function processes the authentication callback, manages user sessions,
+ * and handles various redirect scenarios based on the authentication state
+ * and user properties.
+ *
+ * @param req - The incoming Next.js request object
+ * @returns A NextResponse object with the appropriate redirect
+ */
 export async function GET(req: NextRequest) {
   const cookieStore = cookies();
   const requestUrl = new URL(req.url);
@@ -32,6 +42,8 @@ export async function GET(req: NextRequest) {
   if (code) {
     const supabase = createClient(cookieStore as any);
     await supabase.auth.exchangeCodeForSession(code);
+
+    console.log("going to attempt to get session");
 
     const {
       data: { session },
