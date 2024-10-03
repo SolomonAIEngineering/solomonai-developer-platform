@@ -348,7 +348,7 @@ export async function getTransactionsQuery(
     } else if (column === "category") {
       query.order("category(name)", { ascending });
     } else {
-      query.order(column, { ascending });
+      query.order(column as string, { ascending });
     }
   } else {
     query
@@ -1029,9 +1029,8 @@ export async function getTrackerProjectsQuery(
   if (search?.query && search?.fuzzy) {
     query.ilike("name", `%${search.query}%`);
   }
-
   if (sort) {
-    const [column, value] = sort;
+    const { column, value } = sort;
     if (column === "time") {
       query.order("total_duration", { ascending: value === "asc" });
     } else {
