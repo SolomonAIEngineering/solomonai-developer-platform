@@ -12,6 +12,7 @@
     "./filesystem": "./src/filesystem.ts",
     "./url": "./src/url.ts",
     "./file": "./src/file.ts",
+    "./utils": "./src/utils.ts",
     ".": "./src/index.ts"
   },
   "scripts": {

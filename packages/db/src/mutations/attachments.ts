@@ -41,7 +41,7 @@ export async function createAttachments(
     throw new Error("User is not associated with a team");
   }
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("transaction_attachments")
     .insert(
       attachments.map((attachment) => ({
@@ -51,6 +51,7 @@ export async function createAttachments(
     )
     .select();
 
+  if (error) throw error;
   return data;
 }
 
@@ -62,12 +63,55 @@ export async function createAttachments(
  * @returns A Promise that resolves to the deleted attachment data, including id, transaction_id, name, and team_id
  */
 export async function deleteAttachment(supabase: Client, id: string) {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("transaction_attachments")
     .delete()
     .eq("id", id)
     .select("id, transaction_id, name, team_id")
     .single();
 
+  if (error) throw error;
+  return data;
+}
+
+/**
+ * Updates an existing attachment.
+ *
+ * @param supabase - The Supabase client instance
+ * @param id - The ID of the attachment to be updated
+ * @param updates - The attachment data to be updated
+ * @returns A Promise that resolves to the updated attachment data
+ */
+export async function updateAttachment(
+  supabase: Client,
+  id: string,
+  updates: Partial<Attachment>
+) {
+  const { data, error } = await supabase
+    .from("transaction_attachments")
+    .update(updates)
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+/**
+ * Deletes all attachments for a specific transaction.
+ *
+ * @param supabase - The Supabase client instance
+ * @param transactionId - The ID of the transaction
+ * @returns A Promise that resolves to the deleted attachment data
+ */
+export async function deleteAttachmentsForTransaction(supabase: Client, transactionId: string) {
+  const { data, error } = await supabase
+    .from("transaction_attachments")
+    .delete()
+    .eq("transaction_id", transactionId)
+    .select();
+
+  if (error) throw error;
   return data;
 }
