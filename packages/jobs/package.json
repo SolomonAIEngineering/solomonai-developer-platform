@@ -2,6 +2,7 @@
   "name": "@v1/jobs",
   "version": "0.1.1",
   "private": true,
+  "main": "index.ts",
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "lint": "biome check .",
@@ -10,7 +11,17 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@trigger.dev/sdk": "3.0.0-beta.56"
+    "@fast-csv/format": "^5.0.0",
+    "@solomon-ai/financial-engine-sdk": "^0.0.1-alpha.1",
+    "@trigger.dev/react": "^3.0.9",
+    "@trigger.dev/resend": "^3.0.9",
+    "@trigger.dev/sdk": "^3.0.9",
+    "@trigger.dev/supabase": "^3.0.9",
+    "@zip.js/zip.js": "^2.7.52",
+    "change-case": "^5.4.4",
+    "date-fns": "^4.1.0",
+    "nanoid": "^5.0.7",
+    "pdf-lib": "^1.17.1"
   },
   "author": "Yoan Yomba",
   "license": "GNU AFFERO GENERAL PUBLIC LICENSE"

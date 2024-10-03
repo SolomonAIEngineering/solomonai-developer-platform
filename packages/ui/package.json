@@ -23,6 +23,7 @@
     "./assistant/model-picker": "./src/components/assistant/model-picker.tsx",
     "./avatar": "./src/components/avatar.tsx",
     "./badge": "./src/components/badge.tsx",
+    "./background": "./src/components/background.tsx",
     "./banner": "./src/components/banner/index.tsx",
     "./banner/notification-banner": "./src/components/banner/notification-banner.tsx",
     "./banner/simple-notification-banner": "./src/components/banner/simple-notification-banner.tsx",
@@ -290,7 +291,11 @@
     "./widget/surveys-widget": "./src/components/widget/surveys-widget.tsx",
     "./wrapper/assistant-provider-wrapper": "./src/wrapper/assistant-provider-wrapper.tsx"
   },
-  "files": ["tailwind.config.ts", "postcss.config.js", "globals.css"],
+  "files": [
+    "tailwind.config.ts",
+    "postcss.config.js",
+    "globals.css"
+  ],
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "dev": "storybook dev -p 6006",
