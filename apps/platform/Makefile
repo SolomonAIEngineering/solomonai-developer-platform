@@ -13,7 +13,7 @@ start: setup start_stripe_listener start_jobs start_dev_instance
 
 setup: start_docker
 	@echo "Running setup..."
-	@cd ../../apps/api && make setup
+	@cd ../../apps/supabase-api && make setup
 
 start_docker:
 	@echo "Checking Docker status..."
