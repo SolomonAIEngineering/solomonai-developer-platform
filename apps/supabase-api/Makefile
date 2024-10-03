@@ -59,8 +59,8 @@ setup: clean-supabase
 	@echo "Starting Supabase and seeding data..."
 	bun run supabase:start
 	bun run supabase:reset
+	bun run seed:local
 	supabase status
-  # bun run seed:local
 
 clean-supabase: ## Stop Supabase and clean volumes if running, started, or in an unhealthy state
 	@echo "Checking Supabase status..."

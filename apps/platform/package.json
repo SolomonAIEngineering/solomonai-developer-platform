@@ -1,15 +1,18 @@
 {
   "name": "@apps/platform",
- "version": "0.1.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3000",
-    "build": "next build",
+    "dev": "next dev -p 3001",
+    "build": "NODE_ENV=production next build",
     "clean": "git clean -xdf .next .turbo node_modules",
     "lint": "biome lint",
     "format": "biome format --write .",
     "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "jobs": "bunx @trigger.dev/cli@latest dev -p 3001 --client-id=solomon-ai-batch-jobs-background-22Wk",
+    "stripe:login": "stripe login",
+    "stripe:listen": "stripe listen --forward-to=localhost:3001/api/webhook/stripe"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^0.0.51",
