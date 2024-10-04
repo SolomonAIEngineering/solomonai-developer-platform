@@ -3,7 +3,7 @@
 import { LogEvents } from "@v1/events/events";
 import { PlainClient } from "@team-plain/typescript-sdk";
 import { authActionClient } from "../safe-action";
-import { sendFeedbackSchema } from "../schema";
+import { sendFeedbackSchema } from "../schemaa";
 
 const client = new PlainClient({
   apiKey: process.env.PLAIN_API_KEY!,

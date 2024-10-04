@@ -2,7 +2,7 @@
 
 import { authActionClient } from "@/actions/safe-action";
 import { updateUser } from "@v1/db/mutations";
-import { updateUserSchema } from "./schema";
+import { updateUserSchema } from "../schema";
 
 export const updateUserAction = authActionClient
   .schema(updateUserSchema)

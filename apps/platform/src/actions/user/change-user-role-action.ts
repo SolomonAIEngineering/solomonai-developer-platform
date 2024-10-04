@@ -3,8 +3,8 @@
 import { LogEvents } from "@v1/events/events";
 import { updateUserTeamRole } from "@v1/db/mutations";
 import { revalidatePath as revalidatePathFunc } from "next/cache";
-import { authActionClient } from "./safe-action";
-import { changeUserRoleSchema } from "./schema";
+import { authActionClient } from "../safe-action";
+import { changeUserRoleSchema } from "../schema";
 
 export const changeUserRoleAction = authActionClient
   .schema(changeUserRoleSchema)

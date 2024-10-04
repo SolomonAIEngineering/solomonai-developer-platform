@@ -1,6 +1,6 @@
 "use client";
 
-import { updateUserAction } from "@/actions/update-user-action";
+import { updateUserAction } from "@/actions/user/update-user-action";
 import { useUpload } from "@/hooks/use-upload";
 import { Avatar, AvatarFallback, AvatarImage } from "@v1/ui/avatar";
 import { Icons } from "@v1/ui/icons";

@@ -2,8 +2,8 @@
 
 import { updateUser } from "@v1/db/mutations";
 import { revalidateTag } from "next/cache";
-import { authActionClient } from "./safe-action";
-import { updateUserSchema } from "./schema";
+import { authActionClient } from "../safe-action";
+import { updateUserSchema } from "../schema";
 
 export const updateUserAction = authActionClient
   .schema(updateUserSchema)
