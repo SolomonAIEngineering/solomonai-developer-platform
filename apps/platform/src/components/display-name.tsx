@@ -1,7 +1,7 @@
 "use client";
 
 import { type UpdateUserFormValues, updateUserSchema } from "@/actions/schema";
-import { updateUserAction } from "@/actions/update-user-action";
+import { updateUserAction } from "@/actions/user/update-user-action";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@v1/ui/button";
 import {

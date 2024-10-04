@@ -1,7 +1,7 @@
 import { ChartMore } from "@/components/charts/chart-more";
 import { ChartPeriod } from "@/components/charts/chart-period";
 import { ChartType } from "@/components/charts/chart-type";
-import { CookieKeys as Cookies } from "@v1/utils/cookies";
+import { Cookies } from "@/utils/constants";
 import { cn } from "@v1/ui/cn";
 import { cookies } from "next/headers";
 import { ChartFiltersServer } from "./chart-filters.server";

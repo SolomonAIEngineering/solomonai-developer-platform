@@ -1,6 +1,6 @@
 "use server";
 
-import { CookieKeys as Cookies } from "@v1/utils/cookies";
+import { Cookies } from "@/utils/constants";
 import { addYears } from "date-fns";
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";

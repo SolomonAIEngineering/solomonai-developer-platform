@@ -1,6 +1,6 @@
 "use server";
 
-import { CookieKeys as Cookies } from "@v1/utils/cookies";
+import { Cookies } from "@/utils/constants";
 import { cookies } from "next/headers";
 import { authActionClient } from "./safe-action";
 import { requestAccessSchema } from "./schema";
