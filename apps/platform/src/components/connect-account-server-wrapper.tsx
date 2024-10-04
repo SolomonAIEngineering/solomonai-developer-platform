@@ -1,6 +1,6 @@
 "use server";
 
-import { CookieKeys as Cookies } from "@v1/utils/cookies";
+import { Cookies } from "@/utils/constants";
 import { getTeamBankAccounts, getUser } from "@v1/db/cached-queries";
 import { cookies } from "next/headers";
 import { OverviewModal } from "./modals/overview-modal";

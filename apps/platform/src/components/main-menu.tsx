@@ -2,7 +2,8 @@
 
 import { updateMenuAction } from "@/actions/update-menu-action";
 import { useMenuStore } from "@/store/menu";
-import { featureFlags } from "@internal/env/dashboard";
+import { useClickAway } from "@uidotdev/usehooks";
+import { featureFlags } from "@v1/env/platform";
 import { Button } from "@v1/ui/button";
 import { cn } from "@v1/ui/cn";
 import { Icons } from "@v1/ui/icons";
@@ -12,7 +13,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@v1/ui/tooltip";
-import { useClickAway } from "@uidotdev/usehooks";
 import { Reorder, motion, useMotionValue } from "framer-motion";
 import { useAction } from "next-safe-action/hooks";
 import Link from "next/link";

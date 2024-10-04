@@ -1,17 +1,17 @@
-import { logger } from "@v1/logger";
 import { createClient } from "@v1/db/server";
+import { logger } from "@v1/logger";
+import { cookies } from "next/headers";
 import {
-  User,
-  Post,
   Customer,
-  Subscription,
+  Post,
   Price,
   Product,
-  UserWithPosts,
-  SubscriptionWithUserAndPrice,
   ProductWithPrices,
+  Subscription,
+  SubscriptionWithUserAndPrice,
+  User,
+  UserWithPosts,
 } from "../types/db-types";
-import { cookies } from "next/headers";
 const supabase = createClient();
 /**
  * Retrieves the currently authenticated user.

@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteUserAction } from "@/actions/delete-user-action";
+import { deleteUserAction } from "@/actions/user/delete-user-action";
 import config from "@/config";
 import {
   AlertDialog,

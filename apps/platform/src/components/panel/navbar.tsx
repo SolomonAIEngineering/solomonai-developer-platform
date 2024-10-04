@@ -1,8 +1,8 @@
 "use server";
 
 import { BrowserNavigation } from "@/desktop/components/browser-navigation";
-import { Skeleton } from "@v1/ui/skeleton";
 import { isDesktopApp } from "@todesktop/client-core/platform/todesktop";
+import { Skeleton } from "@v1/ui/skeleton";
 import React, { Suspense } from "react";
 
 import { AssistantButton } from "../assistant/button";
@@ -84,7 +84,6 @@ const NavbarRight: React.FC = () => (
     <Suspense>
       <ConnectionStatus />
     </Suspense>
-    <NotificationCenter />
     <Suspense fallback={<Skeleton className="h-8 w-8 rounded-full" />}>
       <UserMenu onlySignOut={false} />
     </Suspense>
