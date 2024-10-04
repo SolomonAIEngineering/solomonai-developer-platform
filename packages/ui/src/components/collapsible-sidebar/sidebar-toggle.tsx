@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { ChevronLeft } from "lucide-react";
 
-import { cn } from "@/utils/cn";
+import { cn } from "../../utils/cn";
 
 import { Button } from "../button";
 
