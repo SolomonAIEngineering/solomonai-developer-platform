@@ -43,8 +43,8 @@ port = 54323
 
 [auth.external.google]
 enabled = true
-client_id = "457682587397-2fsrhkns1fo1guleo6u4vtk18kjfe3np.apps.googleusercontent.com"
-secret = "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"
+client_id = ""
+secret = ""
 redirect_uri = "http://localhost:54321/auth/v1/callback"
 
 
