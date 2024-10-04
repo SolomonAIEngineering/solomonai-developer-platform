@@ -33,15 +33,15 @@ export default async function Layout({
   // get the current users subscriptions from the database and ensure that the cache is invalidated
   // this is to ensure that the user's subscription is always up to date
   const invalidateCache = true;
-  // const currentUserSubscription = await getUserSubscriptions(invalidateCache);
+  const currentUserSubscription = await getUserSubscriptions(invalidateCache);
 
-  // // if there are no subscriptions, redirect to payment page
-  // if (
-  //   !currentUserSubscription?.data?.length ||
-  //   currentUserSubscription?.data[0]?.status === null
-  // ) {
-  //   redirect("/payment");
-  // }
+  // if there are no subscriptions, redirect to payment page
+  if (
+    !currentUserSubscription?.data?.length ||
+    currentUserSubscription?.data[0]?.status === null
+  ) {
+    redirect("/payment");
+  }
 
   // if the user does not have a team, redirect to the teams page
   if (!user?.data?.team) {
