@@ -5,8 +5,8 @@ import { NotificationCenter } from "@/components/notification-center";
 import { TrackerControl } from "@/components/tracker-contol";
 import { UserMenu } from "@/components/user-menu";
 import { BrowserNavigation } from "@/desktop/components/browser-navigation";
-import { Skeleton } from "@v1/ui/skeleton";
 import { isDesktopApp } from "@todesktop/client-core/platform/todesktop";
+import { Skeleton } from "@v1/ui/skeleton";
 import { Suspense } from "react";
 import { DesktopTrafficLight } from "./desktop-traffic-light";
 import { FeedbackForm } from "./feedback-form";
@@ -33,10 +33,8 @@ export function Header() {
           <ConnectionStatus />
         </Suspense>
 
-        <NotificationCenter />
-
         <Suspense fallback={<Skeleton className="h-8 w-8 rounded-full" />}>
-          <UserMenu />
+          <UserMenu onlySignOut={false} />
         </Suspense>
       </div>
     </header>

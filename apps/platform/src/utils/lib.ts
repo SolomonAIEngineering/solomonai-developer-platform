@@ -1,25 +1,18 @@
 import { Group } from "@/types/index";
-import { BriefcaseIcon, WalletIcon } from "@heroicons/react/24/outline";
 import {
+  BarChart,
+  CreditCard,
   Database,
-  DollarSign,
-  FileAxis3D,
   FileText,
-  InboxIcon,
+  Key,
   LayoutGrid,
-  PieChart,
+  Puzzle,
   Settings,
-  TableCellsMergeIcon,
-  Timer,
-  TrendingDown,
-  TrendingUp,
+  Users,
+  Webhook,
 } from "lucide-react";
 
-/**
- * Configuration object for the application's menu structure.
- * It defines the hierarchy of menu items, including groups, menus, and submenus.
- */
-const menuConfig: Group[] = [
+export const menuConfig: Group[] = [
   {
     groupLabel: "Dashboard",
     menus: [
@@ -33,65 +26,57 @@ const menuConfig: Group[] = [
     ],
   },
   {
-    groupLabel: "Management",
+    groupLabel: "Developer Tools",
     menus: [
       {
-        href: "/inbox",
-        label: "Inbox",
-        icon: InboxIcon,
+        href: "/api-keys",
+        label: "API Key Management",
+        icon: Key,
         submenus: [],
         active: false,
       },
       {
-        href: "/tracker",
-        label: "Time Tracker",
-        icon: Timer,
+        href: "/webhooks",
+        label: "Webhooks",
+        icon: Webhook,
         submenus: [],
         active: false,
       },
       {
-        href: "/vault",
-        label: "Secure Storage",
-        icon: Database,
+        href: "/integrations",
+        label: "Integrations",
+        icon: Puzzle,
         submenus: [],
         active: false,
       },
     ],
   },
   {
-    groupLabel: "Finances",
+    groupLabel: "Account",
     menus: [
       {
-        href: "/bank-accounts",
-        label: "Bank Accounts",
-        icon: DollarSign,
-        submenus: [
-          {
-            href: "/bank-accounts/deposit",
-            label: "Deposit",
-            active: false,
-            icon: WalletIcon,
-          },
-          {
-            href: "/bank-accounts/credit",
-            label: "Credit",
-            active: false,
-            icon: BriefcaseIcon,
-          },
-        ],
-        active: false,
-      },
-      {
-        href: "/transactions",
-        label: "Transactions",
-        icon: TableCellsMergeIcon,
+        href: "/account-portal",
+        label: "Account Portal",
+        icon: Users,
         submenus: [],
         active: false,
       },
       {
-        href: "/invoices",
-        label: "Invoice",
-        icon: FileAxis3D,
+        href: "/plan-billing",
+        label: "Plan & Billing",
+        icon: CreditCard,
+        submenus: [],
+        active: false,
+      },
+    ],
+  },
+  {
+    groupLabel: "Data Management",
+    menus: [
+      {
+        href: "/data-storage",
+        label: "Data Storage",
+        icon: Database,
         submenus: [],
         active: false,
       },
@@ -101,94 +86,20 @@ const menuConfig: Group[] = [
     groupLabel: "Analytics",
     menus: [
       {
-        href: "/analytics/income",
-        label: "Income",
-        icon: TrendingUp,
-        submenus: [
-          {
-            href: "/analytics/income/overview",
-            label: "Overview",
-            active: false,
-          },
-          {
-            href: "/analytics/income/details",
-            label: "Details",
-            active: false,
-          },
-          {
-            href: "/analytics/income/categories",
-            label: "Categories",
-            active: false,
-          },
-          {
-            href: "/analytics/income/sources",
-            label: "Sources",
-            active: false,
-          },
-        ],
-        active: false,
-      },
-      {
-        href: "/analytics/expense",
-        label: "Expense",
-        icon: TrendingDown,
-        submenus: [
-          {
-            href: "/analytics/expense/overview",
-            label: "Overview",
-            active: false,
-          },
-          {
-            href: "/analytics/expense/details",
-            label: "Details",
-            active: false,
-          },
-          {
-            href: "/analytics/expense/categories",
-            label: "Categories",
-            active: false,
-          },
-        ],
-        active: false,
-      },
-      {
-        href: "/analytics/revenue",
-        label: "Revenue",
-        icon: DollarSign,
-        submenus: [
-          {
-            href: "/analytics/revenue/overview",
-            label: "Overview",
-            active: false,
-          },
-          {
-            href: "/analytics/revenue/details",
-            label: "Details",
-            active: false,
-          },
-          {
-            href: "/analytics/revenue/categories",
-            label: "Categories",
-            active: false,
-          },
-        ],
-        active: false,
-      },
-      {
-        href: "/analytics/categories",
-        label: "Categories",
-        icon: PieChart,
+        href: "/analytics",
+        label: "Usage Analytics",
+        icon: BarChart,
         submenus: [],
         active: false,
       },
     ],
   },
   {
-    groupLabel: "Reports",
+    groupLabel: "Documentation",
     menus: [
       {
-        href: "/reports",
-        label: "Generate Reports",
+        href: "/docs",
+        label: "API Documentation",
         icon: FileText,
         submenus: [],
         active: false,
@@ -203,14 +114,9 @@ const menuConfig: Group[] = [
         label: "Settings",
         icon: Settings,
         submenus: [
-          { href: "/settings/accounts", label: "Accounts", active: false },
-          { href: "/settings/members", label: "Team", active: false },
-          { href: "/settings/categories", label: "Categories", active: false },
-          {
-            href: "/settings/notifications",
-            label: "Notifications",
-            active: false,
-          },
+          { href: "/settings/profile", label: "Profile", active: false },
+          { href: "/settings/security", label: "Security", active: false },
+          { href: "/settings/notifications", label: "Notifications", active: false },
         ],
         active: false,
       },
@@ -218,14 +124,6 @@ const menuConfig: Group[] = [
   },
 ];
 
-/**
- * Generates an updated menu list based on the current pathname.
- * This function sets the 'active' state for menus and submenus that match the current path.
- *
- * @param {string} pathname - The current pathname of the application.
- * @param {Group[]} [config=menuConfig] - The menu configuration to use. Defaults to the predefined menuConfig.
- * @returns {Group[]} An updated copy of the menu configuration with active states set.
- */
 export function getMenuList(
   pathname: string,
   config: Group[] = menuConfig,

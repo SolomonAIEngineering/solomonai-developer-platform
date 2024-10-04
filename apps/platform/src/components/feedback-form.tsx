@@ -1,6 +1,6 @@
 "use client";
 
-import { sendFeebackAction } from "@/actions/send-feedback-action";
+import { sendFeebackAction } from "@/actions/feedback/send-feedback-action";
 import { Button } from "@v1/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@v1/ui/popover";
 import { Textarea } from "@v1/ui/textarea";

@@ -1,9 +1,9 @@
 "use server";
 
-import { LogEvents } from "@v1/events/events";
 import { PlainClient } from "@team-plain/typescript-sdk";
+import { LogEvents } from "@v1/events/events";
 import { authActionClient } from "../safe-action";
-import { sendFeedbackSchema } from "../schemaa";
+import { sendFeedbackSchema } from "../schema";
 
 const client = new PlainClient({
   apiKey: process.env.PLAIN_API_KEY!,

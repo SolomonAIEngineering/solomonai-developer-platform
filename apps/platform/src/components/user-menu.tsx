@@ -1,6 +1,6 @@
-import { createStripePortal } from "@v1/stripe-lib";
 import { getUser } from "@v1/db/cached-queries";
 import { createClient } from "@v1/db/server";
+import { createStripePortal } from "@v1/stripe-lib";
 import { Avatar, AvatarFallback } from "@v1/ui/avatar";
 import {
   DropdownMenu,
@@ -14,6 +14,7 @@ import {
 } from "@v1/ui/dropdown-menu";
 import Image from "next/image";
 import Link from "next/link";
+import React from "react";
 import { SignOut } from "./sign-out";
 import { ThemeSwitch } from "./theme-switch";
 /**
@@ -114,7 +115,7 @@ export async function UserMenu({
           </>
         )}
 
-        <SignOut />
+        <SignOut mode={"dropdown"} />
       </DropdownMenuContent>
     </DropdownMenu>
   );

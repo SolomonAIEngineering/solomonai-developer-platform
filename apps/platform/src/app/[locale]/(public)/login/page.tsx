@@ -116,46 +116,55 @@ export default async function Page(params: {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center w-screen h-screen">
-      <div className="md:py-[3%]">
-        <AnimatedText text="Developer Platform" className="md:text-6xl font-bold leading-8" />
-      </div>
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-8">
+      <div className="w-full max-w-6xl">
 
-      <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-between gap-8 md:gap-16">
-        <div className="flex justify-center md:justify-end">
-            <Image src="/logo.png" alt="logo" width={350} height={350} />
+        <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-between gap-8 md:gap-16">
+          <div className="flex justify-center md:justify-end order-2 md:order-1">
+            <Image
+              src="https://cdn.solomon-ai-platform.com/logo.png"
+              alt="logo"
+              width={600}
+              height={600}
+              className="rounded-3xl w-full max-w-md md:max-w-xl h-auto"
+            />
+          </div>
+          <div className="text-center flex flex-col">
+            <AnimatedText text="Developer Platform" className="text-3xl md:text-6xl font-bold leading-tight md:pb-[10%]" />
+            <Card className="flex flex-col items-center p-6 md:p-8 pointer-events-auto w-full max-w-md mx-auto order-1 md:order-2">
+              <div className="w-full">{preferredSignInOption}</div>
+              <Accordion
+                type="single"
+                collapsible
+                className="mt-6 border-t-[1px] pt-2 w-full"
+              >
+                <AccordionItem value="item-1" className="border-0">
+                  <AccordionTrigger className="flex justify-center space-x-2 text-sm">
+                    <span>More options</span>
+                  </AccordionTrigger>
+                  <AccordionContent className="mt-4">
+                    <div className="flex flex-col space-y-4">
+                      {moreSignInOptions}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+              <p className="text-xs text-[#878787] max-w-md mt-4 text-center">
+                By clicking continue, you acknowledge that you have read and agree
+                to {config.name}'s{" "}
+                <a href={`${config.webUrl}/terms`} className="underline">
+                  Terms of Service
+                </a>{" "}
+                and{" "}
+                <a href={`${config.webUrl}/policy`} className="underline">
+                  Privacy Policy
+                </a>
+                .
+              </p>
+            </Card>
+          </div>
+
         </div>
-        <Card className="flex flex-col items-center md:p-[8%] p-[1.5%] pointer-events-auto w-full max-w-md">
-          <div className="w-fit">{preferredSignInOption}</div>
-          <Accordion
-            type="single"
-            collapsible
-            className="mt-6 border-t-[1px] pt-2 w-full"
-          >
-            <AccordionItem value="item-1" className="border-0">
-              <AccordionTrigger className="flex justify-center space-x-2 text-sm">
-                <span>More options</span>
-              </AccordionTrigger>
-              <AccordionContent className="mt-4">
-                <div className="flex flex-col space-y-4">
-                  {moreSignInOptions}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-          <p className="text-xs text-[#878787] max-w-md mt-4">
-            By clicking continue, you acknowledge that you have read and agree
-            to {config.name}'s{" "}
-            <a href={`${config.webUrl}/terms`} className="underline">
-              Terms of Service
-            </a>{" "}
-            and{" "}
-            <a href={`${config.webUrl}/policy`} className="underline">
-              Privacy Policy
-            </a>
-            .
-          </p>
-        </Card>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@v1/ui/cn";
 import { Badge } from "@v1/ui/badge";
 import { buttonVariants } from "@v1/ui/button";
 import { Dock, DockIcon } from "@v1/ui/magicui/dock";

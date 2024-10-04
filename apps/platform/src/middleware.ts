@@ -39,13 +39,13 @@ export async function middleware(request: NextRequest) {
       newUrl.search
     }`;
 
-    const url = new URL("/login", request.url);
+    const loginUrl = new URL(`/${pathnameLocale}/login`, request.url);
 
     if (encodedSearchParams) {
-      url.searchParams.append("return_to", encodedSearchParams);
+      loginUrl.searchParams.append("return_to", encodedSearchParams);
     }
 
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(loginUrl);
   }
 
   // If authenticated but no full_name redirect to user setup page
