@@ -82,7 +82,10 @@ export async function POST(req: Request) {
       const userId = found?.at(0)?.id;
 
       if (!userId) {
-        return null;
+        return NextResponse.json(
+          { message: "User ID not found" },
+          { status: 400 },
+        );
       }
 
       await loops.updateContact(email, {
@@ -101,8 +104,11 @@ export async function POST(req: Request) {
     }
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
-
     logger(message);
+    return NextResponse.json(
+      { message: "Error processing contact" },
+      { status: 500 },
+    );
   }
 
   return NextResponse.json({ success: true });

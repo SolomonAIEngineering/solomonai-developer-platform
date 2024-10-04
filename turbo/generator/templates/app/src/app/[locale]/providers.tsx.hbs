@@ -4,9 +4,6 @@ import { PostHogReactProvider } from '@/lib/posthog/react';
 import { I18nProviderClient } from "@/locales/client";
 import { isDesktopApp } from "@todesktop/client-core/platform/todesktop";
 import { TriggerProvider } from "@trigger.dev/react";
-import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin';
-import { extractRouterConfig } from 'uploadthing/server';
-import { fileRouter } from '../api/uploadthing/core';
 
 import dynamic from 'next/dynamic';
 import type { ReactNode } from "react";
@@ -34,7 +31,6 @@ export function Providers({ locale, children }: ProviderProps) {
         apiUrl={process.env.NEXT_PUBLIC_TRIGGER_API_URL}
       >
         <PostHogReactProvider>
-        <NextSSRPlugin routerConfig={extractRouterConfig(fileRouter)} />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
