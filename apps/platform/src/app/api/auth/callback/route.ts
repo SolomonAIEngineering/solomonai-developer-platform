@@ -68,7 +68,7 @@ export async function handleTeamCallback(req: NextRequest): Promise<NextResponse
   const client = requestUrl.searchParams.get("client");
   const returnTo = requestUrl.searchParams.get("return_to");
   const provider = requestUrl.searchParams.get("provider");
-  const mfaSetupVisited = cookieStore.has(Cookies.MFA_SETUP_VISITED);
+  const mfaSetupVisited = cookieStore.has(Cookies.MfaSetupVisited);
 
   // Handle desktop client redirect
   if (client === "desktop") {
@@ -77,7 +77,7 @@ export async function handleTeamCallback(req: NextRequest): Promise<NextResponse
 
   // Set preferred sign-in provider cookie if provided
   if (provider) {
-    cookieStore.set(Cookies.PREFERRED_SIGN_IN_PROVIDER, provider, {
+    cookieStore.set(Cookies.PreferredSignInProvider, provider, {
       expires: addYears(new Date(), 1),
     });
   }
@@ -120,7 +120,7 @@ export async function handleTeamCallback(req: NextRequest): Promise<NextResponse
 
   // Handle MFA setup if not visited before
   if (!mfaSetupVisited) {
-    cookieStore.set(Cookies.MFA_SETUP_VISITED, "true", {
+    cookieStore.set(Cookies.MfaSetupVisited, "true", {
       expires: addYears(new Date(), 1),
     });
 
