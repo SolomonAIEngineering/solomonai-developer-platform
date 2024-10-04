@@ -1,6 +1,6 @@
 "use server";
 
-import { Cookies } from "@/utils/constants";
+import { CookieKeys as Cookies } from "@v1/utils/cookies";
 import { addYears } from "date-fns";
 import { cookies } from "next/headers";
 import { actionClient } from "./safe-action";

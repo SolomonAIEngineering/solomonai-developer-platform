@@ -1,7 +1,7 @@
 import { columns } from "@/components/tables/transactions/columns";
 import { DataTable } from "@/components/tables/transactions/data-table";
 import { NoResults } from "@/components/tables/transactions/empty-states";
-import { Cookies } from "@/utils/constants";
+import { CookieKeys as Cookies } from "@v1/utils/cookies";
 import { getRecentTransactions } from "@v1/db/cached-queries";
 import {
   GetRecentTransactionsParams,

@@ -1,6 +1,6 @@
 import { ErrorFallback } from "@/components/error-fallback";
 import { InboxListSkeleton } from "@/components/inbox-list-skeleton";
-import { Cookies } from "@/utils/constants";
+import { CookieKeys as Cookies } from "@v1/utils/cookies";
 import { Card } from "@v1/ui/card";
 import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 import { cookies } from "next/headers";

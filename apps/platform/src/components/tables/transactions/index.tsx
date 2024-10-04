@@ -1,6 +1,6 @@
 import { TransactionAnalytics } from "@/components/bank-account/transaction-analytics";
 import { DataTable } from "@/components/tables/transactions/data-table";
-import { Cookies } from "@/utils/constants";
+import { CookieKeys as Cookies } from "@v1/utils/cookies";
 import { getTransactions } from "@v1/db/cached-queries";
 import { cookies } from "next/headers";
 import { columns } from "./columns";

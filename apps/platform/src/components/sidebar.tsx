@@ -1,4 +1,4 @@
-import { Cookies } from "@/utils/constants";
+import { CookieKeys as Cookies } from "@v1/utils/cookies";
 import { Icons } from "@v1/ui/icons";
 import { cookies } from "next/headers";
 import Link from "next/link";
