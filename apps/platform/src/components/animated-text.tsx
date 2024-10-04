@@ -10,7 +10,7 @@ interface AnimatedTextProps {
   className?: string;
 }
 
-export function AnimatedText({ text,className }: AnimatedTextProps) {
+export function AnimatedText({ text, className }: AnimatedTextProps) {
   const [animatedText, setAnimatedText] = useState("");
 
   const getRandomChar = useCallback(
@@ -56,5 +56,7 @@ export function AnimatedText({ text,className }: AnimatedTextProps) {
     animateText();
   }, [text, animateText]);
 
-  return <div className={cn("relative inline-block", className)}>{animatedText}</div>;
+  return (
+    <div className={cn("relative inline-block", className)}>{animatedText}</div>
+  );
 }

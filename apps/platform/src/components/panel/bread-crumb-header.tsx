@@ -10,6 +10,7 @@ import {
 } from "@v1/ui/breadcrumb";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import React from "react";
 
 /**
  * Capitalizes the first letter of a string and replaces hyphens with spaces.

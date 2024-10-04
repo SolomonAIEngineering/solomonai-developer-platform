@@ -1,6 +1,6 @@
 "use client";
 
-import { mfaVerifyAction } from "@/actions/mfa-verify-action";
+import { mfaVerifyAction } from "@/actions/sso-mfa/mfa-verify-action";
 import { createClient } from "@v1/db/client";
 import { Button } from "@v1/ui/button";
 import { Dialog, DialogContent } from "@v1/ui/dialog";

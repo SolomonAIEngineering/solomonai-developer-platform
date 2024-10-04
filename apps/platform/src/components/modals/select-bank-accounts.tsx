@@ -8,7 +8,7 @@ import { useConnectParams } from "@/hooks/use-connect-params";
 import { useI18n } from "@/locales/client";
 import { getInitials } from "@/utils/format";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { Accounts } from "@midday-ai/engine/resources/accounts.mjs";
+import type { Accounts } from "@v1-ai/engine/resources/accounts.mjs";
 import { Avatar, AvatarFallback } from "@v1/ui/avatar";
 import { Button } from "@v1/ui/button";
 import {

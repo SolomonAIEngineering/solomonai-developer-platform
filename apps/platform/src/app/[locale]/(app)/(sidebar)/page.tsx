@@ -1,3 +1,5 @@
+import { ContentLayout } from "@/components/panel/content-layout";
+import { SecondaryMenu } from "@/components/secondary-menu";
 import { SignOut } from "@/components/sign-out";
 import { getI18n } from "@/locales/server";
 import { getUser } from "@v1/db/cached-queries";
@@ -11,15 +13,23 @@ export default async function Page() {
   const t = await getI18n();
 
   return (
-    <div className="h-full w-full flex flex-col items-center justify-center">
-      <div className="flex flex-col items-center justify-center gap-4">
-        <p>{t("welcome", { name: user?.data?.email })}</p>
+    <ContentLayout title="Account">
+      <div className="max-w-[800px] md:p-[2%]">
+        <SecondaryMenu items={[{ path: "/account", label: "Account" }]} />
 
-        {/* Added center element */}
-        <div className="text-2xl font-bold">Center</div>
+        <main className="mt-8">
+          <div className="space-y-8 max-w-3xl mx-auto">
+            <div className="flex flex-col items-center justify-center gap-4">
+              <p>{t("welcome", { name: user?.data?.email })}</p>
 
-        <SignOut mode="default"/>
+              {/* Added center element */}
+              <div className="text-2xl font-bold">Center</div>
+
+              <SignOut mode="default" />
+            </div>
+          </div>
+        </main>
       </div>
-    </div>
+    </ContentLayout>
   );
 }

@@ -5,7 +5,7 @@ import config from "@/config";
 import { openai } from "@ai-sdk/openai";
 import { Ratelimit } from "@upstash/ratelimit";
 import { getUser } from "@v1/db/cached-queries";
-import { client as RedisClient } from "@v1/kv";
+import { client as RedisClient } from "@v1/kv/client";
 import {
   createAI,
   createStreamableValue,

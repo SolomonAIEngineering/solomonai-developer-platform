@@ -1,6 +1,6 @@
 "use client";
 
-import { unenrollMfaAction } from "@/actions/unenroll-mfa-action";
+import { unenrollMfaAction } from "@/actions/sso-mfa/unenroll-mfa-action";
 import { Button } from "@v1/ui/button";
 import { useToast } from "@v1/ui/use-toast";
 import { useAction } from "next-safe-action/hooks";

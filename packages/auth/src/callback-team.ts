@@ -28,7 +28,9 @@ export const preferredRegion = ["fra1", "sfo1", "iad1"];
  * // when a GET request is made to the callback URL.
  * export const GET = callbackTeamHandler;
  */
-export async function handleTeamCallback(req: NextRequest): Promise<NextResponse> {
+export async function handleTeamCallback(
+  req: NextRequest,
+): Promise<NextResponse> {
   const cookieStore = cookies();
   const requestUrl = new URL(req.url);
   const code = requestUrl.searchParams.get("code");

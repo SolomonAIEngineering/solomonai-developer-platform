@@ -15,7 +15,6 @@ export const metadata: Metadata = {
   title: `Payment | ${config.company}`,
 };
 
-
 /**
  * Renders the payment page component.
  *

@@ -1,6 +1,6 @@
 "use client";
 
-import { updateUserAction } from "@/actions/update-user-action";
+import { updateUserAction } from "@/actions/user/update-user-action";
 import {
   Card,
   CardContent,
