@@ -2,7 +2,7 @@
 
 import { authActionClient } from "@/actions/safe-action";
 import { inboxOrder } from "@/actions/schema";
-import { Cookies } from "@/utils/constants";
+import { CookieKeys as Cookies } from "@v1/utils/cookies";
 import { addYears } from "date-fns";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";

@@ -6,7 +6,7 @@ import { updateColumnVisibilityAction } from "@/actions/update-column-visibility
 import { updateTransactionAction } from "@/actions/update-transaction-action";
 import { TransactionSheet } from "@/components/sheets/transaction-sheet";
 import { useTransactionsStore } from "@/store/transactions";
-import { Cookies } from "@/utils/constants";
+import { CookieKeys as Cookies } from "@v1/utils/cookies";
 import { Button } from "@v1/ui/button";
 import { cn } from "@v1/ui/cn";
 import { Spinner } from "@v1/ui/spinner";
