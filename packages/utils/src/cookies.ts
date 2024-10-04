@@ -3,18 +3,18 @@
  * Each key is a constant representing a specific cookie's name.
  */
 export const CookieKeys = {
-  PREFERRED_SIGN_IN_PROVIDER: 'preferred-signin-provider',
-  SPENDING_PERIOD: 'spending-period',
-  CHART_TYPE: 'chart-type',
-  TRANSACTIONS_PERIOD: 'transactions-period',
-  TRANSACTIONS_COLUMNS: 'transactions-columns',
-  MFA_SETUP_VISITED: 'mfa-setup-visited',
-  MENU_CONFIG: 'menu-config-v2',
-  INBOX_FILTER: 'inbox-filter-v2',
-  TRACKING_CONSENT: 'tracking-consent',
-  INBOX_ORDER: 'inbox-order',
-  HIDE_CONNECT_FLOW: 'hide-connect-flow',
-  REQUEST_ACCESS: 'request-access',
+  PREFERRED_SIGN_IN_PROVIDER: "preferred-signin-provider",
+  SPENDING_PERIOD: "spending-period",
+  CHART_TYPE: "chart-type",
+  TRANSACTIONS_PERIOD: "transactions-period",
+  TRANSACTIONS_COLUMNS: "transactions-columns",
+  MFA_SETUP_VISITED: "mfa-setup-visited",
+  MENU_CONFIG: "menu-config-v2",
+  INBOX_FILTER: "inbox-filter-v2",
+  TRACKING_CONSENT: "tracking-consent",
+  INBOX_ORDER: "inbox-order",
+  HIDE_CONNECT_FLOW: "hide-connect-flow",
+  REQUEST_ACCESS: "request-access",
 } as const;
 
 /**

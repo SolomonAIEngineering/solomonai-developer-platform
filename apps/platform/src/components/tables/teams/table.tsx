@@ -1,11 +1,17 @@
 "use client";
 
-import { acceptInviteAction } from "@/actions/accept-invite-action";
-import { changeTeamAction } from "@/actions/change-team-action";
-import { declineInviteAction } from "@/actions/decline-invite-action";
-import { leaveTeamAction } from "@/actions/leave-team-action";
+import { acceptInviteAction } from "@/actions/invite/accept-invite-action";
+import { declineInviteAction } from "@/actions/invite/decline-invite-action";
+import { changeTeamAction } from "@/actions/team/change-team-action";
+import { leaveTeamAction } from "@/actions/team/leave-team-action";
 import { CreateTeamModal } from "@/components/modals/create-team-modal";
 import { useI18n } from "@/locales/client";
+import {
+  type ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,14 +37,7 @@ import { Input } from "@v1/ui/input";
 import { Skeleton } from "@v1/ui/skeleton";
 import { Table, TableBody, TableCell, TableRow } from "@v1/ui/table";
 import { useToast } from "@v1/ui/use-toast";
-import {
-  type ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
-import { Loader2 } from "lucide-react";
+import { Loader2, MoreHorizontal } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import * as React from "react";
 

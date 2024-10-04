@@ -45,9 +45,7 @@
     "type-check": "tsc  --noemit"
   },
   "lint-staged": {
-    "**/*.{md,mdx}": [
-      "bun run lint:md"
-    ]
+    "**/*.{md,mdx}": ["bun run lint:md"]
   },
   "config": {
     "commitizen": {

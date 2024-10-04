@@ -1,4 +1,4 @@
-import { createTeamAction } from "@/actions/create-team-action";
+import { createTeamAction } from "@/actions/team/create-team-action";
 import { createTeamSchema } from "@/actions/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@v1/ui/button";

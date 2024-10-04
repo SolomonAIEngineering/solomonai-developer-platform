@@ -1,7 +1,7 @@
 "use server";
 
-import { client as RedisClient } from "@v1/kv";
 import { getSession, getUser } from "@v1/db/cached-queries";
+import { client as RedisClient } from "@v1/kv/client";
 import type { Chat, SettingsResponse } from "./types";
 
 export async function getAssistantSettings(): Promise<SettingsResponse> {

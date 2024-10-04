@@ -1,3 +1,4 @@
+import { AI } from "@/actions/ai/chat";
 import AccessibilityWidget from "@/components/accessibility-helper-widget";
 import { ProTierDock } from "@/components/dock/dock";
 import { Header } from "@/components/header";
@@ -5,6 +6,7 @@ import AnalyticsLayout from "@/components/panel/admin-panel-layout";
 import { getUser, getUserSubscriptions } from "@v1/db/cached-queries";
 import { setupAnalytics } from "@v1/events/server";
 import { getCountryCode } from "@v1/location";
+import { nanoid } from "ai";
 import { redirect } from "next/navigation";
 
 export default async function Layout({
@@ -12,7 +14,6 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
-
   var user: any = null;
   try {
     user = await getUser();
@@ -51,13 +52,12 @@ export default async function Layout({
     await setupAnalytics({ userId: user.data.id });
   }
 
-
   return (
-    <div className="h-screen w-screen overflow-hidden">
-      <AnalyticsLayout>
-
-        {/** Place Sidebar Here */}
-        {/* <div className="mx-4 md:ml-[95px] md:mr-10 pb-8">
+    <AI initialAIState={{ user: user.data, messages: [], chatId: nanoid() }}>
+      <div className="h-screen w-screen overflow-hidden">
+        <AnalyticsLayout>
+          {/** Place Sidebar Here */}
+          {/* <div className="mx-4 md:ml-[95px] md:mr-10 pb-8">
           <Header />
           {children}
           <AccessibilityWidget
@@ -67,22 +67,24 @@ export default async function Layout({
             profilePicture={user.data.avatar_url as string}
           />
         </div> */}
-        <div className="mx-4 pb-8 w-screen h-screen overflow-y-auto">
-          {/* <Header /> */}
-          {children}
+          <div className="mx-4 pb-8 w-screen h-screen overflow-y-auto">
+            <div className="md:ml-[35px] border-8 border-black rounded-lg md:mt-[1%]">
+              {children}
 
-          {/** Dock is placed here to facilitate quick access for the platform */}
-        </div>
+              {/** Dock is placed here to facilitate quick access for the platform */}
+            </div>
+          </div>
 
-        {/* This is used to make the header draggable on macOS */}
-        <div className="hidden todesktop:block todesktop:[-webkit-app-region:drag] fixed top-0 w-full h-4 pointer-events-none" />
-      </AnalyticsLayout>
-      {/* <AccessibilityWidget
+          {/* This is used to make the header draggable on macOS */}
+          <div className="hidden todesktop:block todesktop:[-webkit-app-region:drag] fixed top-0 w-full h-4 pointer-events-none" />
+        </AnalyticsLayout>
+        {/* <AccessibilityWidget
         email={user.data.email as string}
         name={user.data.full_name as string}
         id={user.data.id as string}
         profilePicture={user.data.avatar_url as string}
       /> */}
-    </div>
+      </div>
+    </AI>
   );
 }

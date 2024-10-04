@@ -41,9 +41,9 @@ export const Navbar: React.FC<NavbarProps> = ({ title }) => {
           <MobileMenu />
           {isDesktopApp() && <DesktopTrafficLight />}
           {isDesktopApp() && <BrowserNavigation />}
-          <div className="flex-1">
+          {/* <div className="flex-1">
             <AssistantButton />
-          </div>
+          </div> */}
         </div>
         <NavbarRight />
       </div>

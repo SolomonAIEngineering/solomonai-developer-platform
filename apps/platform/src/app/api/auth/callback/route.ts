@@ -61,7 +61,8 @@ export const preferredRegion = ["fra1", "sfo1", "iad1"];
  * // when a GET request is made to the callback URL.
  * export const GET = callbackTeamHandler;
  */
-export async function handleTeamCallback(req: NextRequest): Promise<NextResponse> {
+export async function GET(req: NextRequest): Promise<NextResponse> {
+  console.log("handleTeamCallback started");
   const cookieStore = cookies();
   const requestUrl = new URL(req.url);
   const code = requestUrl.searchParams.get("code");
@@ -70,13 +71,23 @@ export async function handleTeamCallback(req: NextRequest): Promise<NextResponse
   const provider = requestUrl.searchParams.get("provider");
   const mfaSetupVisited = cookieStore.has(Cookies.MfaSetupVisited);
 
+  console.log("Request parameters:", {
+    code,
+    client,
+    returnTo,
+    provider,
+    mfaSetupVisited,
+  });
+
   // Handle desktop client redirect
   if (client === "desktop") {
+    console.log("Redirecting to desktop client");
     return NextResponse.redirect(`${requestUrl.origin}/verify?code=${code}`);
   }
 
   // Set preferred sign-in provider cookie if provided
   if (provider) {
+    console.log("Setting preferred sign-in provider:", provider);
     cookieStore.set(Cookies.PreferredSignInProvider, provider, {
       expires: addYears(new Date(), 1),
     });
@@ -84,6 +95,7 @@ export async function handleTeamCallback(req: NextRequest): Promise<NextResponse
 
   // Handle authentication code exchange and session creation
   if (code) {
+    console.log("Exchanging code for session");
     const supabase = createClient(cookieStore as any);
     await supabase.auth.exchangeCodeForSession(code);
 
@@ -91,28 +103,40 @@ export async function handleTeamCallback(req: NextRequest): Promise<NextResponse
       data: { session },
     } = await getSession();
 
+    console.log(
+      "Session retrieved:",
+      session ? "Session exists" : "No session",
+    );
+
     if (session) {
       const userId = session.user.id;
+      console.log("User ID:", userId);
 
       // Set up and track analytics
+      console.log("Setting up analytics");
       const analytics = await setupAnalytics({
         userId,
         fullName: session?.user?.user_metadata?.full_name,
       });
 
+      console.log("Tracking sign-in event");
       await analytics.track({
         event: LogEvents.SignIn.name,
         channel: LogEvents.SignIn.channel,
       });
 
       // Check if user belongs to any team
+      console.log("Checking user team membership");
       const { count } = await supabase
         .from("users_on_team")
         .select("*", { count: "exact" })
         .eq("user_id", userId);
 
+      console.log("User team count:", count);
+
       // Redirect to team creation if user has no teams and not accepting an invite
       if (count === 0 && !returnTo?.startsWith("teams/invite/")) {
+        console.log("Redirecting to team creation");
         return NextResponse.redirect(`${requestUrl.origin}/teams/create`);
       }
     }
@@ -120,18 +144,22 @@ export async function handleTeamCallback(req: NextRequest): Promise<NextResponse
 
   // Handle MFA setup if not visited before
   if (!mfaSetupVisited) {
+    console.log("Setting MFA setup visited cookie");
     cookieStore.set(Cookies.MfaSetupVisited, "true", {
       expires: addYears(new Date(), 1),
     });
 
+    console.log("Redirecting to MFA setup");
     return NextResponse.redirect(`${requestUrl.origin}/mfa/setup`);
   }
 
   // Handle return_to parameter if present
   if (returnTo) {
+    console.log("Redirecting to return_to URL:", returnTo);
     return NextResponse.redirect(`${requestUrl.origin}/${returnTo}`);
   }
 
   // Default redirect to the origin
+  console.log("Default redirect to origin");
   return NextResponse.redirect(requestUrl.origin);
 }

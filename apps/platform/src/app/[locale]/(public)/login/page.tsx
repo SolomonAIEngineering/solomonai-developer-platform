@@ -118,7 +118,6 @@ export default async function Page(params: {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-8">
       <div className="w-full max-w-6xl">
-
         <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-between gap-8 md:gap-16">
           <div className="flex justify-center md:justify-end order-2 md:order-1">
             <Image
@@ -130,7 +129,10 @@ export default async function Page(params: {
             />
           </div>
           <div className="text-center flex flex-col">
-            <AnimatedText text="Developer Platform" className="text-3xl md:text-6xl font-bold leading-tight md:pb-[10%]" />
+            <AnimatedText
+              text="Developer Platform"
+              className="text-3xl md:text-6xl font-bold leading-tight md:pb-[10%]"
+            />
             <Card className="flex flex-col items-center p-6 md:p-8 pointer-events-auto w-full max-w-md mx-auto order-1 md:order-2">
               <div className="w-full">{preferredSignInOption}</div>
               <Accordion
@@ -150,8 +152,8 @@ export default async function Page(params: {
                 </AccordionItem>
               </Accordion>
               <p className="text-xs text-[#878787] max-w-md mt-4 text-center">
-                By clicking continue, you acknowledge that you have read and agree
-                to {config.name}'s{" "}
+                By clicking continue, you acknowledge that you have read and
+                agree to {config.name}'s{" "}
                 <a href={`${config.webUrl}/terms`} className="underline">
                   Terms of Service
                 </a>{" "}
@@ -163,7 +165,6 @@ export default async function Page(params: {
               </p>
             </Card>
           </div>
-
         </div>
       </div>
     </div>

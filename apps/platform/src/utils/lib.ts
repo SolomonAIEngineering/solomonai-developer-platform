@@ -29,7 +29,7 @@ export const menuConfig: Group[] = [
     groupLabel: "Developer Tools",
     menus: [
       {
-        href: "/api-keys",
+        href: "/keys",
         label: "API Key Management",
         icon: Key,
         submenus: [],
@@ -62,7 +62,7 @@ export const menuConfig: Group[] = [
         active: false,
       },
       {
-        href: "/plan-billing",
+        href: "/planbilling",
         label: "Plan & Billing",
         icon: CreditCard,
         submenus: [],
@@ -74,7 +74,7 @@ export const menuConfig: Group[] = [
     groupLabel: "Data Management",
     menus: [
       {
-        href: "/data-storage",
+        href: "/datastorage",
         label: "Data Storage",
         icon: Database,
         submenus: [],
@@ -98,7 +98,7 @@ export const menuConfig: Group[] = [
     groupLabel: "Documentation",
     menus: [
       {
-        href: "/docs",
+        href: "https://platform-docs.solomon-ai.app",
         label: "API Documentation",
         icon: FileText,
         submenus: [],
@@ -106,22 +106,22 @@ export const menuConfig: Group[] = [
       },
     ],
   },
-  {
-    groupLabel: "Settings",
-    menus: [
-      {
-        href: "/settings",
-        label: "Settings",
-        icon: Settings,
-        submenus: [
-          { href: "/settings/profile", label: "Profile", active: false },
-          { href: "/settings/security", label: "Security", active: false },
-          { href: "/settings/notifications", label: "Notifications", active: false },
-        ],
-        active: false,
-      },
-    ],
-  },
+  // {
+  //   groupLabel: "Settings",
+  //   menus: [
+  //     {
+  //       href: "/settings",
+  //       label: "Settings",
+  //       icon: Settings,
+  //       submenus: [
+  //         { href: "/settings/profile", label: "Profile", active: false },
+  //         { href: "/settings/security", label: "Security", active: false },
+  //         { href: "/settings/notifications", label: "Notifications", active: false },
+  //       ],
+  //       active: false,
+  //     },
+  //   ],
+  // },
 ];
 
 export function getMenuList(

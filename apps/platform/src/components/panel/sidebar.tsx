@@ -7,7 +7,7 @@ import { Icons } from "@v1/ui/icons";
 import Link from "next/link";
 import React from "react";
 
-import { viewport } from '../../app/[locale]/layout';
+import { viewport } from "../../app/[locale]/layout";
 import { Menu } from "./menu";
 import { SidebarToggle } from "./sidebar-toggle";
 
@@ -63,7 +63,11 @@ const BrandButton: React.FC<BrandButtonProps> = React.memo(({ isOpen }) => (
     asChild
   >
     <Link href="/" className="flex items-center gap-2">
-      <Icons.Logo className="mr-1 h-20 w-20" viewport="0 0 24 24" strokeWidth={"0.5"} />
+      <Icons.Logo
+        className="mr-1 h-20 w-20"
+        viewport="0 0 24 24"
+        strokeWidth={"0.5"}
+      />
       {/* <h1
         className={cn(
           "whitespace-nowrap text-lg font-bold transition-[transform,opacity,display] duration-300 ease-in-out",

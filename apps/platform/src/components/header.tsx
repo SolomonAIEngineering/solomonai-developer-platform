@@ -19,7 +19,7 @@ export function Header() {
       {isDesktopApp() && <DesktopTrafficLight />}
       {isDesktopApp() && <BrowserNavigation />}
 
-      <AssistantButton />
+      {/* <AssistantButton /> */}
 
       <div className="flex space-x-2 ml-auto">
         {isDesktopApp() && <DesktopAssistantButton />}

@@ -33,7 +33,8 @@ const useLayoutClasses = (isOpen: boolean) => {
         "transition-[margin-left] ease-in-out duration-300",
         isOpen ? "lg:ml-72" : "lg:ml-[90px]",
       ),
-      dockWrapper: "fixed inset-x-0 bottom-0 flex justify-center items-center mb-[2.5%] z-50",
+      dockWrapper:
+        "fixed inset-x-0 bottom-0 flex justify-center items-center mb-[2.5%] z-50",
     }),
     [isOpen],
   );
@@ -50,11 +51,6 @@ const AnalyticsLayout: React.FC<AnalyticsLayoutProps> = ({ children }) => {
   const sidebar = useStore(useSidebarToggle, (state: SidebarState) => state);
   const classes = useLayoutClasses(sidebar?.isOpen ?? false);
 
-  if (!sidebar) {
-    console.warn("Sidebar state is not available. Rendering empty layout.");
-    return <>{children}</>;
-  }
-
   return (
     <>
       <Sidebar />
@@ -62,9 +58,9 @@ const AnalyticsLayout: React.FC<AnalyticsLayoutProps> = ({ children }) => {
       <main className={classes.main}>
         {children}
         {/* Centered dock at the bottom */}
-        <div className={classes.dockWrapper}>
+        {/* <div className={classes.dockWrapper}>
           <ProTierDock />
-        </div>
+        </div> */}
       </main>
 
       <footer className={classes.footer}>
