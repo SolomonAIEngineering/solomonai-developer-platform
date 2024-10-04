@@ -41,8 +41,9 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-pr-review
-          eslint_flags: '. --ext .js,.jsx,.ts,.tsx'
+          eslint_flags: '.'
+          workdir: apps/mobile
 
-      - name: 🏃‍♂️ Run ESLint PR
+      - name: 🏃‍♂️ Run ESLint Push
         if: github.event_name != 'pull_request'
         run: bun run lint
