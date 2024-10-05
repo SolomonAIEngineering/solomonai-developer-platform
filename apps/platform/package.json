@@ -10,7 +10,7 @@
     "format": "biome format --write .",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "jobs": "bunx @trigger.dev/cli@latest dev -p 3001 --client-id=solomon-ai-batch-jobs-background-22Wk",
+    "jobs": "bunx @trigger.dev/cli@latest dev -p 3001 --client-id=solomon-ai-batch-jobs-background-11Wk",
     "stripe:login": "stripe login",
     "stripe:listen": "stripe listen --forward-to=localhost:3001/api/webhook/stripe"
   },

@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { getSession } from "@v1/db/cached-queries";
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -42,7 +44,7 @@ export async function GET(req: NextRequest): Promise<Response> {
 }
 
 function validateQuery(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
+  const searchParams = req.nextUrl.searchParams;
   const result = querySchema.safeParse(Object.fromEntries(searchParams));
 
   if (!result.success) {
