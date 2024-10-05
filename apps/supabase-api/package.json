@@ -5,7 +5,7 @@
     "dev": "supabase start",
     "login": "supabase login",
     "db:reset": "",
-    "supabase:start": "bunx supabase start",
+    "supabase:start": "node ./scripts/start-supabase.js",
     "supabase:stop": "bunx supabase stop",
     "supabase:status": "bunx supabase status",
     "supabase:restart": "npm run supabase:stop && npm run supabase:start",
