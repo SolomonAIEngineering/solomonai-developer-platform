@@ -35,7 +35,7 @@ jobs:
         run: wget ${{ github.event.inputs.apk-url }} -O ./app-release.apk
 
       - name: Upload Test APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-apk
           path: ./app-release.apk
@@ -104,13 +104,13 @@ jobs:
 
       - name: Upload artifacts
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: e2e-test-logs
           path: ~/.maestro/tests/**/*
 
       - name: Store tests result
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: e2e_android_report
           path: |
