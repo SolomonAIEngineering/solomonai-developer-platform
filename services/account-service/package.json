@@ -42,7 +42,7 @@
     "@cloudflare/itty-router-openapi": "^1.0.1",
     "@cloudflare/vitest-pool-workers": "^0.4.24",
     "@hono/swagger-ui": "^0.4.0",
-    "@hono/zod-openapi": "^0.15.3",
+    "@hono/zod-openapi": "^0.16.4",
     "@trigger.dev/hono": "^2.3.19",
     "@trigger.dev/sdk": "^2.3.19",
     "base-x": "^5.0.0",
