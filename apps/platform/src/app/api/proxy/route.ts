@@ -1,5 +1,3 @@
-export const runtime = 'edge';
-
 import { getSession } from "@v1/db/cached-queries";
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -7,6 +5,8 @@ import { z } from "zod";
 const querySchema = z.object({
   filePath: z.string().min(1),
 });
+
+export const dynamic = 'force-dynamic';
 
 /**
  * Handles GET requests for proxying file access from Supabase storage.
