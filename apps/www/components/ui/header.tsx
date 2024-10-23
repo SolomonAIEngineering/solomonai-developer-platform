@@ -67,7 +67,7 @@ const ListItem = forwardRef<
         {...props}
       >
         <div className="text-sm font-medium leading-none">{title}</div>
-        <p className="text-sm leading-snug line-clamp-2 text-muted-foreground">
+        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
           {children}
         </p>
       </Link>
@@ -91,26 +91,26 @@ export default async function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 p-3 transition-all duration-300 ease-in-out">
-      <div className="max-w-6xl mx-auto">
+    <header className="fixed left-0 right-0 top-0 z-50 p-3 transition-all duration-300 ease-in-out">
+      <div className="mx-auto max-w-6xl">
         <nav
           // eslint-disable-next-line prettier/prettier
-          className="transition-all duration-300 ease-in-out border rounded-full shadow-md border-border/50 bg-background"
+          className="rounded-full border border-border/50 bg-background shadow-md transition-all duration-300 ease-in-out"
           aria-label="Main navigation"
         >
           <div className="px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
+            <div className="flex h-16 items-center justify-between">
               <div className="flex items-center">
                 <Link
                   href="/"
-                  className="flex items-center flex-shrink-0"
+                  className="flex flex-shrink-0 items-center"
                   aria-label="Solomon AI Home"
                 >
                   {/* <PearGreenLogo /> */}
                   {/* <LogoIcon /> */}
-                  <div className="ml-2 font-bold h6">Solomon AI</div>
+                  <div className="h6 ml-2 font-bold">Solomon AI</div>
                 </Link>
-                <nav className="hidden ml-10 md:block" aria-label="Main menu">
+                <nav className="ml-10 hidden md:block" aria-label="Main menu">
                   <NavigationMenu>
                     <NavigationMenuList className="space-x-1">
                       <DropdownNavItem trigger="Resources">
@@ -160,7 +160,7 @@ export default async function Header() {
                   </NavigationMenu>
                 </nav>
               </div>
-              <div className="items-center hidden space-x-4 md:flex">
+              <div className="hidden items-center space-x-4 md:flex">
                 <AuthButton />
                 <DarkModeToggle />
               </div>
