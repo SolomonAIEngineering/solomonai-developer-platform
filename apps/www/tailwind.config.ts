@@ -2,6 +2,33 @@
 
 import plugin from "tailwindcss/plugin";
 
+type ColorConfig = Record<string, Record<string | number, string>>;
+type UtilityConfig = Record<string, { boxShadow: string }>;
+
+function generateShadowUtilities(colors: ColorConfig): UtilityConfig {
+  const utilities: UtilityConfig = {};
+
+  Object.entries(colors).forEach(([colorName, shades]) => {
+    Object.entries(shades).forEach(([shade, colorValue]) => {
+      if (typeof colorValue === "string") {
+        // Generate shadow utilities for each opacity level
+        for (let opacity = 0; opacity <= 100; opacity += 5) {
+          const className = `.shadow-inset-${colorName}-${shade}-${opacity}`;
+          const shadowValue = colorValue.includes("<alpha-value>")
+            ? colorValue.replace("<alpha-value>", (opacity / 100).toFixed(2))
+            : colorValue;
+
+          utilities[className] = {
+            boxShadow: `inset 0 -1.5px 0 0 ${shadowValue}`,
+          };
+        }
+      }
+    });
+  });
+
+  return utilities;
+}
+
 module.exports = {
   darkMode: ["class"],
   content: [
@@ -297,24 +324,24 @@ module.exports = {
       ];
       const shadeList = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
 
-      colorList.forEach((color) => {
-        shadeList.forEach((shade) => {
-          const colorValue = colors?.[color]?.[shade];
-          if (typeof colorValue === "string") {
-            for (let i = 0; i <= 100; i += 5) {
-              utilities[
-                `.shadow-inset-${color}-${shade}-${i}` as keyof typeof utilities
-              ] = {
-                boxShadow: colorValue.includes("<alpha-value>")
-                  ? `inset 0 -1.5px 0 0 ${colorValue.replace("<alpha-value>", (i / 100).toString())}`
-                  : `inset 0 -1.5px 0 0 ${colorValue}`,
-              };
-            }
-          }
-        });
-      });
+      // colorList.forEach((color) => {
+      //   shadeList.forEach((shade) => {
+      //     const colorValue = colors?.[color]?.[shade];
+      //     if (typeof colorValue === "string") {
+      //       for (let i = 0; i <= 100; i += 5) {
+      //         utilities[
+      //           `.shadow-inset-${color}-${shade}-${i}` as any
+      //         ] = {
+      //           boxShadow: colorValue.includes("<alpha-value>")
+      //             ? `inset 0 -1.5px 0 0 ${colorValue.replace("<alpha-value>", (i / 100).toString())}`
+      //             : `inset 0 -1.5px 0 0 ${colorValue}`,
+      //         };
+      //       }
+      //     }
+      //   });
+      // });
 
-      addUtilities(utilities, ["responsive", "hover"]);
+      addUtilities(utilities);
     }),
   ],
 };

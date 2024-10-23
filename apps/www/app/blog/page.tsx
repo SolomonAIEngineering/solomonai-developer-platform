@@ -4,6 +4,19 @@ import { constructMetadata } from "@/lib/utils";
 import { compareDesc } from "date-fns";
 import { Metadata } from "next";
 
+// Define the BlogPost interface
+interface BlogPost {
+  url: string;
+  title: string;
+  date: string;
+  excerpt: string;
+  content: string;
+  thumbnail?: string;
+  author?: string;
+  readingTime?: string;
+  tags?: string[];
+}
+
 export const metadata: Metadata = constructMetadata({
   title: "Blog",
   description:
@@ -12,7 +25,7 @@ export const metadata: Metadata = constructMetadata({
 });
 
 export default function Blog() {
-  const sortedPosts = posts.sort((a, b) =>
+  const sortedPosts = (posts as BlogPost[]).sort((a, b) =>
     compareDesc(new Date(a.date), new Date(b.date)),
   );
 
@@ -23,7 +36,11 @@ export default function Blog() {
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {sortedPosts.map((post, idx) => (
-            <PostCard key={idx} {...post} />
+            <PostCard
+              key={idx}
+              {...post}
+              thumbnail={post.thumbnail || ""} // Provide a default empty string if thumbnail is undefined
+            />
           ))}
         </div>
       </div>

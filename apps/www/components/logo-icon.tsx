@@ -2,7 +2,9 @@ const LogoIcon = (props: any) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="28" height="47" viewBox="0 0 33 54"
+      width="28"
+      height="47"
+      viewBox="0 0 33 54"
       fill="none"
       {...props}
     >
@@ -95,7 +97,7 @@ c-35 156 -46 212 -42 217 4 4 43 -79 90 -194 40 -95 63 -133 86 -140 33 -11
         />
       </g>
     </svg>
-  )
-}
+  );
+};
 
-export default LogoIcon
+export default LogoIcon;

@@ -67,7 +67,7 @@ const UpdatePasswordForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleUpdatePassword)}
-        className="px-6 mt-12 space-y-6 md:px-0"
+        className="mt-12 space-y-6 px-6 md:px-0"
       >
         <FormField
           name="password"
@@ -98,10 +98,10 @@ const UpdatePasswordForm = () => {
           )}
         />
         {errorMessage && (
-          <p className="text-sm text-center text-red-500">{errorMessage}</p>
+          <p className="text-center text-sm text-red-500">{errorMessage}</p>
         )}
         <Button
-          className="w-full mt-6 rounded-md bg-background text-foreground hover:bg-primary-800 hover:shadow-sm"
+          className="mt-6 w-full rounded-md bg-background text-foreground hover:bg-primary-800 hover:shadow-sm"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Updating password..." : "Update Password"}

@@ -27,7 +27,7 @@ export const TimelineItem: React.FC<TimelineItemProps> = ({
     <article className="mb-8 mt-28">
       <div className="flex gap-x-3">
         {/* <!-- Left Content --> */}
-        <div className="flex-shrink-0 hidden w-40 text-end lg:block">
+        <div className="hidden w-40 flex-shrink-0 text-end lg:block">
           <time dateTime={date} className="block text-lg">
             {date}
           </time>
@@ -44,24 +44,24 @@ export const TimelineItem: React.FC<TimelineItemProps> = ({
           </time> */}
         </div>
         {/* <!-- Icon --> */}
-        <div className="relative z-10 items-center justify-center hidden h-6 mt-2 w-7 lg:flex">
-          <div className="w-2 h-2 bg-gray-300 rounded-full dark:bg-neutral-500"></div>
+        <div className="relative z-10 mt-2 hidden h-6 w-7 items-center justify-center lg:flex">
+          <div className="h-2 w-2 rounded-full bg-gray-300 dark:bg-neutral-500"></div>
         </div>
         {/* <!-- Right Content --> */}
         <div className="grow">
           <div className={cn("justify-between gap-10 md:flex")}>
             <div>
-              <h3 className="bg-background text-foreground flex items-baseline gap-x-1.5 text-lg font-bold text-gray-900 md:text-3xl lg:mb-5">
+              <h3 className="flex items-baseline gap-x-1.5 bg-background text-lg font-bold text-foreground text-gray-900 md:text-3xl lg:mb-5">
                 {version} &nbsp;&nbsp;{title}
               </h3>
-              <div className="flex items-center my-3 gap-x-2 lg:hidden">
+              <div className="my-3 flex items-center gap-x-2 lg:hidden">
                 <time
                   dateTime={date}
                   className="text-xs font-semibold text-gray-600"
                 >
                   {date}
                 </time>
-                <div className="w-1 h-1 bg-gray-300 rounded-full dark:bg-neutral-500"></div>
+                <div className="h-1 w-1 rounded-full bg-gray-300 dark:bg-neutral-500"></div>
                 <time dateTime={date} className="block text-base">
                   <div className="text-xs font-semibold text-gray-600">
                     {getTimePassed(date)}
