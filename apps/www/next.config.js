@@ -1,30 +1,39 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "standalone",
-  experimental: {
-    serverActions: true,
-  },
-  // Properly handle 404s
-  async rewrites() {
-    return {
-      fallback: [
-        {
-          source: "/:path*",
-          destination: "/_error",
-        },
-      ],
-    };
-  },
-  webpack: (config, { dev, isServer }) => {
-    // Handle punycode deprecation
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        punycode: false,
-      };
-    }
-    return config;
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "pbs.twimg.com" },
+      { protocol: "https", hostname: "abs.twimg.com" },
+    ],
   },
 };
 
-module.exports = nextConfig;
+// next.config.js
+const nextConfiguration = {
+  ...nextConfig,
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"],
+    });
+
+    return config;
+  },
+  async redirects() {
+    // remove this redirect in next pearapp release
+    return [
+      {
+        source: "/features/tab-autocomplete",
+        destination: "/docs/tab-autocomplete",
+        permanent: true,
+      },
+      {
+        source: "/download",
+        destination: "/pricing",
+        permanent: true,
+      },
+    ];
+  },
+};
+
+module.exports = nextConfiguration;
