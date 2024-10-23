@@ -107,13 +107,13 @@ const faqData: FAQItem[] = [
         providers. <br />
         <br />
         Enhanced Business Context: Using RAG (Retrieval Augmented Generation),
-        Solomon AI understands your business's unique seasonal patterns and
-        location-specific challenges, making recommendations more relevant and
-        actionable for your specific situation. <br />
+        Solomon AI understands your business`&apos;`s unique seasonal patterns
+        and location-specific challenges, making recommendations more relevant
+        and actionable for your specific situation. <br />
         <br />
         Complete Financial Workspace: Rather than just being a single-purpose
         tool, Solomon AI provides a comprehensive environment for managing all
-        aspects of your business's financial operations, from seasonal
+        aspects of your business`&apos;`s financial operations, from seasonal
         forecasting to inventory management. <br />
         <br />
         Open-Source Advantage: Solomon AI is fully transparent and open-source,
@@ -135,32 +135,33 @@ const faqData: FAQItem[] = [
     question: "2. Why should my business switch to Solomon AI?",
     answer: (
       <p>
-        Solomon AI will transform how you manage your business's financial
-        operations. Our platform integrates seamlessly with existing financial
-        tools while adding powerful AI capabilities specifically designed for
-        seasonal and location-based businesses. Users have reported significant
-        improvements in forecasting accuracy and operational efficiency.
+        Solomon AI will transform how you manage your business`&apos;`s
+        financial operations. Our platform integrates seamlessly with existing
+        financial tools while adding powerful AI capabilities specifically
+        designed for seasonal and location-based businesses. Users have reported
+        significant improvements in forecasting accuracy and operational
+        efficiency.
         <br />
         <br />
-        By switching to Solomon AI, you'll gain access to enterprise-grade
-        financial tools that understand and adapt to your business's unique
-        seasonal patterns, helping you stay ahead of market changes and optimize
-        your operations throughout the year.
+        By switching to Solomon AI, you`&apos;`ll gain access to
+        enterprise-grade financial tools that understand and adapt to your
+        business`&apos;`s unique seasonal patterns, helping you stay ahead of
+        market changes and optimize your operations throughout the year.
       </p>
     ),
   },
   {
     question:
-      "3. Why can't I just use traditional financial software or general AI tools instead?",
+      "3. Why can`&apos;`t I just use traditional financial software or general AI tools instead?",
     answer: (
       <p>
         Solomon AI is specifically designed for businesses with seasonal
         patterns and physical locations. Unlike general-purpose tools, our
         platform understands the unique challenges of cyclical businesses,
         providing integrated solutions for inventory management, cash flow
-        optimization, and seasonal forecasting. The platform's AI capabilities
-        are fine-tuned for your specific business context, delivering more
-        accurate and actionable insights than generic solutions.
+        optimization, and seasonal forecasting. The platform`&apos;`s AI
+        capabilities are fine-tuned for your specific business context,
+        delivering more accurate and actionable insights than generic solutions.
       </p>
     ),
   },
@@ -171,7 +172,8 @@ const faqData: FAQItem[] = [
       <p>
         Solomon AI is a comprehensive financial workspace. Being a full platform
         rather than just an add-on allows us to provide the most integrated and
-        effective experience for managing your business's financial operations.
+        effective experience for managing your business`&apos;`s financial
+        operations.
         <br />
         <br />
         While we integrate with many popular financial tools, our platform
@@ -222,15 +224,16 @@ const faqData: FAQItem[] = [
           <li>Multi-location performance comparison and optimization</li>
         </ul>
         <p className="mt-2">
-          These features represent the capabilities in development, but we're
-          continuously expanding. Our roadmap includes enhanced predictive
-          analytics, deeper integration with point-of-sale systems, and advanced
-          scenario planning tools.
+          These features represent the capabilities in development, but
+          we`&apos;`re continuously expanding. Our roadmap includes enhanced
+          predictive analytics, deeper integration with point-of-sale systems,
+          and advanced scenario planning tools.
           <br /> <br />
-          We've invested significant effort in building a robust foundation that
-          understands the unique challenges of seasonal businesses. Our platform
-          includes comprehensive documentation, community support through our
-          Discord channel, and regular updates based on user feedback.
+          We`&apos;`ve invested significant effort in building a robust
+          foundation that understands the unique challenges of seasonal
+          businesses. Our platform includes comprehensive documentation,
+          community support through our Discord channel, and regular updates
+          based on user feedback.
           <br /> <br />
           You can track our development progress and upcoming features on our
           public GitHub repository{" "}

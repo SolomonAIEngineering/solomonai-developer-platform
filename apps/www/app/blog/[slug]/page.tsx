@@ -4,11 +4,26 @@ import { format, parseISO } from "date-fns";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
+interface BlogPost {
+  url: string;
+  title: string;
+  date: string;
+  excerpt: string;
+  content: string;
+  thumbnail?: string;
+  author?: string;
+  readingTime?: string;
+  tags?: string[];
+}
 export const generateStaticParams = async () =>
-  posts.map((post) => ({ slug: post.url.split("/").pop() }));
+  (posts as BlogPost[]).map((post) => ({
+    slug: post.url.split("/").pop(),
+  }));
 
 export const generateMetadata = ({ params }: { params: { slug: string } }) => {
-  const post = posts.find((post) => post.url.endsWith(params.slug));
+  const post = (posts as BlogPost[]).find((post) =>
+    post.url.endsWith(params.slug),
+  );
 
   if (!post) notFound();
 
@@ -21,7 +36,9 @@ export const generateMetadata = ({ params }: { params: { slug: string } }) => {
 };
 
 const PostLayout = ({ params }: { params: { slug: string } }) => {
-  const post = posts.find((post) => post.url.endsWith(params.slug));
+  const post = (posts as BlogPost[]).find((post) =>
+    post.url.endsWith(params.slug),
+  );
 
   if (!post) notFound();
 
