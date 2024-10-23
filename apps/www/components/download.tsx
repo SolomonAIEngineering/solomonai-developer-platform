@@ -12,41 +12,37 @@ export const DownloadPage: React.FC = () => {
     >
       <div className="absolute top-0 z-[-1] mt-[-35px] h-[140px] w-full bg-primary-800/30 blur-3xl"></div>
       <div className="mx-auto max-w-7xl px-8 sm:px-6 lg:px-20">
-        <div className="flex flex-col items-center space-y-16 sm:space-y-20 md:space-y-24 lg:space-y-32">
+        <div className="flex flex-col items-center space-y-8 sm:space-y-10 md:space-y-12 lg:space-y-16">
           {/* Header Section - Added more vertical space */}
           <header className="mx-auto max-w-6xl space-y-8 text-center sm:mt-0">
             <h1
               id="download-heading"
               className="text-4xl font-medium leading-tight sm:text-5xl md:text-5xl lg:text-5xl"
             >
-              Transform Your Financial Operations
+              Download Our Desktop App
             </h1>
-            <p className="mt-6 text-lg text-gray-600">
-              Access enterprise-grade financial intelligence across all
-              platforms
-            </p>
           </header>
 
           {/* Feature Cards Section - Added margin and padding */}
-          <div className="w-full py-8">
-            <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-8 md:grid-cols-3">
+          {/* <div className="w-full py-8">
+            <div className="grid w-full max-w-6xl grid-cols-1 gap-8 mx-auto md:grid-cols-3">
               <FeatureCard
-                icon={<Shield className="h-6 w-6" />}
+                icon={<Shield className="w-6 h-6" />}
                 title="Enterprise Security"
                 description="Bank-grade encryption and compliance standards for your financial data"
               />
               <FeatureCard
-                icon={<Zap className="h-6 w-6" />}
+                icon={<Zap className="w-6 h-6" />}
                 title="Real-time Analytics"
                 description="Instant financial insights and AI-powered forecasting"
               />
               <FeatureCard
-                icon={<Clock className="h-6 w-6" />}
+                icon={<Clock className="w-6 h-6" />}
                 title="24/7 Availability"
                 description="Continuous monitoring and analysis of your business metrics"
               />
             </div>
-          </div>
+          </div> */}
 
           {/* Download Section - Added padding and margin */}
           <div className="w-full py-12">
@@ -100,9 +96,9 @@ const FeatureCard: React.FC<{
   description: string;
 }> = ({ icon, title, description }) => (
   <Card className="flex flex-col items-center p-8 text-center">
-    <div className="mb-6 rounded-full bg-primary-100 p-4">{icon}</div>
+    <div className="mb-6 rounded-full bg-background p-4">{icon}</div>
     <h3 className="mb-4 text-lg font-medium">{title}</h3>
-    <p className="text-sm text-gray-600">{description}</p>
+    <p className="text-sm text-foreground">{description}</p>
   </Card>
 );
 

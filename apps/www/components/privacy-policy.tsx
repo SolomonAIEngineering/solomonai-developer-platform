@@ -1,14 +1,14 @@
-import Link from "next/link";
 import { CONTACT_EMAIL } from "@/utils/constants";
+import Link from "next/link";
 
 export default function PrivacyPolicyComponent() {
   return (
     <section>
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+      <div className="relative max-w-6xl px-4 mx-auto sm:px-6">
         {/* Hero content */}
-        <div className="relative pb-10 pt-32 md:pb-16 md:pt-40">
+        <div className="relative pt-32 pb-10 md:pb-16 md:pt-40">
           {/* Section header */}
-          <div className="mx-auto max-w-3xl pb-12 text-left text-gray-800 md:pb-16">
+          <div className="max-w-3xl pb-12 mx-auto text-left text-gray-800 md:pb-16">
             <h1
               className="mb-24 text-6xl font-medium text-gray-900"
               data-aos="fade-up"
@@ -16,35 +16,36 @@ export default function PrivacyPolicyComponent() {
               Privacy Policy
             </h1>
 
-            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
+            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
               Introduction
             </h2>
             <div className="text-base font-normal">
               <p>
                 This privacy policy (“Privacy Policy”) applies to all visitors
-                and users of the PearAI desktop app and websites (collectively,
-                “PearAI”, “App” or “Apps”), which are offered by PearAI Inc.
-                and/or any of its affiliates (“Anysphere” or “we” or “us”) and
-                describes how we process your personal information in connection
-                with those Apps, and how we collect information through the use
-                of cookies and related technologies. It also tells you how you
-                can access and update your personal information and describes
-                the data protection rights that may be available under your
-                country&apos;s or state&apos;s laws. Please read this Privacy
-                Policy carefully. By accessing or using any part of the App, you
-                acknowledge you have been informed of and consent to our
-                practices with regard to your personal information and data.
+                and users of the Solomon AI desktop app and websites
+                (collectively, “Solomon AI”, “App” or “Apps”), which are offered
+                by Solomon AI Inc. and/or any of its affiliates (“Anysphere” or
+                “we” or “us”) and describes how we process your personal
+                information in connection with those Apps, and how we collect
+                information through the use of cookies and related technologies.
+                It also tells you how you can access and update your personal
+                information and describes the data protection rights that may be
+                available under your country&apos;s or state&apos;s laws. Please
+                read this Privacy Policy carefully. By accessing or using any
+                part of the App, you acknowledge you have been informed of and
+                consent to our practices with regard to your personal
+                information and data.
               </p>
             </div>
 
-            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
+            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
               Applicability of this Privacy Policy
             </h2>
             <div className="space-y-4 text-base font-normal">
               <p>
-                If you are a customer of PearAI, this Privacy Policy does not
-                apply to personal information or other data and information that
-                we process on your behalf (if any) as your service provider
+                If you are a customer of Solomon AI, this Privacy Policy does
+                not apply to personal information or other data and information
+                that we process on your behalf (if any) as your service provider
                 (collectively, “Customer Data”). We will only use Customer Data
                 (including any personal information contained therein) to
                 provide you with the Services, and our use of your Customer Data
@@ -64,7 +65,7 @@ export default function PrivacyPolicyComponent() {
               </p>
             </div>
 
-            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
+            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
               Personal information we collect
             </h2>
             <div className="space-y-4 text-base font-normal">
@@ -73,21 +74,22 @@ export default function PrivacyPolicyComponent() {
                 with your personal information. In some instances, a User ID is
                 generated for form and URL tracking, page views, page pings and
                 usage counts in order to ascertain product performance and
-                development. The amount and type of information that PearAI
+                development. The amount and type of information that Solomon AI
                 gathers depends on the nature of your interaction with us, as
                 well as the amount of information you choose to share. For
                 example, we ask visitors who use our community Discord, or our
                 forum, to provide a username and email address. We will also
                 collect the information you provide with us in connection with
-                creating an account on the App. In each case, PearAI collects
-                such personal information only insofar as is necessary or
-                appropriate to fulfill the purpose of your interaction with or
-                your request to PearAI. We will not disclose your personal
-                information other than as described in this Privacy Policy.
+                creating an account on the App. In each case, Solomon AI
+                collects such personal information only insofar as is necessary
+                or appropriate to fulfill the purpose of your interaction with
+                or your request to Solomon AI. We will not disclose your
+                personal information other than as described in this Privacy
+                Policy.
               </p>
               <p>
-                Like most website operators, PearAI automatically collects (i)
-                technical information about your device including your
+                Like most website operators, Solomon AI automatically collects
+                (i) technical information about your device including your
                 device&apos;s internet protocol (IP) address, device type (e.g.,
                 phone, tablet), unique identifiers (including identifiers used
                 for advertising purposes), language settings, mobile device
@@ -112,28 +114,28 @@ export default function PrivacyPolicyComponent() {
               </p>
             </div>
 
-            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
-              Information PearAI does not collect
+            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
+              Information Solomon AI does not collect
             </h2>
             <div className="space-y-4 text-base font-normal">
               <p>
-                PearAI does not intentionally collect sensitive or special
+                Solomon AI does not intentionally collect sensitive or special
                 category personal information, such as genetic data, biometric
                 data for the purposes of uniquely identifying a natural person,
                 health information, or religious information.
               </p>
               <p>
-                PearAI does not knowingly collect information from or direct any
-                of our App or content specifically to children under the age of
-                18. If we learn or have reason to suspect that a user is under
-                the age of 18, we will close that account.
+                Solomon AI does not knowingly collect information from or direct
+                any of our App or content specifically to children under the age
+                of 18. If we learn or have reason to suspect that a user is
+                under the age of 18, we will close that account.
               </p>
             </div>
 
-            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
+            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
               Lawful basis and purposes for processing your personal information
             </h2>
-            <div className="thin-bullets space-y-4 text-base font-normal">
+            <div className="space-y-4 text-base font-normal thin-bullets">
               <p>
                 If you are an individual in the United Kingdom or European
                 Economic Area (EEA), we collect and process information about
@@ -149,7 +151,7 @@ export default function PrivacyPolicyComponent() {
                 </strong>
               </p>
               <p>We use your personal information to:</p>
-              <ul className="list-disc space-y-2 pl-8">
+              <ul className="pl-8 space-y-2 list-disc">
                 <li>administer access to your accounts;</li>
                 <li>manage our customer relationships;</li>
                 <li>
@@ -162,7 +164,7 @@ export default function PrivacyPolicyComponent() {
                 <strong>Legitimate interests</strong>
               </p>
               <p>We use your personal information:</p>
-              <ul className="list-disc space-y-2 pl-8">
+              <ul className="pl-8 space-y-2 list-disc">
                 <li>
                   to improve and personalize your experience with us and our
                   Apps and to tailor communications to you;
@@ -208,7 +210,7 @@ export default function PrivacyPolicyComponent() {
                 <strong>Consent </strong>
               </p>
               <p>We may rely on your consent:</p>
-              <ul className="list-disc space-y-2 pl-8">
+              <ul className="pl-8 space-y-2 list-disc">
                 <li>
                   where you have expressly indicated to us your consent to the
                   processing of your personal information (e.g. where you
@@ -227,38 +229,40 @@ export default function PrivacyPolicyComponent() {
                 You may withdraw your consent at any time through the
                 unsubscribe feature provided with the relevant marketing email
                 or by contacting us using the details in the &apos;Contacting
-                PearAI About Your Privacy&apos; section of this Privacy Policy.
+                Solomon AI About Your Privacy&apos; section of this Privacy
+                Policy.
               </p>
             </div>
 
-            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
-              How PearAI uses and protects your personal information
+            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
+              How Solomon AI uses and protects your personal information
             </h2>
-            <div className="thin-bullets space-y-4 text-base font-normal">
+            <div className="space-y-4 text-base font-normal thin-bullets">
               <p>
                 <strong>Sharing your information</strong>
               </p>
               <p>
-                PearAI may share your personal information with the
+                Solomon AI may share your personal information with the
                 third-parties listed below for the purposes that are described
                 in this Privacy Policy or otherwise with your consent.
               </p>
               <p>
-                PearAI only shares your personal information with those of its
-                employees, contractors, and affiliated organizations that (i)
-                need to know that personal information in order to process it on
-                PearAI&apos;s behalf or to provide services available on the
-                App, and (ii) that have agreed not to disclose it to others.
+                Solomon AI only shares your personal information with those of
+                its employees, contractors, and affiliated organizations that
+                (i) need to know that personal information in order to process
+                it on Solomon AI&apos;s behalf or to provide services available
+                on the App, and (ii) that have agreed not to disclose it to
+                others.
               </p>
               <p>
-                PearAI may disclose your personal information to professional
-                advisors, such as lawyers, bankers, auditors and insurers, where
-                necessary in the course of the professional services that they
-                render to us.
+                Solomon AI may disclose your personal information to
+                professional advisors, such as lawyers, bankers, auditors and
+                insurers, where necessary in the course of the professional
+                services that they render to us.
               </p>
               <p>
-                PearAI may sell, transfer or otherwise share some or all of our
-                business or assets, including your personal information, in
+                Solomon AI may sell, transfer or otherwise share some or all of
+                our business or assets, including your personal information, in
                 connection with a business transaction (or potential business
                 transaction) such as a corporate divestiture, merger,
                 consolidation, acquisition, reorganization or sale of assets, or
@@ -268,13 +272,15 @@ export default function PrivacyPolicyComponent() {
               </p>
               <p>
                 <strong>Service Providers and partners. </strong>
-                PearAI engages a number of service providers or partners to
+                Solomon AI engages a number of service providers or partners to
                 manage or support certain aspects of our business operations on
                 our behalf. For instance, we currently use the following service
                 providers who will handle your personal information:
               </p>
-              <ul className="list-disc space-y-2 pl-8">
-                <li>AWS - cloud data hosting</li>
+              <ul className="pl-8 space-y-2 list-disc">
+                <li>Digital Ocean - cloud data hosting</li>
+                <li>Cloudflare - cloud data hosting</li>
+
                 <li>
                   GitHub - open source repositories and internal project
                   management tool
@@ -289,7 +295,7 @@ export default function PrivacyPolicyComponent() {
                 Our service providers and partners are required by contract to
                 safeguard any personal information they receive from us and are
                 prohibited from using the personal information for any purpose
-                other than to perform the services as instructed by PearAI.
+                other than to perform the services as instructed by Solomon AI.
               </p>
               <p>
                 <strong>Legal Requirements. </strong>
@@ -304,13 +310,13 @@ export default function PrivacyPolicyComponent() {
                 otherwise required or permitted by law.
               </p>
               <p>
-                PearAI takes measures reasonably necessary to protect your
+                Solomon AI takes measures reasonably necessary to protect your
                 personal information against any unauthorized access, use,
                 alteration, or destruction.
               </p>
             </div>
 
-            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
+            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
               Cross-border transfer of personal information
             </h2>
             <div className="space-y-4 text-base font-normal">
@@ -334,25 +340,26 @@ export default function PrivacyPolicyComponent() {
                 Clauses (“SCCs”) approved by the EU Commission or by the UK
                 Government. A copy of the relevant mechanism can be obtained for
                 your review on request by using the contact details in the
-                &apos;Contacting PearAI About Your Privacy&apos; section of this
-                Privacy Policy.
+                &apos;Contacting Solomon AI About Your Privacy&apos; section of
+                this Privacy Policy.
               </p>
             </div>
 
-            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
-              PearAI communications with you
+            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
+              Solomon AI communications with you
             </h2>
             <div className="space-y-4 text-base font-normal">
               <p>
                 If you are a registered user of the Apps and have supplied your
-                email address, PearAI may occasionally send you an email to tell
-                you about security, system information, new features, solicit
-                your feedback, or just keep you up to date with what&apos;s
-                going on with PearAI and our products. We primarily use our blog
-                to communicate this type of information, so we expect to keep
-                this type of email to a minimum. There&apos;s an unsubscribe
-                link located at the bottom of each of the marketing emails we
-                send you so you can stop receiving such emails at any time.
+                email address, Solomon AI may occasionally send you an email to
+                tell you about security, system information, new features,
+                solicit your feedback, or just keep you up to date with
+                what&apos;s going on with Solomon AI and our products. We
+                primarily use our blog to communicate this type of information,
+                so we expect to keep this type of email to a minimum.
+                There&apos;s an unsubscribe link located at the bottom of each
+                of the marketing emails we send you so you can stop receiving
+                such emails at any time.
               </p>
               <p>
                 If you send us a request (for example via a support email or via
@@ -363,10 +370,10 @@ export default function PrivacyPolicyComponent() {
               </p>
             </div>
 
-            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
+            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
               Your choices
             </h2>
-            <div className="thin-bullets space-y-4 text-base font-normal">
+            <div className="space-y-4 text-base font-normal thin-bullets">
               <p>
                 In this section, we describe the rights and choices available to
                 all users.
@@ -393,7 +400,7 @@ export default function PrivacyPolicyComponent() {
                 activity and device data collected through our website, which we
                 have summarized below:
               </p>
-              <ul className="list-disc space-y-2 pl-8">
+              <ul className="pl-8 space-y-2 list-disc">
                 <li>
                   Blocking cookies in your browser. Most browsers let you remove
                   or reject cookies, including cookies used for interest-based
@@ -408,7 +415,7 @@ export default function PrivacyPolicyComponent() {
                   Use the following links to learn more about how to control
                   cookies and online tracking through your browser:
                 </p>
-                <ul className="list-disc space-y-2 pl-8 font-medium text-gray-900">
+                <ul className="pl-8 space-y-2 font-medium text-gray-900 list-disc">
                   <li>
                     <Link
                       href="https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop"
@@ -520,7 +527,7 @@ export default function PrivacyPolicyComponent() {
                   opt-out tools. Some of these providers, and links to their
                   opt-out tools, are:
                 </li>
-                <ul className="list-disc space-y-2 pl-8">
+                <ul className="pl-8 space-y-2 list-disc">
                   <li>
                     <Link
                       href="https://adssettings.google.com/"
@@ -544,7 +551,7 @@ export default function PrivacyPolicyComponent() {
                   information for interest-based advertising by participating
                   companies:
                 </li>
-                <ul className="list-disc space-y-2 pl-8">
+                <ul className="pl-8 space-y-2 list-disc">
                   <li>
                     <Link
                       href="https://optout.aboutads.info/"
@@ -573,10 +580,10 @@ export default function PrivacyPolicyComponent() {
               </p>
             </div>
 
-            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
+            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
               Global privacy practices and your rights
             </h2>
-            <div className="thin-bullets space-y-4 text-base font-normal">
+            <div className="space-y-4 text-base font-normal thin-bullets">
               <p>
                 Information we collect may be stored and processed in the United
                 States in accordance with this Privacy Policy but we understand
@@ -584,7 +591,7 @@ export default function PrivacyPolicyComponent() {
                 and rights with regard to their privacy. For all App visitors
                 and users, no matter their country of location, we will:
               </p>
-              <ul className="list-disc space-y-2 pl-8">
+              <ul className="pl-8 space-y-2 list-disc">
                 <li>
                   provide clear methods of unambiguous, informed consent when we
                   do collect your personal information and where required by
@@ -611,7 +618,7 @@ export default function PrivacyPolicyComponent() {
               <p>
                 Additional rights that may apply to you in certain instances:
               </p>
-              <ul className="list-disc space-y-2 pl-8">
+              <ul className="pl-8 space-y-2 list-disc">
                 <li>
                   Right of data portability (if our processing is based on
                   consent or a contract and the processing carried out by
@@ -655,12 +662,12 @@ export default function PrivacyPolicyComponent() {
               </p>
               <p>
                 To exercise your privacy rights, you can email us at the address
-                given below in the &apos;Contacting PearAI About Your
+                given below in the &apos;Contacting Solomon AI About Your
                 Privacy&apos; section of this Privacy Policy.
               </p>
             </div>
 
-            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
+            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
               Data retention and deletion
             </h2>
             <div className="space-y-4 text-base font-normal">
@@ -670,13 +677,13 @@ export default function PrivacyPolicyComponent() {
                 logging into your account and updating profile settings.
               </p>
               <p>
-                PearAI will retain your information for as long as your account
-                is active or as needed to perform our contractual obligations,
-                provide you services through the App, to comply with legal
-                obligations, resolve disputes, preserve legal rights, or enforce
-                our agreements. Retention periods will be determined taking into
-                account the type of information that is collected and the
-                purpose for which it is collected, bearing in mind the
+                Solomon AI will retain your information for as long as your
+                account is active or as needed to perform our contractual
+                obligations, provide you services through the App, to comply
+                with legal obligations, resolve disputes, preserve legal rights,
+                or enforce our agreements. Retention periods will be determined
+                taking into account the type of information that is collected
+                and the purpose for which it is collected, bearing in mind the
                 requirements applicable to the situation and the need to destroy
                 outdated, unused information at the earliest reasonable
                 opportunity. For instance, in respect of data held for the
@@ -686,7 +693,7 @@ export default function PrivacyPolicyComponent() {
                 may rectify, update or remove incomplete or inaccurate
                 information, at any time and at our own discretion. For more
                 information on our retention periods you can contact us using
-                the details in the &apos;Contacting PearAI About Your
+                the details in the &apos;Contacting Solomon AI About Your
                 Privacy&apos; section of this Privacy Policy.
               </p>
               <p>
@@ -701,13 +708,13 @@ export default function PrivacyPolicyComponent() {
               </p>
             </div>
 
-            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
-              Contacting PearAI About Your Privacy
+            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
+              Contacting Solomon AI About Your Privacy
             </h2>
             <div className="space-y-4 text-base font-normal">
               <p>
                 The relevant data controller for any personal information
-                processed in connection with our Apps is PearAI Inc.
+                processed in connection with our Apps is Solomon AI Inc.
               </p>
               <p>
                 If you have any questions about this Privacy Policy or our
@@ -742,13 +749,13 @@ export default function PrivacyPolicyComponent() {
               </p>
             </div>
 
-            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
+            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
               Privacy policy changes
             </h2>
             <div className="space-y-4 text-base font-normal">
               <p>
-                PearAI may change its privacy policy from time to time, and in
-                PearAI&apos;s sole discretion.
+                Solomon AI may change its privacy policy from time to time, and
+                in Solomon AI&apos;s sole discretion.
               </p>
               <p>
                 If we make material changes to this Privacy Policy, we will
