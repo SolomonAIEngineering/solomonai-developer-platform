@@ -1,11 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { resendConfirmationEmail } from "@/app/(auth)/actions";
-import { useSearchParams } from "next/navigation";
-import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function Verification() {
   const router = useRouter();

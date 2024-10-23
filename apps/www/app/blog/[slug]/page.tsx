@@ -74,7 +74,7 @@ const PostLayout = ({ params }: { params: { slug: string } }) => {
         <div
           className={cn(
             "prose prose-base dark:prose-invert sm:prose-lg md:prose-xl",
-            "prose-a:text-primary-700 hover:prose-a:text-primary-800 dark:prose-a:text-primary-600 dark:hover:prose-a:text-primary-700",
+            "prose-a:text-foreground hover:prose-a:text-primary-800 dark:prose-a:text-primary-600 dark:hover:prose-a:text-foreground",
             "prose-blockquote:not-italic",
             "prose-th:border prose-th:border-slate-300 prose-th:bg-slate-200/70 prose-th:px-2 prose-th:py-1 prose-td:border prose-td:border-slate-300 prose-td:px-2 prose-td:py-1 dark:prose-th:border-slate-700 dark:prose-th:bg-slate-900 dark:prose-td:border-slate-700 sm:prose-th:px-3 sm:prose-th:py-2 sm:prose-td:px-3 sm:prose-td:py-2",
             "prose-hr:border-slate-300 dark:prose-hr:border-slate-700",

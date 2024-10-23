@@ -1,6 +1,5 @@
 "use client";
-import React, { useEffect, useState, useRef, useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,30 +7,31 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PricingPageProps, PricingTierProps } from "@/types/pricing";
 import { useCheckout } from "@/hooks/useCheckout";
-import { PRICING_TIERS, CONTACT_EMAIL } from "@/utils/constants";
-import { toast } from "sonner";
-import { Check, ChevronDown } from "lucide-react";
-import { AppleLogo, WindowsLogo, LinuxLogo } from "./ui/icons";
 import { cn } from "@/lib/utils";
+import { PricingPageProps, PricingTierProps } from "@/types/pricing";
+import { CONTACT_EMAIL, PRICING_TIERS } from "@/utils/constants";
+import { Check, ChevronDown, Info } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { toast } from "sonner";
+import { CopyInput } from "./ui/copy-input";
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Info } from "lucide-react";
+import { AppleLogo, LinuxLogo, WindowsLogo } from "./ui/icons";
 import Spinner from "./ui/spinner";
-import Link from "next/link";
 
 interface ExtendedPricingTierProps extends PricingTierProps {
   disabled?: boolean;
@@ -175,7 +175,7 @@ const PricingTier: React.FC<ExtendedPricingTierProps> = ({
     >
       <div className="flex h-full w-full flex-col">
         <CardHeader className="flex-grow-0 px-6 py-6 pb-0">
-          <CardTitle className="text-2xl leading-6 text-primary-700">
+          <CardTitle className="text-2xl leading-6 text-foreground">
             {title}
             &nbsp;
             {index === 1 && title === "Junior Engineer" && "(Monthly)"}
@@ -183,10 +183,7 @@ const PricingTier: React.FC<ExtendedPricingTierProps> = ({
           </CardTitle>
           <p className="text-base font-normal text-gray-600 sm:text-base md:text-sm">
             {index === 0 && isFree && (
-              <>
-                You can download PearAI directly, and use our free trial, or
-                your own API key 🤓
-              </>
+              <>You can download Solomon AI directly 🤓</>
             )}
             {!isFree && description}
           </p>
@@ -203,7 +200,7 @@ const PricingTier: React.FC<ExtendedPricingTierProps> = ({
                   {priceUnit}
                 </small>
                 &nbsp;
-                <small className="text-base text-primary-700 sm:text-lg">
+                <small className="text-base text-foreground sm:text-lg">
                   &#40;Early Bird&#41;
                 </small>
               </p>
@@ -242,7 +239,7 @@ const PricingTier: React.FC<ExtendedPricingTierProps> = ({
                   className="flex items-center py-2 text-gray-600"
                 >
                   <Check
-                    className="mr-3 h-6 w-6 flex-shrink-0 text-primary-700"
+                    className="mr-3 h-6 w-6 flex-shrink-0 text-foreground"
                     aria-hidden="true"
                   />
                   {featureRowDescription(feature)}
@@ -277,7 +274,7 @@ const PricingTier: React.FC<ExtendedPricingTierProps> = ({
                 Thanks for trying out PearAI! Your download should have started,
                 if it hasn&apos;t, click{" "}
                 <a
-                  className="cursor-pointer text-primary-700 transition-colors hover:text-primary-800"
+                  className="transition-colors cursor-pointer text-foreground hover:text-primary-800"
                   href={downloadLink}
                 >
                   here
@@ -285,7 +282,7 @@ const PricingTier: React.FC<ExtendedPricingTierProps> = ({
                 .
               </p>
             ) : (
-              <div className="flex w-full flex-col items-center gap-2">
+              <div className="flex flex-col items-center w-full gap-2">
                 {versionInfo && (
                   <div className="ml-2 mr-auto text-sm text-gray-500">
                     version {versionInfo?.version}
@@ -326,7 +323,7 @@ const PricingTier: React.FC<ExtendedPricingTierProps> = ({
                       <Button
                         ref={buttonRef}
                         style={gradientStyle}
-                        className="relative flex w-full items-center justify-center px-4 py-2 transition-opacity hover:opacity-90"
+                        className="relative flex items-center justify-center w-full px-4 py-2 transition-opacity hover:opacity-90"
                       >
                         <div className="flex items-center">
                           <AppleLogo className="mr-2 h-[18px] w-[18px] fill-current" />
@@ -342,7 +339,7 @@ const PricingTier: React.FC<ExtendedPricingTierProps> = ({
                         width:
                           buttonWidth !== null ? `${buttonWidth}px` : "auto",
                       }}
-                      className="flex flex-col items-center justify-center border border-border/50 bg-background p-1"
+                      className="flex flex-col items-center justify-center p-1 border border-border/50 bg-background"
                     >
                       <DropdownMenuItem
                         className="flex w-full justify-center rounded px-2 py-1.5 text-sm focus:bg-secondary-300/10"
@@ -371,17 +368,18 @@ const PricingTier: React.FC<ExtendedPricingTierProps> = ({
               ) : (
                 <Button
                   className="w-full"
-                  onClick={() => priceId && handleCheckout(priceId)}
-                  disabled={isSubmitting}
-                  aria-busy={isSubmitting}
+                  onClick={() =>
+                    (window.location.href =
+                      "https://app-business.solomon-ai.app")
+                  }
                   aria-label={`Subscribe to ${title} plan`}
                 >
-                  {isSubmitting ? "Processing..." : buttonText}
+                  {buttonText}
                 </Button>
               )}
             </>
           )}
-          {/* <button className="bg-primary-800 py-2 px-4 w-full rounded-full text-sm font-medium hover:bg-primary-800"> */}
+          {/* <button className="w-full px-4 py-2 text-sm font-medium rounded-full bg-primary-800 hover:bg-primary-800"> */}
           {/* Get Started */}
           {/* </button> */}
         </CardFooter>
@@ -399,14 +397,14 @@ const PricingPage: React.FC<PricingPageProps> = ({ user }) => {
       <div className="absolute top-0 z-[-1] mt-[-35px] h-[140px] w-full bg-primary-800/30 blur-3xl"></div>
       <div className="mx-auto max-w-7xl px-8 sm:px-6 lg:px-20">
         <div className="flex flex-col items-center space-y-6 sm:space-y-8 md:space-y-6 lg:space-y-6">
-          <header className="mx-auto mt-16 max-w-4xl space-y-4 text-center sm:mt-0 sm:space-y-6">
+          <header className="mx-auto mt-16 max-w-6xl space-y-4 text-center sm:mt-0 sm:space-y-6">
             <h1
               id="pricing-heading"
               className="mt-8 text-4xl font-medium leading-tight sm:text-5xl md:text-5xl lg:text-5xl"
             >
-              Speed up your
+              Get on top of
               <br />
-              development today.
+              your business.
             </h1>
           </header>
 
@@ -435,11 +433,11 @@ const PricingPage: React.FC<PricingPageProps> = ({ user }) => {
               <div className="mt-[20px] flex w-full items-center justify-center rounded-md bg-gray-300/20 bg-gradient-to-l from-primary-800/[0.15] via-gray-100/10 to-transparent to-60% px-6 py-3.5 ring-1 ring-gray-300/60 dark:bg-gray-100/10 dark:ring-gray-100/40">
                 <div className="flex w-full items-center justify-between rounded-md">
                   <p className="block w-max items-center justify-start md:flex">
-                    <span className="text-primary-700 dark:text-primary-800">
+                    <span className="text-foreground dark:text-primary-800">
                       Be the early bird and get a discount
                     </span>
                     &nbsp;
-                    <span className="text-primary-900 dark:text-primary-700">
+                    <span className="text-primary-900 dark:text-foreground">
                       forever
                     </span>
                   </p>
@@ -449,7 +447,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ user }) => {
                       20-30% off
                     </strong>
                     &nbsp;
-                    <span className="font-normal text-primary-700 dark:text-primary-300">
+                    <span className="font-normal text-foreground dark:text-primary-300">
                       &#40;forever&#41;
                     </span>
                   </p>
@@ -475,11 +473,11 @@ const PricingPage: React.FC<PricingPageProps> = ({ user }) => {
               <div className="mt-[20px] flex w-full items-center justify-center rounded-md bg-gray-300/20 bg-gradient-to-l from-primary-800/[0.15] via-gray-100/10 to-transparent to-60% px-6 py-3.5 ring-1 ring-gray-300/60 dark:bg-gray-100/10 dark:ring-gray-100/40">
                 <div className="flex w-full items-center justify-between rounded-md">
                   <p className="block w-max items-center justify-start md:flex">
-                    <span className="text-primary-700 dark:text-primary-800">
+                    <span className="text-foreground dark:text-primary-800">
                       Be the early bird and get a discount
                     </span>
                     &nbsp;
-                    <span className="text-primary-900 dark:text-primary-700">
+                    <span className="text-primary-900 dark:text-foreground">
                       forever
                     </span>
                   </p>
@@ -489,7 +487,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ user }) => {
                       20-30% off
                     </strong>
                     &nbsp;
-                    <span className="font-normal text-primary-700 dark:text-primary-300">
+                    <span className="font-normal text-foreground dark:text-primary-300">
                       &#40;forever&#41;
                     </span>
                   </p>
@@ -517,7 +515,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ user }) => {
                 <p className="text-base text-gray-400 sm:text-lg md:text-xl">
                   Interested in these plans?
                   <button
-                    className="ml-2 font-semibold text-primary-700 transition-colors hover:text-primary-800"
+                    className="ml-2 font-semibold text-foreground transition-colors hover:text-primary-800"
                     aria-label="Contact us for custom plans"
                     onClick={() => {
                       navigator.clipboard.writeText(CONTACT_EMAIL);
@@ -576,7 +574,7 @@ export const PearCreditsTooltip = ({ type }: { type: string }) => {
                 <br /> <br />
                 Afraid of running out of credits? You can always contact{" "}
                 <a
-                  className="cursor-pointer text-primary-700 transition-colors hover:text-primary-800"
+                  className="cursor-pointer text-foreground transition-colors hover:text-primary-800"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigator.clipboard.writeText(CONTACT_EMAIL);

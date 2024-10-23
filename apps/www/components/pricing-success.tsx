@@ -1,9 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { CONTACT_EMAIL } from "@/utils/constants";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function PricingSuccess() {
   const router = useRouter();
@@ -19,7 +19,7 @@ export default function PricingSuccess() {
           {/* Page header */}
           <div className="md:pb-15 mx-auto max-w-3xl pb-10 text-center text-2xl md:text-3xl lg:text-4xl">
             <h1 className="h1 leading-tight">
-              Thank you for subscribing to PearAI!
+              Thank you for subscribing to Solomon AI!
             </h1>
           </div>
           <div className="mx-auto max-w-xl">

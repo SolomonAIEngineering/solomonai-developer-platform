@@ -4,10 +4,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import Link from "next/link";
 import { constructMetadata } from "@/lib/utils";
-import { Metadata } from "next/types";
 import { FAQItem } from "@/types/faqItems";
+import Link from "next/link";
+import { Metadata } from "next/types";
 import React from "react";
 
 export const metadata: Metadata = constructMetadata({
@@ -22,7 +22,7 @@ const FAQ: React.FC = () => {
       <section className="mx-auto mt-36 flex w-full flex-col items-center px-4">
         <div className="mb-16 text-center">
           <h2
-            className="mb-4 whitespace-pre-line text-3xl font-bold text-primary-700"
+            className="mb-4 whitespace-pre-line text-3xl font-bold text-foreground"
             data-aos="fade-up"
           >
             Frequently Asked Questions
@@ -60,7 +60,7 @@ const FAQ: React.FC = () => {
           ))}
           <AccordionItem value={"contribute"}>
             <AccordionTrigger className="text-left text-base">
-              7. How can I contribute to PearAI?
+              7. How can I contribute to Solomon AI?
             </AccordionTrigger>
             <AccordionContent className="text-sm text-gray-600">
               See the contributor&apos;s section:{" "}
@@ -68,7 +68,7 @@ const FAQ: React.FC = () => {
                 rel="noopener noreferrer"
                 className="underline"
                 target="_blank"
-                href="/docs/contributors"
+                href="https://engineering-docs.solomon-ai.app//contributors"
               >
                 Contributing 101
               </Link>
@@ -82,196 +82,161 @@ const FAQ: React.FC = () => {
 };
 
 export default FAQ;
-
 const faqData: FAQItem[] = [
   {
-    question: "0. Why is it called PearAI?",
-    answer: <p>Pair programming... Pear Programming... PearAI!</p>,
+    question: "0. Why is it called Solomon AI?",
+    answer: (
+      <p>
+        Solomon AI is named after King Solomon, known for his wisdom in managing
+        resources and making sound judgments. This reflects our mission to bring
+        intelligent financial insights to businesses.
+      </p>
+    ),
   },
   {
     question:
-      "1. What separates PearAI from Github Copilot and other competitors?",
+      "1. What separates Solomon AI from traditional financial software and other competitors?",
     answer: (
       <p>
-        PearAI offers significant advantages over competitors in both AI
-        capabilities and user experience: <br />
+        Solomon AI offers significant advantages over traditional financial
+        tools and competitors: <br />
         <br />
-        AI Model Flexibility: Unlike Copilot, which is limited to OpenAI&apos;s
-        models, PearAI leverages the most advanced AI models available,
-        currently featuring Claude Sonnet 3.5. This flexibility allows us to
-        always use the best-performing model for coding tasks. You can also use
-        your own API keys, or local models. <br />
+        AI Model Flexibility: Unlike traditional financial software, Solomon AI
+        leverages advanced AI models to provide dynamic, adaptive solutions for
+        seasonal businesses. Our platform can integrate with various AI
+        providers, allowing businesses to use their preferred models or API
+        keys. <br />
         <br />
-        Enhanced Codebase Context: Using RAG (Retrieval Augmented Generation),
-        PearAI has knowledge of your entire codebase, making answers much more
-        relevant and useful for you. In contrast, Copilot can only include
-        limited context that you must pick out yourself. <br />
+        Enhanced Business Context: Using RAG (Retrieval Augmented Generation),
+        Solomon AI understands your business's unique seasonal patterns and
+        location-specific challenges, making recommendations more relevant and
+        actionable for your specific situation. <br />
         <br />
-        UI/UX Focus: As a complete IDE rather than just an extension, PearAI
-        provides a more integrated and refined coding environment. This allows
-        for smoother workflows and more intuitive interactions with AI
-        assistance.
+        Complete Financial Workspace: Rather than just being a single-purpose
+        tool, Solomon AI provides a comprehensive environment for managing all
+        aspects of your business's financial operations, from seasonal
+        forecasting to inventory management. <br />
         <br />
-        <br />
-        Open-Source: PearAI is fully transparent and open-source, which means
-        anyone can see, review, and contribute to all of our code! This allows
-        for a community-driven product, mitigates privacy concerns that other
-        similar tools face, and provide a faster development cycle thanks to
-        community members who help solve issues, and build new features. See why
-        this is a huge differentiator for PearAI compared to alternatives such
-        as Cursor on our blog post:{" "}
+        Open-Source Advantage: Solomon AI is fully transparent and open-source,
+        enabling community-driven innovation and customization. This allows
+        businesses to adapt the platform to their specific needs and benefit
+        from continuous improvements contributed by the community. See why this
+        matters in our blog post:{" "}
         <Link
           href="/blog/why-open-source"
           className="text-primary-600 hover:underline"
         >
-          Why Open Source Matters for AI Code Editors
+          Why Open Source Matters for Financial Technology
         </Link>
         .
       </p>
     ),
   },
   {
-    question: "2. Why should I switch to PearAI?",
+    question: "2. Why should my business switch to Solomon AI?",
     answer: (
       <p>
-        PearAI will speed up and improve your development. PearAI is a fork of
-        VSCode, and possess all of its functionalities, but also adds more to it
-        by integrating AI functionalities to speed up your coding workflow.
-        Current users have expressed that their coding workflow accelerated by
-        at least 3-4x.
+        Solomon AI will transform how you manage your business's financial
+        operations. Our platform integrates seamlessly with existing financial
+        tools while adding powerful AI capabilities specifically designed for
+        seasonal and location-based businesses. Users have reported significant
+        improvements in forecasting accuracy and operational efficiency.
         <br />
-        <br /> By switching to PearAI, you can speed up your product
-        development, and not lack behind in terms of AI tooling compared to your
-        peers.
+        <br />
+        By switching to Solomon AI, you'll gain access to enterprise-grade
+        financial tools that understand and adapt to your business's unique
+        seasonal patterns, helping you stay ahead of market changes and optimize
+        your operations throughout the year.
       </p>
     ),
   },
   {
     question:
-      "3. Why can't I just use ChatGPT, Claude, Gemini, or another LLM chat directly instead?",
+      "3. Why can't I just use traditional financial software or general AI tools instead?",
     answer: (
       <p>
-        With PearAI, you don&apos;t need copy-paste code or switch tabs anymore,
-        as AI is integreated into the code editor for a seamless experience.
-        Also, PearAI provides better responses than vanilla LLM&apos;s by having
-        context of your codebase achieved through RAG (Retrieval Augemented
-        Generation). Try it out yourself - we&apos;re sure you&apos;ll love it!
+        Solomon AI is specifically designed for businesses with seasonal
+        patterns and physical locations. Unlike general-purpose tools, our
+        platform understands the unique challenges of cyclical businesses,
+        providing integrated solutions for inventory management, cash flow
+        optimization, and seasonal forecasting. The platform's AI capabilities
+        are fine-tuned for your specific business context, delivering more
+        accurate and actionable insights than generic solutions.
       </p>
     ),
   },
   {
-    question: "4. Is PearAI an extension or an app?",
+    question:
+      "4. Is Solomon AI a standalone platform or an add-on to existing software?",
     answer: (
       <p>
-        PearAI is a full-fledged app. Being an app instead of being just an
-        extension provides us the highest degree of freedom to ensure the best,
-        smoothest experience for you!
+        Solomon AI is a comprehensive financial workspace. Being a full platform
+        rather than just an add-on allows us to provide the most integrated and
+        effective experience for managing your business's financial operations.
         <br />
         <br />
-        If you prefer to use a VSCode extension, we recommend using{" "}
-        <Link href="https://continue.dev/">Continue.dev</Link> instead. We are a
-        fork of them so the features will be very similar!
+        While we integrate with many popular financial tools, our platform
+        offers unique capabilities that go beyond simple add-on functionality,
+        providing a complete solution for seasonal and location-based
+        businesses.
       </p>
     ),
   },
   {
-    question: "5. Does PearAI store my code?",
+    question: "5. Does Solomon AI store my financial data?",
     answer: (
       <p>
-        No. All codebase indexing occurs and remains strictly local on your
-        machine (
+        We take data security seriously. All financial analysis and processing
+        occurs on our(
         <Link
           target="_blank"
           rel="noopener noreferrer"
           className="underline underline-offset-4"
-          href="https://github.com/trypear/pearai-submodule/tree/main/core/indexing"
+          href="https://github.com/solomon-ai/core"
         >
-          source
+          backend services
         </Link>
-        ). Our servers never store any of your code. Additionally, we maintain a
-        zero-data retention policy with our LLM cloud provider, Anthropic,
-        ensuring also they neither store nor train on your code.
+        ). Our platform maintains strict data privacy standards, ensuring your
+        sensitive financial information remains secure.
       </p>
     ),
   },
   {
     question:
-      "6. What new features does PearAI offer compared to Continue.dev?",
+      "6. What unique features does Solomon AI offer for seasonal businesses?",
     answer: (
       <div>
         <ul className="list-disc space-y-2 pl-5">
+          <li>Intelligent seasonal demand forecasting and trend analysis</li>
+          <li>Location-specific market insights and performance metrics</li>
+          <li>Automated cash flow management for varying business cycles</li>
+          <li>Real-time inventory optimization based on seasonal patterns</li>
           <li>
-            Automatic file creation and generation from the chat panel directly.
-            E.g. if you ask it to generate code and it’s supposed to create a
-            file too, it will allow you to do so. Neither Continue nor Cursor
-            have this feature within the chat panel.
+            Customizable financial modeling for multiple business locations
           </li>
+          <li>AI-powered risk assessment and stress testing</li>
+          <li>Dynamic budget adjustments for peak and off-peak seasons</li>
           <li>
-            <code>@Directory Structure</code> command to include context of your
-            entire codebase file tree.
+            Integrated foot traffic analysis and customer behavior patterns
           </li>
-          <li>
-            Built-in <code>/leetcode</code> command: AI leetcode tutor for
-            interview question practice.
-          </li>
-          <li>
-            Built-in <code>/sensei</code> command: PearAI acts as an experienced
-            engineer for guided learning.
-          </li>
-          <li>
-            Built-in <code>/component</code> command: Constructs React
-            components using v0.
-          </li>
-          <li>
-            Integrated standalone application instead of an extension, enabling
-            better onboarding UX and more meaningful changes
-          </li>
-          <li>
-            Ability to switch between most recent chat and current with a
-            shortcut.
-          </li>
-          <li>Ability to dynamically resize chat panel with a shortcut.</li>
-          <li>Shortcuts bar on top of chat for easier access and better UX.</li>
-          <li>
-            Shortcut to bring terminal errors directly to chat for debugging.
-            Continue&apos;s version of this was not working.
-          </li>
-          <li>
-            Improved onboarding page with immediate access to PearAI free trial
-            (GPT4 or Claude 3.5 Sonnet).
-          </li>
+          <li>Automated financial reporting with seasonal context</li>
+          <li>Multi-location performance comparison and optimization</li>
         </ul>
         <p className="mt-2">
-          These are some of the new features we have for v1. We also had to do a
-          ton of maintenance and integration work, to make a forked extension
-          part of VSCode work smoothly, and making open source VSCode usable; it
-          doesn’t come with everything out the box (e.g. missing extensions,
-          errors with packaging for distribution and certificates, auto updates,
-          etc.).
+          These features represent the capabilities in development, but we're
+          continuously expanding. Our roadmap includes enhanced predictive
+          analytics, deeper integration with point-of-sale systems, and advanced
+          scenario planning tools.
           <br /> <br />
-          We also had to do a ton of upfront work for peripheral stuff like
-          setting up the open source community on Github, Discord,
-          documentation, the server to enable free trials working out the box,
-          and the entire landing page that you see here.
+          We've invested significant effort in building a robust foundation that
+          understands the unique challenges of seasonal businesses. Our platform
+          includes comprehensive documentation, community support through our
+          Discord channel, and regular updates based on user feedback.
           <br /> <br />
-          Now that we have our foundations much more stable, we&apos;ll be
-          focusing on having more new features. Coming up next is simultaneous
-          file and code generation! This is only the beginning for PearAI, and
-          long term we hope to make the best AI code editor, and have it open
-          source for all.
-          <br /> <br />
-          You can view all of our past completed sprint boards{" "}
+          You can track our development progress and upcoming features on our
+          public GitHub repository{" "}
           <Link
-            href="https://github.com/orgs/trypear/projects?query=is%3Aclosed"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline underline-offset-4"
-          >
-            here
-          </Link>
-          , and you can also view most of the app commits{" "}
-          <Link
-            href="https://github.com/trypear/pearai-submodule/commits/main"
+            href="https://github.com/solomon-ai/projects"
             target="_blank"
             rel="noopener noreferrer"
             className="underline underline-offset-4"

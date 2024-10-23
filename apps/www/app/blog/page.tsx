@@ -1,13 +1,13 @@
 import PostCard from "@/components/blog/PostCard";
+import { posts } from "@/lib/blog/postData";
 import { constructMetadata } from "@/lib/utils";
 import { compareDesc } from "date-fns";
 import { Metadata } from "next";
-import { posts } from "@/lib/blog/postData";
 
 export const metadata: Metadata = constructMetadata({
   title: "Blog",
   description:
-    "Discover insightful articles and the latest updates on PearAI. Stay informed, inspired, and ahead with expert tips, trends, and guides.",
+    "Discover insightful articles and the latest updates on Solomon AI. Stay informed, inspired, and ahead with expert tips, trends, and guides.",
   canonical: "/blog",
 });
 

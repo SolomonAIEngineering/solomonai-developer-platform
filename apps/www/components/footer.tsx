@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { footerSections, socialMediaLinks } from "@/utils/constants";
 import Link from "next/link";
 import PearDarkLogo from "./ui/PearDark.svg";
@@ -13,8 +14,8 @@ export default function Footer() {
             <PearDarkLogo />
           </Link>
           <p className="mt-5 text-sm leading-[1.75] text-neutral-500 dark:text-neutral-400">
-            Speed up your development process by seamlessly integrating AI into
-            your workflow.
+            The open source financial workspace purpose-built for the unique
+            demands of cyclical businesses
           </p>
         </div>
 
@@ -45,7 +46,7 @@ export default function Footer() {
             Download directly from the{" "}
             <Link
               href="/pricing"
-              className="text-primary-700 underline-offset-1 hover:underline"
+              className="text-foreground underline-offset-1 hover:underline"
             >
               pricing page
             </Link>
@@ -73,7 +74,7 @@ export default function Footer() {
 
         {/* Copyright */}
         <span className="text-sm">
-          &copy; {new Date().getFullYear()} PearAI - All rights reserved.
+          &copy; {new Date().getFullYear()} Solomon AI - All rights reserved.
         </span>
       </div>
     </footer>

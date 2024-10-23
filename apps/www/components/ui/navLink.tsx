@@ -49,14 +49,20 @@ const Navigation: React.FC = () => {
       isExternal: true,
     },
     {
-      label: "Download",
+      label: "Pricing",
       path: "/pricing",
       isExternal: false,
       mobile: false,
     },
     {
+      label: "Uptime",
+      path: "https://solomon-ai.betteruptime.com/",
+      isExternal: true,
+      mobile: false,
+    },
+    {
       label: "Docs",
-      path: "/docs",
+      path: "https://engineering-docs.solomon-ai.app/",
       isExternal: false,
       mobile: false,
     },

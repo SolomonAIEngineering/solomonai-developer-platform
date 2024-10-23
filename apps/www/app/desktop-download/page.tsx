@@ -1,22 +1,19 @@
+import { DownloadPage } from "@/components/download";
 import PricingPage from "@/components/pricing";
 import { constructMetadata } from "@/lib/utils";
 import { createClient } from "@/utils/supabase/server";
 import { Metadata } from "next/types";
 
 export const metadata: Metadata = constructMetadata({
-  title: "Pricing",
-  description: "The pricing and download page for Solomon AI.",
-  canonical: "/pricing",
+  title: "Download",
+  description: "Download the desktop app.",
+  canonical: "/desktop-download",
 });
 
-export default async function Pricing() {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+export default async function Download() {
   return (
     <div className="md:pt-[5%]">
-      <PricingPage user={user} />
+      <DownloadPage />
     </div>
   );
 }

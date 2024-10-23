@@ -4,14 +4,14 @@ import { Metadata } from "next/types";
 
 export const metadata: Metadata = constructMetadata({
   title: "About",
-  description: "About PearAI",
+  description: "About Solomon AI",
   canonical: "/about",
 });
 
 export default function About() {
   return (
-    <>
+    <div className="py-[5%]">
       <AboutComponent />
-    </>
+    </div>
   );
 }

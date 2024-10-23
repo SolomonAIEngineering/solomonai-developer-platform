@@ -51,7 +51,10 @@ export default function Features() {
           </p>
           <p className="pt-6">
             To see all of our features, check out our{" "}
-            <Link className="text-primary-600" href="/docs">
+            <Link
+              className="text-primary-600"
+              href="https://engineering-docs.solomon-ai.app/"
+            >
               docs
             </Link>
             .
@@ -90,7 +93,7 @@ function SingleFeature(props: SingleFeatureProps) {
     <div className="m-4 flex flex-col items-center gap-6 min-[425px]:m-8 min-[425px]:items-start sm:m-12 lg:m-24 lg:max-w-full lg:flex-row lg:justify-center lg:gap-28">
       <div className="mb-6 flex w-full flex-col text-center lg:mb-0 lg:ml-1.5 lg:w-[450px] lg:text-left">
         <h4
-          className="whitespace-pre-line pb-8 text-2xl font-medium text-primary-700 lg:text-4xl"
+          className="whitespace-pre-line pb-8 text-2xl font-medium text-foreground lg:text-4xl"
           data-aos="fade-up"
         >
           {props.info.header}

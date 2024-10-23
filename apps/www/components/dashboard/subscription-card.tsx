@@ -194,7 +194,7 @@ export default function SubscriptionCard({
                             <a
                               href="/pricing"
                               target="_blank"
-                              className="transition-colors cursor-pointer text-primary-700 hover:text-primary-800"
+                              className="transition-colors cursor-pointer text-foreground hover:text-primary-800"
                             >
                               pricing page
                             </a>

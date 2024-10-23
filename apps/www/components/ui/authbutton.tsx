@@ -1,9 +1,9 @@
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
-import Link from "next/link";
-import { LogIn, LogOut, SquareArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { createClient } from "@/utils/supabase/server";
+import { LogIn, LogOut, SquareArrowRight } from "lucide-react";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,21 +27,21 @@ export default async function AuthButton() {
     <div className="flex items-center space-x-4">
       {error || !data?.user ? (
         <>
-          <Link href="/signin">
+          <Link href="https://app-business.solomon-ai.app/login">
             <Button variant="outline" className="hidden md:inline-flex">
               Sign in
             </Button>
           </Link>
-          <Link href="/signup">
+          <Link href="https://app-business.solomon-ai.app/login">
             <Button variant="outline">
-              Try PearAI
+              Try Solomon AI
               <SquareArrowRight className="mr-2 h-4 w-4" />
             </Button>
           </Link>
         </>
       ) : (
         <>
-          <Link href="/dashboard">
+          <Link href="https://app-business.solomon-ai.app/login">
             <Button variant="outline">Dashboard</Button>
           </Link>
           <DropdownMenu modal={false}>

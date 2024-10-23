@@ -20,6 +20,11 @@ module.exports = {
       },
     },
     extend: {
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
       fontFamily: {
         sans: ["var(--font-geist-sans)"],
         mono: ["var(--font-geist-mono)"],
@@ -51,8 +56,8 @@ module.exports = {
           900: "#262668",
         },
         primary: {
-          DEFAULT: "hsla(var(--primary), <alpha-value>)",
-          foreground: "hsla(var(--primary-foreground), <alpha-value>)",
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
           50: "hsla(var(--primary-50), <alpha-value>)",
           100: "hsla(var(--primary-100), <alpha-value>)",
           200: "hsla(var(--primary-200), <alpha-value>)",
@@ -175,11 +180,6 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -189,16 +189,90 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "fadein-opacity": {
-          "0%": { opacity: "0" },
-          "100%": { opacity: "1" },
+        jiggle: {
+          "0%": {
+            transform: "rotate(-4deg)",
+          },
+          "50%": {
+            transform: "rotate(4deg)",
+          },
+        },
+        "caret-blink": {
+          "0%,70%,100%": { opacity: "1" },
+          "20%,50%": { opacity: "0" },
+        },
+        scroll: {
+          to: {
+            transform: "translate(calc(-50% - 0.5rem))",
+          },
+        },
+        moveHorizontal: {
+          "0%": {
+            transform: "translateX(-50%) translateY(-10%)",
+          },
+          "50%": {
+            transform: "translateX(50%) translateY(10%)",
+          },
+          "100%": {
+            transform: "translateX(-50%) translateY(-10%)",
+          },
+        },
+        moveInCircle: {
+          "0%": {
+            transform: "rotate(0deg)",
+          },
+          "50%": {
+            transform: "rotate(180deg)",
+          },
+          "100%": {
+            transform: "rotate(360deg)",
+          },
+        },
+        moveVertical: {
+          "0%": {
+            transform: "translateY(-50%)",
+          },
+          "50%": {
+            transform: "translateY(50%)",
+          },
+          "100%": {
+            transform: "translateY(-50%)",
+          },
+        },
+        "webgl-scale-in-fade": {
+          "0%": {
+            opacity: "0",
+            transform: "scale(.7)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "scale(1)",
+          },
+        },
+        "open-scale-up-fade": {
+          "0%": {
+            opacity: "0",
+            transform: "scale(.98) translateY(5px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "scale(1) translateY(0)",
+          },
         },
       },
       animation: {
+        "animate-webgl-scale-in-fade": "webgl-scale-in-fade 1s ease-in-out",
+        "open-scale-up-fade": "open-scale-up-fade",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fadein-opacity": "fadein-opacity 0.6s ease-in-out",
-        spin: "spin .5s linear infinite",
+        "caret-blink": "caret-blink 1.25s ease-out infinite",
+        first: "moveVertical 30s ease infinite",
+        second: "moveInCircle 20s reverse infinite",
+        third: "moveInCircle 40s linear infinite",
+        fourth: "moveHorizontal 40s ease infinite",
+        fifth: "moveInCircle 20s ease infinite",
+        scroll:
+          "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
       },
     },
   },
@@ -225,12 +299,14 @@ module.exports = {
 
       colorList.forEach((color) => {
         shadeList.forEach((shade) => {
-          const colorValue = colors[color] && colors[color][shade];
+          const colorValue = colors?.[color]?.[shade];
           if (typeof colorValue === "string") {
             for (let i = 0; i <= 100; i += 5) {
-              utilities[`.shadow-inset-${color}-${shade}-${i}`] = {
+              utilities[
+                `.shadow-inset-${color}-${shade}-${i}` as keyof typeof utilities
+              ] = {
                 boxShadow: colorValue.includes("<alpha-value>")
-                  ? `inset 0 -1.5px 0 0 ${colorValue.replace("<alpha-value>", i / 100)}`
+                  ? `inset 0 -1.5px 0 0 ${colorValue.replace("<alpha-value>", (i / 100).toString())}`
                   : `inset 0 -1.5px 0 0 ${colorValue}`,
               };
             }

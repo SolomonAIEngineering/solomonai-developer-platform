@@ -1,19 +1,19 @@
 <a name="readme-top"></a>
 
 <div align="center">
-  <div align="center">
-    <img src="components/ui/PearHeroLogo.svg" alt="PearAI Logo" />
+  <div align="center" width="100%">
+      <img src="./logo.svg" width="128" alt="" />
   </div>
-  <h3 align="center">PearAI Landing Page</h3>
+  <h3 align="center">Solomon AI Landing Page</h3>
   <p align="center">
-    The Open Source AI-powered code editor
+    Your open-sourced financial workspace
     <br />
-    <a href="https://trypear.ai"><strong>Explore the Website »</strong></a>
+    <a href="https://solomon-ai.app"><strong>Explore the Website »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/trypear/pear-landing-page/issues">Report Bug</a>
+    <a href="https://github.com/SolomonAIEngineering/solomonai-developer-platform/issues">Report Bug</a>
     ·
-    <a href="https://github.com/trypear/pear-landing-page/issues">Request Feature</a>
+    <a href="https://github.com/SolomonAIEngineering/solomonai-developer-platform/issues">Request Feature</a>
   </p>
 </div>
 
@@ -29,11 +29,10 @@
   - [Environment Variables](#environment-variables-description)
 - [Usage](#usage)
 - [Contributing](#contributing)
-- [Contact](#contact)
 
 ## About The Project
 
-This is the landing page for [PearAI:](https://trypear.ai) the Open Source AI-powered code editor. This product is managed by [Nang](https://youtube.com/nang88) and [Pan](https://youtube.com/FryingPan).
+This is the landing page for [Soloomon AI:](https://solomon-ai.app) The Open Source Financial Workspace For Your Small Business. This product is managed by the Solomon AI Engineering Team
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -61,7 +60,7 @@ To get a local copy up and running follow these simple steps.
 
 1.  Clone the repo
     ```sh
-    git clone https://github.com/trypear/pear-landing-page.git
+    git clone https://github.com/SolomonAIEngineering/solomonai-developer-platform.git
     ```
 2.  Install NPM packages
     ```sh
@@ -120,15 +119,15 @@ If you have a suggestion that would make this better, please fork the repo and c
 
 1. Fork the repo
    ```sh
-   git clone https://github.com/trypear/pear-landing-page.git
+   git clone https://github.com/SolomonAIEngineering/solomonai-developer-platform.git
    ```
 2. Clone the repo
    ```sh
-   git clone https://github.com/<USERNAME>/pear-landing-page.git
+   git clone https://github.com/<USERNAME>/solomonai-developer-platform.git
    ```
 3. Navigate to the project directory
    ```sh
-   cd pear-landing-page
+   cd apps/www
    ```
 4. Create a new branch
    ```sh
@@ -141,12 +140,6 @@ If you have a suggestion that would make this better, please fork the repo and c
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Contact
-
-- Nang - [@youtube/nang88](https://youtube.com/nang88)
-- Pan - [@youtube/FryingPan](https://youtube.com/FryingPan)
-- [Discord Link](https://discord.com/invite/7QMraJUsQt)
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 [typescript]: https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white
@@ -157,4 +150,5 @@ If you have a suggestion that would make this better, please fork the repo and c
 [nextjs-url]: https://nextjs.org/
 [tailwindcss]: https://img.shields.io/badge/Tailwind_CSS-%231a202c.svg?style=for-the-badge&logo=tailwind-css&logoColor=white
 [tailwindcss-url]: https://tailwindcss.com/
+
 <!-- [discord]: https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=discord&logoColor=white -->

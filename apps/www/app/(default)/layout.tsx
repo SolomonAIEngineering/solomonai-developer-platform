@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 "use client";
 
 import { useEffect } from "react";
@@ -25,7 +26,7 @@ export default function DefaultLayout({
     <>
       <main className="grow">
         <PageIllustration />
-        {children}
+        <div className="py-[10%]">{children}</div>
       </main>
     </>
   );

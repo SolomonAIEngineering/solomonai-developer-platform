@@ -1,10 +1,10 @@
-import { PricingTierData } from "@/types/pricing";
 import {
   DiscordLogo,
   GitHubLogo,
   LinkedInLogo,
   TwitterLogo,
 } from "@/components/ui/icons";
+import { PricingTierData } from "@/types/pricing";
 
 export const TEST_MODE_ENABLED = ["true", "True", "TRUE"].includes(
   process.env.NEXT_PUBLIC_TEST_MODE_ENABLED ?? "",
@@ -33,78 +33,110 @@ export const STRIPE_PRICE_IDS = {
     ? NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID_TEST
     : NEXT_PUBLIC_STRIPE_ANNUAL_PRICE_ID,
 };
-
 export const PRICING_TIERS: {
   standard: PricingTierData[];
   enterprise: PricingTierData[];
 } = {
   standard: [
     {
-      title: "Intern",
-      price: "0",
+      title: "Professional",
+      price: "150",
+      prevPrice: "199",
       description:
-        "You can download PearAI directly, and use our free trial, or your own API key 🤓",
-      isFree: true,
-      index: 0,
-      features: ["free", "Community Discord server"],
-    },
-    {
-      title: "Junior Engineer",
-      price: "15",
-      prevPrice: "18",
-      description:
-        "Get the monthly subscription, and we'll take care of you. 😎",
+        "Perfect for businesses ready to optimize their financial operations with AI 📈",
       features: [
         "custom-standard",
-        "Full privacy: zero data retention policy with Anthropic",
-        "Direct customer support by the founders and contributors",
+        "AI-powered financial analysis",
+        "Seasonal forecasting engine",
+        "Cash flow optimization",
+        "Single business entity",
+        "Priority support",
         "Private Discord channel",
+        "Full data privacy with zero retention policy",
       ],
       buttonText: "Get Started",
+      priceId: STRIPE_PRICE_IDS.MONTHLY,
+      index: 0,
+    },
+    {
+      title: "Business",
+      price: "450",
+      prevPrice: "599",
+      description:
+        "Comprehensive solution for growing businesses with complex financial needs 🚀",
+      features: [
+        "Everything in Professional",
+        "Multi-entity support (up to 3)",
+        "Advanced market analytics",
+        "Custom AI model configuration",
+        "Dedicated success manager",
+        "Priority feature requests",
+        "Strategic quarterly reviews",
+        "Advanced data integration",
+      ],
+      buttonText: "Scale Up",
       priceId: STRIPE_PRICE_IDS.MONTHLY,
       index: 1,
     },
     {
-      title: "10x Engineer",
-      price: "10",
-      prevPrice: "14",
+      title: "Premium",
+      price: "999",
+      prevPrice: "1299",
       description:
-        "Pay one lump sum yearly, and you'll be treated like our VIP! 🤩",
+        "Advanced capabilities for businesses requiring sophisticated financial intelligence 🌟",
       features: [
-        "Everything from monthly",
-        "Priority for new feature requests",
-        "Early access to new features (e.g. o1-mini and o1-preview)",
+        "Everything in Business",
+        "Multi-entity support (up to 10)",
+        "Custom API integration",
+        "Advanced security features",
+        "24/7 priority support",
+        "Custom feature development",
+        "Advanced risk modeling",
+        "AI-powered stress testing",
       ],
-      buttonText: "Get Started",
+      buttonText: "Go Premium",
       priceId: STRIPE_PRICE_IDS.ANNUAL,
       index: 2,
     },
   ],
   enterprise: [
     {
-      title: "Monthly",
-      price: "32",
-      prevPrice: "35",
+      title: "Enterprise",
+      price: "5000",
+      prevPrice: "7500",
       description:
-        "Get the best deal for your business and increase the productivity of your team.",
+        "Enterprise-grade financial intelligence platform for large-scale operations",
       features: [
         "custom-enterprise",
-        "Full privacy: zero data retention policy with Anthropic",
-        "Centralized Billing and Dashboard",
-        "Direct customer support by the founders and contributors",
-        "Private Discord Channel",
+        "Unlimited entity support",
+        "Custom AI model development",
+        "Enterprise-grade security",
+        "Dedicated engineering team",
+        "Custom integration suite",
+        "Advanced compliance tools",
+        "White-label options",
+        "Custom SLA guarantees",
+        "Monthly strategy sessions",
       ],
-      buttonText: "Get Started",
+      buttonText: "Contact Sales",
       priceId: STRIPE_PRICE_IDS.MONTHLY,
       index: 0,
     },
     {
-      title: "Yearly",
-      price: "27",
-      prevPrice: "30",
-      description: "Pay one lump sum yearly for our highest priority tier.",
-      features: ["Everything from monthly", "Priority Customer Support"],
-      buttonText: "Get Started",
+      title: "Enterprise Plus",
+      price: "Custom",
+      description:
+        "Tailored solutions for industry leaders with specific requirements",
+      features: [
+        "Everything in Enterprise",
+        "Custom feature development",
+        "Dedicated AI research team",
+        "Industry-specific modeling",
+        "Custom compliance framework",
+        "Global deployment support",
+        "Executive quarterly reviews",
+      ],
+      buttonText: "Contact Sales",
       priceId: STRIPE_PRICE_IDS.ANNUAL,
       index: 1,
     },

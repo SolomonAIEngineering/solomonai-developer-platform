@@ -88,7 +88,7 @@ const updates: ChangelogEntry[] = [
     version: "🎉 v1.0.0",
     description: (
       <>
-        <p className="mb-4 text-lg font-semibold text-primary-700">
+        <p className="mb-4 text-lg font-semibold text-foreground">
           Welcome to the future of AI-assisted development
         </p>
         {/* <div className="relative w-20"> */}

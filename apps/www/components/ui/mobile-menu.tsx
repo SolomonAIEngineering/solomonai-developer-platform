@@ -1,9 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { Button } from "./button";
-import { LogIn, LogOut, Menu, Settings, SquareArrowRight } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Sheet,
   SheetContent,
@@ -11,16 +14,20 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { useTheme } from "next-themes";
-import { MoonStar, Sun } from "lucide-react";
 import { User } from "@supabase/supabase-js";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  LogIn,
+  LogOut,
+  Menu,
+  MoonStar,
+  Settings,
+  SquareArrowRight,
+  Sun,
+} from "lucide-react";
+import { useTheme } from "next-themes";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { Button } from "./button";
 
 export default function MobileMenu({
   user,
@@ -120,7 +127,10 @@ export default function MobileMenu({
                     </>
                   ) : (
                     <>
-                      <Link href="/signin" onClick={() => setIsOpen(false)}>
+                      <Link
+                        href="https://app-business.solomon-ai.app"
+                        onClick={() => setIsOpen(false)}
+                      >
                         <Button
                           variant="outline"
                           className="w-full justify-start"
@@ -156,7 +166,7 @@ export default function MobileMenu({
                           About
                         </MobileNavItem>
                         <MobileNavItem
-                          href="/docs"
+                          href="https://engineering-docs.solomon-ai.app/"
                           onClick={() => setIsOpen(false)}
                         >
                           Documentation
@@ -186,6 +196,18 @@ export default function MobileMenu({
                 </Accordion>
                 <MobileNavItem href="/pricing" onClick={() => setIsOpen(false)}>
                   Pricing
+                </MobileNavItem>
+                <MobileNavItem
+                  href="/desktop-download"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Download
+                </MobileNavItem>
+                <MobileNavItem
+                  href="https://solomon-ai.betteruptime.com/"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Uptime
                 </MobileNavItem>
               </ul>
             </nav>
