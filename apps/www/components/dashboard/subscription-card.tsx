@@ -86,7 +86,7 @@ export default function SubscriptionCard({
 
   if (!subscription) {
     return (
-      <Card className="flex h-full flex-col overflow-auto bg-gray-100/10 text-card-foreground">
+      <Card className="flex flex-col h-full overflow-auto bg-gray-100/10 text-card-foreground">
         <div className="grid gap-4">
           <CardHeader className="pb-4">
             <CardTitle className="text-xl font-semibold">
@@ -98,7 +98,7 @@ export default function SubscriptionCard({
               <p>You are currently not subscribed.</p>
             </div>
           </CardContent>
-          <CardFooter className="mt-8 pt-6">
+          <CardFooter className="pt-6 mt-8">
             <Button
               variant="outline"
               asChild
@@ -122,7 +122,7 @@ export default function SubscriptionCard({
           <div className="flex">
             <Badge
               variant="secondary"
-              className="border-primary-800 bg-primary-800/10 px-2 py-1 text-xs text-primary-800"
+              className="px-2 py-1 text-xs border-primary-800 bg-primary-800/10 text-primary-800"
             >
               Pro - {capitalizeInital(subscription.pricing_tier)}
             </Badge>
@@ -140,23 +140,23 @@ export default function SubscriptionCard({
                     <strong>
                       {usage?.percent_credit_used != null
                         ? `${Math.min(usage.percent_credit_used, 100)}%`
-                        : "Cannot find remaining percentage. Please contact PearAI support."}
+                        : "Cannot find remaining percentage. Please contact Solomon AI support."}
                     </strong>
                   )}
                 </p>
               </div>
               <Progress
                 value={usage.percent_credit_used}
-                className="mb-2 mt-2 h-2 w-full"
+                className="w-full h-2 mt-2 mb-2"
                 indicatorColor="bg-primary-800 bg-opacity-75"
               />
               <div className="flex justify-between">
                 <p className="text-sm text-muted-foreground">
                   {loading
                     ? "-"
-                    : `${Math.min(usage?.percent_credit_used ?? 0, 100)}% of PearAI Credits used`}
+                    : `${Math.min(usage?.percent_credit_used ?? 0, 100)}% of Solomon AI Credits used`}
                 </p>
-                <p className="text-right text-sm text-muted-foreground">
+                <p className="text-sm text-right text-muted-foreground">
                   Credits refill monthly
                 </p>
               </div>
@@ -246,14 +246,14 @@ export default function SubscriptionCard({
               </p>
             </div>
           </div>
-          <div className="mt-8 flex justify-between space-x-4">
+          <div className="flex justify-between mt-8 space-x-4">
             <div className="hidden space-x-2 sm:block">
               <Button variant="default" asChild>
                 <Link
                   href={DEFAULT_OPEN_APP_CALLBACK + "?" + openAppQueryParams}
                   target="_parent"
                 >
-                  Open PearAI
+                  Open Solomon AI
                 </Link>
               </Button>
             </div>
@@ -304,7 +304,7 @@ export default function SubscriptionCard({
           <div className="flex items-center">
             <Info className="inline text-muted-foreground" size={14} />
             <p className="ml-1.5 text-xs/6 text-muted-foreground">
-              Make sure PearAI is{" "}
+              Make sure Solomon AI is{" "}
               <Button
                 variant="link"
                 asChild

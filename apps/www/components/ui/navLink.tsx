@@ -40,7 +40,7 @@ const Navigation: React.FC = () => {
     { label: "About", path: "/about", isExternal: false },
     {
       label: "GitHub",
-      path: "https://github.com/trypear/pearai-app",
+      path: "https://github.com/SolomonAIEngineering/solomonai",
       isExternal: true,
     },
     {
@@ -75,7 +75,7 @@ const Navigation: React.FC = () => {
   ];
 
   return (
-    <nav className="flex w-full items-center justify-start md:justify-center">
+    <nav className="flex items-center justify-start w-full md:justify-center">
       <ul className="flex w-full items-center justify-start space-x-3.5 sm:space-x-6 md:justify-center">
         {navLinks.map((link) => (
           <li
