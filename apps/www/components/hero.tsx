@@ -12,13 +12,13 @@ const HeroTitle = ({ theme }: { theme: string }) => (
       {theme === "dark" ? (
         <PearDarkHeroLogo
           width="26"
-          alt="PearAI Logo"
+          alt="Solomon AI Logo"
           className="mb-4 mr-2 inline-flex"
         />
       ) : (
         <PearHeroLogo
           width="26"
-          alt="PearAI Logo"
+          alt="Solomon AI Logo"
           className="mb-4 mr-2 inline-flex"
         />
       )}
@@ -31,20 +31,20 @@ const HeroTitle = ({ theme }: { theme: string }) => (
         {theme === "dark" ? (
           <PearDarkHeroLogo
             width="20"
-            alt="PearAI Logo"
+            alt="Solomon AI Logo"
             className="mb-3 mr-2 inline-flex"
           />
         ) : (
           <PearHeroLogo
             width="20"
-            alt="PearAI Logo"
+            alt="Solomon AI Logo"
             className="mb-3 mr-2 inline-flex"
           />
         )}
         <span className="text-foreground">Solomon AI </span>
       </div>
       <span className="flex flex-col text-3xl">
-        <span>The Open Source</span> <span>Financial Workspace&#8209</span>
+        <span>The Open Source</span> <span>Financial Workspace</span>
       </span>
     </div>
   </>

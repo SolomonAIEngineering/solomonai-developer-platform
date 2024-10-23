@@ -83,7 +83,7 @@ export default function MobileMenu({
         >
           <div>
             <SheetHeader className="mb-4">
-              <SheetTitle className="text-center">PearAI Menu</SheetTitle>
+              <SheetTitle className="text-center">Solomon AI Menu</SheetTitle>
             </SheetHeader>
             <nav aria-label="Mobile menu">
               <ul className="space-y-1">
@@ -139,13 +139,16 @@ export default function MobileMenu({
                           Sign in
                         </Button>
                       </Link>
-                      <Link href="/signup" onClick={() => setIsOpen(false)}>
+                      <Link
+                        href="https://app-business.solomon-ai.app"
+                        onClick={() => setIsOpen(false)}
+                      >
                         <Button
                           variant="outline"
                           className="mt-4 w-full justify-start"
                         >
                           <SquareArrowRight className="mr-2 h-4 w-4" />
-                          Try PearAI
+                          Try Solomon AI
                         </Button>
                       </Link>
                     </>

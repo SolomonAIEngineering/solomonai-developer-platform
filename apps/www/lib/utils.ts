@@ -13,9 +13,9 @@ type MetadataProps = {
 };
 
 const defaultMetadata = {
-  title: "PearAI - Open Source AI Code Editor for Fast Development",
+  title: "Solomon AI - The Open Source Financial Workspace",
   description:
-    "PearAI is an Open-source AI-powered code editor with features like AI chat, inline prompts, and debugging to accelerate your coding process.",
+    "Solomon AI - The Open Source Financial Workspace purpose-build for the unique demans of cyclical businesses.",
 };
 
 export const normalizeDate = (dateString: string) => {
@@ -30,27 +30,23 @@ export const constructMetadata = ({
   ogImage = "/images/og-image.png",
 }: MetadataProps) => {
   return {
-    metadataBase: new URL("https://trypear.ai/"),
-    title: title ? `${title} - PearAI` : defaultMetadata.title,
+    metadataBase: new URL("https://solomon-ai.app/"),
+    title: title ? `${title} - Solomon AI` : defaultMetadata.title,
     description,
     keywords: [
-      "code editor",
-      "ai code editor",
+      "finanances",
+      "small business",
       "ai",
-      "pearai",
-      "open source code editor",
+      "solomon ai",
+      "financial workspace",
     ],
     alternates: {
       canonical,
     },
     authors: [
       {
-        name: "Nang",
-        url: "https://github.com/nang-dev",
-      },
-      {
-        name: "Duke Pan",
-        url: "https://github.com/Fryingpannn",
+        name: "Yoan Yomba",
+        url: "https://github.com/yoanyomba1234",
       },
     ],
     openGraph: {

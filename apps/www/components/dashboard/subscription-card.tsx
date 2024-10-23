@@ -140,7 +140,7 @@ export default function SubscriptionCard({
                     <strong>
                       {usage?.percent_credit_used != null
                         ? `${Math.min(usage.percent_credit_used, 100)}%`
-                        : "Cannot find remaining percentage. Please contact PearAI support."}
+                        : "Cannot find remaining percentage. Please contact Solomon AI support."}
                     </strong>
                   )}
                 </p>
@@ -154,7 +154,7 @@ export default function SubscriptionCard({
                 <p className="text-sm text-muted-foreground">
                   {loading
                     ? "-"
-                    : `${Math.min(usage?.percent_credit_used ?? 0, 100)}% of PearAI Credits used`}
+                    : `${Math.min(usage?.percent_credit_used ?? 0, 100)}% of Solomon AI Credits used`}
                 </p>
                 <p className="text-right text-sm text-muted-foreground">
                   Credits refill monthly
@@ -253,7 +253,7 @@ export default function SubscriptionCard({
                   href={DEFAULT_OPEN_APP_CALLBACK + "?" + openAppQueryParams}
                   target="_parent"
                 >
-                  Open PearAI
+                  Open Solomon AI
                 </Link>
               </Button>
             </div>
@@ -304,7 +304,7 @@ export default function SubscriptionCard({
           <div className="flex items-center">
             <Info className="inline text-muted-foreground" size={14} />
             <p className="ml-1.5 text-xs/6 text-muted-foreground">
-              Make sure PearAI is{" "}
+              Make sure Solomon AI is{" "}
               <Button
                 variant="link"
                 asChild
