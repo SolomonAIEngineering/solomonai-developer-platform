@@ -29,7 +29,7 @@ export default function FreeTrialCard({
           </CardTitle>
           <Badge
             variant="secondary"
-            className="px-2 py-1 text-xs border-primary-800 bg-primary-800/10 text-primary-800"
+            className="border-primary-800 bg-primary-800/10 px-2 py-1 text-xs text-primary-800"
           >
             Free Trial
           </Badge>
@@ -54,7 +54,7 @@ export default function FreeTrialCard({
             </div>
             <Progress
               value={usage.percent_credit_used}
-              className="w-full h-2 mt-2 mb-2"
+              className="mb-2 mt-2 h-2 w-full"
               indicatorColor="bg-primary-800 bg-opacity-75"
             />
             <div className="flex justify-between">
@@ -70,7 +70,7 @@ export default function FreeTrialCard({
               <p className="text-sm text-muted-foreground">Free Trial</p>
             </div>
           </div>
-          <div className="flex justify-between mt-8 space-x-4">
+          <div className="mt-8 flex justify-between space-x-4">
             <div className="hidden sm:block">
               <Button variant="outline" className="text-primary-800" asChild>
                 <Link
@@ -85,7 +85,7 @@ export default function FreeTrialCard({
               <Link href="/pricing">Subscribe Now</Link>
             </Button>
           </div>
-          <div className="flex items-center mt-1">
+          <div className="mt-1 flex items-center">
             <Info className="inline text-muted-foreground" size={14} />
             <p className="ml-1.5 text-xs/3 text-muted-foreground">
               Make sure Solomon AI is{" "}

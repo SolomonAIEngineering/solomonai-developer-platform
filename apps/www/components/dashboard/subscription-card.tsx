@@ -86,7 +86,7 @@ export default function SubscriptionCard({
 
   if (!subscription) {
     return (
-      <Card className="flex flex-col h-full overflow-auto bg-gray-100/10 text-card-foreground">
+      <Card className="flex h-full flex-col overflow-auto bg-gray-100/10 text-card-foreground">
         <div className="grid gap-4">
           <CardHeader className="pb-4">
             <CardTitle className="text-xl font-semibold">
@@ -98,7 +98,7 @@ export default function SubscriptionCard({
               <p>You are currently not subscribed.</p>
             </div>
           </CardContent>
-          <CardFooter className="pt-6 mt-8">
+          <CardFooter className="mt-8 pt-6">
             <Button
               variant="outline"
               asChild
@@ -122,7 +122,7 @@ export default function SubscriptionCard({
           <div className="flex">
             <Badge
               variant="secondary"
-              className="px-2 py-1 text-xs border-primary-800 bg-primary-800/10 text-primary-800"
+              className="border-primary-800 bg-primary-800/10 px-2 py-1 text-xs text-primary-800"
             >
               Pro - {capitalizeInital(subscription.pricing_tier)}
             </Badge>
@@ -147,7 +147,7 @@ export default function SubscriptionCard({
               </div>
               <Progress
                 value={usage.percent_credit_used}
-                className="w-full h-2 mt-2 mb-2"
+                className="mb-2 mt-2 h-2 w-full"
                 indicatorColor="bg-primary-800 bg-opacity-75"
               />
               <div className="flex justify-between">
@@ -156,7 +156,7 @@ export default function SubscriptionCard({
                     ? "-"
                     : `${Math.min(usage?.percent_credit_used ?? 0, 100)}% of Solomon AI Credits used`}
                 </p>
-                <p className="text-sm text-right text-muted-foreground">
+                <p className="text-right text-sm text-muted-foreground">
                   Credits refill monthly
                 </p>
               </div>
@@ -246,7 +246,7 @@ export default function SubscriptionCard({
               </p>
             </div>
           </div>
-          <div className="flex justify-between mt-8 space-x-4">
+          <div className="mt-8 flex justify-between space-x-4">
             <div className="hidden space-x-2 sm:block">
               <Button variant="default" asChild>
                 <Link

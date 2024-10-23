@@ -56,7 +56,7 @@ export default function MobileMenu({
     <li>
       <Link
         href={href}
-        className="block py-4 text-base font-medium rounded-md text-foreground"
+        className="block rounded-md py-4 text-base font-medium text-foreground"
         onClick={onClick}
       >
         {children}
@@ -74,7 +74,7 @@ export default function MobileMenu({
             className="rounded-md hover:bg-secondary-300/10"
             aria-label="Open menu"
           >
-            <Menu className="w-6 h-6" />
+            <Menu className="h-6 w-6" />
           </Button>
         </SheetTrigger>
         <SheetContent
@@ -90,8 +90,8 @@ export default function MobileMenu({
                 <div className="mb-4 space-y-4">
                   {user ? (
                     <>
-                      <div className="items-center hidden space-x-2">
-                        <Avatar className="w-8 h-8">
+                      <div className="hidden items-center space-x-2">
+                        <Avatar className="h-8 w-8">
                           <AvatarImage
                             src={user.user_metadata.avatar_url}
                             alt={user.user_metadata.full_name || "User avatar"}
@@ -107,21 +107,21 @@ export default function MobileMenu({
                       <Link href="/dashboard" onClick={() => setIsOpen(false)}>
                         <Button
                           variant="outline"
-                          className="justify-start w-full"
+                          className="w-full justify-start"
                         >
-                          <Settings className="w-4 h-4 mr-2" />
+                          <Settings className="mr-2 h-4 w-4" />
                           Dashboard
                         </Button>
                       </Link>
                       <Button
                         variant="outline"
-                        className="justify-start w-full"
+                        className="w-full justify-start"
                         onClick={() => {
                           handleSignOut();
                           setIsOpen(false);
                         }}
                       >
-                        <LogOut className="w-4 h-4 mr-2" />
+                        <LogOut className="mr-2 h-4 w-4" />
                         Sign out
                       </Button>
                     </>
@@ -133,18 +133,21 @@ export default function MobileMenu({
                       >
                         <Button
                           variant="outline"
-                          className="justify-start w-full"
+                          className="w-full justify-start"
                         >
-                          <LogIn className="w-4 h-4 mr-2" />
+                          <LogIn className="mr-2 h-4 w-4" />
                           Sign in
                         </Button>
                       </Link>
-                      <Link href="https://app-business.solomon-ai.app" onClick={() => setIsOpen(false)}>
+                      <Link
+                        href="https://app-business.solomon-ai.app"
+                        onClick={() => setIsOpen(false)}
+                      >
                         <Button
                           variant="outline"
-                          className="justify-start w-full mt-4"
+                          className="mt-4 w-full justify-start"
                         >
-                          <SquareArrowRight className="w-4 h-4 mr-2" />
+                          <SquareArrowRight className="mr-2 h-4 w-4" />
                           Try Solomon AI
                         </Button>
                       </Link>
@@ -212,22 +215,22 @@ export default function MobileMenu({
               </ul>
             </nav>
           </div>
-          <div className="pb-6 space-y-4 width-full">
+          <div className="width-full space-y-4 pb-6">
             <div className="width-full">
               {mounted ? (
                 <Button
                   variant="outline"
-                  className="justify-center w-full"
+                  className="w-full justify-center"
                   onClick={() => setTheme(theme === "light" ? "dark" : "light")}
                 >
                   {theme === "light" ? (
                     <>
-                      <Sun strokeWidth={1} className="w-5 h-5" />
+                      <Sun strokeWidth={1} className="h-5 w-5" />
                       Light
                     </>
                   ) : (
                     <>
-                      <MoonStar strokeWidth={1} className="w-5 h-5" />
+                      <MoonStar strokeWidth={1} className="h-5 w-5" />
                       Dark
                     </>
                   )}
