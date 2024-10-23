@@ -45,7 +45,7 @@ const Navigation: React.FC = () => {
     },
     {
       label: "Discord",
-      path: "https://discord.gg/AKy5FmqCkF",
+      path: "https://discord.gg/GkmmZyex",
       isExternal: true,
     },
     {

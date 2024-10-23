@@ -1,26 +1,26 @@
 "use client";
-import Link from "next/link";
-import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { signin, signinWithOAuth } from "@/app/(auth)/actions";
-import { Provider } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { GitHubLogo, GoogleLogoColored } from "@/components/ui/icons";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { SignInFormData, signInSchema } from "@/utils/form-schema";
-import { useSearchParams } from "next/navigation";
+import { GitHubLogo, GoogleLogoColored } from "@/components/ui/icons";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useToggle } from "@/hooks/useToggle";
+import { SignInFormData, signInSchema } from "@/utils/form-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Provider } from "@supabase/supabase-js";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 export default function SignIn() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -72,13 +72,13 @@ export default function SignIn() {
 
   return (
     <section className="relative">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="pb-12 pt-32 md:pb-20 md:pt-40">
-          <div className="md:pb-17 mx-auto max-w-3xl pb-10 text-center text-3xl lg:text-4xl">
+      <div className="max-w-6xl px-4 mx-auto sm:px-6">
+        <div className="pt-32 pb-12 md:pb-20 md:pt-40">
+          <div className="max-w-3xl pb-10 mx-auto text-3xl text-center md:pb-17 lg:text-4xl">
             <h1 className="h1">Welcome back</h1>
           </div>
 
-          <div className="mx-auto max-w-sm">
+          <div className="max-w-sm mx-auto">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -89,9 +89,9 @@ export default function SignIn() {
                 type="submit"
                 size="lg"
                 variant="authgroup"
-                className="relative flex w-full items-center rounded-md px-0"
+                className="relative flex items-center w-full px-0 rounded-md"
               >
-                <GoogleLogoColored className="text-white mx-1 h-4 w-4 shrink-0" />
+                <GoogleLogoColored className="w-4 h-4 mx-1 bg-background text-foreground shrink-0" />
                 <span className="">Sign in with Google</span>
               </Button>
             </form>
@@ -101,28 +101,28 @@ export default function SignIn() {
                 handleOAuthSignIn("github");
               }}
             >
-              <div className="-mx-3 flex flex-wrap">
-                <div className="mt-3 w-full px-3">
+              <div className="flex flex-wrap -mx-3">
+                <div className="w-full px-3 mt-3">
                   <Button
                     type="submit"
                     size="lg"
                     variant="authgroup"
-                    className="relative flex w-full items-center rounded-md px-0"
+                    className="relative flex items-center w-full px-0 rounded-md"
                   >
-                    <GitHubLogo className="mx-1 h-4 w-4 shrink-0 text-gray-700" />
+                    <GitHubLogo className="w-4 h-4 mx-1 text-gray-700 shrink-0" />
                     <span className="">Sign in with GitHub</span>
                   </Button>
                 </div>
               </div>
             </form>
-            <div className="my-6 flex items-center">
+            <div className="flex items-center my-6">
               <div
-                className="mr-3 grow border-t border-dotted border-gray-400"
+                className="mr-3 border-t border-gray-400 border-dotted grow"
                 aria-hidden="true"
               />
               <div className="text-gray-400">Or, sign in with your email</div>
               <div
-                className="ml-3 grow border-t border-dotted border-gray-400"
+                className="ml-3 border-t border-gray-400 border-dotted grow"
                 aria-hidden="true"
               />
             </div>
@@ -175,14 +175,14 @@ export default function SignIn() {
                     checked={isPasswordVisible}
                     onCheckedChange={togglePasswordVisibility}
                   />
-                  <span className="ml-2 cursor-pointer text-gray-600">
+                  <span className="ml-2 text-gray-600 cursor-pointer">
                     Show Password
                   </span>
                 </Label>
                 <div className="flex justify-between">
                   <Label className="flex items-center">
                     <Checkbox className="rounded" />
-                    <span className="ml-2 cursor-pointer text-gray-600">
+                    <span className="ml-2 text-gray-600 cursor-pointer">
                       Keep me signed in
                     </span>
                   </Label>

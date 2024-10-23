@@ -12,7 +12,7 @@ export const metadata: Metadata = constructMetadata({
 
 export default async function Download() {
   return (
-    <div className="md:pt-[5%]">
+    <div className="py-[5%]">
       <DownloadPage />
     </div>
   );

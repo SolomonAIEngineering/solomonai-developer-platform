@@ -4,11 +4,11 @@ import Link from "next/link";
 export default function PrivacyPolicyComponent() {
   return (
     <section>
-      <div className="relative max-w-6xl px-4 mx-auto sm:px-6">
+      <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         {/* Hero content */}
-        <div className="relative pt-32 pb-10 md:pb-16 md:pt-40">
+        <div className="relative pb-10 pt-32 md:pb-16 md:pt-40">
           {/* Section header */}
-          <div className="max-w-3xl pb-12 mx-auto text-left text-gray-800 md:pb-16">
+          <div className="mx-auto max-w-3xl pb-12 text-left text-gray-800 md:pb-16">
             <h1
               className="mb-24 text-6xl font-medium text-gray-900"
               data-aos="fade-up"
@@ -16,7 +16,7 @@ export default function PrivacyPolicyComponent() {
               Privacy Policy
             </h1>
 
-            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
+            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
               Introduction
             </h2>
             <div className="text-base font-normal">
@@ -38,7 +38,7 @@ export default function PrivacyPolicyComponent() {
               </p>
             </div>
 
-            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
+            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
               Applicability of this Privacy Policy
             </h2>
             <div className="space-y-4 text-base font-normal">
@@ -65,7 +65,7 @@ export default function PrivacyPolicyComponent() {
               </p>
             </div>
 
-            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
+            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
               Personal information we collect
             </h2>
             <div className="space-y-4 text-base font-normal">
@@ -114,7 +114,7 @@ export default function PrivacyPolicyComponent() {
               </p>
             </div>
 
-            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
+            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
               Information Solomon AI does not collect
             </h2>
             <div className="space-y-4 text-base font-normal">
@@ -132,10 +132,10 @@ export default function PrivacyPolicyComponent() {
               </p>
             </div>
 
-            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
+            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
               Lawful basis and purposes for processing your personal information
             </h2>
-            <div className="space-y-4 text-base font-normal thin-bullets">
+            <div className="thin-bullets space-y-4 text-base font-normal">
               <p>
                 If you are an individual in the United Kingdom or European
                 Economic Area (EEA), we collect and process information about
@@ -151,7 +151,7 @@ export default function PrivacyPolicyComponent() {
                 </strong>
               </p>
               <p>We use your personal information to:</p>
-              <ul className="pl-8 space-y-2 list-disc">
+              <ul className="list-disc space-y-2 pl-8">
                 <li>administer access to your accounts;</li>
                 <li>manage our customer relationships;</li>
                 <li>
@@ -164,7 +164,7 @@ export default function PrivacyPolicyComponent() {
                 <strong>Legitimate interests</strong>
               </p>
               <p>We use your personal information:</p>
-              <ul className="pl-8 space-y-2 list-disc">
+              <ul className="list-disc space-y-2 pl-8">
                 <li>
                   to improve and personalize your experience with us and our
                   Apps and to tailor communications to you;
@@ -210,7 +210,7 @@ export default function PrivacyPolicyComponent() {
                 <strong>Consent </strong>
               </p>
               <p>We may rely on your consent:</p>
-              <ul className="pl-8 space-y-2 list-disc">
+              <ul className="list-disc space-y-2 pl-8">
                 <li>
                   where you have expressly indicated to us your consent to the
                   processing of your personal information (e.g. where you
@@ -234,10 +234,10 @@ export default function PrivacyPolicyComponent() {
               </p>
             </div>
 
-            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
+            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
               How Solomon AI uses and protects your personal information
             </h2>
-            <div className="space-y-4 text-base font-normal thin-bullets">
+            <div className="thin-bullets space-y-4 text-base font-normal">
               <p>
                 <strong>Sharing your information</strong>
               </p>
@@ -277,7 +277,7 @@ export default function PrivacyPolicyComponent() {
                 our behalf. For instance, we currently use the following service
                 providers who will handle your personal information:
               </p>
-              <ul className="pl-8 space-y-2 list-disc">
+              <ul className="list-disc space-y-2 pl-8">
                 <li>Digital Ocean - cloud data hosting</li>
                 <li>Cloudflare - cloud data hosting</li>
 
@@ -316,7 +316,7 @@ export default function PrivacyPolicyComponent() {
               </p>
             </div>
 
-            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
+            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
               Cross-border transfer of personal information
             </h2>
             <div className="space-y-4 text-base font-normal">
@@ -345,7 +345,7 @@ export default function PrivacyPolicyComponent() {
               </p>
             </div>
 
-            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
+            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
               Solomon AI communications with you
             </h2>
             <div className="space-y-4 text-base font-normal">
@@ -370,10 +370,10 @@ export default function PrivacyPolicyComponent() {
               </p>
             </div>
 
-            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
+            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
               Your choices
             </h2>
-            <div className="space-y-4 text-base font-normal thin-bullets">
+            <div className="thin-bullets space-y-4 text-base font-normal">
               <p>
                 In this section, we describe the rights and choices available to
                 all users.
@@ -400,7 +400,7 @@ export default function PrivacyPolicyComponent() {
                 activity and device data collected through our website, which we
                 have summarized below:
               </p>
-              <ul className="pl-8 space-y-2 list-disc">
+              <ul className="list-disc space-y-2 pl-8">
                 <li>
                   Blocking cookies in your browser. Most browsers let you remove
                   or reject cookies, including cookies used for interest-based
@@ -415,7 +415,7 @@ export default function PrivacyPolicyComponent() {
                   Use the following links to learn more about how to control
                   cookies and online tracking through your browser:
                 </p>
-                <ul className="pl-8 space-y-2 font-medium text-gray-900 list-disc">
+                <ul className="list-disc space-y-2 pl-8 font-medium text-gray-900">
                   <li>
                     <Link
                       href="https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop"
@@ -527,7 +527,7 @@ export default function PrivacyPolicyComponent() {
                   opt-out tools. Some of these providers, and links to their
                   opt-out tools, are:
                 </li>
-                <ul className="pl-8 space-y-2 list-disc">
+                <ul className="list-disc space-y-2 pl-8">
                   <li>
                     <Link
                       href="https://adssettings.google.com/"
@@ -551,7 +551,7 @@ export default function PrivacyPolicyComponent() {
                   information for interest-based advertising by participating
                   companies:
                 </li>
-                <ul className="pl-8 space-y-2 list-disc">
+                <ul className="list-disc space-y-2 pl-8">
                   <li>
                     <Link
                       href="https://optout.aboutads.info/"
@@ -580,10 +580,10 @@ export default function PrivacyPolicyComponent() {
               </p>
             </div>
 
-            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
+            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
               Global privacy practices and your rights
             </h2>
-            <div className="space-y-4 text-base font-normal thin-bullets">
+            <div className="thin-bullets space-y-4 text-base font-normal">
               <p>
                 Information we collect may be stored and processed in the United
                 States in accordance with this Privacy Policy but we understand
@@ -591,7 +591,7 @@ export default function PrivacyPolicyComponent() {
                 and rights with regard to their privacy. For all App visitors
                 and users, no matter their country of location, we will:
               </p>
-              <ul className="pl-8 space-y-2 list-disc">
+              <ul className="list-disc space-y-2 pl-8">
                 <li>
                   provide clear methods of unambiguous, informed consent when we
                   do collect your personal information and where required by
@@ -618,7 +618,7 @@ export default function PrivacyPolicyComponent() {
               <p>
                 Additional rights that may apply to you in certain instances:
               </p>
-              <ul className="pl-8 space-y-2 list-disc">
+              <ul className="list-disc space-y-2 pl-8">
                 <li>
                   Right of data portability (if our processing is based on
                   consent or a contract and the processing carried out by
@@ -667,7 +667,7 @@ export default function PrivacyPolicyComponent() {
               </p>
             </div>
 
-            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
+            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
               Data retention and deletion
             </h2>
             <div className="space-y-4 text-base font-normal">
@@ -708,7 +708,7 @@ export default function PrivacyPolicyComponent() {
               </p>
             </div>
 
-            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
+            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
               Contacting Solomon AI About Your Privacy
             </h2>
             <div className="space-y-4 text-base font-normal">
@@ -749,7 +749,7 @@ export default function PrivacyPolicyComponent() {
               </p>
             </div>
 
-            <h2 className="text-3xl font-medium text-gray-900 mb-7 mt-14">
+            <h2 className="mb-7 mt-14 text-3xl font-medium text-gray-900">
               Privacy policy changes
             </h2>
             <div className="space-y-4 text-base font-normal">

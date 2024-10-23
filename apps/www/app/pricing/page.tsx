@@ -15,7 +15,7 @@ export default async function Pricing() {
     data: { user },
   } = await supabase.auth.getUser();
   return (
-    <div className="md:pt-[5%]">
+    <div className="py-[5%]">
       <PricingPage user={user} />
     </div>
   );

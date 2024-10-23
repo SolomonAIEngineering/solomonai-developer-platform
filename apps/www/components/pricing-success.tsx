@@ -14,18 +14,18 @@ export default function PricingSuccess() {
 
   return (
     <section className="relative">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="pb-12 pt-32 md:pb-20 md:pt-40">
+      <div className="max-w-6xl px-4 mx-auto sm:px-6">
+        <div className="pt-32 pb-12 md:pb-20 md:pt-40">
           {/* Page header */}
-          <div className="md:pb-15 mx-auto max-w-3xl pb-10 text-center text-2xl md:text-3xl lg:text-4xl">
-            <h1 className="h1 leading-tight">
+          <div className="max-w-3xl pb-10 mx-auto text-2xl text-center md:pb-15 md:text-3xl lg:text-4xl">
+            <h1 className="leading-tight h1">
               Thank you for subscribing to Solomon AI!
             </h1>
           </div>
-          <div className="mx-auto max-w-xl">
+          <div className="max-w-xl mx-auto">
             <div className="flex items-center">
               <div
-                className="mr-3 grow border-t border-dotted border-gray-700"
+                className="mr-3 border-t border-gray-700 border-dotted grow"
                 aria-hidden="true"
               ></div>
               <div className="text-center text-gray-700">
@@ -40,16 +40,16 @@ export default function PricingSuccess() {
                 .
               </div>
               <div
-                className="ml-3 grow border-t border-dotted border-gray-700"
+                className="ml-3 border-t border-gray-700 border-dotted grow"
                 aria-hidden="true"
               ></div>
             </div>
-            <div className="-mx-3 mt-11 flex flex-wrap">
+            <div className="flex flex-wrap -mx-3 mt-11">
               <div className="w-full px-3 text-center">
                 <Button
                   size={"lg"}
                   onClick={handleClick}
-                  className="w-full bg-primary-700 text-white-main hover:bg-primary-800 hover:shadow-sm"
+                  className="w-full bg-background text-foreground hover:bg-primary-800 hover:shadow-sm"
                 >
                   Go to dashboard
                 </Button>

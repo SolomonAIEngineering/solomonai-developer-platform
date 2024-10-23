@@ -10,7 +10,7 @@ export const TEST_MODE_ENABLED = ["true", "True", "TRUE"].includes(
   process.env.NEXT_PUBLIC_TEST_MODE_ENABLED ?? "",
 );
 
-export const CONTACT_EMAIL = "pear@trypear.ai";
+export const CONTACT_EMAIL = "engineering@solomon-ai.co";
 
 const NEXT_PUBLIC_STRIPE_WAITLIST_PRICE_ID = "price_1PZ9X608N4O93LU5yqMbGDtu";
 const NEXT_PUBLIC_STRIPE_WAITLIST_PRICE_ID_TEST =
@@ -166,7 +166,7 @@ export const footerSections = [
     links: [
       {
         text: "Documentation",
-        href: "/docs",
+        href: "https://engineering-docs.solomon-ai.app/",
       },
       {
         text: "Pricing",
@@ -192,11 +192,11 @@ export const footerSections = [
       },
       {
         text: "Email",
-        href: "mailto:pear@trypear.ai",
+        href: "mailto:engineering@solomon-ai.co",
       },
       {
         text: "Discord",
-        href: "https://discord.gg/7QMraJUsQt",
+        href: "https://discord.gg/GkmmZyex",
         target: "_blank",
       },
     ],
@@ -206,18 +206,18 @@ export const footerSections = [
 export const socialMediaLinks = [
   {
     icon: GitHubLogo,
-    link: "https://github.com/trypear/pearai-app",
+    link: "https://github.com/SolomonAIEngineering/solomonai/tree/main",
   },
-  {
-    icon: DiscordLogo,
-    link: "https://discord.gg/AKy5FmqCkF",
-  },
-  {
-    icon: TwitterLogo,
-    link: "https://x.com/trypearai",
-  },
-  {
-    icon: LinkedInLogo,
-    link: "https://www.linkedin.com/company/trypearai",
-  },
+  // {
+  //   icon: DiscordLogo,
+  //   link: "https://discord.gg/GkmmZyex",
+  // },
+  // {
+  //   icon: TwitterLogo,
+  //   link: "https://x.com/trypearai",
+  // },
+  // {
+  //   icon: LinkedInLogo,
+  //   link: "https://www.linkedin.com/company/trypearai",
+  // },
 ];

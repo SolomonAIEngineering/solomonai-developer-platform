@@ -18,7 +18,7 @@ export default function TryPear() {
             Solomon AI is built by developers for developers. Join our vibrant
             community and help shape the future of financial technology.{" "}
             <Link
-              href="https://discord.gg/7QMraJUsQt"
+              href="https://discord.gg/GkmmZyex"
               className="font-medium text-foreground hover:text-primary-800"
               target="_blank"
               rel="noopener noreferrer"

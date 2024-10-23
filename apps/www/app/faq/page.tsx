@@ -18,7 +18,7 @@ export const metadata: Metadata = constructMetadata({
 
 const FAQ: React.FC = () => {
   return (
-    <>
+    <div className="py-[5%]">
       <section className="mx-auto mt-36 flex w-full flex-col items-center px-4">
         <div className="mb-16 text-center">
           <h2
@@ -36,7 +36,7 @@ const FAQ: React.FC = () => {
               className="underline"
               rel="noopener noreferrer"
               target="_blank"
-              href="https://discord.gg/AKy5FmqCkF"
+              href="https://discord.gg/GkmmZyex"
             >
               Discord
             </Link>
@@ -68,7 +68,7 @@ const FAQ: React.FC = () => {
                 rel="noopener noreferrer"
                 className="underline"
                 target="_blank"
-                href="https://engineering-docs.solomon-ai.app//contributors"
+                href="https://github.com/SolomonAIEngineering/solomonai/blob/main/.github/CONTRIBUTING.md"
               >
                 Contributing 101
               </Link>
@@ -77,7 +77,7 @@ const FAQ: React.FC = () => {
           </AccordionItem>
         </Accordion>
       </section>
-    </>
+    </div>
   );
 };
 
@@ -104,8 +104,7 @@ const faqData: FAQItem[] = [
         AI Model Flexibility: Unlike traditional financial software, Solomon AI
         leverages advanced AI models to provide dynamic, adaptive solutions for
         seasonal businesses. Our platform can integrate with various AI
-        providers, allowing businesses to use their preferred models or API
-        keys. <br />
+        providers. <br />
         <br />
         Enhanced Business Context: Using RAG (Retrieval Augmented Generation),
         Solomon AI understands your business's unique seasonal patterns and
@@ -187,12 +186,12 @@ const faqData: FAQItem[] = [
     answer: (
       <p>
         We take data security seriously. All financial analysis and processing
-        occurs on our(
+        occurs on our {""}(
         <Link
           target="_blank"
           rel="noopener noreferrer"
           className="underline underline-offset-4"
-          href="https://github.com/solomon-ai/core"
+          href="https://github.com/orgs/SolomonAIEngineering/repositories"
         >
           backend services
         </Link>

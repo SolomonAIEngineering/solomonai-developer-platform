@@ -1,8 +1,8 @@
+import { posts } from "@/lib/blog/postData";
 import { cn, constructMetadata, normalizeDate } from "@/lib/utils";
 import { format, parseISO } from "date-fns";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { posts } from "@/lib/blog/postData";
 
 export const generateStaticParams = async () =>
   posts.map((post) => ({ slug: post.url.split("/").pop() }));
@@ -26,7 +26,7 @@ const PostLayout = ({ params }: { params: { slug: string } }) => {
   if (!post) notFound();
 
   return (
-    <>
+    <div className="py-[5%]">
       <article className="mx-auto max-w-2xl px-4 py-8 pt-24 sm:px-6 sm:pt-32 md:max-w-3xl lg:max-w-4xl">
         <div className="mb-8 text-center">
           <time
@@ -99,7 +99,7 @@ const PostLayout = ({ params }: { params: { slug: string } }) => {
           }),
         }}
       />
-    </>
+    </div>
   );
 };
 

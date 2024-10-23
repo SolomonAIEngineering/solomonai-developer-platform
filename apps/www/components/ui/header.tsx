@@ -9,9 +9,11 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/utils/supabase/server";
+import { List } from "@radix-ui/react-navigation-menu";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ComponentPropsWithoutRef, ReactNode, forwardRef } from "react";
+import LogoIcon from "../logo-icon";
 import AuthButton from "./authbutton";
 import DarkModeToggle from "./darkmode-toggle";
 import MobileMenu from "./mobile-menu";
@@ -65,7 +67,7 @@ const ListItem = forwardRef<
         {...props}
       >
         <div className="text-sm font-medium leading-none">{title}</div>
-        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+        <p className="text-sm leading-snug line-clamp-2 text-muted-foreground">
           {children}
         </p>
       </Link>
@@ -89,25 +91,26 @@ export default async function Header() {
   };
 
   return (
-    <header className="fixed left-0 right-0 top-0 z-50 p-3 transition-all duration-300 ease-in-out">
-      <div className="mx-auto max-w-6xl">
+    <header className="fixed top-0 left-0 right-0 z-50 p-3 transition-all duration-300 ease-in-out">
+      <div className="max-w-6xl mx-auto">
         <nav
           // eslint-disable-next-line prettier/prettier
-          className="rounded-full border border-border/50 bg-background shadow-md transition-all duration-300 ease-in-out"
+          className="transition-all duration-300 ease-in-out border rounded-full shadow-md border-border/50 bg-background"
           aria-label="Main navigation"
         >
           <div className="px-4 sm:px-6 lg:px-8">
-            <div className="flex h-16 items-center justify-between">
+            <div className="flex items-center justify-between h-16">
               <div className="flex items-center">
                 <Link
                   href="/"
-                  className="flex flex-shrink-0 items-center"
+                  className="flex items-center flex-shrink-0"
                   aria-label="Solomon AI Home"
                 >
-                  <PearGreenLogo />
-                  {/* <div className="ml-2 h4">Solomon AI</div> */}
+                  {/* <PearGreenLogo /> */}
+                  {/* <LogoIcon /> */}
+                  <div className="ml-2 font-bold h6">Solomon AI</div>
                 </Link>
-                <nav className="ml-10 hidden md:block" aria-label="Main menu">
+                <nav className="hidden ml-10 md:block" aria-label="Main menu">
                   <NavigationMenu>
                     <NavigationMenuList className="space-x-1">
                       <DropdownNavItem trigger="Resources">
@@ -124,6 +127,18 @@ export default async function Header() {
                           </ListItem>
                           <ListItem href="/changelog" title="Changelog">
                             See what&apos;s new in Solomon AI
+                          </ListItem>
+                          <ListItem
+                            href="https://developer-platform.solomon-ai.app"
+                            title="Developer Platform"
+                          >
+                            Learn how to build on Solomon AI
+                          </ListItem>
+                          <ListItem
+                            href="https://lead.solomon-ai.app"
+                            title="Consulting Services"
+                          >
+                            Learn about our consulting services
                           </ListItem>
                         </ul>
                       </DropdownNavItem>
@@ -145,7 +160,7 @@ export default async function Header() {
                   </NavigationMenu>
                 </nav>
               </div>
-              <div className="hidden items-center space-x-4 md:flex">
+              <div className="items-center hidden space-x-4 md:flex">
                 <AuthButton />
                 <DarkModeToggle />
               </div>

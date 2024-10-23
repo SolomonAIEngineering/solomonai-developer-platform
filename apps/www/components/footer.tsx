@@ -43,12 +43,12 @@ export default function Footer() {
         <div>
           <h5 className="font-semibold">Download</h5>
           <p className="mt-4 text-sm text-neutral-500 dark:text-neutral-400">
-            Download directly from the{" "}
+            Download the{" "}
             <Link
-              href="/pricing"
+              href="/desktop-download"
               className="text-foreground underline-offset-1 hover:underline"
             >
-              pricing page
+              desktop app directly
             </Link>
             .
           </p>

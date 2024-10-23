@@ -110,35 +110,35 @@ const PricingTier: React.FC<ExtendedPricingTierProps> = ({
   };
 
   const featureRowDescription = (feature: string) => {
-    if (feature?.startsWith("custom-standard")) {
-      return (
-        <div className="flex items-center">
-          <span>
-            Monthly refill of PearAI Credits for market-leading AI models
-            <PearCreditsTooltip type="standard" />
-          </span>
-        </div>
-      );
-    } else if (feature?.startsWith("free")) {
-      return (
-        <div className="flex items-center">
-          <span>
-            Use our free trial, your own API key, or local models
-            <PearCreditsTooltip type="free" />
-          </span>
-        </div>
-      );
-    } else if (feature?.startsWith("custom-enterprise")) {
-      return (
-        <div className="flex items-center">
-          <span>
-            Monthly refill of increased PearAI Credits for market-leading AI
-            models
-            <PearCreditsTooltip type="enterprise" />
-          </span>
-        </div>
-      );
-    }
+    // if (feature?.startsWith("custom-standard")) {
+    //   return (
+    //     <div className="flex items-center">
+    //       <span>
+    //         Monthly refill of PearAI Credits for market-leading AI models
+    //         <PearCreditsTooltip type="standard" />
+    //       </span>
+    //     </div>
+    //   );
+    // } else if (feature?.startsWith("free")) {
+    //   return (
+    //     <div className="flex items-center">
+    //       <span>
+    //         Use our free trial, your own API key, or local models
+    //         <PearCreditsTooltip type="free" />
+    //       </span>
+    //     </div>
+    //   );
+    // } else if (feature?.startsWith("custom-enterprise")) {
+    //   return (
+    //     <div className="flex items-center">
+    //       <span>
+    //         Monthly refill of increased PearAI Credits for market-leading AI
+    //         models
+    //         <PearCreditsTooltip type="enterprise" />
+    //       </span>
+    //     </div>
+    //   );
+    // }
     return feature;
   };
   const [buttonWidth, setButtonWidth] = useState<number | null>(null);
@@ -173,7 +173,7 @@ const PricingTier: React.FC<ExtendedPricingTierProps> = ({
     <Card
       className={`flex h-full w-full flex-col ${index === 1 && "from-primary-600/5 ring-primary-900/40 dark:from-primary-600/5 dark:ring-primary-600/20"}`}
     >
-      <div className="flex h-full w-full flex-col">
+      <div className="flex flex-col w-full h-full">
         <CardHeader className="flex-grow-0 px-6 py-6 pb-0">
           <CardTitle className="text-2xl leading-6 text-foreground">
             {title}
@@ -188,7 +188,7 @@ const PricingTier: React.FC<ExtendedPricingTierProps> = ({
             {!isFree && description}
           </p>
         </CardHeader>
-        <CardContent className="mt-5 flex flex-grow flex-col px-6">
+        <CardContent className="flex flex-col flex-grow px-6 mt-5">
           {!isFree ? (
             <div className="flex flex-col items-start justify-center">
               <p
@@ -221,7 +221,7 @@ const PricingTier: React.FC<ExtendedPricingTierProps> = ({
                 Free
               </p>
               <p
-                className="sm text-base text-gray-400"
+                className="text-base text-gray-400 sm"
                 aria-label="Tagline: Start coding"
               >
                 Free requests out of the box, no credit card required.
@@ -230,7 +230,7 @@ const PricingTier: React.FC<ExtendedPricingTierProps> = ({
           )}
           {features && (
             <ul
-              className="mt-5 w-full"
+              className="w-full mt-5"
               aria-label={`Features of ${title} plan`}
             >
               {features.map((feature, index) => (
@@ -239,7 +239,7 @@ const PricingTier: React.FC<ExtendedPricingTierProps> = ({
                   className="flex items-center py-2 text-gray-600"
                 >
                   <Check
-                    className="mr-3 h-6 w-6 flex-shrink-0 text-foreground"
+                    className="flex-shrink-0 w-6 h-6 mr-3 text-foreground"
                     aria-hidden="true"
                   />
                   {featureRowDescription(feature)}
@@ -255,10 +255,10 @@ const PricingTier: React.FC<ExtendedPricingTierProps> = ({
               check back later. If you have concerns or questions, please
               contact{" "}
               <Link
-                href={`mailto:pear@trypear.ai`}
+                href={`mailto:engineering@solomon-ai.co`}
                 className="font-medium text-gray-900 underline"
               >
-                pear@trypear.ai
+                engineering@solomon-ai.co
               </Link>
               .
             </span>
@@ -395,9 +395,9 @@ const PricingPage: React.FC<PricingPageProps> = ({ user }) => {
       aria-labelledby="pricing-heading"
     >
       <div className="absolute top-0 z-[-1] mt-[-35px] h-[140px] w-full bg-primary-800/30 blur-3xl"></div>
-      <div className="mx-auto max-w-7xl px-8 sm:px-6 lg:px-20">
+      <div className="px-8 mx-auto max-w-7xl sm:px-6 lg:px-20">
         <div className="flex flex-col items-center space-y-6 sm:space-y-8 md:space-y-6 lg:space-y-6">
-          <header className="mx-auto mt-16 max-w-6xl space-y-4 text-center sm:mt-0 sm:space-y-6">
+          <header className="max-w-6xl mx-auto mt-16 space-y-4 text-center sm:mt-0 sm:space-y-6">
             <h1
               id="pricing-heading"
               className="mt-8 text-4xl font-medium leading-tight sm:text-5xl md:text-5xl lg:text-5xl"
@@ -412,16 +412,16 @@ const PricingPage: React.FC<PricingPageProps> = ({ user }) => {
             defaultValue="standard"
             className="mt-[20px] flex w-full flex-col items-center"
           >
-            <TabsList className="h-full rounded-full bg-gray-300/20 px-2 py-2 ring-1 ring-gray-300/60 dark:bg-gray-100/10 dark:ring-gray-100/40">
+            <TabsList className="h-full px-2 py-2 rounded-full bg-gray-300/20 ring-1 ring-gray-300/60 dark:bg-gray-100/10 dark:ring-gray-100/40">
               <TabsTrigger
                 value="standard"
-                className="w-[135px] rounded-full px-4 py-2 text-white-main data-[state=active]:bg-primary-800"
+                className="w-[135px] rounded-full px-4 py-2 bg-background text-foreground data-[state=active]:bg-primary-800"
               >
                 Standard
               </TabsTrigger>
               <TabsTrigger
                 value="enterprise"
-                className="ml-[6px] w-[135px] rounded-full px-4 py-2 text-white-main data-[state=active]:bg-primary-800"
+                className="ml-[6px] w-[135px] rounded-full px-4 py-2 bg-background text-foreground data-[state=active]:bg-primary-800"
               >
                 Enterprise
               </TabsTrigger>
@@ -431,8 +431,8 @@ const PricingPage: React.FC<PricingPageProps> = ({ user }) => {
               className="w-full space-y-6 sm:space-y-8 md:space-y-6 lg:space-y-6"
             >
               <div className="mt-[20px] flex w-full items-center justify-center rounded-md bg-gray-300/20 bg-gradient-to-l from-primary-800/[0.15] via-gray-100/10 to-transparent to-60% px-6 py-3.5 ring-1 ring-gray-300/60 dark:bg-gray-100/10 dark:ring-gray-100/40">
-                <div className="flex w-full items-center justify-between rounded-md">
-                  <p className="block w-max items-center justify-start md:flex">
+                <div className="flex items-center justify-between w-full rounded-md">
+                  <p className="items-center justify-start block w-max md:flex">
                     <span className="text-foreground dark:text-primary-800">
                       Be the early bird and get a discount
                     </span>
@@ -442,7 +442,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ user }) => {
                     </span>
                   </p>
 
-                  <p className="block w-max items-center justify-end text-right md:flex">
+                  <p className="items-center justify-end block text-right w-max md:flex">
                     <strong className="text-lg text-primary-900 dark:text-gray-900">
                       20-30% off
                     </strong>
@@ -471,8 +471,8 @@ const PricingPage: React.FC<PricingPageProps> = ({ user }) => {
               className="w-full space-y-6 sm:space-y-8 md:space-y-6 lg:space-y-6"
             >
               <div className="mt-[20px] flex w-full items-center justify-center rounded-md bg-gray-300/20 bg-gradient-to-l from-primary-800/[0.15] via-gray-100/10 to-transparent to-60% px-6 py-3.5 ring-1 ring-gray-300/60 dark:bg-gray-100/10 dark:ring-gray-100/40">
-                <div className="flex w-full items-center justify-between rounded-md">
-                  <p className="block w-max items-center justify-start md:flex">
+                <div className="flex items-center justify-between w-full rounded-md">
+                  <p className="items-center justify-start block w-max md:flex">
                     <span className="text-foreground dark:text-primary-800">
                       Be the early bird and get a discount
                     </span>
@@ -482,7 +482,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ user }) => {
                     </span>
                   </p>
 
-                  <p className="block w-max items-center justify-end text-right md:flex">
+                  <p className="items-center justify-end block text-right w-max md:flex">
                     <strong className="text-lg text-primary-900 dark:text-gray-900">
                       20-30% off
                     </strong>
@@ -515,7 +515,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ user }) => {
                 <p className="text-base text-gray-400 sm:text-lg md:text-xl">
                   Interested in these plans?
                   <button
-                    className="ml-2 font-semibold text-foreground transition-colors hover:text-primary-800"
+                    className="ml-2 font-semibold transition-colors text-foreground hover:text-primary-800"
                     aria-label="Contact us for custom plans"
                     onClick={() => {
                       navigator.clipboard.writeText(CONTACT_EMAIL);
@@ -574,7 +574,7 @@ export const PearCreditsTooltip = ({ type }: { type: string }) => {
                 <br /> <br />
                 Afraid of running out of credits? You can always contact{" "}
                 <a
-                  className="cursor-pointer text-foreground transition-colors hover:text-primary-800"
+                  className="transition-colors cursor-pointer text-foreground hover:text-primary-800"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigator.clipboard.writeText(CONTACT_EMAIL);

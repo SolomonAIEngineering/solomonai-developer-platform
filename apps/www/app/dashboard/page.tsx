@@ -1,7 +1,7 @@
 import DashboardPage from "@/components/dashboard";
 import { getUserAndSubscription } from "@/lib/data-fetching";
-import { redirect } from "next/navigation";
 import { constructMetadata } from "@/lib/utils";
+import { redirect } from "next/navigation";
 import { Metadata } from "next/types";
 
 export const metadata: Metadata = constructMetadata({
@@ -23,10 +23,12 @@ export default async function Dashboard() {
   }
 
   return (
-    <DashboardPage
-      subscription={subscription}
-      openAppQueryParams={openAppQueryParams}
-      user={user}
-    />
+    <div className="py-[5%]">
+      <DashboardPage
+        subscription={subscription}
+        openAppQueryParams={openAppQueryParams}
+        user={user}
+      />
+    </div>
   );
 }

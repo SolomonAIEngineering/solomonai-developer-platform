@@ -1,5 +1,6 @@
 "use client";
 
+import { updateUser } from "@/app/(auth)/actions";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -17,9 +18,8 @@ import {
 } from "@/utils/form-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Metadata } from "next";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { updateUser } from "@/app/(auth)/actions";
 import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 export const metadata: Metadata = constructMetadata({
@@ -67,7 +67,7 @@ const UpdatePasswordForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleUpdatePassword)}
-        className="mt-12 space-y-6 px-6 md:px-0"
+        className="px-6 mt-12 space-y-6 md:px-0"
       >
         <FormField
           name="password"
@@ -98,10 +98,10 @@ const UpdatePasswordForm = () => {
           )}
         />
         {errorMessage && (
-          <p className="text-center text-sm text-red-500">{errorMessage}</p>
+          <p className="text-sm text-center text-red-500">{errorMessage}</p>
         )}
         <Button
-          className="mt-6 w-full rounded-md bg-primary-700 text-white-50 hover:bg-primary-800 hover:shadow-sm"
+          className="w-full mt-6 rounded-md bg-background text-foreground hover:bg-primary-800 hover:shadow-sm"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Updating password..." : "Update Password"}

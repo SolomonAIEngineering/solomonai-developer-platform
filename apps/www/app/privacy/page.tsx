@@ -11,8 +11,8 @@ export const metadata: Metadata = constructMetadata({
 
 export default function PrivacyPolicy() {
   return (
-    <>
+    <div className="py-[5%]">
       <PrivacyPolicyComponent />
-    </>
+    </div>
   );
 }

@@ -11,8 +11,8 @@ export const metadata: Metadata = constructMetadata({
 
 export default function TermsOfService() {
   return (
-    <>
+    <div className="py-[5%]">
       <TermsOfServiceComponent />
-    </>
+    </div>
   );
 }

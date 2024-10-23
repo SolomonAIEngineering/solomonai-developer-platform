@@ -78,7 +78,7 @@ const HeroButtons = () => {
         className="flex flex-col items-center"
       >
         <Button asChild size="lg">
-          <Link href="/pricing">Download For Free</Link>
+          <Link href="/desktop-download">Download For Free</Link>
         </Button>
       </div>
     </div>

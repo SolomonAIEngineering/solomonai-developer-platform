@@ -63,8 +63,8 @@ export default function TermsOfServiceComponent() {
                 CONDITION TO YOUR USE OF THE SERVICE, YOU AGREE TO BE BOUND BY,
                 THESE TERMS. IF YOU ARE NOT ELIGIBLE, OR DO NOT AGREE TO THE
                 TERMS, THEN YOU DO NOT HAVE OUR PERMISSION TO USE THE SERVICE.
-                YOUR USE OF THE SERVICE, AND Midday PROVISION OF THE SERVICE
-                TO YOU, CONSTITUTES AN AGREEMENT BY SOLOMONAI AND BY YOU TO BE
+                YOUR USE OF THE SERVICE, AND Midday PROVISION OF THE SERVICE TO
+                YOU, CONSTITUTES AN AGREEMENT BY SOLOMONAI AND BY YOU TO BE
                 BOUND BY THESE TERMS.
               </p>
 
@@ -183,10 +183,10 @@ export default function TermsOfServiceComponent() {
                           Payment Processing
                         </strong>
                         . Notwithstanding any amounts owed to Solomon AI
-                        hereunder, SOLOMONAI DOES NOT DIRECTLY PROCESS PAYMENT FOR
-                        ANY SERVICES. To facilitate payment for the Service via
-                        bank account, credit card, or debit card, we use Stripe,
-                        Inc. and its affiliates (“
+                        hereunder, SOLOMONAI DOES NOT DIRECTLY PROCESS PAYMENT
+                        FOR ANY SERVICES. To facilitate payment for the Service
+                        via bank account, credit card, or debit card, we use
+                        Stripe, Inc. and its affiliates (“
                         <strong className="text-gray-900">Stripe</strong>
                         ”), a third-party payment processor. These payment
                         processing services are provided by Stripe and are
@@ -548,11 +548,11 @@ export default function TermsOfServiceComponent() {
                       <p>
                         THE SERVICE AND ALL MATERIALS AND CONTENT AVAILABLE
                         THROUGH THE SERVICE, INCLUDING SUGGESTIONS, ARE PROVIDED
-                        “AS IS” AND ON AN “AS AVAILABLE” BASIS. SOLOMONAI DISCLAIMS
-                        ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED,
-                        RELATING TO THE SERVICE AND ALL MATERIALS AND CONTENT
-                        AVAILABLE THROUGH THE SERVICE, INCLUDING: (a) ANY
-                        IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A
+                        “AS IS” AND ON AN “AS AVAILABLE” BASIS. SOLOMONAI
+                        DISCLAIMS ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS OR
+                        IMPLIED, RELATING TO THE SERVICE AND ALL MATERIALS AND
+                        CONTENT AVAILABLE THROUGH THE SERVICE, INCLUDING: (a)
+                        ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A
                         PARTICULAR PURPOSE, TITLE, QUIET ENJOYMENT, OR
                         NON-INFRINGEMENT; AND (b) ANY WARRANTY ARISING OUT OF
                         COURSE OF DEALING, USAGE, OR TRADE. SOLOMONAI DOES NOT
@@ -568,11 +568,11 @@ export default function TermsOfServiceComponent() {
                     <li>
                       <p>
                         NO ADVICE OR INFORMATION, WHETHER ORAL OR WRITTEN,
-                        OBTAINED BY YOU FROM THE SERVICE OR SOLOMONAI ENTITIES OR
-                        ANY MATERIALS OR CONTENT AVAILABLE THROUGH THE SERVICE,
-                        INCLUDING SUGGESTIONS, WILL CREATE ANY WARRANTY
-                        REGARDING ANY OF THE SOLOMONAI ENTITIES OR THE SERVICE THAT
-                        IS NOT EXPRESSLY STATED IN THESE TERMS. WE ARE NOT
+                        OBTAINED BY YOU FROM THE SERVICE OR SOLOMONAI ENTITIES
+                        OR ANY MATERIALS OR CONTENT AVAILABLE THROUGH THE
+                        SERVICE, INCLUDING SUGGESTIONS, WILL CREATE ANY WARRANTY
+                        REGARDING ANY OF THE SOLOMONAI ENTITIES OR THE SERVICE
+                        THAT IS NOT EXPRESSLY STATED IN THESE TERMS. WE ARE NOT
                         RESPONSIBLE FOR ANY DAMAGE THAT MAY RESULT FROM THE
                         SERVICE AND YOUR DEALING WITH ANY OTHER SERVICE USER.
                         YOU UNDERSTAND AND AGREE THAT YOU USE ANY PORTION OF THE
@@ -616,16 +616,16 @@ export default function TermsOfServiceComponent() {
                         SERVICE, INCLUDING SUGGESTIONS, WHETHER BASED ON
                         WARRANTY, CONTRACT, TORT (INCLUDING NEGLIGENCE),
                         STATUTE, OR ANY OTHER LEGAL THEORY, AND WHETHER OR NOT
-                        ANY SOLOMONAI ENTITY HAS BEEN INFORMED OF THE POSSIBILITY
-                        OF DAMAGE.
+                        ANY SOLOMONAI ENTITY HAS BEEN INFORMED OF THE
+                        POSSIBILITY OF DAMAGE.
                       </p>
                     </li>
 
                     <li>
                       <p>
                         TO THE FULLEST EXTENT PERMITTED BY LAW, THE AGGREGATE
-                        LIABILITY OF THE SOLOMONAI ENTITIES TO YOU FOR ALL CLAIMS
-                        ARISING OUT OF OR RELATING TO THE USE OF OR ANY
+                        LIABILITY OF THE SOLOMONAI ENTITIES TO YOU FOR ALL
+                        CLAIMS ARISING OUT OF OR RELATING TO THE USE OF OR ANY
                         INABILITY TO USE ANY PORTION OF THE SERVICE OR OTHERWISE
                         UNDER THESE TERMS, WHETHER IN CONTRACT, TORT, OR
                         OTHERWISE, IS LIMITED TO THE GREATER OF: (a) THE AMOUNT
@@ -707,22 +707,23 @@ export default function TermsOfServiceComponent() {
                           Prohibition of Class and Representative Actions and
                           Non-Individualized Relief
                         </strong>
-                        . YOU AND SOLOMONAI AGREE THAT EACH OF US MAY BRING CLAIMS
-                        AGAINST THE OTHER ONLY ON AN INDIVIDUAL BASIS AND NOT AS
-                        A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS OR
-                        REPRESENTATIVE ACTION OR PROCEEDING. UNLESS BOTH YOU AND
-                        SOLOMONAI AGREE OTHERWISE, THE ARBITRATOR MAY NOT
-                        CONSOLIDATE OR JOIN MORE THAN ONE PERSON’S OR PARTY’S
-                        CLAIMS AND MAY NOT OTHERWISE PRESIDE OVER ANY FORM OF A
-                        CONSOLIDATED, REPRESENTATIVE, OR CLASS PROCEEDING. ALSO,
-                        THE ARBITRATOR MAY AWARD RELIEF (INCLUDING MONETARY,
-                        INJUNCTIVE, AND DECLARATORY RELIEF) ONLY IN FAVOR OF THE
-                        INDIVIDUAL PARTY SEEKING RELIEF AND ONLY TO THE EXTENT
-                        NECESSARY TO PROVIDE RELIEF NECESSITATED BY THAT PARTY’S
-                        INDIVIDUAL CLAIM(S), EXCEPT THAT YOU MAY PURSUE A CLAIM
-                        FOR AND THE ARBITRATOR MAY AWARD PUBLIC INJUNCTIVE
-                        RELIEF UNDER APPLICABLE LAW TO THE EXTENT REQUIRED FOR
-                        THE ENFORCEABILITY OF THIS PROVISION.
+                        . YOU AND SOLOMONAI AGREE THAT EACH OF US MAY BRING
+                        CLAIMS AGAINST THE OTHER ONLY ON AN INDIVIDUAL BASIS AND
+                        NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED
+                        CLASS OR REPRESENTATIVE ACTION OR PROCEEDING. UNLESS
+                        BOTH YOU AND SOLOMONAI AGREE OTHERWISE, THE ARBITRATOR
+                        MAY NOT CONSOLIDATE OR JOIN MORE THAN ONE PERSON’S OR
+                        PARTY’S CLAIMS AND MAY NOT OTHERWISE PRESIDE OVER ANY
+                        FORM OF A CONSOLIDATED, REPRESENTATIVE, OR CLASS
+                        PROCEEDING. ALSO, THE ARBITRATOR MAY AWARD RELIEF
+                        (INCLUDING MONETARY, INJUNCTIVE, AND DECLARATORY RELIEF)
+                        ONLY IN FAVOR OF THE INDIVIDUAL PARTY SEEKING RELIEF AND
+                        ONLY TO THE EXTENT NECESSARY TO PROVIDE RELIEF
+                        NECESSITATED BY THAT PARTY’S INDIVIDUAL CLAIM(S), EXCEPT
+                        THAT YOU MAY PURSUE A CLAIM FOR AND THE ARBITRATOR MAY
+                        AWARD PUBLIC INJUNCTIVE RELIEF UNDER APPLICABLE LAW TO
+                        THE EXTENT REQUIRED FOR THE ENFORCEABILITY OF THIS
+                        PROVISION.
                       </p>
                     </li>
 
