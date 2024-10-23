@@ -1,15 +1,15 @@
-import "./css/style.css";
-import "./globals.css";
-import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
-import { PHProvider } from "./providers";
+import Footer from "@/components/footer";
 import Header from "@/components/ui/header";
 import { Toaster } from "@/components/ui/sonner";
-import dynamic from "next/dynamic";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { GeistMono } from "geist/font/mono";
+import { GeistSans } from "geist/font/sans";
 import { ThemeProvider } from "next-themes";
-import Footer from "@/components/footer";
+import dynamic from "next/dynamic";
+import "./css/style.css";
+import "./globals.css";
+import { PHProvider } from "./providers";
 
 const PostHogPageView = dynamic(() => import("./PostHogPageView"), {
   ssr: false,

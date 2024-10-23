@@ -1,34 +1,21 @@
-import { constructMetadata } from "@/lib/utils";
-import { Metadata } from "next";
+// app/not-found.tsx
+"use client";
 
-export const metadata: Metadata = constructMetadata({
-  title: "Page Not Found",
-  description: "The requested page could not be found.",
-  canonical: "/404",
-});
-export default function Custom404() {
+import Link from "next/link";
+
+export default function NotFound() {
   return (
-    <>
-      <section className="relative">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="pb-12 pt-32 md:pb-20">
-            <div className="mx-auto max-w-xl">
-              <div className="mb-10 flex items-center justify-center">
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="h-auto max-w-full"
-                >
-                  <source src="/gifs/dukepanshake-404.webm" type="video/webm" />
-                  Your browser does not support the video tag.
-                </video>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold">404</h1>
+        <p className="mt-4">Page not found</p>
+        <Link
+          href="/"
+          className="mt-4 inline-block text-blue-500 hover:text-blue-600"
+        >
+          Return Home
+        </Link>
+      </div>
+    </div>
   );
 }
