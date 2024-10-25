@@ -1,288 +1,433 @@
-<div align="center">
-
-<p align="right">
-   <strong>English</strong> | <a href="./.github/README.cn.md">中文</a> 
-</p>
-
 # AI Gateway
 
-#### Reliably route to 200+ LLMs with 1 fast & friendly API
-
-<img src="docs/images/demo.gif" width="650" alt="Gateway Demo"><br>
-
-[![License](https://img.shields.io/github/license/Ileriayo/markdown-badges)](./LICENSE)
-[![Discord](https://img.shields.io/discord/1143393887742861333)](https://portkey.ai/community)
-[![Twitter](https://img.shields.io/twitter/url/https/twitter/follow/portkeyai?style=social&label=Follow%20%40PortkeyAI)](https://twitter.com/portkeyai)
-[![npm version](https://badge.fury.io/js/%40portkey-ai%2Fgateway.svg)](https://www.npmjs.com/package/@portkey-ai/gateway)
-[![Better Stack Badge](https://uptime.betterstack.com/status-badges/v1/monitor/q94g.svg)](https://status.portkey.ai/?utm_source=status_badge)
-
+<div align="center">
+    <img src="../../saasfly-logo.svg" width="128" alt="SaaSfly Logo" />
 </div>
 
-The [AI Gateway](https://portkey.ai/features/ai-gateway) streamlines requests to 250+ language, vision, audio and image models with a unified API. It is production-ready with support for caching, fallbacks, retries, timeouts, loadbalancing, and can be edge-deployed for minimum latency.
+## Overview
 
-✅&nbsp; **Blazing fast** (9.9x faster) with a **tiny footprint** (~100kb build) <br>
-✅&nbsp; **Load balance** across multiple models, providers, and keys <br>
-✅&nbsp; **Fallbacks** make sure your app stays resilient <br>
-✅&nbsp; **Automatic Retries** with exponential fallbacks come by default <br>
-✅&nbsp; **Configurable Request Timeouts** to easily handle unresponsive LLM requests <br>
-✅&nbsp; **Multimodal** to support routing between Vision, TTS, STT, Image Gen, and more models <br>
-✅&nbsp; **Plug-in** middleware as needed <br>
-✅&nbsp; Battle tested over **480B tokens** <br>
-✅&nbsp; **Enterprise-ready** for enhanced security, scale, and custom deployments <br>
-<br>
+The **AI Gateway** is a high-performance, reliable, and scalable API gateway designed to streamline requests to over **250+ language, vision, audio, and image models** through a unified API. Engineered with cutting-edge technologies and optimized for minimal latency, the AI Gateway is production-ready and supports features like caching, fallbacks, retries, timeouts, and load balancing. It can be deployed at the edge, ensuring the fastest possible response times for your applications.
 
-## Setup & Installation
+**Key Highlights:**
 
-Use the AI gateway through the **hosted API** or **self-host** the open-source or enterprise versions on your environment.
-<br>
+- **Blazing Fast Performance**: Up to **9.9x faster** with a tiny footprint (~100kb build).
+- **Load Balancing**: Distribute requests across multiple models, providers, and API keys.
+- **Resilience with Fallbacks**: Ensure high availability by seamlessly switching to backup models or providers.
+- **Automatic Retries**: Built-in retry mechanisms with exponential backoff strategies.
+- **Configurable Request Timeouts**: Handle unresponsive LLM requests efficiently.
+- **Multimodal Support**: Route between vision, text-to-speech (TTS), speech-to-text (STT), image generation, and more.
+- **Middleware Integration**: Plug-in custom middleware as needed.
+- **Battle-Tested**: Proven reliability with over **480 billion tokens** processed.
+- **Enterprise-Ready**: Enhanced security, scalability, and custom deployment options.
 
-#### 👉 Hosted Gateway on portkey.ai (Fastest)
+## Table of Contents
 
-The hosted API is the fastest way to setup an AI Gateway for your Gen AI application. We process **billions of tokens** daily and is in production with companies like Postman, Haptik, Turing, MultiOn, SiteGPT, and more.
+- [Architecture](#architecture)
+- [Features](#features)
+- [Setup & Installation](#setup--installation)
+  - [Hosted Gateway on Portkey.ai](#hosted-gateway-on-portkeyai)
+  - [Self-Hosting the Open-Source Version](#self-hosting-the-open-source-version)
+  - [Self-Hosting the Enterprise Version](#self-hosting-the-enterprise-version)
+- [Usage](#usage)
+  - [Compatible with OpenAI API & SDKs](#compatible-with-openai-api--sdks)
+  - [Using the Python SDK](#using-the-python-sdk)
+  - [Using the Node.js SDK](#using-the-nodejs-sdk)
+  - [Using the REST APIs](#using-the-rest-apis)
+  - [Other Integrations](#other-integrations)
+- [Gateway Cookbooks](#gateway-cookbooks)
+- [Supported Providers](#supported-providers)
+- [Agents Integration](#agents-integration)
+- [Advanced Features](#advanced-features)
+  - [Fallbacks](#fallbacks)
+  - [Automatic Retries](#automatic-retries)
+  - [Load Balancing](#load-balancing)
+  - [Request Timeouts](#request-timeouts)
+  - [Multi-Modal LLM Gateway](#multi-modal-llm-gateway)
+  - [Guardrails](#guardrails)
+  - [Configuring Features](#configuring-features)
+- [Enterprise Version](#enterprise-version)
+- [Contributing](#contributing)
+- [Community](#community)
+- [License](#license)
+- [Support](#support)
 
-<a href="https://app.portkey.ai/signup"><img src="https://portkey.ai/blog/content/images/2024/08/Get-API-Key--3-.png" height=50 alt="Get API Key" /></a><br>
-<br>
+## Architecture
 
-#### 👉 Self-hosting the OSS version ([AGPL License](https://github.com/Portkey-AI/gateway?tab=MIT-1-ov-file#readme))
+The AI Gateway is designed as a scalable, distributed system that efficiently routes requests to various AI models and providers. It acts as a middleware layer between client applications and AI services, providing a unified API interface and advanced features like caching, retries, and load balancing.
 
-To run the AI gateway locally, execute the following command in your terminal. (Needs npx installed) Or, explore deployment guides for [Cloudflare](https://github.com/Portkey-AI/gateway/blob/main/docs/installation-deployments.md#cloudflare-workers), [Docker](https://github.com/Portkey-AI/gateway/blob/main/docs/installation-deployments.md#docker), [Node.js](https://github.com/Portkey-AI/gateway/blob/main/docs/installation-deployments.md#nodejs-server) and more [here](#deploying-the-ai-gateway).
+**Core Components:**
 
-```bash
-npx @portkey-ai/gateway
-```
-
-<sup>Your AI Gateway is now running on http://localhost:8787 🚀</sup>
-<br>
-
-#### 👉 Self-hosting the Enterprise Version
-
-The AI Gateway's enterprise version offers enterprise-ready capabilities for **org management**, **governance**, **security** and [more](https://docs.portkey.ai/docs/product/enterprise-offering) out of the box. Compare the open source, hosted and enterprise versions [here](https://docs.portkey.ai/docs/product/product-feature-comparison).
-
-The enterprise deployment architecture, supported platforms is available here - [**Enterprise Private Cloud Deployments**](https://docs.portkey.ai/docs/product/enterprise-offering/private-cloud-deployments)
-
-<a href="https://app.portkey.ai/signup"><img src="https://portkey.ai/blog/content/images/2024/08/Get-API-Key--5-.png" height=50 alt="Book an enterprise AI gateway demo" /></a><br>
-
-<br>
-
-## Making requests through the AI gateway
-
-#### <img src="docs/images/openai.png" height=15 /> Compatible with OpenAI API & SDKs
-
-The AI Gateway is compatible with the OpenAI API & SDKs, and extends them to call 200+ LLMs reliably. To use the Gateway through OpenAI, **update the client** to include the gateway's URL and headers and make requests as usual. The AI gateway can translate requests written in the OpenAI format to the signature expected by the specified provider. [View examples](https://docs.portkey.ai/docs/guides/getting-started/getting-started-with-ai-gateway)
-<br><br>
-
-#### <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1869px-Python-logo-notext.svg.png" height=15 /> Using the Python SDK &nbsp;&nbsp;<a href="https://colab.research.google.com/drive/1hLvoq_VdGlJ_92sPPiwTznSra5Py0FuW?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg"></a>
-
-[Portkey Python SDK](https://github.com/Portkey-AI/portkey-python-sdk) is a wrapper over the OpenAI Python SDK with added support for additional parameters across all other providers. **If you're building with Python, this is the recommended library** to connect to the Gateway.
-
-```bash
-pip install -qU portkey-ai
-```
-
-<br>
-
-#### <img src="https://cdn-icons-png.flaticon.com/512/5968/5968322.png" height=15 /> Using the Node.JS SDK
-
-[Portkey JS/TS SDK](https://www.npmjs.com/package/portkey-ai) is a wrapper over the OpenAI JS SDK with added support for additional parameters across all other providers. **If you're building with JS or TS, this is the recommended library** to connect to the Gateway.
-
-```bash
-npm install --save portkey-ai
-```
-
-<br>
-
-#### <img src="https://www.svgrepo.com/show/305922/curl.svg" height=15 /> Using the REST APIs
-
-The AI gateway supports OpenAI compatible endpoints with added parameter support for all other providers and models. [View API Reference](https://docs.portkey.ai/docs/api-reference/introduction).
-<br><br>
-
-#### Other Integrations
-
-| Language | Supported SDKs                                                                                                                                                                 |
-| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| JS / TS  | [LangchainJS](https://www.npmjs.com/package/langchain) <br> [LlamaIndex.TS](https://www.npmjs.com/package/llamaindex)                                                          |
-| Python   | <br> [Langchain](https://portkey.ai/docs/welcome/integration-guides/langchain-python) <br> [LlamaIndex](https://portkey.ai/docs/welcome/integration-guides/llama-index-python) |
-| Go       | [go-openai](https://github.com/sashabaranov/go-openai)                                                                                                                         |
-| Java     | [openai-java](https://github.com/TheoKanning/openai-java)                                                                                                                      |
-| Rust     | [async-openai](https://docs.rs/async-openai/latest/async_openai/)                                                                                                              |
-| Ruby     | [ruby-openai](https://github.com/alexrudall/ruby-openai)                                                                                                                       |
-
-<br>
-
-## Gateway Cookbooks
-
-### Trending Cookbooks
-
-- Use models from [Nvidia NIM](/cookbook/providers/nvidia.ipynb) with AI Gateway
-- Monitor [CrewAI Agents](/cookbook/monitoring-agents/CrewAI_with_Telemetry.ipynb) with Portkey!
-- Comparing [Top 10 LMSYS Models](./use-cases/LMSYS%20Series/comparing-top10-LMSYS-models-with-Portkey.ipynb) with AI Gateway.
-
-### Latest Cookbooks
-
-- [Create Synthetic Datasets using Nemotron](/cookbook/use-cases/Nemotron_GPT_Finetuning_Portkey.ipynb)
-- [Use Portkey Gateway with Vercel's AI SDK](/cookbook/integrations/vercel-ai.md)
-- [Monitor Llama Agents with Portkey](/cookbook/monitoring-agents/Llama_Agents_with_Telemetry.ipynb)
-
-### [More Examples](https://github.com/Portkey-AI/gateway/tree/main/cookbook)
-
-## Supported Providers
-
-Explore Gateway integrations with [25+ providers](https://portkey.ai/docs/welcome/integration-guides) and [6+ frameworks](https://portkey.ai/docs/welcome/integration-guides).
-
-|                                                                                                                            | Provider                                                                                      | Support | Stream |
-| -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------- | ------ | ----------------------------------- |
-| <img src="docs/images/openai.png" width=35 />                                                                              | [OpenAI](https://portkey.ai/docs/welcome/integration-guides/openai)                           | ✅      | ✅     |
-| <img src="docs/images/azure.png" width=35>                                                                                 | [Azure OpenAI](https://portkey.ai/docs/welcome/integration-guides/azure-openai)               | ✅      | ✅     |
-| <img src="docs/images/anyscale.png" width=35>                                                                              | [Anyscale](https://portkey.ai/docs/welcome/integration-guides/anyscale-llama2-mistral-zephyr) | ✅      | ✅     |
-| <img src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Google-favicon-2015.png" width=35>                           | [Google Gemini & Palm](https://portkey.ai/docs/welcome/integration-guides/gemini)             | ✅      | ✅     |
-| <img src="docs/images/anthropic.png" width=35>                                                                             | [Anthropic](https://portkey.ai/docs/welcome/integration-guides/anthropic)                     | ✅      | ✅     |
-| <img src="docs/images/cohere.png" width=35>                                                                                | [Cohere](https://portkey.ai/docs/welcome/integration-guides/cohere)                           | ✅      | ✅     |
-| <img src="https://assets-global.website-files.com/64f6f2c0e3f4c5a91c1e823a/654693d569494912cfc0c0d4_favicon.svg" width=35> | [Together AI](https://portkey.ai/docs/welcome/integration-guides/together-ai)                 | ✅      | ✅     |
-| <img src="https://www.perplexity.ai/favicon.svg" width=35>                                                                 | [Perplexity](https://portkey.ai/docs/welcome/integration-guides/perplexity-ai)                | ✅      | ✅     |
-| <img src="https://docs.mistral.ai/img/favicon.ico" width=35>                                                               | [Mistral](https://portkey.ai/docs/welcome/integration-guides/mistral-ai)                      | ✅      | ✅     |
-| <img src="https://docs.nomic.ai/img/nomic-logo.png" width=35>                                                              | [Nomic](https://portkey.ai/docs/welcome/integration-guides/nomic)                             | ✅      | ✅     |
-| <img src="https://files.readme.io/d38a23e-small-studio-favicon.png" width=35>                                              | [AI21](https://portkey.ai/docs/welcome/integration-guides)                                    | ✅      | ✅     |
-| <img src="https://platform.stability.ai/small-logo-purple.svg" width=35>                                                   | [Stability AI](https://portkey.ai/docs/welcome/integration-guides/stability-ai)               | ✅      | ✅     |
-| <img src="https://deepinfra.com/_next/static/media/logo.4a03fd3d.svg" width=35>                                            | [DeepInfra](https://portkey.ai/docs/welcome/integration-guides)                               | ✅      | ✅     |
-| <img src="https://ollama.com/public/ollama.png" width=35>                                                                  | [Ollama](https://portkey.ai/docs/welcome/integration-guides/ollama)                           | ✅      | ✅     |
-| <img src="https://novita.ai/favicon.ico" width=35>                                                                         | Novita AI                                                                                     | ✅      | ✅     | `/chat/completions`, `/completions` |
-
-> [View the complete list of 200+ supported models here](https://portkey.ai/docs/welcome/what-is-portkey#ai-providers-supported) > <br>
-
-<br>
-
-## Agents
-
-Gateway seamlessly integrates with popular agent frameworks. [Read the documentation here](https://docs.portkey.ai/docs/welcome/agents).
-
-| Framework                                                                                  | Call 200+ LLMs | Advanced Routing | Caching | Logging & Tracing\* | Observability\* | Prompt Management\* |
-| ------------------------------------------------------------------------------------------ | -------------- | ---------------- | ------- | ------------------- | --------------- | ------------------- |
-| [Autogen](https://docs.portkey.ai/docs/welcome/agents/autogen)                             | ✅             | ✅               | ✅      | ✅                  | ✅              | ✅                  |
-| [CrewAI](https://docs.portkey.ai/docs/welcome/agents/crewai)                               | ✅             | ✅               | ✅      | ✅                  | ✅              | ✅                  |
-| [LangChain](https://docs.portkey.ai/docs/welcome/agents/langchain-agents)                  | ✅             | ✅               | ✅      | ✅                  | ✅              | ✅                  |
-| [Phidata](https://docs.portkey.ai/docs/welcome/agents/phidata)                             | ✅             | ✅               | ✅      | ✅                  | ✅              | ✅                  |
-| [Llama Index](https://docs.portkey.ai/docs/welcome/agents/llama-agents)                    | ✅             | ✅               | ✅      | ✅                  | ✅              | ✅                  |
-| [Control Flow](https://docs.portkey.ai/docs/welcome/agents/control-flow)                   | ✅             | ✅               | ✅      | ✅                  | ✅              | ✅                  |
-| [Build Your Own Agents](https://docs.portkey.ai/docs/welcome/agents/bring-your-own-agents) | ✅             | ✅               | ✅      | ✅                  | ✅              | ✅                  |
-
-<br>
-
-\*Only available on the [hosted app](https://portkey.ai). For detailed documentation [click here](https://docs.portkey.ai/docs/welcome/agents).
+- **Unified API Interface**: Simplifies integration by providing a consistent API format compatible with OpenAI.
+- **Routing Engine**: Dynamically routes requests based on configurations, provider availability, and performance metrics.
+- **Caching Layer**: Stores responses for identical or similar requests to reduce latency and costs.
+- **Middleware Support**: Allows custom middleware for logging, authentication, and other pre/post-processing tasks.
+- **Edge Deployment**: Can be deployed on edge networks (e.g., Cloudflare Workers) for minimal latency.
 
 ## Features
 
-<table width=100%>
-  <tr>
-    <td width="50%">
-      <strong><a href="https://portkey.ai/docs/product/ai-gateway-streamline-llm-integrations/fallbacks">Fallbacks</a></strong><br/>
-      Fallback to another provider or model on failed requests. You can specify the errors on which to trigger the fallback. Improves reliability of your application
-      <br><br>
-      <img src="https://framerusercontent.com/images/gmlOW8yeKP2pGuIsObM6gKLzeMI.png" height=100 />
-    </td>
-    <td width="50%">
-      <strong><a href="https://portkey.ai/docs/product/ai-gateway-streamline-llm-integrations/automatic-retries">Automatic Retries</a></strong><br/>
-      Automatically retry failed requests up to 5 times. An exponential backoff strategy spaces out retry attempts to prevent network overload.
-      <br><br>
-      <img src="https://github.com/roh26it/Rubeus/assets/971978/8a6e653c-94b2-4ba7-95c7-93544ee476b1" height=100 />
-    </td>
-  </tr>
-  
-</table>
-<table width="100%">
-  <tr>
-    <td width="50%"> 
-      <strong><a href="https://portkey.ai/docs/product/ai-gateway-streamline-llm-integrations/load-balancing">Load Balancing</a></strong><br/>
-      Distribute LLM requests across multiple API keys or AI providers with weights to ensure high availability and optimal performance.
-      <br><br>
-      <img src="https://framerusercontent.com/images/6EWuq3FWhqrPe3kKLqVspevi4.png" height=100 />
-    </td>
-    <td width="50%">
-      <strong><a href="https://portkey.ai/docs/product/ai-gateway-streamline-llm-integrations/request-timeouts">Request Timeouts</a></strong></br><br/>
-      Manage unruly LLMs & latencies by setting up granular request timeouts, allowing automatic termination of requests that exceed a specified duration.
-      <br><br>
-      <img src="https://github.com/vrushankportkey/gateway/assets/134934501/b23b98b2-6451-4747-8898-6847ad8baed4" height=100 />
-    </td>
-  </tr>
-</table>
+- **Unified API for 250+ Models**: Access a vast array of language, vision, audio, and image models through a single, consistent API.
+- **High Performance**: Optimized for speed with a minimal build size (~100kb), ensuring quick responses.
+- **Reliability Enhancements**: Fallbacks, automatic retries, and load balancing ensure high availability and resilience.
+- **Configurable Timeouts**: Set custom timeouts for requests to handle unresponsive models effectively.
+- **Multimodal Capabilities**: Support for various AI modalities, including text, image, audio, and more.
+- **Middleware Integration**: Customize request handling by adding middleware for tasks like authentication or logging.
+- **Enterprise-Ready Security**: Advanced security features suitable for enterprise deployments, including key management and compliance standards.
 
-</table>
-<table width="100%">
-  <tr>
-    <td width="50%"> 
-      <strong><a href="https://docs.portkey.ai/docs/product/ai-gateway-streamline-llm-integrations/multimodal-capabilities">Multi-modal LLM Gateway</a></strong><br/>
-      Call vision, audio (text-to-speech & speech-to-text), and image generation models from multiple providers  — all using the familiar OpenAI signature
-      <br><br>
-      <img src="https://docs.portkey.ai/~gitbook/image?url=https%3A%2F%2F2878743244-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252Fy3MCfQqftZOnHqSmVV5x%252Fuploads%252FOVuOxN4uFdBp1BdXX4E6%252Fmultimodal-icon.png%3Falt%3Dmedia%26token%3Db8b7bd49-0194-4d2f-89d4-c6633a872372&width=768&dpr=2&quality=100&sign=f51129a9&sv=1" height=100 />
-    </td>
-    <td width="50%">
-      <strong><a href="https://docs.portkey.ai/docs/product/guardrails">Guardrails</a></strong></br><br/>
-      Verify your LLM inputs AND outputs to adhere to your specified checks. Build your own checks or choose from the 20+ pre-built guardrails.
-      <br><br>
-      <img src="https://docs.portkey.ai/~gitbook/image?url=https%3A%2F%2F2878743244-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252Fy3MCfQqftZOnHqSmVV5x%252Fuploads%252FDFkhZpqtBfQMIW9BhVum%252Fguardrails-icon.png%3Falt%3Dmedia%26token%3D91cfe226-5ce9-44b3-a0e8-be9f3ae3917f&width=768&dpr=2&quality=100&sign=73608afc&sv=1" height=100 />
-    </td>
-  </tr>
-</table>
+## Setup & Installation
 
-**These features are configured through the Gateway Config added to the `x-portkey-config` header or the `config` parameter in the SDKs.**
+You can use the AI Gateway through the **hosted API** or **self-host** it using the open-source or enterprise versions.
 
-Here's a sample config JSON showcasing the above features. All the features are optional
+### Hosted Gateway on Portkey.ai
+
+The hosted API is the fastest way to set up the AI Gateway for your generative AI application. Processing **billions of tokens** daily, it's trusted by companies like Postman, Haptik, Turing, MultiOn, and SiteGPT.
+
+[![Get API Key](https://portkey.ai/blog/content/images/2024/08/Get-API-Key--3-.png)](https://app.portkey.ai/signup)
+
+**Steps:**
+
+1. **Sign Up**: Create an account on [Portkey.ai](https://app.portkey.ai/signup).
+2. **Obtain API Key**: Navigate to your dashboard and generate an API key.
+3. **Configure**: Update your application to use the AI Gateway URL and include the API key in your requests.
+
+### Self-Hosting the Open-Source Version
+
+The open-source version is licensed under the [AGPL License](https://github.com/Portkey-AI/gateway/blob/main/LICENSE) and allows you to run the AI Gateway locally or in your own environment.
+
+**Installation:**
+
+1. **Prerequisites**: Ensure you have Node.js and `npx` installed.
+2. **Run the Gateway Locally**:
+
+   ```bash
+   npx @portkey-ai/gateway
+   ```
+
+   Your AI Gateway will now be running at `http://localhost:8787`.
+
+**Deployment Guides:**
+
+- **Cloudflare Workers**: [Deployment Guide](https://github.com/Portkey-AI/gateway/blob/main/docs/installation-deployments.md#cloudflare-workers)
+- **Docker**: [Deployment Guide](https://github.com/Portkey-AI/gateway/blob/main/docs/installation-deployments.md#docker)
+- **Node.js Server**: [Deployment Guide](https://github.com/Portkey-AI/gateway/blob/main/docs/installation-deployments.md#nodejs-server)
+
+### Self-Hosting the Enterprise Version
+
+The enterprise version offers advanced capabilities for organizational management, governance, security, and more. Compare the versions [here](https://docs.portkey.ai/docs/product/product-feature-comparison).
+
+**Enterprise Features:**
+
+- **Org Management**: Role-based access control and team collaboration.
+- **Governance & Compliance**: SOC2, ISO, HIPAA, GDPR compliances.
+- **Enhanced Security**: Secure key management and PII redaction.
+- **Scalability**: Custom deployments tailored to your infrastructure.
+
+**Get Started:**
+
+[![Book an Enterprise Demo](https://portkey.ai/blog/content/images/2024/08/Get-API-Key--5-.png)](https://app.portkey.ai/signup)
+
+## Usage
+
+### Compatible with OpenAI API & SDKs
+
+The AI Gateway is fully compatible with the OpenAI API and SDKs. To use the Gateway:
+
+- **Update the Client**: Point your API client to the Gateway's URL.
+- **Include API Key**: Add your API key in the request headers.
+- **Make Requests**: Use the same request format as you would with OpenAI.
+
+[View Examples](https://docs.portkey.ai/docs/guides/getting-started/getting-started-with-ai-gateway)
+
+### Using the Python SDK
+
+[Portkey Python SDK](https://github.com/Portkey-AI/portkey-python-sdk) is a wrapper over the OpenAI Python SDK with added support for additional parameters.
+
+**Installation:**
+
+```bash
+pip install -U portkey-ai
+```
+
+**Usage Example:**
+
+```python
+import portkey_ai
+
+portkey_ai.api_key = "YOUR_API_KEY"
+response = portkey_ai.ChatCompletion.create(
+    model="gpt-3.5-turbo",
+    messages=[{"role": "user", "content": "Hello, how are you?"}]
+)
+print(response)
+```
+
+### Using the Node.js SDK
+
+[Portkey JS/TS SDK](https://www.npmjs.com/package/portkey-ai) extends the OpenAI JS SDK with additional features.
+
+**Installation:**
+
+```bash
+npm install portkey-ai
+```
+
+**Usage Example:**
+
+```javascript
+const portkeyAI = require('portkey-ai');
+portkeyAI.apiKey = 'YOUR_API_KEY';
+
+const response = await portkeyAI.ChatCompletion.create({
+  model: 'gpt-3.5-turbo',
+  messages: [{ role: 'user', content: 'Hello, how are you?' }],
+});
+
+console.log(response);
+```
+
+### Using the REST APIs
+
+The AI Gateway supports OpenAI-compatible REST endpoints with added parameter support.
+
+**Example Request:**
+
+```bash
+curl -X POST https://api.portkey.ai/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{
+    "model": "gpt-3.5-turbo",
+    "messages": [{"role": "user", "content": "Hello, world!"}]
+  }'
+```
+
+[View API Reference](https://docs.portkey.ai/docs/api-reference/introduction)
+
+### Other Integrations
+
+The AI Gateway integrates with various languages and frameworks:
+
+| Language | Supported SDKs                                                                                                                                              |
+|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| JS / TS  | [LangChainJS](https://www.npmjs.com/package/langchain), [LlamaIndex.TS](https://www.npmjs.com/package/llamaindex)                                           |
+| Python   | [LangChain](https://portkey.ai/docs/welcome/integration-guides/langchain-python), [LlamaIndex](https://portkey.ai/docs/welcome/integration-guides/llama-index-python) |
+| Go       | [go-openai](https://github.com/sashabaranov/go-openai)                                                                                                      |
+| Java     | [openai-java](https://github.com/TheoKanning/openai-java)                                                                                                   |
+| Rust     | [async-openai](https://docs.rs/async-openai/latest/async_openai/)                                                                                           |
+| Ruby     | [ruby-openai](https://github.com/alexrudall/ruby-openai)                                                                                                    |
+
+## Gateway Cookbooks
+
+Explore practical examples and guides in our Gateway Cookbooks.
+
+### Trending Cookbooks
+
+- **Using NVIDIA NIM Models**: [Guide](/cookbook/providers/nvidia.ipynb)
+- **Monitoring CrewAI Agents**: [Guide](/cookbook/monitoring-agents/CrewAI_with_Telemetry.ipynb)
+- **Comparing Top 10 LMSYS Models**: [Guide](./use-cases/LMSYS%20Series/comparing-top10-LMSYS-models-with-Portkey.ipynb)
+
+### Latest Cookbooks
+
+- **Creating Synthetic Datasets with Nemotron**: [Guide](/cookbook/use-cases/Nemotron_GPT_Finetuning_Portkey.ipynb)
+- **Using Portkey Gateway with Vercel's AI SDK**: [Guide](/cookbook/integrations/vercel-ai.md)
+- **Monitoring Llama Agents with Portkey**: [Guide](/cookbook/monitoring-agents/Llama_Agents_with_Telemetry.ipynb)
+
+[More Examples](https://github.com/Portkey-AI/gateway/tree/main/cookbook)
+
+## Supported Providers
+
+The AI Gateway integrates with over **25+ providers** and **6+ frameworks**.
+
+| Provider Logo                                                                                                             | Provider                                                                                   | Supported | Streaming |
+|---------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|-----------|-----------|
+| <img src="docs/images/openai.png" width="35" />                                                                           | [OpenAI](https://portkey.ai/docs/welcome/integration-guides/openai)                        | ✅        | ✅        |
+| <img src="docs/images/azure.png" width="35" />                                                                            | [Azure OpenAI](https://portkey.ai/docs/welcome/integration-guides/azure-openai)            | ✅        | ✅        |
+| <img src="docs/images/anyscale.png" width="35" />                                                                         | [Anyscale](https://portkey.ai/docs/welcome/integration-guides/anyscale-llama2-mistral-zephyr) | ✅        | ✅        |
+| <img src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Google-favicon-2015.png" width="35" />                      | [Google Gemini & PaLM](https://portkey.ai/docs/welcome/integration-guides/gemini)          | ✅        | ✅        |
+| <img src="docs/images/anthropic.png" width="35" />                                                                        | [Anthropic](https://portkey.ai/docs/welcome/integration-guides/anthropic)                  | ✅        | ✅        |
+| <img src="docs/images/cohere.png" width="35" />                                                                           | [Cohere](https://portkey.ai/docs/welcome/integration-guides/cohere)                        | ✅        | ✅        |
+| <img src="https://assets-global.website-files.com/64f6f2c0e3f4c5a91c1e823a/654693d569494912cfc0c0d4_favicon.svg" width="35" /> | [Together AI](https://portkey.ai/docs/welcome/integration-guides/together-ai)              | ✅        | ✅        |
+| <img src="https://www.perplexity.ai/favicon.svg" width="35" />                                                            | [Perplexity AI](https://portkey.ai/docs/welcome/integration-guides/perplexity-ai)          | ✅        | ✅        |
+| <img src="https://docs.mistral.ai/img/favicon.ico" width="35" />                                                          | [Mistral AI](https://portkey.ai/docs/welcome/integration-guides/mistral-ai)                | ✅        | ✅        |
+| <img src="https://docs.nomic.ai/img/nomic-logo.png" width="35" />                                                         | [Nomic](https://portkey.ai/docs/welcome/integration-guides/nomic)                          | ✅        | ✅        |
+| <img src="https://files.readme.io/d38a23e-small-studio-favicon.png" width="35" />                                         | [AI21 Labs](https://portkey.ai/docs/welcome/integration-guides/ai21)                       | ✅        | ✅        |
+| <img src="https://platform.stability.ai/small-logo-purple.svg" width="35" />                                              | [Stability AI](https://portkey.ai/docs/welcome/integration-guides/stability-ai)            | ✅        | ✅        |
+| <img src="https://deepinfra.com/_next/static/media/logo.4a03fd3d.svg" width="35" />                                       | [DeepInfra](https://portkey.ai/docs/welcome/integration-guides/deepinfra)                  | ✅        | ✅        |
+| <img src="https://ollama.com/public/ollama.png" width="35" />                                                             | [Ollama](https://portkey.ai/docs/welcome/integration-guides/ollama)                        | ✅        | ✅        |
+| <img src="https://novita.ai/favicon.ico" width="35" />                                                                    | [Novita AI](https://portkey.ai/docs/welcome/integration-guides/novita-ai)                  | ✅        | ✅        |
+
+[View the complete list of 200+ supported models](https://portkey.ai/docs/welcome/what-is-portkey#ai-providers-supported)
+
+## Agents Integration
+
+The AI Gateway seamlessly integrates with popular agent frameworks.
+
+| Framework                                                                                  | 200+ LLMs | Advanced Routing | Caching | Logging & Tracing* | Observability* | Prompt Management* |
+|--------------------------------------------------------------------------------------------|-----------|------------------|---------|--------------------|----------------|--------------------|
+| [Autogen](https://docs.portkey.ai/docs/welcome/agents/autogen)                             | ✅        | ✅               | ✅      | ✅                 | ✅             | ✅                 |
+| [CrewAI](https://docs.portkey.ai/docs/welcome/agents/crewai)                               | ✅        | ✅               | ✅      | ✅                 | ✅             | ✅                 |
+| [LangChain](https://docs.portkey.ai/docs/welcome/agents/langchain-agents)                  | ✅        | ✅               | ✅      | ✅                 | ✅             | ✅                 |
+| [Phidata](https://docs.portkey.ai/docs/welcome/agents/phidata)                             | ✅        | ✅               | ✅      | ✅                 | ✅             | ✅                 |
+| [Llama Index](https://docs.portkey.ai/docs/welcome/agents/llama-agents)                    | ✅        | ✅               | ✅      | ✅                 | ✅             | ✅                 |
+| [Control Flow](https://docs.portkey.ai/docs/welcome/agents/control-flow)                   | ✅        | ✅               | ✅      | ✅                 | ✅             | ✅                 |
+| [Build Your Own Agents](https://docs.portkey.ai/docs/welcome/agents/bring-your-own-agents) | ✅        | ✅               | ✅      | ✅                 | ✅             | ✅                 |
+
+*Features marked with an asterisk are available only on the [hosted app](https://portkey.ai).
+
+[Read the detailed documentation](https://docs.portkey.ai/docs/welcome/agents)
+
+## Advanced Features
+
+### Fallbacks
+
+**[Fallbacks](https://portkey.ai/docs/product/ai-gateway-streamline-llm-integrations/fallbacks)** allow your application to automatically switch to another provider or model if a request fails. You can specify the types of errors that trigger a fallback, enhancing the reliability of your application.
+
+**Example Usage:**
 
 ```json
 {
-	"retry": { "attempts": 5 },
-	"request_timeout": 10000,
-	"strategy": { "mode": "fallback" }, // or 'loadbalance', etc
-	"targets": [{
-		"provider": "openai",
-		"api_key": "sk-***"
-	},{
-		"strategy": {"mode": "loadbalance"}, // Optional nesting
-		"targets": {...}
-	}]
+  "strategy": { "mode": "fallback" },
+  "targets": [
+    { "provider": "openai", "api_key": "sk-***" },
+    { "provider": "cohere", "api_key": "sk-***" }
+  ]
 }
 ```
 
-Then use the config in your API requests to the gateway.
+### Automatic Retries
 
-### Using Gateway Configs
+**[Automatic Retries](https://portkey.ai/docs/product/ai-gateway-streamline-llm-integrations/automatic-retries)** with exponential backoff are built-in. The gateway will retry failed requests up to a specified number of attempts, spacing out retries to prevent network overload.
 
-Here's a guide to [use the config object in your request](https://portkey.ai/docs/api-reference/config-object).
+**Example Usage:**
 
-<br>
+```json
+{
+  "retry": { "attempts": 5, "backoff": "exponential" }
+}
+```
 
-## Gateway Enterprise Version
+### Load Balancing
 
-Make your AI app more <ins>reliable</ins> and <ins>forward compatible</ins>, while ensuring complete <ins>data security</ins> and <ins>privacy</ins>.
+**[Load Balancing](https://portkey.ai/docs/product/ai-gateway-streamline-llm-integrations/load-balancing)** distributes LLM requests across multiple API keys or providers. You can assign weights to control the distribution and ensure optimal performance.
 
-✅&nbsp; Secure Key Management - for role-based access control and tracking <br>
-✅&nbsp; Simple & Semantic Caching - to serve repeat queries faster & save costs <br>
-✅&nbsp; Access Control & Inbound Rules - to control which IPs and Geos can connect to your deployments <br>
-✅&nbsp; PII Redaction - to automatically remove sensitive data from your requests to prevent indavertent exposure <br>
-✅&nbsp; SOC2, ISO, HIPAA, GDPR Compliances - for best security practices <br>
-✅&nbsp; Professional Support - along with feature prioritization <br>
+**Example Usage:**
 
-[Schedule a call to discuss enterprise deployments](https://calendly.com/rohit-portkey/noam)
+```json
+{
+  "strategy": { "mode": "loadbalance" },
+  "targets": [
+    { "provider": "openai", "api_key": "sk-***", "weight": 70 },
+    { "provider": "anthropic", "api_key": "sk-***", "weight": 30 }
+  ]
+}
+```
 
-<br>
+### Request Timeouts
+
+**[Request Timeouts](https://portkey.ai/docs/product/ai-gateway-streamline-llm-integrations/request-timeouts)** allow you to manage latency by setting maximum durations for requests. Requests exceeding the timeout will be terminated automatically.
+
+**Example Usage:**
+
+```json
+{
+  "request_timeout": 10000  // Timeout in milliseconds
+}
+```
+
+### Multi-Modal LLM Gateway
+
+**[Multi-modal Capabilities](https://docs.portkey.ai/docs/product/ai-gateway-streamline-llm-integrations/multimodal-capabilities)** enable you to interact with vision, audio (TTS & STT), and image generation models using the familiar OpenAI API format.
+
+### Guardrails
+
+**[Guardrails](https://docs.portkey.ai/docs/product/guardrails)** ensure that your LLM inputs and outputs adhere to specified checks. You can build custom checks or use over 20 pre-built guardrails to maintain compliance and safety standards.
+
+### Configuring Features
+
+These advanced features are configured through the Gateway Config, which can be added to the `x-portkey-config` header or the `config` parameter in the SDKs.
+
+**Sample Config JSON:**
+
+```json
+{
+  "retry": { "attempts": 5 },
+  "request_timeout": 10000,
+  "strategy": { "mode": "fallback" },
+  "targets": [
+    { "provider": "openai", "api_key": "sk-***" },
+    {
+      "strategy": { "mode": "loadbalance" },
+      "targets": [
+        { "provider": "cohere", "api_key": "sk-***" },
+        { "provider": "anthropic", "api_key": "sk-***" }
+      ]
+    }
+  ]
+}
+```
+
+**Using the Config in Requests:**
+
+Include the config in your API requests to the gateway.
+
+- **HTTP Header**: Add `x-portkey-config` with the JSON string.
+- **SDK Parameter**: Use the `config` parameter in the SDK methods.
+
+[Guide to Using the Config Object](https://portkey.ai/docs/api-reference/config-object)
+
+## Enterprise Version
+
+Enhance your AI applications with the AI Gateway's enterprise features, ensuring reliability, compatibility, security, and privacy.
+
+**Enterprise Features:**
+
+- **Secure Key Management**: Role-based access control and API key tracking.
+- **Caching Solutions**: Simple and semantic caching to improve response times and reduce costs.
+- **Access Control & Inbound Rules**: Restrict access based on IPs and geolocations.
+- **PII Redaction**: Automatically remove sensitive data from requests.
+- **Compliance Standards**: SOC2, ISO, HIPAA, GDPR compliance.
+- **Professional Support**: Dedicated support and feature prioritization.
+
+[Schedule a Call to Discuss Enterprise Deployments](https://calendly.com/rohit-portkey/noam)
 
 ## Contributing
 
-The easiest way to contribute is to pick an issue with the `good first issue` tag 💪. Read the contribution guidelines [here](/.github/CONTRIBUTING.md).
+We welcome contributions from the community!
 
-Bug Report? [File here](https://github.com/Portkey-AI/gateway/issues) | Feature Request? [File here](https://github.com/Portkey-AI/gateway/issues)
+- **Good First Issues**: Look for issues tagged with `good first issue`.
+- **Contribution Guidelines**: Please read our [Contributing Guidelines](/.github/CONTRIBUTING.md).
 
-<br>
+**Submit Issues:**
+
+- **Bug Reports**: [File a Bug Report](https://github.com/Portkey-AI/gateway/issues)
+- **Feature Requests**: [Request a Feature](https://github.com/Portkey-AI/gateway/issues)
 
 ## Community
 
-Join our growing community around the world, for help, ideas, and discussions on AI.
+Join our growing community for support, ideas, and discussions on AI.
 
-- View our official [Blog](https://portkey.ai/blog)
-- Chat with us on [Discord](https://portkey.ai/community)
-- Follow us on [Twitter](https://twitter.com/PortkeyAI)
-- Connect with us on [LinkedIn](https://www.linkedin.com/company/portkey-ai/)
-  <!-- - Visit us on [YouTube](https://www.youtube.com/channel/UCZph50gLNXAh1DpmeX8sBdw) -->
-  <!-- - Join our [Dev community](https://dev.to/portkeyai) -->
-  <!-- - Questions tagged #portkey on [Stack Overflow](https://stackoverflow.com/questions/tagged/portkey) -->
+- **Blog**: [Portkey AI Blog](https://portkey.ai/blog)
+- **Discord**: [Join our Discord Community](https://portkey.ai/community)
+- **Twitter**: [Follow us on Twitter](https://twitter.com/PortkeyAI)
+- **LinkedIn**: [Connect on LinkedIn](https://www.linkedin.com/company/portkey-ai/)
 
-![Rubeus Social Share (4)](https://github.com/Portkey-AI/gateway/assets/971978/89d6f0af-a95d-4402-b451-14764c40d03f)
+![Community Image](https://github.com/Portkey-AI/gateway/assets/971978/89d6f0af-a95d-4402-b451-14764c40d03f)
+
+## License
+
+This project is licensed under the **AGPL License**. See the [LICENSE](./LICENSE) file for more details.
+
+## Support
+
+For support and inquiries:
+
+- **Issue Tracker**: [GitHub Issues](https://github.com/Portkey-AI/gateway/issues)
+- **Email**: Contact us at [support@portkey.ai](mailto:support@portkey.ai)
+- **Documentation**: Visit our [Documentation Site](https://docs.portkey.ai)
+
+---
+
+Made with ❤️ by the **Solomon AI Engineering Team**
+
+[![Solomon AI Logo](solomon-ai-logo.png)](https://www.solomon-ai.co)
+
+---
