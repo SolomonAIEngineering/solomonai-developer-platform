@@ -33,7 +33,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <PostHogPageView />
-            <div className="flex flex-col min-h-screen overflow-hidden">
+            <div className="flex min-h-screen flex-col overflow-hidden">
               <Header />
               {children}
               <Footer />
