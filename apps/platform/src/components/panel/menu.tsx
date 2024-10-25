@@ -122,25 +122,37 @@ export const Menu: React.FC<MenuProps> = React.memo(({ isOpen }) => {
 
     if (submenus.length === 0) {
       return (
-        <div className="w-full" key={index}>
+        <div className="w-full pl-[10px]" key={index}>
           <TooltipProvider disableHoverableContent>
             <Tooltip delayDuration={100}>
               <TooltipTrigger asChild>
                 <Button
                   variant={"ghost"}
-                  className="mb-1 h-10 w-full justify-start"
+                  className="mb-1 w-full justify-start px-4 py-4"
                   asChild
                 >
                   <Link href={href}>
                     <span className={cn(isOpen === false ? "" : "mr-4")}>
-                      <Icon size={24} strokeWidth={"0.5"} viewBox="0 0 24 24" />
+                      <Icon
+                        size={28}
+                        strokeWidth={"0.5"}
+                        viewBox="0 0 24 24"
+                        className={
+                          active
+                            ? "text-foreground"
+                            : "text-gray-400 dark:text-gray-100"
+                        }
+                      />
                     </span>
                     <p
                       className={cn(
-                        "max-w-[200px] truncate",
+                        "max-w-[200px] truncate text-[18px] font-medium transition-[transform,opacity,display] duration-300 ease-in-out leading-7",
                         isOpen === false
                           ? "-translate-x-96 opacity-0"
-                          : "translate-x-0 opacity-100",
+                          : "translate-x-0 opacity-100 ml-1.5",
+                        active
+                          ? "text-foreground"
+                          : "text-gray-400 dark:text-gray-300",
                       )}
                     >
                       {label}
@@ -177,7 +189,10 @@ export const Menu: React.FC<MenuProps> = React.memo(({ isOpen }) => {
           <ul className="flex flex-col items-start space-y-1 p-[1.5%]">
             {menuList.map((menuGroup: MenuGroup, groupIndex: number) => (
               <li
-                className={cn("w-full", menuGroup.groupLabel ? "pt-5" : "")}
+                className={cn(
+                  "w-full flex flex-col gap-4",
+                  menuGroup.groupLabel ? "pt-5" : "",
+                )}
                 key={groupIndex}
               >
                 {renderGroupLabel(menuGroup.groupLabel)}

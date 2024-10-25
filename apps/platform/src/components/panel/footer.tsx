@@ -34,7 +34,7 @@ export const Footer: React.FC<FooterProps> = React.memo(
     secondLinkText = "GitHub",
   }) => {
     return (
-      <footer className="z-20 w-full bg-background/95 shadow backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <footer className="z-20 w-full backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="ml-[50px] flex h-14 items-center md:mx-8">
           <p className="text-left text-xs leading-loose text-muted-foreground md:text-sm">
             {mainText} . © {new Date().getFullYear()} Solomon AI.
