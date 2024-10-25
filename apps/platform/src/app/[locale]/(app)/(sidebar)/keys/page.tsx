@@ -26,7 +26,7 @@ export default async function Webhooks() {
 
   return (
     <div className="space-y-8 max-w-3xl mx-auto">
-      <h1 className="text-4xl font-bold text-primary mb-4">Api Keys</h1>
+      <h1 className="text-4xl font-bold text-foreground mb-4">Api Keys</h1>
       <p className="text-xl text-muted-foreground mb-6">
         Configure api keys for your account.
       </p>

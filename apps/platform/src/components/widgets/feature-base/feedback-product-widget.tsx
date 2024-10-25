@@ -156,7 +156,7 @@ const FeedbackProductWidget: React.FC<FeedbackProductWidgetProps> = ({
       <Script src="https://do.featurebase.app/js/sdk.js" id="featurebase-sdk" />
       <div className={cn(className)}>
         <button
-          className="inline-flex items-center justify-center rounded-full bg-primary p-4 text-primary-foreground transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          className="inline-flex items-center justify-center rounded-full bg-backgroud p-4 text-foreground-foreground transition-colors hover:bg-backgroud/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
           aria-label="Open feedback"
           data-featurebase-feedback
         >

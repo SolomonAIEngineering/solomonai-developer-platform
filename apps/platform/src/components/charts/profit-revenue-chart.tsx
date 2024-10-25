@@ -75,7 +75,7 @@ export async function ProfitRevenueChart({
               >
                 {type === "profit" ? (
                   <div className="space-y-2">
-                    <h3 className="font-medium text-primary">
+                    <h3 className="font-medium text-foreground">
                       Profit is calculated as your income minus expenses.
                     </h3>
                     <p>
@@ -89,7 +89,7 @@ export async function ProfitRevenueChart({
                       All amounts are converted into your{" "}
                       <Link
                         href="/settings/accounts"
-                        className="text-primary underline"
+                        className="text-foreground underline"
                       >
                         base currency
                       </Link>
@@ -98,7 +98,7 @@ export async function ProfitRevenueChart({
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    <h3 className="font-medium text-primary">
+                    <h3 className="font-medium text-foreground">
                       Revenue represents your total income from all sources.
                     </h3>
                     <p>
@@ -112,7 +112,7 @@ export async function ProfitRevenueChart({
                       All amounts are converted into your{" "}
                       <Link
                         href="/settings/accounts"
-                        className="text-primary underline"
+                        className="text-foreground underline"
                       >
                         base currency
                       </Link>

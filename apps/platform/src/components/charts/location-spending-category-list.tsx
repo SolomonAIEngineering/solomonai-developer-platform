@@ -138,7 +138,7 @@ export function LocationSpendingCategoryList({
                     <Category
                       name={locationName}
                       color={"#000000"}
-                      className="text-sm text-primary space-x-3 w-[90%]"
+                      className="text-sm text-foreground space-x-3 w-[90%]"
                     />
                     <Progress
                       className="w-full rounded-none h-[6px]"

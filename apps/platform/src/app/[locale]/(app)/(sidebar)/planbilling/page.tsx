@@ -19,7 +19,7 @@ export default async function Webhooks() {
 
   return (
     <div className="space-y-8 max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold text-primary mb-4">Plan & Billing</h1>
+      <h1 className="text-3xl font-bold text-foreground mb-4">Plan & Billing</h1>
       <p className="text-lg text-muted-foreground mb-6">
         Manage your plan and billing information
       </p>

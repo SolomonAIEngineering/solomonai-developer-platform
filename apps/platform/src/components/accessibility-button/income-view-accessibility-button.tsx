@@ -38,7 +38,7 @@ const IncomeViewAccessibilityButton: React.FC<{
         )}
       >
         <button
-          className="inline-flex items-center justify-center rounded-full bg-primary p-4 text-primary-foreground transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          className="inline-flex items-center justify-center rounded-full bg-backgroud p-4 text-foreground-foreground transition-colors hover:bg-backgroud/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
           style={
             isWidget
               ? {

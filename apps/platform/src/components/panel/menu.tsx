@@ -4,20 +4,18 @@ import { signOutAction } from "@/actions/sign-out-action";
 import { getMenuList } from "@/utils/lib";
 import { Button } from "@v1/ui/button";
 import { cn } from "@v1/ui/cn";
-import { ScrollArea } from "@v1/ui/scroll-area";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@v1/ui/tooltip";
-import { Ellipsis, Loader2, LogOut, LucideIcon } from "lucide-react";
+import { Ellipsis, LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useMemo, useState } from "react";
 
 import { SignOut } from "../sign-out";
-import { TeamMenu } from "../team-menu";
 import { CollapseMenuButton } from "./collapse-menu-button";
 
 /**

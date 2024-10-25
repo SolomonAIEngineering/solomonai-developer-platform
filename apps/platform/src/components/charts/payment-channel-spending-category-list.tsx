@@ -98,7 +98,7 @@ export function PaymentChannelSpendingCategoryList({
                       key={payment_channel}
                       name={payment_channel}
                       color={"#000000"}
-                      className="text-sm text-primary space-x-3 w-[90%]"
+                      className="text-sm text-foreground space-x-3 w-[90%]"
                     />
 
                     <Progress

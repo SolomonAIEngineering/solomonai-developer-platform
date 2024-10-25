@@ -24,12 +24,12 @@ export const Sidebar: React.FC = React.memo(() => {
   return (
     <aside
       className={cn(
-        "fixed left-0 top-0 z-20 h-screen -translate-x-full transition-[width] duration-300 ease-in-out lg:translate-x-0 scrollbar-hide",
-        sidebar.isOpen === false ? "w-[90px]" : "w-72",
+        "fixed left-0 top-0 z-20 h-screen -translate-x-full transition-[width] duration-300 ease-in-out lg:translate-x-0 scrollbar-hide bg-background text-foreground",
+        sidebar.isOpen === false ? "w-[90px]" : "w-80",
       )}
     >
       <SidebarToggle isOpen={sidebar.isOpen} setIsOpen={sidebar.setIsOpen} />
-      <div className="relative flex h-full flex-col md:gap-[2%] overflow-y-auto px-3 py-4 shadow-md dark:shadow-zinc-800">
+      <div className="relative flex h-full flex-col md:gap-[2%] overflow-y-auto px-3 pt-[3%] shadow-md dark:shadow-zinc-800">
         <BrandButton isOpen={sidebar.isOpen} />
         <Menu isOpen={sidebar.isOpen} />
       </div>
@@ -56,15 +56,15 @@ interface BrandButtonProps {
 const BrandButton: React.FC<BrandButtonProps> = React.memo(({ isOpen }) => (
   <Button
     className={cn(
-      "mb-1 transition-transform duration-300 ease-in-out  md:pt-[2%]",
+      "mb-1 transition-transform duration-300 ease-in-out  md:pt-[4%]",
       isOpen === false ? "translate-x-1" : "translate-x-0",
     )}
     variant="link"
     asChild
   >
-    <Link href="/" className="flex items-center gap-2">
+    <Link href="/" className="flex items-center justify-center gap-2">
       <Icons.Logo
-        className="mr-1 h-20 w-20"
+        className="mr-1 h-16 w-16"
         viewport="0 0 24 24"
         strokeWidth={"0.5"}
       />

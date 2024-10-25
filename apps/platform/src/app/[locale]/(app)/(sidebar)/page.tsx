@@ -19,7 +19,7 @@ export default async function Page() {
 
         <main className="mt-8">
           <div className="space-y-8 max-w-3xl mx-auto">
-            <div className="flex flex-col items-center justify-center gap-4">
+            <div className="flex flex-col items-start justify-start gap-4">
               <p>{t("welcome", { name: user?.data?.email })}</p>
 
               {/* Added center element */}
