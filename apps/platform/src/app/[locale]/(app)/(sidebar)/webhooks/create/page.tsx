@@ -14,7 +14,7 @@ import {
 export default function CreateWebhook() {
   return (
     <div className="space-y-8 max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold text-primary">Create New Webhook</h1>
+      <h1 className="text-3xl font-bold text-foreground">Create New Webhook</h1>
       <p className="text-lg text-muted-foreground">
         Set up a new webhook to receive notifications for specific transaction
         sync and API events.

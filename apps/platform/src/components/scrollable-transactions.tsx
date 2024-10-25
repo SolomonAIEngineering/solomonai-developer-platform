@@ -45,7 +45,7 @@ const ScrollableTransactionsCard: React.FC<
               href="?accountId="
               className={cn(
                 "px-3 py-2 rounded",
-                !selectedAccountId && "bg-primary text-primary-foreground",
+                !selectedAccountId && "bg-backgroud text-foreground-foreground",
               )}
             >
               All Accounts
@@ -57,7 +57,7 @@ const ScrollableTransactionsCard: React.FC<
                 className={cn(
                   "px-3 py-2 rounded",
                   selectedAccountId === account.id &&
-                    "bg-primary text-primary-foreground",
+                    "bg-backgroud text-foreground-foreground",
                 )}
               >
                 {account.name}

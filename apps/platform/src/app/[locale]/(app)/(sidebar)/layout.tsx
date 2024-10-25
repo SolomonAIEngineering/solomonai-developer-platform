@@ -54,23 +54,11 @@ export default async function Layout({
 
   return (
     <AI initialAIState={{ user: user.data, messages: [], chatId: nanoid() }}>
-      <div className="h-screen w-screen overflow-hidden">
+      <div className="h-full w-screen min-h-screen overflow-y-auto scrollbar-hide">
         <AnalyticsLayout>
-          {/** Place Sidebar Here */}
-          {/* <div className="mx-4 md:ml-[95px] md:mr-10 pb-8">
-          <Header />
-          {children}
-          <AccessibilityWidget
-            email={user.data.email as string}
-            name={user.data.full_name as string}
-            id={user.data.id as string}
-            profilePicture={user.data.avatar_url as string}
-          />
-        </div> */}
-          <div className="mx-4 pb-8 w-screen h-screen overflow-y-auto">
-            <div className="md:ml-[35px] border-8 border-black rounded-lg md:mt-[1%]">
+          <div className="p-4 w-full overflow-y-auto scroll-smooth scrollbar-hide">
+            <div className="md:ml-[80px] md:mt-[1%] md:mr-[30px]">
               {children}
-
               {/** Dock is placed here to facilitate quick access for the platform */}
             </div>
           </div>
@@ -78,12 +66,6 @@ export default async function Layout({
           {/* This is used to make the header draggable on macOS */}
           <div className="hidden todesktop:block todesktop:[-webkit-app-region:drag] fixed top-0 w-full h-4 pointer-events-none" />
         </AnalyticsLayout>
-        {/* <AccessibilityWidget
-        email={user.data.email as string}
-        name={user.data.full_name as string}
-        id={user.data.id as string}
-        profilePicture={user.data.avatar_url as string}
-      /> */}
       </div>
     </AI>
   );

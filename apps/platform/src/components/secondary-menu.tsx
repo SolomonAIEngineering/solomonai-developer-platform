@@ -18,7 +18,7 @@ export function SecondaryMenu({ items }) {
             className={cn(
               "text-[#606060]",
               pathname === item.path &&
-                "text-primary font-medium underline underline-offset-8",
+                "text-foreground font-medium underline underline-offset-8",
             )}
           >
             <span>{item.label}</span>

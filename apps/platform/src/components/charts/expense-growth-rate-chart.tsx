@@ -106,7 +106,7 @@ export async function ExpenseGrowthRateChart({
                 sideOffset={10}
               >
                 <div className="space-y-2">
-                  <h3 className="font-medium text-primary">
+                  <h3 className="font-medium text-foreground">
                     Expenses Overview
                   </h3>
                   <p>
@@ -119,7 +119,7 @@ export async function ExpenseGrowthRateChart({
                     All amounts are converted into your{" "}
                     <Link
                       href="/settings/accounts"
-                      className="text-primary underline"
+                      className="text-foreground underline"
                     >
                       base currency
                     </Link>

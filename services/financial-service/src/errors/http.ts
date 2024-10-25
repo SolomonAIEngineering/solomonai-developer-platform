@@ -24,7 +24,7 @@ const ErrorCode = z.enum([
   "METHOD_NOT_ALLOWED",
   "EXPIRED",
   "DELETE_PROTECTED",
-    "CONFLICT"
+  "CONFLICT",
 ]);
 
 /**
@@ -45,11 +45,9 @@ export function errorSchemaFactory(code: z.ZodEnum<any>) {
           "A link to our documentation with more details about this error code",
         example: `https://engineering-docs.solomon-ai.app/errors/code/${code._def.values.at(0)}`,
       }),
-      message: z
-        .string()
-        .openapi({
-          description: "A human readable explanation of what went wrong",
-        }),
+      message: z.string().openapi({
+        description: "A human readable explanation of what went wrong",
+      }),
       requestId: z.string().openapi({
         description: "Please always include the requestId in your error report",
         example: "req_1234",
@@ -72,11 +70,9 @@ export const ErrorSchema = z.object({
         "A link to our documentation with more details about this error code",
       example: "https://engineering-docs.solomon-ai.app/errors",
     }),
-    message: z
-      .string()
-      .openapi({
-        description: "A human readable explanation of what went wrong",
-      }),
+    message: z.string().openapi({
+      description: "A human readable explanation of what went wrong",
+    }),
     requestId: z.string().openapi({
       description: "Please always include the requestId in your error report",
       example: "req_1234",
@@ -120,7 +116,7 @@ function codeToStatus(code: z.infer<typeof ErrorCode>): StatusCode {
     case "INTERNAL_SERVER_ERROR":
       return 500;
     case "CONFLICT":
-        return 409;
+      return 409;
   }
 }
 
@@ -147,7 +143,7 @@ function statusToCode(status: StatusCode): z.infer<typeof ErrorCode> {
     case 500:
       return "INTERNAL_SERVER_ERROR";
     case 429:
-        return "RATE_LIMITED";
+      return "RATE_LIMITED";
     default:
       return "INTERNAL_SERVER_ERROR";
   }
@@ -216,45 +212,45 @@ export class TransactionError extends ServiceApiError {
 }
 
 export class ValidationError extends ServiceApiError {
-    public readonly code: z.infer<typeof ErrorCode>;
-    constructor({
-        code,
-        message,
-    }: {
-        code: z.infer<typeof ErrorCode>;
-        message: string;
-    }) {
-        super({ code, message });
-        this.code = code;
-    }
+  public readonly code: z.infer<typeof ErrorCode>;
+  constructor({
+    code,
+    message,
+  }: {
+    code: z.infer<typeof ErrorCode>;
+    message: string;
+  }) {
+    super({ code, message });
+    this.code = code;
+  }
 }
 
 export class ConflictError extends ServiceApiError {
-    public readonly code: z.infer<typeof ErrorCode>;
-    constructor({
-        code,
-        message,
-    }: {
-        code: z.infer<typeof ErrorCode>;
-        message: string;
-    }) {
-        super({ code, message });
-        this.code = code;
-    }
+  public readonly code: z.infer<typeof ErrorCode>;
+  constructor({
+    code,
+    message,
+  }: {
+    code: z.infer<typeof ErrorCode>;
+    message: string;
+  }) {
+    super({ code, message });
+    this.code = code;
+  }
 }
 
 export class BadRequestError extends ServiceApiError {
-    public readonly code: z.infer<typeof ErrorCode>;
-    constructor({
-        code,
-        message,
-    }: {
-        code: z.infer<typeof ErrorCode>;
-        message: string;
-    }) {
-        super({ code, message });
-        this.code = code;
-    }
+  public readonly code: z.infer<typeof ErrorCode>;
+  constructor({
+    code,
+    message,
+  }: {
+    code: z.infer<typeof ErrorCode>;
+    message: string;
+  }) {
+    super({ code, message });
+    this.code = code;
+  }
 }
 
 /**

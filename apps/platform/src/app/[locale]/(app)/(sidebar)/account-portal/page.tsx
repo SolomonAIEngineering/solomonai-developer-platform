@@ -3,7 +3,6 @@ import { DeleteAccount } from "@/components/delete-account";
 import { DisplayName } from "@/components/display-name";
 import { UserAvatar } from "@/components/user-avatar";
 import { getUser } from "@v1/db/cached-queries";
-import { userData } from "@v1/ui/types";
 
 export default async function AccountsPortal() {
   const userData = await getUser();
@@ -18,7 +17,7 @@ export default async function AccountsPortal() {
 
   return (
     <div className="space-y-8 max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold text-primary">Accounts Portal</h1>
+      <h1 className="text-3xl font-bold text-foreground">Accounts Portal</h1>
       <p className="text-lg text-muted-foreground">
         Manage your account settings and preferences.
       </p>

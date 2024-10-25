@@ -277,7 +277,7 @@ function MonthlyExpenseTooltip() {
           sideOffset={10}
         >
           <div className="space-y-2">
-            <h3 className="font-medium text-primary">
+            <h3 className="font-medium text-foreground">
               Monthly Expense Breakdown
             </h3>
             <p>
@@ -290,7 +290,7 @@ function MonthlyExpenseTooltip() {
               All amounts are converted into your{" "}
               <Link
                 href="/settings/accounts"
-                className="text-primary underline"
+                className="text-foreground underline"
               >
                 base currency
               </Link>

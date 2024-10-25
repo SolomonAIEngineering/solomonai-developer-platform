@@ -145,7 +145,6 @@ export const Routes = {
       summary: "Create a new API key",
       tags: ["API Keys"],
       authenticationRequired: true,
-
     },
     revoke: {
       path: "/v1/api.apikeys/{id}",
@@ -290,13 +289,13 @@ export const Routes = {
   },
 } as const;
 
-
-
 export const AllRoutes: RouteDefinition[] = Object.values(Routes).flatMap(
   (routeGroup) => Object.values(routeGroup),
 );
 
-export const CachedRoutes: RouteDefinition[] = AllRoutes.filter((route) => route.shouldCache === true);
+export const CachedRoutes: RouteDefinition[] = AllRoutes.filter(
+  (route) => route.shouldCache === true,
+);
 
 export const AuthenticationRequiredRoutes: RouteDefinition[] = AllRoutes.filter(
   (route) => route.authenticationRequired === true,

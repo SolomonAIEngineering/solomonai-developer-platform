@@ -78,7 +78,11 @@ export default function Layout({
   params: { locale: string };
 }) {
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${GeistSans.variable} ${GeistMono.variable}`}
+      suppressHydrationWarning
+    >
       <body
         className={cn(
           `${GeistSans.variable} ${GeistMono.variable}`,

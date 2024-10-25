@@ -19,7 +19,9 @@ const DEFAULT_RATE_LIMIT: RateLimitConfig = {
   window: 1, // 1 second
 };
 
-const DEFAULT_RATE_LIMIT_RESPONSE: Required<Omit<RateLimitResponse, 'success'>> = {
+const DEFAULT_RATE_LIMIT_RESPONSE: Required<
+  Omit<RateLimitResponse, "success">
+> = {
   limit: DEFAULT_RATE_LIMIT.limit,
   remaining: DEFAULT_RATE_LIMIT.limit,
   reset: Math.floor(Date.now() / 1000) + DEFAULT_RATE_LIMIT.window,
@@ -28,11 +30,14 @@ const DEFAULT_RATE_LIMIT_RESPONSE: Required<Omit<RateLimitResponse, 'success'>> 
 /**
  * Sanitizes rate limit values to ensure they are valid numbers
  */
-const sanitizeRateLimitValue = (value: unknown, defaultValue: number): number => {
-  if (typeof value === 'number' && !isNaN(value) && value >= 0) {
+const sanitizeRateLimitValue = (
+  value: unknown,
+  defaultValue: number,
+): number => {
+  if (typeof value === "number" && !isNaN(value) && value >= 0) {
     return value;
   }
-  if (typeof value === 'string') {
+  if (typeof value === "string") {
     const parsed = parseInt(value, 10);
     if (!isNaN(parsed) && parsed >= 0) {
       return parsed;
@@ -40,7 +45,6 @@ const sanitizeRateLimitValue = (value: unknown, defaultValue: number): number =>
   }
   return defaultValue;
 };
-
 
 /**
  * Rate limiter middleware
@@ -68,38 +72,47 @@ export const rateLimit = (_config: RateLimitConfig = DEFAULT_RATE_LIMIT) => {
         const response = await c.env.RATE_LIMITER.limit({ key: rateLimitKey });
 
         // Ensure we have a response object
-        if (!response || typeof response !== 'object') {
-          throw new Error('Invalid rate limiter response');
+        if (!response || typeof response !== "object") {
+          throw new Error("Invalid rate limiter response");
         }
 
         // Extract values with type checking and defaults
         const success = Boolean(response.success);
-        const limit = 'limit' in response ? response.limit : DEFAULT_RATE_LIMIT_RESPONSE.limit;
-        const remaining = 'remaining' in response ? response.remaining : DEFAULT_RATE_LIMIT_RESPONSE.remaining;
-        const reset = 'reset' in response ? response.reset : DEFAULT_RATE_LIMIT_RESPONSE.reset;
+        const limit =
+          "limit" in response
+            ? response.limit
+            : DEFAULT_RATE_LIMIT_RESPONSE.limit;
+        const remaining =
+          "remaining" in response
+            ? response.remaining
+            : DEFAULT_RATE_LIMIT_RESPONSE.remaining;
+        const reset =
+          "reset" in response
+            ? response.reset
+            : DEFAULT_RATE_LIMIT_RESPONSE.reset;
 
         rateLimitResponse = { success, limit, remaining, reset };
       } catch (error) {
         rateLimitResponse = {
           success: true,
-          ...DEFAULT_RATE_LIMIT_RESPONSE
+          ...DEFAULT_RATE_LIMIT_RESPONSE,
         };
       }
 
       // Sanitize all values
       const sanitizedLimit = sanitizeRateLimitValue(
         rateLimitResponse.limit,
-        DEFAULT_RATE_LIMIT_RESPONSE.limit
+        DEFAULT_RATE_LIMIT_RESPONSE.limit,
       );
 
       const sanitizedRemaining = sanitizeRateLimitValue(
         rateLimitResponse.remaining,
-        rateLimitResponse.success ? Math.max(0, sanitizedLimit - 1) : 0
+        rateLimitResponse.success ? Math.max(0, sanitizedLimit - 1) : 0,
       );
 
       const sanitizedReset = sanitizeRateLimitValue(
         rateLimitResponse.reset,
-        DEFAULT_RATE_LIMIT_RESPONSE.reset
+        DEFAULT_RATE_LIMIT_RESPONSE.reset,
       );
 
       // Set rate limit headers
@@ -115,7 +128,10 @@ export const rateLimit = (_config: RateLimitConfig = DEFAULT_RATE_LIMIT) => {
       }
 
       if (!rateLimitResponse.success) {
-        const retryAfter = Math.max(0, sanitizedReset - Math.floor(Date.now() / 1000));
+        const retryAfter = Math.max(
+          0,
+          sanitizedReset - Math.floor(Date.now() / 1000),
+        );
         c.header("Retry-After", retryAfter.toString());
 
         throw new HTTPException(429, {
@@ -124,7 +140,6 @@ export const rateLimit = (_config: RateLimitConfig = DEFAULT_RATE_LIMIT) => {
       }
 
       await next();
-
 
       return;
     } catch (error) {

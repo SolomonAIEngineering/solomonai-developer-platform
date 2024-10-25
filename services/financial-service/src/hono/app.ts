@@ -124,7 +124,7 @@ function setupCaching(app: OpenAPIHono<HonoEnv>) {
  */
 function setupAuthentication(app: OpenAPIHono<HonoEnv>) {
   AuthenticationRequiredRoutes.forEach((route) => {
-    app.use(route.path, authMiddleware);  
+    app.use(route.path, authMiddleware);
   });
 }
 

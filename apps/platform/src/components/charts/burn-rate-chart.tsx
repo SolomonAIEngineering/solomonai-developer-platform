@@ -68,7 +68,7 @@ export async function BurnRateChart({
                 side="bottom"
                 sideOffset={10}
               >
-                <h3 className="font-medium text-primary">
+                <h3 className="font-medium text-foreground">
                   The Burn Rate is your monthly expenses divided by your current
                   balance, estimating how long your funds will last.
                 </h3>
@@ -82,7 +82,7 @@ export async function BurnRateChart({
                   All amounts are converted into your{" "}
                   <Link
                     href="/settings/accounts"
-                    className="text-primary underline"
+                    className="text-foreground underline"
                   >
                     base currency
                   </Link>

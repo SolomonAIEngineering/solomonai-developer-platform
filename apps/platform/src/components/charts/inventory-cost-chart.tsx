@@ -66,7 +66,9 @@ export async function InventoryCostChart({
                 sideOffset={10}
               >
                 <div className="space-y-2">
-                  <h3 className="font-medium text-primary">Inventory Cost</h3>
+                  <h3 className="font-medium text-foreground">
+                    Inventory Cost
+                  </h3>
                   <p>
                     Inventory Cost is the cost of the inventory that you have in
                     your warehouse. It is calculated by the cost of the
@@ -76,7 +78,7 @@ export async function InventoryCostChart({
                     All amounts are converted into your{" "}
                     <Link
                       href="/settings/accounts"
-                      className="text-primary underline"
+                      className="text-foreground underline"
                     >
                       base currency
                     </Link>

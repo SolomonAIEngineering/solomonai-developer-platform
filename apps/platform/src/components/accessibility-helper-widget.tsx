@@ -72,7 +72,7 @@ export const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({
    */
   const renderToggleButton = () => (
     <button
-      className="fixed bottom-0 m-4 hidden sm:block left-20 w-12 h-12 rounded-full bg-primary text-primary-foreground items-center justify-center shadow-lg"
+      className="fixed bottom-0 m-4 hidden sm:block left-20 w-12 h-12 rounded-full bg-backgroud text-foreground-foreground items-center justify-center shadow-lg"
       onClick={toggleWidget}
     >
       {isOpen ? (

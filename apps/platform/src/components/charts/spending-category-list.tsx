@@ -32,7 +32,7 @@ export function SpendingCategoryList({ categories, period, disabled }: Props) {
                     key={slug}
                     name={name}
                     color={color}
-                    className="text-sm text-primary space-x-3 w-[90%]"
+                    className="text-sm text-foreground space-x-3 w-[90%]"
                   />
 
                   <Progress

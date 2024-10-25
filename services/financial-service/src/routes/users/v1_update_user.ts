@@ -38,7 +38,6 @@ const updateUserRoute = createRoute({
   },
 });
 
-
 export const registerV1UpdateUser = (app: App) => {
   app.openapi(updateUserRoute, async (c) => {
     const { id } = c.req.valid("param");
@@ -74,7 +73,8 @@ export const registerV1UpdateUser = (app: App) => {
     if (updateData.name && !isValidName(updateData.name)) {
       throw new ServiceApiError({
         code: "BAD_REQUEST",
-        message: "Invalid name format: must not be empty and contain valid characters",
+        message:
+          "Invalid name format: must not be empty and contain valid characters",
       });
     }
 

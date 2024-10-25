@@ -238,7 +238,7 @@ export function TransactionDetails({
               onClick={() => {
                 updateSimilarTransactionsCategory.execute({ id: data?.id });
               }}
-              className="pl-5 pr-5 bg-primary text-primary-foreground hover:bg-primary/90"
+              className="pl-5 pr-5 bg-backgroud text-foreground-foreground hover:bg-backgroud/90"
             >
               Yes
             </ToastAction>
@@ -284,7 +284,7 @@ export function TransactionDetails({
               onClick={() => {
                 updateSimilarTransactionsRecurring.execute({ id: data?.id });
               }}
-              className="pl-5 pr-5 bg-primary text-primary-foreground hover:bg-primary/90"
+              className="pl-5 pr-5 bg-backgroud text-foreground-foreground hover:bg-backgroud/90"
             >
               Yes
             </ToastAction>

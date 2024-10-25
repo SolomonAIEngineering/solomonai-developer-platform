@@ -6,42 +6,51 @@ import { RiInstagramFill } from "react-icons/ri";
 export const BLUR_FADE_DELAY = 0.15;
 
 export const siteConfig = {
-  name: "startup.ai",
-  description: "Automate your workflow with AI",
+  name: "Solomon AI",
+  description: "The Open Source Financial Workspace for Cyclical Businesses",
   url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
-  keywords: ["SaaS", "Template", "Next.js", "React", "Tailwind CSS"],
+  keywords: [
+    "Financial Platform",
+    "Cyclical Business",
+    "SMB Finance",
+    "Business Intelligence",
+    "AI Finance",
+    "Open Source Finance",
+  ],
   links: {
-    email: "support@startup.ai",
-    twitter: "https://twitter.com/magicuidesign",
+    email: "engineering@solomon-ai.co",
+    twitter: "https://twitter.com/solomonai",
     discord: "https://discord.gg/87p2vpsat5",
-    github: "https://github.com/magicuidesign/magicui",
-    instagram: "https://instagram.com/magicuidesign/",
+    github:
+      "github.com/SolomonAIEngineering/solomonai-developer-platform/apps/saas-site",
+    instagram: "https://instagram.com/solomonai/",
   },
   header: [
     {
       trigger: "Features",
       content: {
         main: {
-          icon: <Icons.logo className="h-6 w-6" />,
-          title: "AI-Powered Automation",
-          description: "Streamline your workflow with intelligent automation.",
+          icon: <Icons.logo className="w-6 h-6" />,
+          title: "Smart Financial Management",
+          description:
+            "AI-powered tools designed for seasonal business cycles.",
           href: "#",
         },
         items: [
           {
             href: "#",
-            title: "Task Automation",
-            description: "Automate repetitive tasks and save time.",
+            title: "Seasonal Forecasting",
+            description: "Predict and prepare for business cycle fluctuations.",
           },
           {
             href: "#",
-            title: "Workflow Optimization",
-            description: "Optimize your processes with AI-driven insights.",
+            title: "Cash Flow Optimization",
+            description: "Manage cash flow through peak and off-peak seasons.",
           },
           {
             href: "#",
-            title: "Intelligent Scheduling",
-            description: "AI-powered scheduling for maximum efficiency.",
+            title: "Intelligent Inventory",
+            description: "Optimize stock levels based on seasonal demand.",
           },
         ],
       },
@@ -51,35 +60,34 @@ export const siteConfig = {
       content: {
         items: [
           {
-            title: "For Small Businesses",
+            title: "Retail & Hospitality",
             href: "#",
-            description: "Tailored automation solutions for growing companies.",
+            description: "Tailored solutions for seasonal retail operations.",
           },
           {
-            title: "Enterprise",
+            title: "Tourism & Events",
             href: "#",
-            description: "Scalable AI automation for large organizations.",
+            description: "Financial tools for tourism-dependent businesses.",
           },
           {
-            title: "Developers",
+            title: "Restaurants & F&B",
             href: "#",
-            description: "API access and integration tools for developers.",
+            description: "Specialized solutions for food service businesses.",
           },
           {
-            title: "Healthcare",
+            title: "Construction",
             href: "#",
-            description: "Specialized automation for healthcare workflows.",
+            description: "Financial planning for weather-dependent projects.",
           },
           {
-            title: "Finance",
+            title: "Agriculture",
             href: "#",
-            description: "AI-driven process automation for financial services.",
+            description: "Tools for managing seasonal agricultural finances.",
           },
           {
-            title: "Education",
+            title: "Service Industries",
             href: "#",
-            description:
-              "Streamline administrative tasks in educational institutions.",
+            description: "Solutions for cyclical service businesses.",
           },
         ],
       },
@@ -91,128 +99,134 @@ export const siteConfig = {
   ],
   pricing: [
     {
-      name: "BASIC",
+      name: "STARTER",
       href: "#",
-      price: "$19",
+      price: "$29",
       period: "month",
-      yearlyPrice: "$16",
+      yearlyPrice: "$24",
       features: [
-        "1 User",
-        "5GB Storage",
-        "Basic Support",
-        "Limited API Access",
-        "Standard Analytics",
+        "Single Location",
+        "Basic Seasonal Analytics",
+        "Cash Flow Monitoring",
+        "Standard Support",
+        "Basic Inventory Management",
       ],
-      description: "Perfect for individuals and small projects",
-      buttonText: "Subscribe",
+      description: "Perfect for small seasonal businesses",
+      buttonText: "Get Started",
       isPopular: false,
     },
     {
-      name: "PRO",
+      name: "GROWTH",
       href: "#",
-      price: "$49",
+      price: "$79",
       period: "month",
-      yearlyPrice: "$40",
+      yearlyPrice: "$65",
       features: [
-        "5 Users",
-        "50GB Storage",
+        "Up to 3 Locations",
+        "Advanced Seasonal Forecasting",
+        "Inventory Optimization",
         "Priority Support",
-        "Full API Access",
-        "Advanced Analytics",
+        "Full Financial Analytics",
       ],
-      description: "Ideal for growing businesses and teams",
-      buttonText: "Subscribe",
+      description: "Ideal for growing seasonal operations",
+      buttonText: "Scale Up",
       isPopular: true,
     },
     {
       name: "ENTERPRISE",
       href: "#",
-      price: "$99",
+      price: "Custom",
       period: "month",
-      yearlyPrice: "$82",
+      yearlyPrice: "Custom",
       features: [
-        "Unlimited Users",
-        "500GB Storage",
-        "24/7 Premium Support",
+        "Unlimited Locations",
+        "AI-Powered Predictions",
         "Custom Integrations",
-        "AI-Powered Insights",
+        "24/7 Premium Support",
+        "Advanced Business Intelligence",
       ],
-      description: "For large-scale operations and high-volume users",
-      buttonText: "Subscribe",
+      description: "For large-scale seasonal businesses",
+      buttonText: "Contact Sales",
       isPopular: false,
     },
   ],
   faqs: [
     {
-      question: "What is acme.ai?",
+      question:
+        "What makes Solomon AI different from other financial platforms?",
       answer: (
         <span>
-          acme.ai is a platform that helps you build and manage your AI-powered
-          applications. It provides tools and services to streamline the
-          development and deployment of AI solutions.
+          Solomon AI is specifically designed for businesses with seasonal
+          cycles. Our platform uses AI to help you predict and prepare for peak
+          seasons, manage cash flow during off-peak periods, and optimize
+          operations year-round. We're also open source, giving you full
+          transparency and customization options.
         </span>
       ),
     },
     {
-      question: "How can I get started with acme.ai?",
+      question: "How can Solomon AI help my seasonal business?",
       answer: (
         <span>
-          You can get started with acme.ai by signing up for an account on our
-          website, creating a new project, and following our quick-start guide.
-          We also offer tutorials and documentation to help you along the way.
+          Our platform provides tools for seasonal forecasting, inventory
+          management, cash flow optimization, and financial planning. We help
+          you anticipate busy periods, manage resources efficiently, and
+          maintain financial stability throughout your business cycles.
         </span>
       ),
     },
     {
-      question: "What types of AI models does acme.ai support?",
+      question: "What types of businesses does Solomon AI work best for?",
       answer: (
         <span>
-          acme.ai supports a wide range of AI models, including but not limited
-          to natural language processing, computer vision, and predictive
-          analytics. We continuously update our platform to support the latest
-          AI technologies.
+          Solomon AI is ideal for businesses with cyclical patterns, including
+          retail stores, restaurants, tourism businesses, construction
+          companies, agricultural operations, and seasonal service providers.
+          Our tools adapt to your specific industry's patterns and needs.
         </span>
       ),
     },
     {
-      question: "Is acme.ai suitable for beginners in AI development?",
+      question: "Is Solomon AI suitable for multiple business locations?",
       answer: (
         <span>
-          Yes, acme.ai is designed to be user-friendly for both beginners and
-          experienced developers. We offer intuitive interfaces, pre-built
-          templates, and extensive learning resources to help users of all skill
-          levels create AI-powered applications.
+          Yes, Solomon AI scales seamlessly from single locations to multi-site
+          operations. Our platform helps you manage and coordinate finances
+          across all your locations while maintaining insight into individual
+          site performance and seasonal variations.
         </span>
       ),
     },
     {
-      question: "What kind of support does acme.ai provide?",
+      question: "What kind of support and resources does Solomon AI provide?",
       answer: (
         <span>
-          acme.ai provides comprehensive support including documentation, video
-          tutorials, a community forum, and dedicated customer support. We also
-          offer premium support plans for enterprises with more complex needs.
+          We offer comprehensive support including detailed documentation,
+          community forums, video tutorials, and dedicated customer service. Our
+          open-source nature also means you can access and customize the
+          platform to your specific needs, with support from our active
+          developer community.
         </span>
       ),
     },
   ],
   footer: [
     {
-      title: "Product",
+      title: "Platform",
       links: [
         { href: "#", text: "Features", icon: null },
         { href: "#", text: "Pricing", icon: null },
         { href: "#", text: "Documentation", icon: null },
-        { href: "#", text: "API", icon: null },
+        { href: "#", text: "Developer API", icon: null },
       ],
     },
     {
       title: "Company",
       links: [
         { href: "#", text: "About Us", icon: null },
-        { href: "#", text: "Careers", icon: null },
+        { href: "#", text: "Open Source", icon: null },
         { href: "#", text: "Blog", icon: null },
-        { href: "#", text: "Press", icon: null },
+        { href: "#", text: "Careers", icon: null },
         { href: "#", text: "Partners", icon: null },
       ],
     },
@@ -220,13 +234,13 @@ export const siteConfig = {
       title: "Resources",
       links: [
         { href: "#", text: "Community", icon: null },
-        { href: "#", text: "Contact", icon: null },
+        { href: "#", text: "Success Stories", icon: null },
         { href: "#", text: "Support", icon: null },
-        { href: "#", text: "Status", icon: null },
+        { href: "#", text: "System Status", icon: null },
       ],
     },
     {
-      title: "Social",
+      title: "Connect",
       links: [
         {
           href: "#",

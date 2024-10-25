@@ -23,9 +23,13 @@ export const ContentLayout: React.FC<ContentLayoutProps> = React.memo(
     return (
       <div className="flex min-h-screen flex-col">
         <Navbar title={title} />
-        <main className="flex-grow px-4 pb-8 pt-8 sm:px-8">
+        <main className="flex-grow pb-8">
           <BreadcrumbNav />
-          {children}
+          <div className="py-4 sm:py-6 md:py-8 min-h-[calc(100vh-200px)] overflow-auto">
+            <div className="border rounded-3xl bg-background text-foreground min-h-screen px-[2%]">
+              {children}
+            </div>
+          </div>
         </main>
       </div>
     );

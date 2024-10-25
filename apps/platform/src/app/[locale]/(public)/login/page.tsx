@@ -1,3 +1,8 @@
+import { Metadata } from "next";
+import { cookies, headers } from "next/headers";
+import { userAgent } from "next/server";
+import React from "react";
+
 import { AnimatedText } from "@/components/animated-text";
 import { AppleSignIn } from "@/components/apple-sign-in";
 import { DesktopCommandMenuSignIn } from "@/components/desktop-command-menu-sign-in";
@@ -16,144 +21,141 @@ import {
   AccordionTrigger,
 } from "@v1/ui/accordion";
 import { Card } from "@v1/ui/card";
-import { Metadata } from "next";
-import { cookies, headers } from "next/headers";
-import Image from "next/image";
-import { userAgent } from "next/server";
-import React from "react";
+import { Icons } from "@v1/ui/icons";
 
-/**
- * Metadata for the login page.
- */
 export const metadata: Metadata = {
   title: `Login | ${config.company}`,
 };
 
-/**
- * Represents the available authentication providers.
- */
-type AuthProvider = "apple" | "google" | "github" | "slack" | "otp";
+enum AuthProvider {
+  Apple = "apple",
+  Google = "google",
+  Github = "github",
+  Slack = "slack",
+  OTP = "otp",
+}
 
-/**
- * Maps authentication providers to their respective React components.
- */
-type AuthComponentsType = {
-  [key in AuthProvider]: React.ReactElement | null;
+const authComponentMap: Record<AuthProvider, React.ReactElement> = {
+  [AuthProvider.Apple]: <AppleSignIn />,
+  [AuthProvider.Google]: <GoogleSignIn />,
+  [AuthProvider.Github]: <GithubSignIn />,
+  [AuthProvider.Slack]: <SlackSignIn />,
+  [AuthProvider.OTP]: <OTPSignIn />,
 };
 
-/**
- * Renders the login page with various authentication options.
- *
- * This component handles the following:
- * - Checks for desktop command menu sign-in
- * - Determines enabled authentication providers
- * - Selects the preferred sign-in option based on user preferences and device
- * - Renders the preferred sign-in option and additional options in an accordion
- *
- * @param params - The page parameters
- * @param params.searchParams - The search parameters from the URL
- * @param params.searchParams.return_to - The return URL after successful authentication
- * @returns The rendered login page or desktop command menu sign-in component
- */
-export default async function Page(params: {
+interface PageProps {
   searchParams: { return_to: string };
-}) {
-  if (params?.searchParams?.return_to === "desktop/command") {
+}
+
+export default async function LoginPage({ searchParams }: PageProps) {
+  if (searchParams?.return_to === "desktop/command") {
     return <DesktopCommandMenuSignIn />;
   }
 
   const cookieStore = cookies();
-  const preferred = cookieStore.get(Cookies.PreferredSignInProvider);
+  const userPreferredProvider = cookieStore.get(Cookies.PreferredSignInProvider)
+    ?.value as AuthProvider | undefined;
+  const isUserInEU = await isEU();
   const showTrackingConsent =
-    isEU() && !cookieStore.has(Cookies.TrackingConsent);
+    isUserInEU && !cookieStore.has(Cookies.TrackingConsent);
   const { device } = userAgent({ headers: headers() });
 
-  // Check which auth providers are enabled
-  const enabledProviders = featureFlags.authProviders;
+  const enabledProviders = featureFlags.authProviders.filter((provider) =>
+    Object.values(AuthProvider).includes(provider as AuthProvider),
+  ) as AuthProvider[];
 
-  const authComponents: AuthComponentsType = {
-    apple: enabledProviders.includes("apple") ? <AppleSignIn /> : null,
-    google: enabledProviders.includes("google") ? <GoogleSignIn /> : null,
-    github: enabledProviders.includes("github") ? <GithubSignIn /> : null,
-    slack: enabledProviders.includes("slack") ? <SlackSignIn /> : null,
-    otp: enabledProviders.includes("otp") ? <OTPSignIn /> : null,
-  };
+  const availableAuthComponents = enabledProviders.reduce(
+    (components, provider) => {
+      if (authComponentMap[provider]) {
+        components[provider] = authComponentMap[provider];
+      }
+      return components;
+    },
+    {} as Record<AuthProvider, React.ReactElement>,
+  );
+
+  const availableProviders = Object.keys(
+    availableAuthComponents,
+  ) as AuthProvider[];
 
   const defaultProvider: AuthProvider =
-    device?.vendor === "Apple" ? "apple" : "google";
-  const preferredProvider =
-    (preferred?.value as AuthProvider) || defaultProvider;
+    device?.vendor === "Apple" && enabledProviders.includes(AuthProvider.Apple)
+      ? AuthProvider.Apple
+      : enabledProviders.includes(AuthProvider.Google)
+        ? AuthProvider.Google
+        : availableProviders[0]!;
 
-  /**
-   * Determines the actual preferred provider based on availability.
-   * Falls back to the first available provider if the preferred one is not available.
-   */
-  const availableProviders = Object.keys(authComponents).filter(
-    (key) => authComponents[key as AuthProvider] !== null,
-  ) as AuthProvider[];
-  const actualPreferredProvider = availableProviders.includes(preferredProvider)
-    ? preferredProvider
-    : availableProviders[0];
+  const actualPreferredProvider = availableProviders.includes(
+    userPreferredProvider!,
+  )
+    ? userPreferredProvider!
+    : defaultProvider;
 
-  let preferredSignInOption =
-    authComponents[actualPreferredProvider as AuthProvider];
+  const preferredSignInOption =
+    availableAuthComponents[actualPreferredProvider];
 
-  // Filter out the preferred provider and null components
   let moreSignInOptions = availableProviders
     .filter((provider) => provider !== actualPreferredProvider)
     .map((provider) => (
-      <React.Fragment key={provider}>{authComponents[provider]}</React.Fragment>
+      <React.Fragment key={provider}>
+        {availableAuthComponents[provider]}
+      </React.Fragment>
     ));
 
-  // If OTP is available and not the preferred option, ensure it's at the end of the list
-  if (authComponents.otp && actualPreferredProvider !== "otp") {
+  if (
+    availableProviders.includes(AuthProvider.OTP) &&
+    actualPreferredProvider !== AuthProvider.OTP
+  ) {
     moreSignInOptions = moreSignInOptions.filter(
-      (option) => option.key !== "otp",
+      (option) => option.key !== AuthProvider.OTP,
     );
     moreSignInOptions.push(
-      <OTPSignIn key="otp" className="border-t-[1px] border-border pt-8" />,
+      <OTPSignIn
+        key={AuthProvider.OTP}
+        className="border-t-[1px] border-border pt-8"
+      />,
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-8">
-      <div className="w-full max-w-6xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-between gap-8 md:gap-16">
-          <div className="flex justify-center md:justify-end order-2 md:order-1">
-            <Image
-              src="https://cdn.solomon-ai-platform.com/logo.png"
-              alt="logo"
-              width={600}
-              height={600}
-              className="rounded-3xl w-full max-w-md md:max-w-xl h-auto"
-            />
-          </div>
-          <div className="text-center flex flex-col">
-            <AnimatedText
-              text="Developer Platform"
-              className="text-3xl md:text-6xl font-bold leading-tight md:pb-[10%]"
-            />
-            <Card className="flex flex-col items-center p-6 md:p-8 pointer-events-auto w-full max-w-md mx-auto order-1 md:order-2">
+    <div
+      className="flex flex-col items-center justify-center min-h-screen p-4 md:p-8"
+      role="main"
+    >
+      <Icons.Logo
+        className="h-16 w-16 md:h-24 md:w-24 mb-8"
+        aria-label="Company Logo"
+      />
+
+      <div className="w-full max-w-6xl px-4 md:px-8">
+        <div className="flex flex-col items-center justify-center gap-2">
+          <div className="flex flex-col text-center w-full max-w-2xl">
+            <Card className="flex flex-col items-center order-1 w-full p-6 mx-auto pointer-events-auto md:p-8 md:order-2 border-4 border-black rounded-lg">
               <div className="w-full">{preferredSignInOption}</div>
-              <Accordion
-                type="single"
-                collapsible
-                className="mt-6 border-t-[1px] pt-2 w-full"
-              >
-                <AccordionItem value="item-1" className="border-0">
-                  <AccordionTrigger className="flex justify-center space-x-2 text-sm">
-                    <span>More options</span>
-                  </AccordionTrigger>
-                  <AccordionContent className="mt-4">
-                    <div className="flex flex-col space-y-4">
-                      {moreSignInOptions}
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
+              {moreSignInOptions.length > 0 && (
+                <Accordion
+                  type="single"
+                  collapsible
+                  className="mt-6 border-t-[1px] pt-2 w-full"
+                >
+                  <AccordionItem
+                    value="additional-options"
+                    className="border-0"
+                  >
+                    <AccordionTrigger className="flex justify-center space-x-2 text-sm">
+                      <span>More options</span>
+                    </AccordionTrigger>
+                    <AccordionContent className="mt-4">
+                      <div className="flex flex-col space-y-4">
+                        {moreSignInOptions}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              )}
               <p className="text-xs text-[#878787] max-w-md mt-4 text-center">
                 By clicking continue, you acknowledge that you have read and
-                agree to {config.name}'s{" "}
+                agree to {config.name}&apos;s{" "}
                 <a href={`${config.webUrl}/terms`} className="underline">
                   Terms of Service
                 </a>{" "}
