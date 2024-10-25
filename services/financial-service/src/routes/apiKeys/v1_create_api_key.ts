@@ -1,5 +1,8 @@
 import { CacheOptions } from "@/cache";
-import { openApiErrorResponses as ErrorResponses, ServiceApiError } from "@/errors";
+import {
+  openApiErrorResponses as ErrorResponses,
+  ServiceApiError,
+} from "@/errors";
 import { App } from "@/hono/app";
 import { Routes } from "@/route-definitions/routes";
 import { createRoute, z } from "@hono/zod-openapi";
@@ -83,7 +86,11 @@ export const registerV1CreateApiKey = (app: App) => {
       }
 
       // Validate name
-      if (!apiKeyData.name || typeof apiKeyData.name !== 'string' || apiKeyData.name.trim().length === 0) {
+      if (
+        !apiKeyData.name ||
+        typeof apiKeyData.name !== "string" ||
+        apiKeyData.name.trim().length === 0
+      ) {
         throw new ServiceApiError({
           code: "BAD_REQUEST",
           message: "API key name is required and must be non-empty",
@@ -169,7 +176,7 @@ export const registerV1CreateApiKey = (app: App) => {
         await cache.set(
           `api_key:${apiKey.id}`,
           JSON.stringify(apiKey),
-          cacheOpts
+          cacheOpts,
         );
       } catch (error) {
         // Log cache error but don't fail the request
@@ -177,14 +184,16 @@ export const registerV1CreateApiKey = (app: App) => {
       }
 
       // Return successful response
-      return c.json({
-        ...apiKey,
-        // Ensure these fields are present as expected by tests
-        isActive: true,
-        environment: "production",
-        revoked: false,
-      }, 200);
-
+      return c.json(
+        {
+          ...apiKey,
+          // Ensure these fields are present as expected by tests
+          isActive: true,
+          environment: "production",
+          revoked: false,
+        },
+        200,
+      );
     } catch (error) {
       if (error instanceof ServiceApiError) {
         throw error;
@@ -199,7 +208,6 @@ export const registerV1CreateApiKey = (app: App) => {
     }
   });
 
-
   // TODO: Implement rate limiting for API key creation
   // This can help prevent abuse and ensure fair usage
 
@@ -208,5 +216,4 @@ export const registerV1CreateApiKey = (app: App) => {
 
   // TODO: Consider implementing a webhook or event system
   // to notify other parts of the application about new API keys
-
 };

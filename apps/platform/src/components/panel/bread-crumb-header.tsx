@@ -61,7 +61,9 @@ function BreadcrumbNav(): JSX.Element {
             ) : (
               <>
                 <BreadcrumbLink asChild>
-                  <Link href={item.href} className="text-lg">{item.label}</Link>
+                  <Link href={item.href} className="text-lg">
+                    {item.label}
+                  </Link>
                 </BreadcrumbLink>
                 <BreadcrumbSeparator />
               </>

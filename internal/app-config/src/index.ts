@@ -5,4 +5,3 @@ tsup is already setup for you to build this package.
 */
 export * from "./app/index";
 export * from "./types/index";
-

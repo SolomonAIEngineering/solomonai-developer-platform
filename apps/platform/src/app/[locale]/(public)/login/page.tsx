@@ -14,7 +14,12 @@ import config from "@/config";
 import { Cookies } from "@/utils/constants";
 import { featureFlags } from "@v1/env/platform";
 import { isEU } from "@v1/location";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@v1/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@v1/ui/accordion";
 import { Card } from "@v1/ui/card";
 import { Icons } from "@v1/ui/icons";
 
@@ -48,23 +53,30 @@ export default async function LoginPage({ searchParams }: PageProps) {
   }
 
   const cookieStore = cookies();
-  const userPreferredProvider = cookieStore.get(Cookies.PreferredSignInProvider)?.value as AuthProvider | undefined;
+  const userPreferredProvider = cookieStore.get(Cookies.PreferredSignInProvider)
+    ?.value as AuthProvider | undefined;
   const isUserInEU = await isEU();
-  const showTrackingConsent = isUserInEU && !cookieStore.has(Cookies.TrackingConsent);
+  const showTrackingConsent =
+    isUserInEU && !cookieStore.has(Cookies.TrackingConsent);
   const { device } = userAgent({ headers: headers() });
 
   const enabledProviders = featureFlags.authProviders.filter((provider) =>
-    Object.values(AuthProvider).includes(provider as AuthProvider)
+    Object.values(AuthProvider).includes(provider as AuthProvider),
   ) as AuthProvider[];
 
-  const availableAuthComponents = enabledProviders.reduce((components, provider) => {
-    if (authComponentMap[provider]) {
-      components[provider] = authComponentMap[provider];
-    }
-    return components;
-  }, {} as Record<AuthProvider, React.ReactElement>);
+  const availableAuthComponents = enabledProviders.reduce(
+    (components, provider) => {
+      if (authComponentMap[provider]) {
+        components[provider] = authComponentMap[provider];
+      }
+      return components;
+    },
+    {} as Record<AuthProvider, React.ReactElement>,
+  );
 
-  const availableProviders = Object.keys(availableAuthComponents) as AuthProvider[];
+  const availableProviders = Object.keys(
+    availableAuthComponents,
+  ) as AuthProvider[];
 
   const defaultProvider: AuthProvider =
     device?.vendor === "Apple" && enabledProviders.includes(AuthProvider.Apple)
@@ -73,28 +85,47 @@ export default async function LoginPage({ searchParams }: PageProps) {
         ? AuthProvider.Google
         : availableProviders[0]!;
 
-  const actualPreferredProvider = availableProviders.includes(userPreferredProvider!)
+  const actualPreferredProvider = availableProviders.includes(
+    userPreferredProvider!,
+  )
     ? userPreferredProvider!
     : defaultProvider;
 
-  const preferredSignInOption = availableAuthComponents[actualPreferredProvider];
+  const preferredSignInOption =
+    availableAuthComponents[actualPreferredProvider];
 
   let moreSignInOptions = availableProviders
     .filter((provider) => provider !== actualPreferredProvider)
     .map((provider) => (
-      <React.Fragment key={provider}>{availableAuthComponents[provider]}</React.Fragment>
+      <React.Fragment key={provider}>
+        {availableAuthComponents[provider]}
+      </React.Fragment>
     ));
 
-  if (availableProviders.includes(AuthProvider.OTP) && actualPreferredProvider !== AuthProvider.OTP) {
-    moreSignInOptions = moreSignInOptions.filter((option) => option.key !== AuthProvider.OTP);
+  if (
+    availableProviders.includes(AuthProvider.OTP) &&
+    actualPreferredProvider !== AuthProvider.OTP
+  ) {
+    moreSignInOptions = moreSignInOptions.filter(
+      (option) => option.key !== AuthProvider.OTP,
+    );
     moreSignInOptions.push(
-      <OTPSignIn key={AuthProvider.OTP} className="border-t-[1px] border-border pt-8" />
+      <OTPSignIn
+        key={AuthProvider.OTP}
+        className="border-t-[1px] border-border pt-8"
+      />,
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-8" role="main">
-      <Icons.Logo className="h-16 w-16 md:h-24 md:w-24 mb-8" aria-label="Company Logo" />
+    <div
+      className="flex flex-col items-center justify-center min-h-screen p-4 md:p-8"
+      role="main"
+    >
+      <Icons.Logo
+        className="h-16 w-16 md:h-24 md:w-24 mb-8"
+        aria-label="Company Logo"
+      />
 
       <div className="w-full max-w-6xl px-4 md:px-8">
         <div className="flex flex-col items-center justify-center gap-2">
@@ -102,19 +133,29 @@ export default async function LoginPage({ searchParams }: PageProps) {
             <Card className="flex flex-col items-center order-1 w-full p-6 mx-auto pointer-events-auto md:p-8 md:order-2 border-4 border-black rounded-lg">
               <div className="w-full">{preferredSignInOption}</div>
               {moreSignInOptions.length > 0 && (
-                <Accordion type="single" collapsible className="mt-6 border-t-[1px] pt-2 w-full">
-                  <AccordionItem value="additional-options" className="border-0">
+                <Accordion
+                  type="single"
+                  collapsible
+                  className="mt-6 border-t-[1px] pt-2 w-full"
+                >
+                  <AccordionItem
+                    value="additional-options"
+                    className="border-0"
+                  >
                     <AccordionTrigger className="flex justify-center space-x-2 text-sm">
                       <span>More options</span>
                     </AccordionTrigger>
                     <AccordionContent className="mt-4">
-                      <div className="flex flex-col space-y-4">{moreSignInOptions}</div>
+                      <div className="flex flex-col space-y-4">
+                        {moreSignInOptions}
+                      </div>
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
               )}
               <p className="text-xs text-[#878787] max-w-md mt-4 text-center">
-                By clicking continue, you acknowledge that you have read and agree to {config.name}&apos;s{" "}
+                By clicking continue, you acknowledge that you have read and
+                agree to {config.name}&apos;s{" "}
                 <a href={`${config.webUrl}/terms`} className="underline">
                   Terms of Service
                 </a>{" "}

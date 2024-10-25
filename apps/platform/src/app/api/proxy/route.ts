@@ -6,7 +6,7 @@ const querySchema = z.object({
   filePath: z.string().min(1),
 });
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 /**
  * Handles GET requests for proxying file access from Supabase storage.

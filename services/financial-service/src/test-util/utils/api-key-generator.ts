@@ -66,7 +66,7 @@ export class APIKeyGenerator {
       revoked: options.revoked ?? false,
       revokedAt: options.revoked ? now : null,
       revokedReason: options.revoked
-        ? (options.revokedReason ?? "Revoked for testing")
+        ? options.revokedReason ?? "Revoked for testing"
         : null,
     };
   }

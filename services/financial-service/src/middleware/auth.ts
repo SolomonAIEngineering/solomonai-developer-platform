@@ -41,7 +41,7 @@ export const authMiddleware = async (
   try {
     // Check cache first
     const cachedUser = await getCachedUser(c, apiKey, userId);
-    const cachedApiKey = await getCacheApiKey(c, apiKey)
+    const cachedApiKey = await getCacheApiKey(c, apiKey);
 
     if (cachedUser && cachedApiKey) {
       c.set("user", cachedUser);
@@ -56,7 +56,9 @@ export const authMiddleware = async (
     ]);
 
     if (!isValidApiKey) {
-      throw new HTTPException(401, { message: "Missing or invalid authentication headers" });
+      throw new HTTPException(401, {
+        message: "Missing or invalid authentication headers",
+      });
     }
 
     if (!user) {
@@ -84,7 +86,9 @@ async function getCachedUser(
   apiKey: string,
   userId: number,
 ): Promise<User | null> {
-  const cachedUser = await c.env.KV.get(getUserApiKeyCacheKeyReference(apiKey, userId));
+  const cachedUser = await c.env.KV.get(
+    getUserApiKeyCacheKeyReference(apiKey, userId),
+  );
   return cachedUser ? JSON.parse(cachedUser) : null;
 }
 
@@ -107,10 +111,7 @@ async function cacheUser(
   });
 }
 
-async function cacheApiKey(
-  c: Context,
-  apiKey: string,
-): Promise<void> {
+async function cacheApiKey(c: Context, apiKey: string): Promise<void> {
   await c.env.KV.put(getApiKeyCacheKeyReference(apiKey), apiKey.toString(), {
     expirationTtl: constants.CACHE_TTL,
   });
@@ -126,7 +127,10 @@ function handleAuthError(c: Context, error: unknown): never {
   });
 }
 
-export const getUserApiKeyCacheKeyReference = (apiKey: string, userId: number): string =>
-  `auth:${apiKey}:${userId}`;
+export const getUserApiKeyCacheKeyReference = (
+  apiKey: string,
+  userId: number,
+): string => `auth:${apiKey}:${userId}`;
 
-export const getApiKeyCacheKeyReference = (apiKey: string): string => `auth:${apiKey}:api_keys`;
+export const getApiKeyCacheKeyReference = (apiKey: string): string =>
+  `auth:${apiKey}:api_keys`;

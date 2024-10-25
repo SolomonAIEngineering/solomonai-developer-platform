@@ -7,9 +7,8 @@ import {
   V1CreateUserResponse400,
   V1CreateUserResponse409,
   type V1CreateUserRequest,
-  type V1CreateUserResponse
+  type V1CreateUserResponse,
 } from "./v1_create_user";
-
 
 describe("V1 Create User Route", () => {
   let harness: IntegrationHarness;
@@ -24,14 +23,16 @@ describe("V1 Create User Route", () => {
     test("should successfully create a user with all valid fields", async () => {
       const createUserData = generator.generateUserData();
 
-      const response = await harness.post<V1CreateUserRequest, V1CreateUserResponse>({
+      const response = await harness.post<
+        V1CreateUserRequest,
+        V1CreateUserResponse
+      >({
         url: Routes.Users.create.path,
         body: createUserData,
         headers: {
           "Content-Type": "application/json",
         },
       });
-
 
       expect(response.status).toBe(200);
       expect(response.body).toMatchObject({
@@ -50,7 +51,10 @@ describe("V1 Create User Route", () => {
         name: null,
       };
 
-      const response = await harness.post<V1CreateUserRequest, V1CreateUserResponse>({
+      const response = await harness.post<
+        V1CreateUserRequest,
+        V1CreateUserResponse
+      >({
         url: Routes.Users.create.path,
         body: createUserData,
         headers: {
@@ -68,7 +72,10 @@ describe("V1 Create User Route", () => {
         name: "  Trimmed User  ",
       };
 
-      const response = await harness.post<V1CreateUserRequest, V1CreateUserResponse>({
+      const response = await harness.post<
+        V1CreateUserRequest,
+        V1CreateUserResponse
+      >({
         url: Routes.Users.create.path,
         body: createUserData,
         headers: {
@@ -89,7 +96,10 @@ describe("V1 Create User Route", () => {
         name: "Test User",
       };
 
-      const response = await harness.post<V1CreateUserRequest, V1CreateUserResponse400>({
+      const response = await harness.post<
+        V1CreateUserRequest,
+        V1CreateUserResponse400
+      >({
         url: Routes.Users.create.path,
         body: createUserData,
         headers: {
@@ -108,7 +118,10 @@ describe("V1 Create User Route", () => {
         name: "Test User",
       };
 
-      const response = await harness.post<V1CreateUserRequest, V1CreateUserResponse400>({
+      const response = await harness.post<
+        V1CreateUserRequest,
+        V1CreateUserResponse400
+      >({
         url: Routes.Users.create.path,
         body: createUserData,
         headers: {
@@ -123,10 +136,13 @@ describe("V1 Create User Route", () => {
     test("should reject missing required fields", async () => {
       const createUserData = {
         name: "Test User",
-        email: ""
+        email: "",
       };
 
-      const response = await harness.post<V1CreateUserRequest, V1CreateUserResponse400>({
+      const response = await harness.post<
+        V1CreateUserRequest,
+        V1CreateUserResponse400
+      >({
         url: Routes.Users.create.path,
         body: createUserData,
         headers: {
@@ -144,7 +160,10 @@ describe("V1 Create User Route", () => {
         name: "Test User",
       };
 
-      const response = await harness.post<V1CreateUserRequest, V1CreateUserResponse400>({
+      const response = await harness.post<
+        V1CreateUserRequest,
+        V1CreateUserResponse400
+      >({
         url: Routes.Users.create.path,
         body: createUserData,
         headers: {
@@ -165,7 +184,10 @@ describe("V1 Create User Route", () => {
       };
 
       // Create first user
-      const firstResponse = await harness.post<V1CreateUserRequest, V1CreateUserResponse>({
+      const firstResponse = await harness.post<
+        V1CreateUserRequest,
+        V1CreateUserResponse
+      >({
         url: Routes.Users.create.path,
         body: createUserData,
         headers: {
@@ -176,7 +198,10 @@ describe("V1 Create User Route", () => {
       expect(firstResponse.status).toBe(200);
 
       // Attempt to create second user with same email
-      const secondResponse = await harness.post<V1CreateUserRequest, V1CreateUserResponse409>({
+      const secondResponse = await harness.post<
+        V1CreateUserRequest,
+        V1CreateUserResponse409
+      >({
         url: Routes.Users.create.path,
         body: {
           ...createUserData,
@@ -206,7 +231,10 @@ describe("V1 Create User Route", () => {
       });
 
       // Attempt to create second user with same email in different case
-      const duplicateResponse = await harness.post<V1CreateUserRequest, V1CreateUserResponse409>({
+      const duplicateResponse = await harness.post<
+        V1CreateUserRequest,
+        V1CreateUserResponse409
+      >({
         url: Routes.Users.create.path,
         body: {
           ...createUserData,
@@ -228,7 +256,10 @@ describe("V1 Create User Route", () => {
         name: "Field Test",
       };
 
-      const response = await harness.post<V1CreateUserRequest, V1CreateUserResponse>({
+      const response = await harness.post<
+        V1CreateUserRequest,
+        V1CreateUserResponse
+      >({
         url: Routes.Users.create.path,
         body: createUserData,
         headers: {
@@ -254,7 +285,10 @@ describe("V1 Create User Route", () => {
         name: "Default Test",
       };
 
-      const response = await harness.post<V1CreateUserRequest, V1CreateUserResponse>({
+      const response = await harness.post<
+        V1CreateUserRequest,
+        V1CreateUserResponse
+      >({
         url: Routes.Users.create.path,
         body: createUserData,
         headers: {

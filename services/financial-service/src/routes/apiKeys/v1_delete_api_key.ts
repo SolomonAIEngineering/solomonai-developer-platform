@@ -1,6 +1,12 @@
-import { openApiErrorResponses as ErrorResponses, ServiceApiError } from "@/errors";
+import {
+  openApiErrorResponses as ErrorResponses,
+  ServiceApiError,
+} from "@/errors";
 import { App } from "@/hono/app";
-import { getApiKeyCacheKeyReference, getUserApiKeyCacheKeyReference } from "@/middleware/auth";
+import {
+  getApiKeyCacheKeyReference,
+  getUserApiKeyCacheKeyReference,
+} from "@/middleware/auth";
 import { Routes } from "@/route-definitions/routes";
 import { createRoute, z } from "@hono/zod-openapi";
 import { APIKeyParamsSchema, DeleteAPIKeySchema } from "./schema";
@@ -93,7 +99,8 @@ export const registerV1DeleteApiKey = (app: App) => {
     const currentApiKeyUint = parseInt(currentApiKey, 10);
 
     // Fetch the API key to be deleted
-    const currentApiKeyUnderUse = await repository.apiKey.getById(currentApiKeyUint);
+    const currentApiKeyUnderUse =
+      await repository.apiKey.getById(currentApiKeyUint);
     if (!apiKey) {
       throw new ServiceApiError({
         code: "NOT_FOUND",
@@ -113,7 +120,10 @@ export const registerV1DeleteApiKey = (app: App) => {
     await repository.apiKey.delete(apiKeyId);
 
     // Remove from cache if it exists
-    const userCacheKey = getUserApiKeyCacheKeyReference(apiKey.key, apiKey.userId);
+    const userCacheKey = getUserApiKeyCacheKeyReference(
+      apiKey.key,
+      apiKey.userId,
+    );
     try {
       await cache.delete(userCacheKey);
     } catch (error) {

@@ -15,13 +15,14 @@ export const siteConfig = {
     "SMB Finance",
     "Business Intelligence",
     "AI Finance",
-    "Open Source Finance"
+    "Open Source Finance",
   ],
   links: {
     email: "engineering@solomon-ai.co",
     twitter: "https://twitter.com/solomonai",
     discord: "https://discord.gg/87p2vpsat5",
-    github: "github.com/SolomonAIEngineering/solomonai-developer-platform/apps/saas-site",
+    github:
+      "github.com/SolomonAIEngineering/solomonai-developer-platform/apps/saas-site",
     instagram: "https://instagram.com/solomonai/",
   },
   header: [
@@ -31,7 +32,8 @@ export const siteConfig = {
         main: {
           icon: <Icons.logo className="w-6 h-6" />,
           title: "Smart Financial Management",
-          description: "AI-powered tools designed for seasonal business cycles.",
+          description:
+            "AI-powered tools designed for seasonal business cycles.",
           href: "#",
         },
         items: [
@@ -150,10 +152,15 @@ export const siteConfig = {
   ],
   faqs: [
     {
-      question: "What makes Solomon AI different from other financial platforms?",
+      question:
+        "What makes Solomon AI different from other financial platforms?",
       answer: (
         <span>
-          Solomon AI is specifically designed for businesses with seasonal cycles. Our platform uses AI to help you predict and prepare for peak seasons, manage cash flow during off-peak periods, and optimize operations year-round. We're also open source, giving you full transparency and customization options.
+          Solomon AI is specifically designed for businesses with seasonal
+          cycles. Our platform uses AI to help you predict and prepare for peak
+          seasons, manage cash flow during off-peak periods, and optimize
+          operations year-round. We're also open source, giving you full
+          transparency and customization options.
         </span>
       ),
     },
@@ -161,7 +168,10 @@ export const siteConfig = {
       question: "How can Solomon AI help my seasonal business?",
       answer: (
         <span>
-          Our platform provides tools for seasonal forecasting, inventory management, cash flow optimization, and financial planning. We help you anticipate busy periods, manage resources efficiently, and maintain financial stability throughout your business cycles.
+          Our platform provides tools for seasonal forecasting, inventory
+          management, cash flow optimization, and financial planning. We help
+          you anticipate busy periods, manage resources efficiently, and
+          maintain financial stability throughout your business cycles.
         </span>
       ),
     },
@@ -169,7 +179,10 @@ export const siteConfig = {
       question: "What types of businesses does Solomon AI work best for?",
       answer: (
         <span>
-          Solomon AI is ideal for businesses with cyclical patterns, including retail stores, restaurants, tourism businesses, construction companies, agricultural operations, and seasonal service providers. Our tools adapt to your specific industry's patterns and needs.
+          Solomon AI is ideal for businesses with cyclical patterns, including
+          retail stores, restaurants, tourism businesses, construction
+          companies, agricultural operations, and seasonal service providers.
+          Our tools adapt to your specific industry's patterns and needs.
         </span>
       ),
     },
@@ -177,7 +190,10 @@ export const siteConfig = {
       question: "Is Solomon AI suitable for multiple business locations?",
       answer: (
         <span>
-          Yes, Solomon AI scales seamlessly from single locations to multi-site operations. Our platform helps you manage and coordinate finances across all your locations while maintaining insight into individual site performance and seasonal variations.
+          Yes, Solomon AI scales seamlessly from single locations to multi-site
+          operations. Our platform helps you manage and coordinate finances
+          across all your locations while maintaining insight into individual
+          site performance and seasonal variations.
         </span>
       ),
     },
@@ -185,7 +201,11 @@ export const siteConfig = {
       question: "What kind of support and resources does Solomon AI provide?",
       answer: (
         <span>
-          We offer comprehensive support including detailed documentation, community forums, video tutorials, and dedicated customer service. Our open-source nature also means you can access and customize the platform to your specific needs, with support from our active developer community.
+          We offer comprehensive support including detailed documentation,
+          community forums, video tutorials, and dedicated customer service. Our
+          open-source nature also means you can access and customize the
+          platform to your specific needs, with support from our active
+          developer community.
         </span>
       ),
     },
