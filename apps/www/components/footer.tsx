@@ -17,7 +17,7 @@ export default function Footer() {
             The Financial workspace for cyclical businesses
           </p>
           <p
-            className="mb-4 text-xs text-gray-500 sm:text-xs font-bold"
+            className="mb-4 text-xs font-bold text-gray-500 sm:text-xs"
             data-aos="fade-up"
             data-aos-delay="200"
           >

@@ -22,7 +22,7 @@ const HeroTitle = ({ theme }: { theme: string }) => (
           className="mb-4 mr-2 inline-flex"
         />
       )}
-        The Financial workspace for for cyclical businesses
+      The Financial workspace for for cyclical businesses
     </div>
 
     <div className="block items-start sm:hidden">
