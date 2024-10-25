@@ -22,8 +22,7 @@ const HeroTitle = ({ theme }: { theme: string }) => (
           className="mb-4 mr-2 inline-flex"
         />
       )}
-      The Open Source financial workspace purpose-built for the unique demands
-      of cyclical businesses
+        The Financial workspace for for cyclical businesses
     </div>
 
     <div className="block items-start sm:hidden">
@@ -59,13 +58,6 @@ const HeroDescription = () => (
     >
       The right tools for the often-overlooked needs of brick-and-mortar
       businesses and seasonal operations.
-    </p>
-    <p
-      className="mb-4 text-sm text-gray-500 sm:text-lg"
-      data-aos="fade-up"
-      data-aos-delay="200"
-    >
-      Solomon AI is built on the innovations of Midday
     </p>
   </div>
 );
