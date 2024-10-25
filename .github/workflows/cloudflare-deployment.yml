@@ -20,10 +20,10 @@ jobs:
     strategy:
       matrix:
         api:
-          # - services/semantic-cache
-          # - services/logdrain
-          # - services/latency-benchmarks
-          # - services/gateway
+          - services/semantic-cache
+          - services/logdrain
+          - services/latency-benchmarks
+          - services/gateway
           - services/financial-service
       fail-fast: false
     steps:
@@ -44,9 +44,11 @@ jobs:
         continue-on-error: true
 
       - name: 🧪 Run unit tests
+        if: matrix.api == 'services/financial-service'
         run: bun run test
         working-directory: ${{ matrix.api }}
       - name: 🧪 Run integration tests
+        if: matrix.api == 'services/financial-service'
         run: bun run test:integration
         working-directory: ${{ matrix.api }}
 
