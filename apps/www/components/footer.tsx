@@ -14,8 +14,14 @@ export default function Footer() {
             <PearDarkLogo />
           </Link>
           <p className="mt-5 text-sm leading-[1.75] text-neutral-500 dark:text-neutral-400">
-            The open source financial workspace purpose-built for the unique
-            demands of cyclical businesses
+            The Financial workspace for cyclical businesses
+          </p>
+          <p
+            className="mb-4 text-xs text-gray-500 sm:text-xs font-bold"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            Solomon AI is built on the innovations of Midday
           </p>
         </div>
 
