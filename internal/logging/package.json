@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@internal/metrics": "workspace:^",
-    "vitest": "^1.6.0",
+    "vitest": "1.5.0",
     "zod": "^3.23.5"
   },
   "devDependencies": {
