@@ -34,14 +34,14 @@ export default function Header() {
         "relative sticky top-0 z-50 py-2 bg-background/60 backdrop-blur"
       }
     >
-      <div className="flex justify-between items-center container">
+      <div className="container flex items-center justify-between">
         <Link
           href="/"
           title="brand-logo"
-          className="relative mr-6 flex items-center space-x-2"
+          className="relative flex items-center mr-6 space-x-2"
         >
           <Icons.logo className="w-auto h-[30px]" />
-          <span className="font-bold text-xl">{siteConfig.name}</span>
+          <span className="text-lg font-base">{siteConfig.name}</span>
         </Link>
 
         <div className="hidden lg:block">
@@ -50,7 +50,7 @@ export default function Header() {
               <Menu />
             </nav>
 
-            <div className="gap-2 flex">
+            <div className="flex gap-2">
               <Link
                 href="/login"
                 className={buttonVariants({ variant: "outline" })}
@@ -64,13 +64,13 @@ export default function Header() {
                   "w-full sm:w-auto text-background flex gap-2",
                 )}
               >
-                <Icons.logo className="h-6 w-6" />
+                <Icons.logo className="w-6 h-6" />
                 Get Started for Free
               </Link>
             </div>
           </div>
         </div>
-        <div className="mt-2 cursor-pointer block lg:hidden">
+        <div className="block mt-2 cursor-pointer lg:hidden">
           <Drawer />
         </div>
       </div>
