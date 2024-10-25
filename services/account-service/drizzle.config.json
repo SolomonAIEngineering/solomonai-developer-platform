@@ -1,5 +1,0 @@
-{
-  "out": "migrations",
-  "schema": "src/pkg/database/schema/*.ts",
-  "dialect": "sqlite"
-}

@@ -1,0 +1,67 @@
+name: Cloudflare Workers Deployment
+
+on:
+  push:
+    paths:
+      - "src/services/semantic-cache/**"
+      - "src/services/logdrain/**"
+      - "src/services/latency-benchmarks/**"
+      - "src/services/gateway/**"
+      - "src/services/financial-service/**"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        api:
+          - src/services/semantic-cache
+          - src/services/logdrain
+          - src/services/latency-benchmarks
+          - src/services/gateway
+          - src/services/financial-service
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+      - name: Install dependencies
+        run: bun install
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: bun install
+        working-directory: ${{ matrix.api }}
+        continue-on-error: true
+
+      - name: 🧪 Run unit tests
+        run: bun run test
+        working-directory: ${{ matrix.api }}
+      - name: 🧪 Run integration tests
+        run: bun run test:integration
+        working-directory: ${{ matrix.api }}
+
+      - name: Deploy to Staging
+        if: github.ref != 'refs/heads/main'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          packageManager: bun
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          workingDirectory: ${{ matrix.api }}
+          wranglerVersion: "3.76.0"
+          command: deploy --minify src/index.ts --env staging
+
+      - name: Deploy to Production
+        if: github.ref == 'refs/heads/main'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          packageManager: bun
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          workingDirectory: ${{ matrix.api }}
+          wranglerVersion: "3.76.0"
+          command: deploy --minify src/index.ts --env production
