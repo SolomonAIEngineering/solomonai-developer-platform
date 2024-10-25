@@ -130,7 +130,7 @@ export default async function LoginPage({ searchParams }: PageProps) {
       <div className="w-full max-w-6xl px-4 md:px-8">
         <div className="flex flex-col items-center justify-center gap-2">
           <div className="flex flex-col text-center w-full max-w-2xl">
-            <Card className="flex flex-col items-center order-1 w-full p-6 mx-auto pointer-events-auto md:p-8 md:order-2 border-4 border-black rounded-lg">
+            <Card className="flex flex-col items-center order-1 w-full p-6 mx-auto pointer-events-auto md:p-8 md:order-2 border-4 rounded-xl">
               <div className="w-full">{preferredSignInOption}</div>
               {moreSignInOptions.length > 0 && (
                 <Accordion

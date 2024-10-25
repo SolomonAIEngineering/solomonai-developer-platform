@@ -30,7 +30,7 @@ const useLayoutClasses = (isOpen: boolean) => {
         isOpen ? "lg:ml-72" : "lg:ml-[90px]",
       ),
       footer: cn(
-        "transition-[margin-left] ease-in-out duration-300",
+        "transition-[margin-left] ease-in-out duration-300 bg-zinc-50 dark:bg-zinc-900",
         isOpen ? "lg:ml-72" : "lg:ml-[90px]",
       ),
       dockWrapper:

@@ -24,13 +24,15 @@ export const Sidebar: React.FC = React.memo(() => {
   return (
     <aside
       className={cn(
-        "fixed left-0 top-0 z-20 h-screen -translate-x-full transition-[width] duration-300 ease-in-out lg:translate-x-0 scrollbar-hide bg-background text-foreground",
+        "fixed left-0 top-0 z-20 h-screen -translate-x-full transition-[width] duration-300 ease-in-out lg:translate-x-0 scrollbar-hide bg-zinc-50 dark:bg-zinc-900",
         sidebar.isOpen === false ? "w-[90px]" : "w-80",
       )}
     >
       <SidebarToggle isOpen={sidebar.isOpen} setIsOpen={sidebar.setIsOpen} />
-      <div className="relative flex h-full flex-col md:gap-[2%] overflow-y-auto px-3 pt-[3%] shadow-md dark:shadow-zinc-800">
-        <BrandButton isOpen={sidebar.isOpen} />
+      <div className="relative flex h-full flex-col md:gap-[2%] overflow-y-auto px-3 pt-[3%]">
+        <div className="flex flex-col items-start justify-start md:mt-6">
+          <BrandButton isOpen={sidebar.isOpen} />
+        </div>
         <Menu isOpen={sidebar.isOpen} />
       </div>
     </aside>
@@ -62,9 +64,9 @@ const BrandButton: React.FC<BrandButtonProps> = React.memo(({ isOpen }) => (
     variant="link"
     asChild
   >
-    <Link href="/" className="flex items-center justify-center gap-2">
+    <Link href="/" className="flex items-start justify-start gap-2">
       <Icons.Logo
-        className="mr-1 h-16 w-16"
+        className="mr-1 h-12 w-12"
         viewport="0 0 24 24"
         strokeWidth={"0.5"}
       />
