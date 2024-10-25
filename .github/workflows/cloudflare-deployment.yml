@@ -7,11 +7,11 @@ env:
 on:
   push:
     paths:
-      - "src/services/semantic-cache/**"
-      - "src/services/logdrain/**"
-      - "src/services/latency-benchmarks/**"
-      - "src/services/gateway/**"
-      - "src/services/financial-service/**"
+      - "services/semantic-cache/**"
+      - "services/logdrain/**"
+      - "services/latency-benchmarks/**"
+      - "services/gateway/**"
+      - "services/financial-service/**"
   workflow_dispatch:
 
 jobs:
@@ -20,11 +20,11 @@ jobs:
     strategy:
       matrix:
         api:
-          # - src/services/semantic-cache
-          # - src/services/logdrain
-          # - src/services/latency-benchmarks
-          # - src/services/gateway
-          - src/services/financial-service
+          # - services/semantic-cache
+          # - services/logdrain
+          # - services/latency-benchmarks
+          # - services/gateway
+          - services/financial-service
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
