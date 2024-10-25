@@ -152,7 +152,7 @@ const faqData: FAQItem[] = [
   },
   {
     question:
-      "3. Why can`&apos;`t I just use traditional financial software or general AI tools instead?",
+      "3. Why can't I just use traditional financial software or general AI tools instead?",
     answer: (
       <p>
         Solomon AI is specifically designed for businesses with seasonal
