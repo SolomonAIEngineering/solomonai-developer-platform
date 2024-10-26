@@ -1,0 +1,440 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../src/database/generated/postgresql"
+  previewFeatures = ["fullTextIndex", "multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model a_ipowered_insights {
+  areas_of_interest            String[]
+  business_account_settings_id BigInt?
+  data_sharing                 Boolean     @default(false)
+  id                          BigInt      @id @default(autoincrement())
+  insight_frequency           String?      @db.VarChar(50)
+  created_at                  DateTime    @default(now())
+  updated_at                  DateTime    @updatedAt
+  last_insight_generated_at   DateTime?
+  is_active                   Boolean     @default(true)
+  business_account_settings   business_account_settings? @relation(fields: [business_account_settings_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_business_account_settings_ai_powered_insights")
+
+  @@index([business_account_settings_id])
+  @@index([created_at])
+}
+
+model account_informations {
+  business_account_settings_id BigInt?
+  business_name               String?      @db.VarChar(255)
+  business_registration_number String?     @db.VarChar(100)
+  business_type               String?      @db.VarChar(100)
+  id                         BigInt       @id @default(autoincrement())
+  created_at                 DateTime     @default(now())
+  updated_at                 DateTime     @updatedAt
+  tax_id                     String?      @db.VarChar(50)
+  is_verified                Boolean      @default(false)
+  verification_date          DateTime?
+  business_account_settings  business_account_settings? @relation(fields: [business_account_settings_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_business_account_settings_account_information")
+  contact_informations      contact_informations[]
+
+  @@index([business_registration_number])
+  @@index([business_account_settings_id])
+}
+
+model addresses {
+  address             String?     @db.VarChar(255)
+  city                String?     @db.VarChar(100)
+  id                  BigInt      @id @default(autoincrement())
+  latitude            Decimal?    @db.Decimal(10, 8)
+  longitude           Decimal?    @db.Decimal(11, 8)
+  state               String?     @db.VarChar(100)
+  unit                String?     @db.VarChar(50)
+  user_account_id     BigInt?
+  zipcode             String?     @db.VarChar(20)
+  business_account_id BigInt?
+  country             String?     @db.VarChar(100)
+  created_at          DateTime    @default(now())
+  updated_at          DateTime    @updatedAt
+  is_primary          Boolean     @default(false)
+  address_type        String?     @db.VarChar(50)
+  business_accounts   business_accounts? @relation(fields: [business_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_business_accounts_address")
+  user_accounts       user_accounts?     @relation(fields: [user_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_accounts_address")
+
+  @@index([latitude, longitude])
+  @@index([zipcode])
+  @@index([business_account_id])
+  @@index([user_account_id])
+}
+
+model business_account_settings {
+  business_account_id     BigInt?
+  id                      BigInt      @id @default(autoincrement())
+  created_at              DateTime    @default(now())
+  updated_at              DateTime    @updatedAt
+  timezone               String?     @db.VarChar(50)
+  invoice_prefix         String?     @db.VarChar(10)
+  fiscal_year_start      DateTime?
+  fiscal_year_end        DateTime?
+  default_currency       String?     @db.VarChar(3)
+  tax_calculation_method String?     @db.VarChar(50)
+  a_ipowered_insights    a_ipowered_insights[]
+  account_informations   account_informations[]
+  business_accounts      business_accounts?      @relation(fields: [business_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_business_accounts_business_account_settings")
+  financial_preferences  financial_preferences[]
+  integration_settings   integration_settings[]
+  notification_settings  notification_settings[]
+
+  @@index([business_account_id])
+}
+
+model business_accounts {
+  account_type              String?     @db.VarChar(50)
+  authn_account_id         BigInt?
+  bio                      String?     @db.Text
+  company_description      String?     @db.Text
+  company_established_date DateTime?
+  company_industry_type    String?     @db.VarChar(100)
+  company_name             String?     @db.VarChar(255)
+  company_website_url      String?     @db.VarChar(255)
+  created_at              DateTime    @default(now())
+  updated_at              DateTime    @updatedAt
+  email                   String?     @db.VarChar(255)
+  headline                String?     @db.VarChar(255)
+  id                      BigInt      @id @default(autoincrement())
+  is_active               Boolean     @default(true)
+  is_email_verified       Boolean     @default(false)
+  is_private              Boolean     @default(false)
+  phone_number            String?     @db.VarChar(50)
+  username                String?     @db.VarChar(100)
+  verified_at             DateTime?
+  auth0_user_id           String?     @db.VarChar(100)
+  profile_image_url       String?     @db.Text
+  algolia_user_id         String?     @db.VarChar(100)
+  member_business_accounts_team_id BigInt?
+  role_id                 BigInt?
+  supabase_auth0_user_id  String?     @db.VarChar(100)
+  team_admin_team_id      BigInt?
+  last_login_at          DateTime?
+  status                 String?     @db.VarChar(50)
+  subscription_tier      String?     @db.VarChar(50)
+  subscription_start_date DateTime?
+  subscription_end_date   DateTime?
+  addresses              addresses[]
+  business_account_settings business_account_settings[]
+  roles_business_accounts_role_idToroles roles? @relation("business_accounts_role_idToroles", fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_roles_business")
+  teams_business_accounts_member_business_accounts_team_idToteams teams? @relation("business_accounts_member_business_accounts_team_idToteams", fields: [member_business_accounts_team_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_teams_member_business_accounts")
+  teams_business_accounts_team_admin_team_idToteams teams? @relation("business_accounts_team_admin_team_idToteams", fields: [team_admin_team_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_teams_team_admin")
+  roles_roles_business_account_idTobusiness_accounts roles[] @relation("roles_business_account_idTobusiness_accounts")
+  settings               settings[]
+  tags                   tags[]
+
+  @@index([email])
+  @@index([username])
+  @@index([auth0_user_id])
+  @@index([created_at])
+  @@index([is_active])
+}
+
+model contact_informations {
+  account_information_id BigInt?
+  address                String?     @db.VarChar(255)
+  email                  String?     @db.VarChar(255)
+  id                     BigInt      @id @default(autoincrement())
+  phone_number           String?     @db.VarChar(50)
+  created_at             DateTime    @default(now())
+  updated_at             DateTime    @updatedAt
+  contact_type           String?     @db.VarChar(50)
+  is_primary             Boolean     @default(false)
+  is_verified            Boolean     @default(false)
+  account_informations   account_informations? @relation(fields: [account_information_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_account_informations_contact_info")
+
+  @@index([email])
+  @@index([phone_number])
+  @@index([account_information_id])
+}
+
+model digital_worker_settings {
+  enable_logging    Boolean     @default(true)
+  id               BigInt      @id @default(autoincrement())
+  settings_id      BigInt?
+  worker_name      String?     @db.VarChar(100)
+  worker_version   String?     @db.VarChar(50)
+  created_at       DateTime    @default(now())
+  updated_at       DateTime    @updatedAt
+  last_run_at      DateTime?
+  status           String?     @db.VarChar(50)
+  error_count      Int         @default(0)
+  settings         settings?   @relation(fields: [settings_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_settings_digital_worker_settings")
+
+  @@index([settings_id])
+  @@index([worker_name])
+}
+
+model financial_preferences {
+  business_account_settings_id BigInt?
+  currency_preference          String?     @db.VarChar(3)
+  financial_year_start         DateTime?
+  id                          BigInt      @id @default(autoincrement())
+  settings_id                 BigInt?
+  tax_code                    String?     @db.VarChar(50)
+  tax_percentage              Decimal?    @db.Decimal(5,2)
+  created_at                  DateTime    @default(now())
+  updated_at                  DateTime    @updatedAt
+  business_account_settings   business_account_settings? @relation(fields: [business_account_settings_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_business_account_settings_financial_preferences")
+  settings                    settings?   @relation(fields: [settings_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_settings_financial_preferences")
+  tax_settings                tax_settings[]
+
+  @@index([business_account_settings_id])
+  @@index([settings_id])
+}
+
+model integration_settings {
+  bank_account_linking         Boolean     @default(false)
+  business_account_settings_id BigInt?
+  id                          BigInt      @id @default(autoincrement())
+  third_party_apps            String[]
+  created_at                  DateTime    @default(now())
+  updated_at                  DateTime    @updatedAt
+  last_sync_at                DateTime?
+  sync_status                 String?     @db.VarChar(50)
+  business_account_settings   business_account_settings? @relation(fields: [business_account_settings_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_business_account_settings_integration_settings")
+
+  @@index([business_account_settings_id])
+}
+
+model notification_settings {
+  alerts                       Boolean     @default(true)
+  business_account_settings_id BigInt?
+  id                          BigInt      @id @default(autoincrement())
+  notification_type           String?     @db.VarChar(50)
+  settings_id                 BigInt?
+  created_at                  DateTime    @default(now())
+  updated_at                  DateTime    @updatedAt
+  frequency                   String?     @db.VarChar(50)
+  channels                    String[]
+  quiet_hours_start           DateTime?
+  quiet_hours_end             DateTime?
+  business_account_settings   business_account_settings? @relation(fields: [business_account_settings_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_business_account_settings_notification_settings")
+  settings                    settings?   @relation(fields: [settings_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_settings_notification_settings")
+
+  @@index([business_account_settings_id])
+  @@index([settings_id])
+}
+
+model role_audit_events {
+  action          String?     @db.VarChar(50)
+  affected_fields String[]
+  client_ip       String?     @db.VarChar(45)
+  context         String?     @db.Text
+  id              BigInt      @id @default(autoincrement())
+  performed_by    String?     @db.VarChar(255)
+  previous_values String[]
+  role_id         BigInt?
+  timestamp       DateTime?   @db.Timestamptz(6)
+  user_agent      String?     @db.Text
+  created_at      DateTime    @default(now())
+  roles           roles?      @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_roles_audit_log")
+
+  @@index([action])
+  @@index([performed_by])
+  @@index([timestamp])
+  @@index([role_id])
+}
+
+model roles {
+  business_account_id         BigInt?
+  can_create_projects         Boolean     @default(false)
+  can_create_reports          Boolean     @default(false)
+  can_create_users           Boolean     @default(false)
+  can_delete_projects        Boolean     @default(false)
+  can_delete_reports         Boolean     @default(false)
+  can_delete_users          Boolean     @default(false)
+  can_read_projects          Boolean     @default(true)
+  can_read_reports           Boolean     @default(true)
+  can_read_users            Boolean     @default(true)
+  can_update_projects        Boolean     @default(false)
+  can_update_reports         Boolean     @default(false)
+  can_update_users          Boolean     @default(false)
+  created_at                DateTime    @default(now())
+  id                       BigInt      @id @default(autoincrement())
+  name                     String?     @db.VarChar(100)
+  type                     String?     @db.VarChar(50)
+  updated_at              DateTime    @updatedAt
+  user_account_id         BigInt?
+  team_id                 BigInt?
+  description             String?     @db.Text
+  is_active              Boolean     @default(true)
+  business_accounts_business_accounts_role_idToroles business_accounts[] @relation("business_accounts_role_idToroles")
+  role_audit_events       role_audit_events[]
+  business_accounts_roles_business_account_idTobusiness_accounts business_accounts? @relation("roles_business_account_idTobusiness_accounts", fields: [business_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_business_accounts_role")
+  teams_roles_team_idToteams teams? @relation("roles_team_idToteams", fields: [team_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_teams_roles")
+user_accounts_roles_user_account_idTouser_accounts user_accounts? @relation("roles_user_account_idTouser_accounts", fields: [user_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_accounts_role")
+  teams_teams_role_idToroles teams[] @relation("teams_role_idToroles")
+  user_accounts_user_accounts_role_idToroles user_accounts[] @relation("user_accounts_role_idToroles")
+
+  @@index([business_account_id])
+  @@index([user_account_id])
+  @@index([team_id])
+  @@index([name])
+  @@index([type])
+}
+
+model settings {
+  app_theme               String?     @db.VarChar(50)
+  business_account_id     BigInt?
+  id                      BigInt      @id @default(autoincrement())
+  preferred_language      String?     @db.VarChar(10)
+  risk_tolerance          String?     @db.VarChar(50)
+  user_account_id         BigInt?
+  created_at              DateTime    @default(now())
+  updated_at              DateTime    @updatedAt
+  theme_mode              String?     @db.VarChar(20)
+  date_format             String?     @db.VarChar(30)
+  time_format             String?     @db.VarChar(20)
+  first_day_of_week       Int?        @db.SmallInt
+  digital_worker_settings digital_worker_settings[]
+  financial_preferences   financial_preferences[]
+  notification_settings   notification_settings[]
+  business_accounts       business_accounts? @relation(fields: [business_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_business_accounts_settings")
+  user_accounts           user_accounts? @relation(fields: [user_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_accounts_settings")
+
+  @@index([business_account_id])
+  @@index([user_account_id])
+}
+
+model tags {
+  id                  BigInt      @id @default(autoincrement())
+  metadata            String[]
+  tag_description     String?     @db.Text
+  tag_name            String?     @db.VarChar(100)
+  user_account_id     BigInt?
+  business_account_id BigInt?
+  team_id             BigInt?
+  created_at          DateTime    @default(now())
+  updated_at          DateTime    @updatedAt
+  tag_type            String?     @db.VarChar(50)
+  is_active           Boolean     @default(true)
+  color               String?     @db.VarChar(7)
+  business_accounts   business_accounts? @relation(fields: [business_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_business_accounts_tags")
+  teams               teams? @relation(fields: [team_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_teams_tags")
+  user_accounts       user_accounts? @relation(fields: [user_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_accounts_tags")
+
+  @@index([tag_name])
+  @@index([business_account_id])
+  @@index([user_account_id])
+  @@index([team_id])
+}
+
+model tax_settings {
+  financial_preferences_id BigInt?
+  id                      BigInt      @id @default(autoincrement())
+  tax_code                String?     @db.VarChar(50)
+  tax_percentage          Decimal?    @db.Decimal(5,2)
+  created_at              DateTime    @default(now())
+  updated_at              DateTime    @updatedAt
+  tax_type                String?     @db.VarChar(50)
+  is_active               Boolean     @default(true)
+  start_date              DateTime?
+  end_date                DateTime?
+  financial_preferences   financial_preferences? @relation(fields: [financial_preferences_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_financial_preferences_tax_settings")
+
+  @@index([financial_preferences_id])
+  @@index([tax_code])
+}
+
+model teams {
+  created_at              DateTime    @default(now())
+  description             String?     @db.Text
+  id                      BigInt      @id @default(autoincrement())
+  name                    String?     @db.VarChar(100)
+  role_id                 BigInt?
+  updated_at              DateTime    @updatedAt
+  team_type               String?     @db.VarChar(50)
+  is_active               Boolean     @default(true)
+  max_members             Int?
+  business_accounts_business_accounts_member_business_accounts_team_idToteams business_accounts[] @relation("business_accounts_member_business_accounts_team_idToteams")
+  business_accounts_business_accounts_team_admin_team_idToteams business_accounts[] @relation("business_accounts_team_admin_team_idToteams")
+  roles_roles_team_idToteams roles[] @relation("roles_team_idToteams")
+  tags                    tags[]
+  roles_teams_role_idToroles roles? @relation("teams_role_idToroles", fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_roles_team")
+  user_accounts           user_accounts[]
+
+  @@index([name])
+  @@index([role_id])
+  @@index([created_at])
+}
+
+model user_accounts {
+  authn_account_id        BigInt?
+  bio                     String?     @db.Text
+  created_at              DateTime    @default(now())
+  email                   String?     @db.VarChar(255)
+  firstname               String?     @db.VarChar(100)
+  headline                String?     @db.VarChar(255)
+  id                      BigInt      @id @default(autoincrement())
+  is_active               Boolean     @default(true)
+  is_email_verified       Boolean     @default(false)
+  is_private              Boolean     @default(false)
+  lastname                String?     @db.VarChar(100)
+  phone_number            String?     @db.VarChar(50)
+  username                String?     @db.VarChar(100)
+  verified_at             DateTime?
+  company_description     String?     @db.Text
+  company_established_date DateTime?
+  company_industry_type   String?     @db.VarChar(100)
+  company_name            String?     @db.VarChar(255)
+  company_website_url     String?     @db.VarChar(255)
+  profile_type            String?     @db.VarChar(50)
+  account_type            String?     @db.VarChar(50)
+  auth0_user_id           String?     @db.VarChar(100)
+  profile_image_url       String?     @db.Text
+  algolia_user_id         String?     @db.VarChar(100)
+  role_id                 BigInt?
+  supabase_auth0_user_id  String?     @db.VarChar(100)
+  team_id                 BigInt?
+  updated_at              DateTime    @updatedAt
+  last_login_at           DateTime?
+  status                  String?     @db.VarChar(50)
+  addresses               addresses[]
+  roles_roles_user_account_idTouser_accounts roles[] @relation("roles_user_account_idTouser_accounts")
+  settings                settings[]
+  tags                    tags[]
+  roles_user_accounts_role_idToroles roles? @relation("user_accounts_role_idToroles", fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_roles_user")
+  teams                   teams? @relation(fields: [team_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_teams_member_users_accounts")
+  user_settings           user_settings[]
+
+  @@index([email])
+  @@index([username])
+  @@index([auth0_user_id])
+  @@index([role_id])
+  @@index([team_id])
+  @@index([created_at])
+  @@index([is_active])
+}
+
+model user_settings {
+  app_theme                           String?     @db.VarChar(50)
+  datetime_format                     String?     @db.VarChar(50)
+  default_currency                    String?     @db.VarChar(3)
+  email_notifications                 Boolean     @default(true)
+  enable_goal_journal                 Boolean     @default(false)
+  id                                  BigInt      @id @default(autoincrement())
+  investment_risk_tolerance           String?     @db.VarChar(50)
+  preferred_language                  String?     @db.VarChar(10)
+  public_profile                      Boolean     @default(false)
+  push_notifications                  Boolean     @default(true)
+  sms_notifications                   Boolean     @default(false)
+  two_factor_authentication_enabled   Boolean     @default(false)
+  user_account_id                     BigInt?
+  created_at                          DateTime    @default(now())
+  updated_at                          DateTime    @updatedAt
+  theme_mode                          String?     @db.VarChar(20)
+  notification_frequency              String?     @db.VarChar(50)
+  quiet_hours_start                   DateTime?
+  quiet_hours_end                     DateTime?
+  user_accounts                       user_accounts? @relation(fields: [user_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_accounts_user_settings")
+
+  @@index([user_account_id])
+}
