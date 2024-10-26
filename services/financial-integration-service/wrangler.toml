@@ -1,4 +1,4 @@
-compatibility_date = "2024-01-01"
+compatibility_date = "2024-09-23"
 compatibility_flags = [ "nodejs_compat" ]
 
 workers_dev = false
@@ -113,3 +113,8 @@ database_name = "engine-db"
 # database_id = "50694d1f-d468-4807-a60f-3e3c9287781e"
 database_id = "00000000-0000-0000-0000-000000000000" #real value redacted
 
+
+[[env.local.hyperdrive]]
+binding = "HYPERDRIVE"
+id = "c020574a-5623-407b-be0c-cd192bab9545"
+localConnectionString = "postgresql://myuser:mypassword@localhost:5432/mydatabase?schema=public"

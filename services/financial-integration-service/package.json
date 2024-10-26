@@ -43,7 +43,24 @@
     "prisma:generate": "npx prisma generate",
     "prisma:studio": "npx prisma studio",
     "prisma:db-pull": "npx prisma db pull",
-    "prisma:db-push": "npx prisma db push"
+    "prisma:db-push": "npx prisma db push",
+    "prisma:reset": "npx prisma migrate reset --force",
+    "prisma:deploy": "npx prisma migrate deploy",
+    "prisma:seed": "npx prisma db seed",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:down:volumes": "docker compose down -v",
+    "docker:logs": "docker compose logs -f",
+    "docker:ps": "docker compose ps",
+    "docker:clean": "docker compose down -v --rmi all",
+    "dev:docker": "npm run docker:up && npm run prisma:generate && npm run prisma:migrate && npm run dev",
+    "dev:fresh": "npm run docker:clean && npm run docker:up && npm run prisma:generate && npm run prisma:migrate && npm run prisma:seed && npm run dev",
+    "dev:restart": "npm run docker:down && npm run docker:up && npm run dev",
+    "db:reset": "npm run docker:down:volumes && npm run docker:up && npm run prisma:migrate",
+    "db:seed": "npm run prisma:seed",
+    "db:studio": "npm run prisma:studio",
+    "test:docker": "npm run docker:up && npm run prisma:migrate && npm run test",
+    "test:integration:docker": "npm run docker:up && npm run prisma:migrate && npm run test:integration"
   },
   "dependencies": {
     "@axiomhq/js": "^1.2.0",
@@ -75,7 +92,8 @@
     "zod": "^3.23.8"
   },
   "prisma": {
-    "schema": "prisma/schema.prisma"
+    "schema": "prisma/schema.prisma",
+    "seed": "ts-node prisma/seed.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.2",
