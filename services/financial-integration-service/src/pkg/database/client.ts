@@ -1,6 +1,6 @@
-import { Env } from '@/env';
-import { Prisma, PrismaClient } from '@prisma/client';
-import { ConsoleLogger } from '../metric/logger';
+import { Env } from "@/env";
+import { Prisma, PrismaClient } from "@prisma/client";
+import { ConsoleLogger } from "../metric/logger";
 
 /**
  * Database client using Prisma Accelerate (Hyperdrive) for Cloudflare Workers
@@ -12,8 +12,10 @@ export class DatabaseClient {
 
   constructor(env: Env) {
     // Ensure the DATABASE_URL is a Prisma Accelerate connection string
-    if (!env.DATABASE_URL.includes('prisma-accelerate')) {
-      throw new Error('DATABASE_URL must be a Prisma Accelerate connection string');
+    if (!env.DATABASE_URL.includes("prisma-accelerate")) {
+      throw new Error(
+        "DATABASE_URL must be a Prisma Accelerate connection string",
+      );
     }
 
     this.prisma = new PrismaClient({
@@ -23,21 +25,21 @@ export class DatabaseClient {
         },
       },
       log: [
-        { emit: 'event', level: 'query' },
-        { emit: 'event', level: 'error' },
-        { emit: 'event', level: 'info' },
-        { emit: 'event', level: 'warn' },
+        { emit: "event", level: "query" },
+        { emit: "event", level: "error" },
+        { emit: "event", level: "info" },
+        { emit: "event", level: "warn" },
       ],
     });
 
     this.logger = new ConsoleLogger({
-      application: 'database',
+      application: "database",
       environment: env.ENVIRONMENT,
     });
 
     // Enhanced logging for development
-    if (env.ENVIRONMENT === 'development') {
-      (this.prisma.$on as any)('query', (event: Prisma.QueryEvent) => {
+    if (env.ENVIRONMENT === "development") {
+      (this.prisma.$on as any)("query", (event: Prisma.QueryEvent) => {
         this.logger.debug(`Query: ${event.query}`);
         this.logger.debug(`Params: ${event.params}`);
         this.logger.debug(`Duration: ${event.duration}ms`);
@@ -46,8 +48,8 @@ export class DatabaseClient {
     }
 
     // Error handling with Accelerate-specific logging
-    (this.prisma.$on as any)('error', (event: Prisma.LogEvent) => {
-      this.logger.error('Prisma Error:', {
+    (this.prisma.$on as any)("error", (event: Prisma.LogEvent) => {
+      this.logger.error("Prisma Error:", {
         error: event,
         timestamp: new Date().toISOString(),
         target: event.target,
@@ -62,23 +64,26 @@ export class DatabaseClient {
   public async connect(): Promise<void> {
     try {
       await this.prisma.$connect();
-      this.logger.info('Successfully connected to Prisma Accelerate');
+      this.logger.info("Successfully connected to Prisma Accelerate");
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      this.logger.error('Failed to connect to Prisma Accelerate:', {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      this.logger.error("Failed to connect to Prisma Accelerate:", {
         error: errorMessage,
         timestamp: new Date().toISOString(),
       });
-      throw new Error('Failed to connect to Prisma Accelerate', { cause: error });
+      throw new Error("Failed to connect to Prisma Accelerate", {
+        cause: error,
+      });
     }
   }
 
   public async disconnect(): Promise<void> {
     try {
       await this.prisma.$disconnect();
-      this.logger.info('Disconnected from Prisma Accelerate');
+      this.logger.info("Disconnected from Prisma Accelerate");
     } catch (error) {
-      this.logger.error('Error disconnecting from Prisma Accelerate:', {
+      this.logger.error("Error disconnecting from Prisma Accelerate:", {
         error: error instanceof Error ? error.message : String(error),
       });
     }
@@ -93,7 +98,7 @@ export class DatabaseClient {
       await this.prisma.$queryRaw`SELECT 1`;
       return true;
     } catch (error) {
-      this.logger.error('Health check failed:', {
+      this.logger.error("Health check failed:", {
         error: error instanceof Error ? error.message : String(error),
       });
       return false;
@@ -111,7 +116,9 @@ export function initializeDatabase(env: Env): DatabaseClient {
 
 export function getDatabase(): DatabaseClient {
   if (!context.dbClient) {
-    throw new Error('Database client not initialized. Call initializeDatabase first.');
+    throw new Error(
+      "Database client not initialized. Call initializeDatabase first.",
+    );
   }
   return context.dbClient;
 }

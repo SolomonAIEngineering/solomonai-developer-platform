@@ -2,12 +2,13 @@ import {
   openApiErrorResponses as ErrorResponses,
   errorSchemaFactory,
 } from "@/pkg/errors";
-import { App } from "@/pkg/hono/app";
+import { App, Context } from "@/pkg/hono/app";
 import { Provider } from "@/pkg/providers";
 import { createRoute, z } from "@hono/zod-openapi";
 import { env } from "hono/adapter";
 import { DeleteAccountsParamsSchema, DeleteSchema } from "./schema";
 import { Routes } from "@/pkg/route-definitions/routes";
+import { HonoEnv } from "@/hono/env";
 
 const route = createRoute({
   tags: [...Routes.FinancialAccounts.delete.tags],
