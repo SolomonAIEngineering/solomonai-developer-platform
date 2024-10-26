@@ -7,7 +7,7 @@ import { LogdrainMetrics } from "@/pkg/metric/logdrain";
 import { ConsoleLogger } from "@/pkg/metric/logger";
 import { formatPlatformPrefix } from "@/pkg/utils/formatters";
 import type { MiddlewareHandler } from "hono";
-import type { HonoEnv, Repository } from "../hono/env";
+import type { HonoEnv, Repository } from "../../hono/env";
 
 /**
  * workerId and coldStartAt are used to track the lifetime of the worker

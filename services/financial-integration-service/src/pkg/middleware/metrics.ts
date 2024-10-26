@@ -2,7 +2,7 @@ import { ApiAnalyticsEvent, SdkAnalyticsEvent } from "@/pkg/analytics";
 import type { Metric } from "@/pkg/metric/metric-schema";
 import { formatPlatformPrefix } from "@/pkg/utils/formatters";
 import type { MiddlewareHandler } from "hono";
-import type { HonoEnv } from "../hono/env";
+import type { HonoEnv } from "../../hono/env";
 
 type DiscriminateMetric<T, M = Metric> = M extends { metric: T } ? M : never;
 

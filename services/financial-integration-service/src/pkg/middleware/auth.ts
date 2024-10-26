@@ -3,9 +3,9 @@ import { cache } from "hono/cache";
 import { HTTPException } from "hono/http-exception";
 import { a } from "vitest/dist/suite-ynYMzeLu.js";
 import constants from "../constants/constant";
-import { APIKeyRepository } from "../db-repository/api-key-repository";
-import { UserRepository } from "../db-repository/user-repository";
-import { User } from "../db/schema";
+import { APIKeyRepository } from "../../db-repository/api-key-repository";
+import { UserRepository } from "../../db-repository/user-repository";
+import { User } from "../../db/schema";
 
 /**
  * Authentication middleware

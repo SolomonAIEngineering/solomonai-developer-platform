@@ -1,4 +1,3 @@
-import { handleError, handleZodError } from "@/pkg/errors";
 import {
   authMiddleware,
   cacheMiddleware,
@@ -10,9 +9,11 @@ import {
 import { init } from "@/pkg/middleware/init";
 import { metrics } from "@/pkg/middleware/metrics";
 import { rateLimit } from "@/pkg/middleware/ratelimit";
+import { handleError, handleZodError } from "@/pkg/errors";
 import {
   AuthenticationRequiredRoutes,
-  CachedRoutes
+  CachedRoutes,
+  Routes,
 } from "@/pkg/route-definitions/routes";
 import { swaggerUI } from "@hono/swagger-ui";
 import { OpenAPIHono } from "@hono/zod-openapi";
