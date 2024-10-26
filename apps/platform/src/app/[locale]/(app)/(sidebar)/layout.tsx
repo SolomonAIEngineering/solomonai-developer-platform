@@ -54,10 +54,10 @@ export default async function Layout({
 
   return (
     <AI initialAIState={{ user: user.data, messages: [], chatId: nanoid() }}>
-      <div className="h-full w-screen min-h-screen overflow-y-auto scrollbar-hide">
+      <div className="w-screen min-h-screen overflow-y-auto scrollbar-hide">
         <AnalyticsLayout>
           <div className="p-4 w-full overflow-y-auto scroll-smooth scrollbar-hide">
-            <div className="md:ml-[80px] md:mt-[1%] md:mr-[30px]">
+            <div className="md:ml-[80px] md:mt-[1%] md:mr-[30px] h-full">
               {children}
               {/** Dock is placed here to facilitate quick access for the platform */}
             </div>
