@@ -12,7 +12,6 @@ type PrismaQueryEvent = PostgresPrisma.QueryEvent | MongoPrisma.QueryEvent;
  */
 export class DatabaseClient {
   private postgresClient: PostgresPrismaClient;
-  private mongoClient: MongoPrismaClient;
   private logger: ConsoleLogger;
 
   constructor(env: Env) {
@@ -31,20 +30,6 @@ export class DatabaseClient {
       ],
     });
 
-    // Initialize MongoDB client
-    this.mongoClient = new MongoPrismaClient({
-      datasources: {
-        db: {
-          url: env.MONGODB_URL,
-        },
-      },
-      log: [
-        { emit: "event", level: "query" },
-        { emit: "event", level: "error" },
-        { emit: "event", level: "info" },
-        { emit: "event", level: "warn" },
-      ],
-    });
 
     this.logger = new ConsoleLogger({
       application: "database",
@@ -63,26 +48,11 @@ export class DatabaseClient {
         this.logger.debug(`[PostgreSQL] Params: ${ event.params } `);
         this.logger.debug(`[PostgreSQL] Duration: ${ event.duration } ms`);
       });
-
-      // MongoDB query logging
-      (this.mongoClient.$on as any)("query", (event: PrismaQueryEvent) => {
-        this.logger.debug(`[MongoDB] Query: ${ event.query } `);
-        this.logger.debug(`[MongoDB] Params: ${ event.params } `);
-        this.logger.debug(`[MongoDB] Duration: ${ event.duration } ms`);
-      });
     }
 
     // Error logging for both clients
     (this.postgresClient.$on as any)("error", (event: PrismaLogEvent) => {
       this.logger.error("[PostgreSQL] Error:", {
-        error: event,
-        timestamp: new Date().toISOString(),
-        target: event.target,
-      });
-    });
-
-    (this.mongoClient.$on as any)("error", (event: PrismaLogEvent) => {
-      this.logger.error("[MongoDB] Error:", {
         error: event,
         timestamp: new Date().toISOString(),
         target: event.target,
@@ -97,9 +67,6 @@ export class DatabaseClient {
     return this.postgresClient;
   }
 
-  public get mongo() {
-    return this.mongoClient;
-  }
 
   /**
    * Connect to both databases
@@ -108,7 +75,6 @@ export class DatabaseClient {
     try {
       await Promise.all([
         this.postgresClient.$connect(),
-        this.mongoClient.$connect()
       ]);
       this.logger.info("Successfully connected to all databases");
     } catch (error) {
@@ -128,7 +94,6 @@ export class DatabaseClient {
     try {
       await Promise.all([
         this.postgresClient.$disconnect(),
-        this.mongoClient.$disconnect()
       ]);
       this.logger.info("Disconnected from all databases");
     } catch (error) {
@@ -158,59 +123,6 @@ export class DatabaseClient {
       }
     });
   }
-
-  /**
-   * Perform a transaction in MongoDB
-   * Note: MongoDB transactions in Prisma are handled differently from raw MongoDB
-   * Prisma wraps MongoDB operations in implicit transactions when using $transaction
-   * @param callback Transaction callback function
-   * @returns Result of the transaction
-   */
-  public async mongoTransaction<T>(
-    callback: (tx: MongoPrismaClient) => Promise<T>
-  ): Promise<T> {
-    try {
-      return await this.mongoClient.$transaction(async (mongoTransaction) => {
-        const result = await callback(mongoTransaction as MongoPrismaClient);
-        return result;
-      });
-    } catch (error) {
-      this.logger.error("MongoDB transaction failed:", {
-        error: error instanceof Error ? error.message : String(error),
-      });
-      throw error;
-    }
-  }
-
-  /**
-   * Perform a coordinated operation across both PostgreSQL and MongoDB
-   * Note: This is not an atomic transaction across both databases
-   * Operations are executed in sequence with individual transaction guarantees
-   */
-  public async coordinatedOperation<T>(
-    callback: (tx: {
-      postgres: PostgresPrismaClient,
-      mongo: MongoPrismaClient
-    }) => Promise<T>
-  ): Promise<T> {
-    try {
-      // Wrap both operations in their respective transaction handlers
-      return await this.postgresClient.$transaction(async (postgresTransaction) => {
-        return await this.mongoClient.$transaction(async (mongoTransaction) => {
-          return await callback({
-            postgres: postgresTransaction as PostgresPrismaClient,
-            mongo: mongoTransaction as MongoPrismaClient
-          });
-        });
-      });
-    } catch (error) {
-      this.logger.error("Coordinated operation failed:", {
-        error: error instanceof Error ? error.message : String(error),
-      });
-      throw error;
-    }
-  }
-
   /**
    * Health check for both databases
    */
@@ -228,15 +140,6 @@ export class DatabaseClient {
       health.postgres = true;
     } catch (error) {
       this.logger.error("PostgreSQL health check failed:", {
-        error: error instanceof Error ? error.message : String(error),
-      });
-    }
-
-    try {
-      await this.mongoClient.$runCommandRaw({ ping: 1 });
-      health.mongo = true;
-    } catch (error) {
-      this.logger.error("MongoDB health check failed:", {
         error: error instanceof Error ? error.message : String(error),
       });
     }
