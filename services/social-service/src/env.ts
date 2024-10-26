@@ -2,6 +2,7 @@ import type { UserActionMessageBody } from "@/message/user-action-message";
 import {
   D1Database,
   Fetcher,
+  Hyperdrive,
   KVNamespace,
   Queue,
   R2Bucket,
@@ -16,10 +17,12 @@ export let zEnv = z.object({
   STORAGE: z.custom<R2Bucket>((ns) => typeof ns === "object"),
   BANK_STATEMENTS: z.custom<R2Bucket>((ns) => typeof ns === "object"),
   RATE_LIMITER: z.custom<RateLimit>((ns) => typeof ns === "object"),
+  HYPERDRIVE: z.custom<Hyperdrive>((ns) => typeof ns === "object"),
   TELLER_CERT: z.custom<Fetcher>((ns) => typeof ns === "object").optional(),
   USER_ACTIONS_QUEUE: z
     .custom<Queue<UserActionMessageBody>>((q) => typeof q === "object")
     .optional(),
+  MONGODB_URL: z.string(),
   API_SECRET_KEY: z.string(),
   GOCARDLESS_SECRET_ID: z.string(),
   GOCARDLESS_SECRET_KEY: z.string(),

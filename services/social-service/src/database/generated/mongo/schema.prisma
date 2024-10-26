@@ -1,0 +1,1313 @@
+generator client_mongo {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextIndex"]
+  output          = "../src/database/generated/mongo"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextIndex"]
+}
+
+//=============================================================================
+// ENUMS
+//=============================================================================
+
+enum MediaResize {
+  MEDIA_RESIZE_UNSPECIFIED
+  MEDIA_RESIZE_CLIP
+  MEDIA_RESIZE_CROP
+  MEDIA_RESIZE_SCALE
+}
+
+enum MediaCrop {
+  MEDIA_RESIZE_UNSPECIFIED
+  MEDIA_CROP_TOP
+  MEDIA_CROP_BOTTOM
+  MEDIA_CROP_LEFT
+  MEDIA_CROP_RIGHT
+  MEDIA_CROP_CENTER
+}
+
+enum MediaType {
+  MEDIA_TYPE_UNSPECIFIED
+  MEDIA_TYPE_IMAGE
+  MEDIA_TYPE_VIDEO
+  MEDIA_TYPE_AUDIO
+  MEDIA_TYPE_DOCUMENT
+  MEDIA_TYPE_SPREADSHEET
+  MEDIA_TYPE_PRESENTATION
+  MEDIA_TYPE_PDF
+  MEDIA_TYPE_CODE
+  MEDIA_TYPE_ZIP
+  MEDIA_TYPE_3D
+  MEDIA_TYPE_AR
+  MEDIA_TYPE_CAD
+  MEDIA_TYPE_VECTOR
+}
+
+enum PostType {
+  POST_TYPE_UNSPECIFIED
+  POST_TYPE_POST
+  POST_TYPE_REPOST
+  POST_TYPE_QUESTION
+  POST_TYPE_ACHIEVEMENT
+  POST_TYPE_ANNOUNCEMENT
+  POST_TYPE_POLL
+  POST_TYPE_ARTICLE
+  POST_TYPE_SHORT_STORY
+}
+
+enum AccountType {
+  ACCOUNT_TYPE_UNSPECIFIED
+  ACCOUNT_TYPE_USER
+  ACCOUNT_TYPE_COMMUNITY
+}
+
+enum ThreadParticipantType {
+  THREAD_PARTICIPANT_TYPE_UNSPECIFIED
+  THREAD_PARTICIPANT_TYPE_PARENT
+  THREAD_PARTICIPANT_TYPE_PARTICIPANT
+}
+
+enum Reaction {
+  REACTION_UNSPECIFIED
+  REACTION_LIKE
+  REACTION_LOVE
+  REACTION_HAHA
+  REACTION_WOW
+  REACTION_SAD
+  REACTION_ANGRY
+  REACTION_DISLIKE
+}
+
+enum Category {
+  CATEGORY_UNSPECIFIED
+  CATEGORY_WORLD
+  CATEGORY_BUSINESS
+  CATEGORY_ECONOMICS
+  CATEGORY_FOREIGN_POLICY
+  CATEGORY_POLITICS
+  CATEGORY_TECHNOLOGY
+  CATEGORY_OTHER
+}
+
+enum SpaceType {
+  SPACE_TYPE_UNSPECIFIED
+  SPACE_TYPE_TEAM
+  SPACE_TYPE_PROJECT
+  SPACE_TYPE_DEPARTMENT
+  SPACE_TYPE_ANNOUNCEMENT
+  SPACE_TYPE_KNOWLEDGE_BASE
+  SPACE_TYPE_SOCIAL
+  SPACE_TYPE_LEARNING
+  SPACE_TYPE_INNOVATION
+}
+
+enum AIModelType {
+  AI_MODEL_UNSPECIFIED
+  AI_MODEL_TEXT
+  AI_MODEL_IMAGE
+  AI_MODEL_AUDIO
+  AI_MODEL_CODE
+  AI_MODEL_TRANSLATION
+  AI_MODEL_SUMMARIZATION
+}
+
+enum AccessLevel {
+  ACCESS_LEVEL_PUBLIC
+  ACCESS_LEVEL_PRIVATE
+  ACCESS_LEVEL_RESTRICTED
+  ACCESS_LEVEL_ORGANIZATION
+}
+
+//=============================================================================
+// COMPOSITE TYPES
+//=============================================================================
+
+type Entities {
+  text       String
+  label      String
+  confidence Float?
+  startPos   Int?
+  endPos     Int?
+  metadata   Json?
+}
+
+type Sentiment {
+  negative   Float
+  neutral    Float
+  positive   Float
+  compound   Float
+  confidence Float?
+}
+
+type ContentInsights {
+  sentenceCount      Int
+  wordCount          Int
+  language           String
+  languageConfidence Float
+  entities           Entities[]
+  sentiment          Sentiment
+  topics             String[]
+  keywords           String[]
+  summary            String?
+  readability        Float?
+}
+
+type MediaMetadata {
+  id          String
+  resize      MediaResize
+  crop        MediaCrop
+  imageWidth  Int
+  imageHeight Int
+  type        MediaType
+  format      String?
+  duration    Int?
+  bitrate     Int?
+  codec       String?
+  resolution  String?
+}
+
+model Media {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  mediaType     String
+  status        String
+  fileContent   String?
+  fileName      String
+  transcription String?
+  extractedText String?
+  createdAt     DateTime @default(now())
+
+  // Full-text Search
+  // @@fulltext([fileContent, fileName])
+  // @@fulltext([transcription, extractedText])
+  CommentReply CommentReply[]
+  Post         Post[]
+  Comment      Comment[]
+  PollPost     PollPost[]
+  Note         Note[]
+
+  // Indexes
+  @@index([mediaType, status], name: "idx_media_status")
+  @@index([createdAt], name: "idx_media_timestamp")
+}
+
+type SearchMetadata {
+  title           String
+  description     String?
+  keywords        String[]
+  contentType     String
+  language        String
+  fileSize        Int?
+  wordCount       Int?
+  pageCount       Int?
+  duration        Int?
+  transcription   String?
+  extractedText   String?
+  lastIndexed     DateTime
+  searchScore     Float
+  aiTags          String[]
+  classifications String[]
+  visibility      AccessLevel
+  readingLevel    String?
+  locationData    Json?
+}
+
+type FileMetadata {
+  fileName         String
+  fileSize         Int
+  mimeType         String
+  extension        String
+  hash             String
+  dimensions       Dimensions?
+  duration         Int?
+  encoding         String?
+  compression      String?
+  processingStatus String
+  version          Int
+  createdBy        String
+  modifiedBy       String
+  parentFolder     String?
+  path             String
+  checksum         String
+}
+
+type Dimensions {
+  width       Int
+  height      Int
+  depth       Int?
+  aspectRatio Float?
+  resolution  String?
+}
+
+//=============================================================================
+// MODELS
+//=============================================================================
+
+/// Enhanced Post model combining original and new features
+model Post {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  authorId      String  @db.ObjectId
+  parentSpaceId String? @db.ObjectId
+
+  // Basic Information
+  title          String?
+  content        String
+  description    String?
+  status         String
+  workflowStatus String?
+  assignedTo     String?
+  contentFormat  String    @default("markdown")
+  createdAt      String
+  updatedAt      DateTime  @updatedAt
+  publishedAt    DateTime?
+
+  // Post Type and Category
+  postType              PostType
+  category              Category?
+  threadParticipantType ThreadParticipantType?
+
+  // Author Information
+  backendPlatformUserId String
+  profileId             Int
+  authorUsername        String
+  authorProfileImage    String?
+  authorAccountType     AccountType
+
+  // Organization
+  tags      String[]
+  mentions  String[]
+  hashtags  String[]
+  topicName String?
+
+  // Media and Files
+  media              Media?       @relation(fields: [mediaId], references: [id])
+  mediaId            String?      @db.ObjectId
+  backgroundImageUrl String?
+  files              FileToPost[]
+
+  // Engagement Metrics
+  affinityScore            Int
+  qualityScore             Int
+  viewCount                Int   @default(0)
+  userIdToAffinityScoreMap Json? // Map<String, Int>
+  userIdToReportsMap       Json? // Map<String, Int>
+  userIdToReactionMap      Json? // Map<String, Reaction>
+
+  // Content Analysis
+  insights                    ContentInsights?
+  readingTime                 String?
+  aiGeneratedQuestionResponse String?
+  aiAnalysis                  AIAnalysis?
+  searchMetadata              SearchMetadata?
+
+  // Relations
+  comments   Comment[]
+  notes      Note[]
+  thread     Thread?   @relation(fields: [threadId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  threadId   String?   @db.ObjectId
+  space      Space?    @relation(fields: [spaceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  spaceId    String?   @db.ObjectId
+  channel    Channel?  @relation(fields: [channelId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  channelId  String?   @db.ObjectId
+  // Additional Features
+  extra      Json? // Custom metadata
+  visibility String    @default("public")
+  isPinned   Boolean   @default(false)
+  isArchived Boolean   @default(false)
+  workflow   Json? // Workflow state
+  version    Int       @default(1)
+
+  // Performance Optimization Indexes
+  @@index([spaceId, channelId], name: "idx_space_channel_composite")
+  @@index([authorId, createdAt], name: "idx_author_timestamp")
+  @@index([visibility, createdAt], name: "idx_content_access")
+  @@index([authorId, visibility], name: "idx_author_visibility")
+  @@index([spaceId, visibility, createdAt], name: "idx_space_content")
+  @@index([affinityScore, createdAt], name: "idx_engagement_time")
+  @@index([qualityScore, createdAt], name: "idx_quality_time")
+  @@index([viewCount, createdAt], name: "idx_popularity")
+  @@index([updatedAt], name: "idx_last_modified")
+  @@index([publishedAt], name: "idx_publication")
+  @@index([category, createdAt], name: "idx_category_time")
+  @@index([postType, createdAt], name: "idx_post_type_time")
+  @@index([threadId, createdAt], name: "idx_thread_time")
+  @@index([status, updatedAt], name: "idx_status_time")
+  @@index([workflowStatus, assignedTo], name: "idx_workflow_assignment")
+  @@index([backendPlatformUserId])
+}
+
+/// Enhanced PollPost model
+model PollPost {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt String
+  action    PostType
+  content   String
+  title     String?
+
+  // Poll Specific
+  pollOptions              String[]
+  pollDistribution         Json? // Map<String, Float>
+  userIdToPollResponsesMap Json? // Map<String, PollResponse>
+  pollEndDate              DateTime
+
+  // Organization
+  mentions  String[]
+  hashtags  String[]
+  tags      String[]
+  topicName String?
+
+  // Author Info
+  backendPlatformUserId String
+  profileId             Int
+
+  // Media
+  media   Media?  @relation(fields: [mediaId], references: [id])
+  mediaId String? @db.ObjectId
+
+  // Relations
+  comments Comment[]
+  thread   Thread?   @relation(fields: [threadId], references: [id])
+  threadId String?   @db.ObjectId
+
+  // Additional Features
+  extra          Json?
+  searchMetadata SearchMetadata?
+  aiAnalysis     AIAnalysis?
+
+  // Indexes
+  @@index([backendPlatformUserId])
+  @@index([createdAt], name: "idx_poll_created_at")
+  @@index([action], name: "idx_poll_action")
+  @@index([pollEndDate], name: "idx_poll_end_date")
+  @@index([threadId], name: "idx_poll_thread")
+  @@index([topicName], name: "idx_poll_topic")
+  @@index([tags], name: "idx_poll_tags")
+  // Full-text search (enabled by the preview feature)
+  @@fulltext([content, title])
+}
+
+/// Space model for workspace organization
+model Space {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  type        SpaceType
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  spaceType   String
+  status      String
+  visibility  String
+  // Relations
+  members     SpaceMember[]
+  channels    Channel[]
+  posts       Post[]
+  files       File[]
+
+  // Hierarchy
+  parentSpace   Space?  @relation("SpaceHierarchy", fields: [parentSpaceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  parentSpaceId String? @db.ObjectId
+  childSpaces   Space[] @relation("SpaceHierarchy")
+
+  // Settings
+  isPrivate   Boolean     @default(false)
+  metadata    Json?
+  settings    Json?
+  accessLevel AccessLevel @default(ACCESS_LEVEL_ORGANIZATION)
+
+  // Features
+  searchMetadata SearchMetadata?
+  tags           String[]
+
+  // Full-text Search (commented out as it's not supported in MongoDB)
+  // @@fulltext([name, description])
+
+  // Indexes
+  @@index([name])
+  @@index([parentSpaceId, id], name: "idx_space_hierarchy")
+  @@index([spaceType, status], name: "idx_space_status")
+  @@index([visibility, createdAt], name: "idx_space_visibility")
+  @@index([type], name: "idx_space_type")
+  @@index([createdAt], name: "idx_space_created_at")
+  @@index([updatedAt], name: "idx_space_updated_at")
+  @@index([accessLevel], name: "idx_space_access_level")
+  @@index([isPrivate], name: "idx_space_privacy")
+  @@index([tags], name: "idx_space_tags")
+}
+
+/// Channel model for content organization
+model Channel {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  spaceId     String   @db.ObjectId
+  space       Space    @relation(fields: [spaceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  status      String
+
+  // Content
+  posts       Post[]
+  files       File[]
+  pinnedPosts String[] @db.ObjectId
+
+  // Members
+  members ChannelMember[]
+
+  // Settings
+  isPrivate Boolean @default(false)
+  metadata  Json?
+  settings  Json?
+
+  // Indexes
+  @@index([spaceId])
+  @@index([spaceId, status], name: "idx_channel_status")
+  @@index([createdAt], name: "idx_channel_timestamp")
+  @@index([name], name: "idx_channel_name")
+  @@index([updatedAt], name: "idx_channel_updated")
+  @@index([isPrivate], name: "idx_channel_privacy")
+  @@index([spaceId, name], name: "idx_channel_space_name")
+  @@index([spaceId, createdAt], name: "idx_channel_space_created")
+  @@index([status, updatedAt], name: "idx_channel_status_updated")
+  // Full-text Search (enabled by the preview feature)
+  @@fulltext([name, description])
+}
+
+/// Enhanced Thread model
+model Thread {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  postIds      String[]
+  parentPostId String
+  createdAt    String
+  updatedAt    String
+
+  // Relations
+  posts     Post[]
+  pollPosts PollPost[]
+
+  // Additional Features
+  metadata Json?
+  status   String  @default("active")
+  isLocked Boolean @default(false)
+
+  // Indexes
+  @@index([parentPostId])
+  @@index([createdAt], name: "idx_thread_created_at")
+  @@index([updatedAt], name: "idx_thread_updated_at")
+  @@index([status], name: "idx_thread_status")
+  @@index([isLocked], name: "idx_thread_locked")
+  @@index([parentPostId, createdAt], name: "idx_thread_parent_created")
+  @@index([status, updatedAt], name: "idx_thread_status_updated")
+}
+
+/// Enhanced Note model
+model Note {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  createdAt String
+  authorId  String @db.ObjectId
+
+  // Author Info
+  backendPlatformUserId String
+  profileId             Int
+  authorUserName        String
+  authorProfileImage    String?
+  authorAccountType     AccountType
+
+  // Organization
+  mentions String[]
+  hashtags String[]
+
+  // Media
+  media   Media?  @relation(fields: [mediaId], references: [id])
+  mediaId String? @db.ObjectId
+
+  // Relations
+  post      Post     @relation(fields: [postId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  postId    String   @db.ObjectId
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  commentId String?  @db.ObjectId
+
+  // Features
+  searchMetadata SearchMetadata?
+  aiAnalysis     AIAnalysis?
+
+  // Indexes
+  @@index([postId, createdAt], name: "idx_note_post_time")
+  @@index([authorId, createdAt], name: "idx_note_author_time")
+  @@index([backendPlatformUserId], name: "idx_note_backend_user")
+  @@index([createdAt], name: "idx_note_created_at")
+  @@index([commentId], name: "idx_note_comment")
+  @@index([authorAccountType], name: "idx_note_account_type")
+  @@index([mentions], name: "idx_note_mentions")
+  @@index([hashtags], name: "idx_note_hashtags")
+  // Full-text Search (enabled by the preview feature)
+  @@fulltext([content])
+}
+
+/// Enhanced Comment model
+model Comment {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  authorId  String @db.ObjectId
+  content   String
+  createdAt String
+
+  // Author Info
+  backendPlatformUserId String
+  profileId             Int
+  authorUsername        String
+  authorProfileImage    String?
+  authorAccountType     AccountType
+
+  // Metrics
+  affinityScore            Int
+  qualityScore             Int
+  userIdToAffinityScoreMap Json?
+  userIdToReportsMap       Json?
+  userIdToReactionMap      Json?
+
+  // Organization
+  mentions String[]
+  hashtags String[]
+
+  // Media
+  media Media? @relation(fields: [mediaId], references: [id])
+
+  // Relations
+  replies    CommentReply[]
+  notes      Note[]
+  post       Post           @relation(fields: [postId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  postId     String         @db.ObjectId
+  PollPost   PollPost?      @relation(fields: [pollPostId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  pollPostId String?        @db.ObjectId
+  // Additional Features
+  extra      Json?
+  aiAnalysis AIAnalysis?
+  // Full-text Search
+  // @@fulltext([content])
+  mediaId    String?        @db.ObjectId
+
+  @@index([postId])
+  // Indexes
+  @@index([postId, createdAt], name: "idx_comment_post_time")
+  @@index([authorId, createdAt], name: "idx_comment_author_time")
+}
+
+/// Enhanced CommentReply model
+model CommentReply {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  createdAt String
+
+  // Author Info
+  backendPlatformUserId String
+  profileId             Int
+  authorUsername        String
+  authorProfileImage    String?
+  authorAccountType     AccountType
+
+  // Metrics
+  affinityScore            Int
+  qualityScore             Int
+  userIdToAffinityScoreMap Json?
+  userIdToReportsMap       Json?
+  userIdToReactionMap      Json?
+
+  // Organization
+  mentions String[]
+  hashtags String[]
+
+  // Media
+  media     Media?  @relation(fields: [mediaid], references: [id])
+  mediaid   String? @db.ObjectId
+  // Relations
+  comment   Comment @relation(fields: [commentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  commentId String  @db.ObjectId
+
+  // Additional Features
+  extra      Json?
+  aiAnalysis AIAnalysis?
+
+  // Indexes
+  @@index([commentId])
+  @@index([commentId, createdAt], name: "idx_reply_comment_time")
+  @@index([backendPlatformUserId, createdAt], name: "idx_reply_author_time")
+  @@index([createdAt], name: "idx_reply_created_at")
+  @@index([authorAccountType], name: "idx_reply_account_type")
+  @@index([affinityScore], name: "idx_reply_affinity")
+  @@index([qualityScore], name: "idx_reply_quality")
+  @@index([mentions], name: "idx_reply_mentions")
+  @@index([hashtags], name: "idx_reply_hashtags")
+  // Full-text Search (enabled by the preview feature)
+  @@fulltext([content])
+}
+
+/// Membership Models
+model SpaceMember {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  spaceId     String   @db.ObjectId
+  space       Space    @relation(fields: [spaceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  userId      String   @db.ObjectId
+  role        String
+  joinedAt    DateTime @default(now())
+  status      String   @default("active")
+  permissions String[]
+
+  @@unique([spaceId, userId])
+  @@index([userId], name: "idx_space_member_user")
+  @@index([role], name: "idx_space_member_role")
+  @@index([status], name: "idx_space_member_status")
+  @@index([joinedAt], name: "idx_space_member_joined")
+}
+
+model ChannelMember {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  channelId String    @db.ObjectId
+  channel   Channel   @relation(fields: [channelId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  userId    String    @db.ObjectId
+  role      String
+  joinedAt  DateTime  @default(now())
+  lastRead  DateTime?
+
+  @@unique([channelId, userId])
+  @@index([userId], name: "idx_channel_member_user")
+  @@index([role], name: "idx_channel_member_role")
+  @@index([joinedAt], name: "idx_channel_member_joined")
+  @@index([lastRead], name: "idx_channel_member_last_read")
+}
+
+/// File Management Model
+model File {
+  id       String       @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  type     MediaType
+  url      String
+  metadata FileMetadata
+
+  // Upload Info
+  uploadedBy String   @db.ObjectId
+  uploadedAt DateTime @default(now())
+  size       Int
+
+  // Processing
+  status    String  @default("processing")
+  preview   String?
+  thumbnail String?
+
+  // Analysis
+  searchMetadata SearchMetadata?
+  aiAnalysis     AIAnalysis?
+
+  // Relations
+  posts     FileToPost[]
+  Space     Space?       @relation(fields: [spaceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  spaceId   String?      @db.ObjectId
+  Channel   Channel?     @relation(fields: [channelId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  channelId String?      @db.ObjectId
+
+  @@index([type])
+  @@index([uploadedBy], name: "idx_file_uploaded_by")
+  @@index([uploadedAt], name: "idx_file_uploaded_at")
+  @@index([status], name: "idx_file_status")
+  @@index([size], name: "idx_file_size")
+  @@index([spaceId, type], name: "idx_file_space_type")
+  @@index([channelId, type], name: "idx_file_channel_type")
+  @@fulltext([name])
+}
+
+/// Explicit many-to-many relationship model
+model FileToPost {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  file      File     @relation(fields: [fileId], references: [id])
+  fileId    String   @db.ObjectId
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String   @db.ObjectId
+  createdAt DateTime @default(now())
+
+  @@unique([fileId, postId])
+}
+
+//=============================================================================
+// Complete AIAnalysis Type System
+//=============================================================================
+
+/// Main AIAnalysis type
+type AIAnalysis {
+  // Core Analysis
+  summary          String?
+  keyPoints        String[]
+  sentiment        SentimentAnalysis
+  entities         NamedEntity[]
+  topics           TopicAnalysis[]
+  keywords         Keyword[]
+  readabilityScore ReadabilityMetrics
+  qualityMetrics   ContentQuality
+  toxicity         ToxicityAnalysis
+  originality      OriginalityScore
+  language         LanguageAnalysis
+  translation      TranslationInfo
+  grammarCheck     GrammarAnalysis
+  styleAnalysis    StyleMetrics
+  intentions       IntentAnalysis[]
+  emotions         EmotionAnalysis
+  bias             BiasAnalysis
+  subjectivity     Float
+  imageAnalysis    ImageAnalysis[]
+  videoAnalysis    VideoAnalysis[]
+  audioAnalysis    AudioAnalysis[]
+  marketInsights   MarketAnalysis
+  competitiveInfo  CompetitiveAnalysis
+  actionItems      ActionItem[]
+
+  // Metadata
+  processingTime  Int
+  confidenceScore Float
+  modelVersions   ModelMetadata
+  timestamp       DateTime
+  processingCost  Float
+}
+
+type SentimentAnalysis {
+  overall    Float
+  compound   Float
+  positive   Float
+  negative   Float
+  neutral    Float
+  segments   SentimentSegment[]
+  confidence Float
+}
+
+type SentimentSegment {
+  text       String
+  sentiment  Float
+  startIndex Int
+  endIndex   Int
+  aspects    AspectSentiment[]
+}
+
+type AspectSentiment {
+  aspect     String
+  sentiment  Float
+  confidence Float
+}
+
+type NamedEntity {
+  text         String
+  type         String
+  confidence   Float
+  startIndex   Int
+  endIndex     Int
+  metadata     Json?
+  wikification WikiData
+}
+
+type WikiData {
+  entityId    String
+  url         String
+  confidence  Float
+  description String?
+}
+
+type TopicAnalysis {
+  topic      String
+  confidence Float
+  subtopics  String[]
+  relevance  Float
+  hierarchy  String[]
+  context    TopicContext
+}
+
+type TopicContext {
+  domain        String
+  category      String
+  parentTopics  String[]
+  relatedTopics String[]
+}
+
+type Keyword {
+  text       String
+  score      Float
+  frequency  Int
+  type       String
+  related    String[]
+  importance KeywordMetrics
+}
+
+type KeywordMetrics {
+  tfIdf      Float
+  textRank   Float
+  prominence Float
+  location   KeywordLocation[]
+}
+
+type KeywordLocation {
+  startIndex Int
+  endIndex   Int
+  context    String
+}
+
+type ReadabilityMetrics {
+  fleschKincaid Float
+  gunningFog    Float
+  smog          Float
+  ari           Float
+  colemanLiau   Float
+  readingTime   Int
+  grade         String
+  complexity    ComplexityMetrics
+}
+
+type ComplexityMetrics {
+  sentenceComplexity  Float
+  wordComplexity      Float
+  technicalLevel      String
+  vocabularyDiversity Float
+}
+
+type ContentQuality {
+  clarity         Float
+  coherence       Float
+  engagement      Float
+  expertise       Float
+  factualAccuracy Float
+  sources         SourceValidation[]
+  structure       StructureAnalysis
+  formatting      FormattingAnalysis
+}
+
+type SourceValidation {
+  url         String
+  credibility Float
+  type        String
+  citations   Citation[]
+}
+
+type Citation {
+  text       String
+  source     String
+  page       Int?
+  confidence Float
+}
+
+type StructureAnalysis {
+  paragraphFlow      Float
+  transitionQuality  Float
+  logicalProgression Float
+  sectioning         Float
+}
+
+type FormattingAnalysis {
+  consistency     Float
+  readability     Float
+  visualHierarchy Float
+  spacing         Float
+}
+
+type ToxicityAnalysis {
+  overall    Float
+  categories ToxicityCategories
+  threats    ThreatDetection[]
+  moderation ModerationDecision
+  severity   ToxicitySeverity
+}
+
+type ToxicityCategories {
+  hate       Float
+  harassment Float
+  profanity  Float
+  violence   Float
+  sexual     Float
+  spam       Float
+  misleading Float
+  bias       Float
+}
+
+type ThreatDetection {
+  type       String
+  severity   Float
+  confidence Float
+  context    String
+}
+
+type ModerationDecision {
+  action     String
+  confidence Float
+  reason     String
+  escalation Boolean
+}
+
+type ToxicitySeverity {
+  level          String
+  score          Float
+  recommendation String
+}
+
+type OriginalityScore {
+  overall      Float
+  uniqueness   Float
+  similarities SimilarityMatch[]
+  plagiarism   PlagiarismMetrics
+}
+
+type SimilarityMatch {
+  text       String
+  source     String
+  confidence Float
+  context    String
+}
+
+type PlagiarismMetrics {
+  score    Float
+  matches  Int
+  sources  String[]
+  severity String
+}
+
+type LanguageAnalysis {
+  detected       String
+  confidence     Float
+  alternatives   LanguageAlternative[]
+  dialects       String[]
+  scripts        String[]
+  languageFamily String
+}
+
+type LanguageAlternative {
+  language    String
+  confidence  Float
+  probability Float
+}
+
+type TranslationInfo {
+  sourceLanguage String
+  targetLanguage String
+  quality        Float
+  confidence     Float
+  provider       String
+}
+
+type GrammarAnalysis {
+  errors  GrammarError[]
+  style   StyleSuggestion[]
+  overall Float
+  fluency Float
+}
+
+type GrammarError {
+  type       String
+  suggestion String
+  context    String
+  severity   Float
+}
+
+type StyleSuggestion {
+  type       String
+  suggestion String
+  reason     String
+  importance Float
+}
+
+type StyleMetrics {
+  formality  Float
+  tone       String
+  vocabulary VocabularyMetrics
+  voice      String
+}
+
+type VocabularyMetrics {
+  diversity      Float
+  sophistication Float
+  jargon         Float
+  accessibility  Float
+}
+
+type IntentAnalysis {
+  primary    String
+  confidence Float
+  secondary  String[]
+  context    String
+}
+
+type EmotionAnalysis {
+  primary    String
+  secondary  String[]
+  intensity  Float
+  confidence Float
+  spectrum   EmotionSpectrum
+}
+
+type EmotionSpectrum {
+  joy      Float
+  sadness  Float
+  anger    Float
+  fear     Float
+  surprise Float
+  disgust  Float
+}
+
+type BiasAnalysis {
+  overall  Float
+  types    BiasType[]
+  context  String
+  severity Float
+}
+
+type BiasType {
+  category String
+  score    Float
+  evidence String[]
+}
+
+type ImageAnalysis {
+  objects     DetectedObject[]
+  faces       FaceAnalysis[]
+  text        String?
+  labels      Label[]
+  colors      ColorAnalysis
+  nsfw        NSFWAnalysis
+  quality     ImageQuality
+  composition ImageComposition
+}
+
+type DetectedObject {
+  label       String
+  confidence  Float
+  boundingBox BoundingBox
+  attributes  Json
+}
+
+type FaceAnalysis {
+  boundingBox BoundingBox
+  emotions    EmotionAnalysis
+  attributes  FaceAttributes
+  landmarks   FaceLandmark[]
+}
+
+type BoundingBox {
+  x      Float
+  y      Float
+  width  Float
+  height Float
+}
+
+type Label {
+  name       String
+  confidence Float
+  parents    String[]
+}
+
+type ColorAnalysis {
+  dominant   Color[]
+  palette    Color[]
+  brightness Float
+  contrast   Float
+}
+
+type Color {
+  hex        String
+  rgb        RGB
+  percentage Float
+}
+
+type RGB {
+  red   Int
+  green Int
+  blue  Int
+}
+
+type NSFWAnalysis {
+  score      Float
+  categories NSFWCategories
+  confidence Float
+}
+
+type NSFWCategories {
+  explicit   Float
+  suggestive Float
+  violence   Float
+  disturbing Float
+}
+
+type ImageQuality {
+  resolution Resolution
+  sharpness  Float
+  brightness Float
+  noise      Float
+}
+
+type Resolution {
+  width       Int
+  height      Int
+  aspectRatio Float
+}
+
+type ImageComposition {
+  balance   Float
+  symmetry  Float
+  focus     Float
+  aesthetic Float
+}
+
+type VideoAnalysis {
+  scenes     Scene[]
+  transcript String?
+  keyFrames  KeyFrame[]
+  actions    Action[]
+  captions   Caption[]
+  motion     MotionAnalysis
+}
+
+type Scene {
+  startTime   Float
+  endTime     Float
+  keyFrames   KeyFrame[]
+  description String
+}
+
+type KeyFrame {
+  timestamp  Float
+  image      ImageAnalysis
+  importance Float
+}
+
+type Action {
+  type       String
+  confidence Float
+  startTime  Float
+  endTime    Float
+}
+
+type Caption {
+  text       String
+  timestamp  Float
+  confidence Float
+}
+
+type MotionAnalysis {
+  activity  Float
+  stability Float
+  tracking  TrackingData[]
+}
+
+type TrackingData {
+  object     String
+  path       Json
+  confidence Float
+}
+
+type AudioAnalysis {
+  transcript String?
+  speakers   Speaker[]
+  sentiment  SentimentAnalysis
+  noise      NoiseAnalysis
+  music      MusicAnalysis
+  clarity    Float
+}
+
+type Speaker {
+  id              String
+  segments        TimeSegment[]
+  confidence      Float
+  characteristics SpeakerCharacteristics
+}
+
+type TimeSegment {
+  startTime Float
+  endTime   Float
+  text      String
+}
+
+type SpeakerCharacteristics {
+  gender  String?
+  age     String?
+  accent  String?
+  emotion EmotionAnalysis
+}
+
+type NoiseAnalysis {
+  level  Float
+  type   String[]
+  impact Float
+}
+
+type MusicAnalysis {
+  present Boolean
+  genre   String[]
+  tempo   Float
+  mood    String[]
+}
+
+type MarketAnalysis {
+  trends        Trend[]
+  sentiment     Float
+  competition   String[]
+  opportunities String[]
+}
+
+type Trend {
+  name      String
+  strength  Float
+  direction String
+  timeframe String
+}
+
+type CompetitiveAnalysis {
+  positioning     Float
+  advantages      String[]
+  threats         String[]
+  recommendations String[]
+}
+
+type ActionItem {
+  description String
+  priority    Float
+  category    String
+  deadline    DateTime?
+}
+
+type ModelMetadata {
+  modelId     String
+  version     String
+  provider    String
+  timestamp   DateTime
+  parameters  Json
+  performance ModelPerformance
+}
+
+type ModelPerformance {
+  latency       Float
+  accuracy      Float
+  confidence    Float
+  resourceUsage ResourceMetrics
+}
+
+type ResourceMetrics {
+  cpuTime     Float
+  memoryUsage Float
+  cost        Float
+}
+
+type FaceAttributes {
+  age        Int?
+  gender     String?
+  expression String?
+  glasses    Boolean
+  features   Json
+}
+
+type FaceLandmark {
+  type       String
+  position   Point
+  confidence Float
+}
+
+type Point {
+  x Float
+  y Float
+}

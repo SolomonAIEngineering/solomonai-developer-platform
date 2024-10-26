@@ -1,0 +1,117 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/database/generated/postgresql"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model blockeds {
+  created_at            String?
+  id                    BigInt  @id @default(autoincrement())
+  profile_blocked_id    BigInt?
+  profile_blocked_type  String?
+  profile_blocking_id   BigInt?
+  profile_blocking_type String?
+}
+
+model bookmarks {
+  id            BigInt          @id @default(autoincrement())
+  post_ids      String[]
+  publications  publications[]
+  user_profiles user_profiles[]
+}
+
+model community_profiles {
+  algolia_id                    String?
+  community_rules               String?
+  description                   String?
+  followers                     BigInt?
+  id                            BigInt            @id @default(autoincrement())
+  name                          String?
+  news_feed_timeline_id         String?
+  notification_feed_timeline_id String?
+  personal_feed_timeline_id     String?
+  private                       Boolean?
+  profile_image_url             String?
+  virtual_profile_id            BigInt?
+  visible                       Boolean?
+  virtual_profiles              virtual_profiles? @relation(fields: [virtual_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_virtual_profiles_communities")
+  topics                        topics[]
+}
+
+model followers {
+  approved_at          String?
+  created_at           String?
+  id                   BigInt   @id @default(autoincrement())
+  profile_followed_id  BigInt?
+  profile_following_id BigInt?
+  request_approved     Boolean?
+  target_follower_type String?
+}
+
+model publications {
+  admin_backend_platform_user_id                                   String?
+  bookmark_id                                                      BigInt?
+  created_at                                                       String?
+  description                                                      String?
+  id                                                               BigInt          @id @default(autoincrement())
+  post_ids                                                         String[]
+  publication_name                                                 String?
+  subjects                                                         String[]
+  tags                                                             String[]
+  type                                                             String?
+  bookmarks                                                        bookmarks?      @relation(fields: [bookmark_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_bookmarks_publications")
+  user_profiles_user_profiles_admin_publication_idTopublications   user_profiles[] @relation("user_profiles_admin_publication_idTopublications")
+  user_profiles_user_profiles_editors_publication_idTopublications user_profiles[] @relation("user_profiles_editors_publication_idTopublications")
+}
+
+model topics {
+  community_profile_id BigInt?
+  description          String?
+  id                   BigInt              @id @default(autoincrement())
+  image_url            String?
+  topic_name           String?
+  community_profiles   community_profiles? @relation(fields: [community_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_community_profiles_topics")
+}
+
+model user_profiles {
+  admin_publication_id                                            BigInt?
+  algolia_id                                                      String?
+  bookmark_id                                                     BigInt?
+  editors_publication_id                                          BigInt?
+  followers                                                       BigInt?
+  following                                                       BigInt?
+  id                                                              BigInt            @id @default(autoincrement())
+  name                                                            String?
+  news_feed_timeline_id                                           String?
+  notification_feed_timeline_id                                   String?
+  personal_feed_timeline_id                                       String?
+  private                                                         Boolean?
+  profile_image_url                                               String?
+  virtual_profile_id                                              BigInt?
+  publications_user_profiles_admin_publication_idTopublications   publications?     @relation("user_profiles_admin_publication_idTopublications", fields: [admin_publication_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_publications_admin")
+  publications_user_profiles_editors_publication_idTopublications publications?     @relation("user_profiles_editors_publication_idTopublications", fields: [editors_publication_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_publications_editors")
+  bookmarks                                                       bookmarks?        @relation(fields: [bookmark_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_profiles_bookmarks")
+  virtual_profiles                                                virtual_profiles? @relation(fields: [virtual_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_virtual_profiles_user")
+  user_tags                                                       user_tags[]
+}
+
+model user_tags {
+  description     String?
+  id              BigInt         @id @default(autoincrement())
+  tag_name        String?
+  user_profile_id BigInt?
+  user_profiles   user_profiles? @relation(fields: [user_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_profiles_tags")
+}
+
+model virtual_profiles {
+  activated          Boolean?
+  id                 BigInt               @id @default(autoincrement())
+  profile_type       String?
+  user_id            String?
+  community_profiles community_profiles[]
+  user_profiles      user_profiles[]
+}

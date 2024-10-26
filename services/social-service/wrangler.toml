@@ -27,6 +27,11 @@ r2_buckets = [
   { binding = "BANK_STATEMENTS", bucket_name = "bank-statements-production", preview_bucket_name = "" }
 ]
 
+# the hyperdrive binding is used to access the hyperdrive service
+[[env.production.hyperdrive]]
+binding = "HYPERDRIVE"
+id = "f3747350db484edeb97c9514ce418da7"
+
 [env.production.queues]
 producers = [
   { queue = "user-actions-production", binding = "USER_ACTIONS" },
@@ -97,9 +102,18 @@ simple = { limit = 50000, period = 60 }
 [[env.staging.tail_consumers]]
 service = "engine-staging-tail"
 
+[[env.staging.hyperdrive]]
+binding = "HYPERDRIVE"
+id = "234d768ebd73498885fe06c0e7621d74" # TODO: need to create a new postgres db for staging as name is way too long
+
 # local
 [[env.local.d1_databases]]
 binding = "DB" # i.e. available in your Worker on env.DB
 database_name = "engine-db"
 # database_id = "50694d1f-d468-4807-a60f-3e3c9287781e"
-database_id = "00000000-0000-0000-0000-000000000000" #real value redacted
+database_id = "00000000-0000-0000-0000-000000000000" #real value
+
+[[env.local.hyperdrive]]
+binding = "HYPERDRIVE"
+id = "c020574a-5623-407b-be0c-cd192bab9545"
+localConnectionString = "postgresql://postgres:postgres@localhost:5432/social_service"

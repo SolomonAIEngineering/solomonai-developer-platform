@@ -14,7 +14,7 @@ const commonFields = z.object({
     "production",
     "unknown",
   ]),
-  application: z.enum(["api", "semantic-cache", "agent", "logdrain", "vault"]),
+  application: z.enum(["api", "semantic-cache", "agent", "logdrain", "vault", "database"]),
 });
 
 export const logSchema = z.discriminatedUnion("type", [

@@ -1,5 +1,7 @@
 generator client_mongo {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextIndex"]
+  output          = "../src/database/generated/mongo"
 }
 
 datasource db {
@@ -182,9 +184,6 @@ model Media {
   extractedText String?
   createdAt     DateTime @default(now())
 
-  // Full-text Search
-  // @@fulltext([fileContent, fileName])
-  // @@fulltext([transcription, extractedText])
   CommentReply CommentReply[]
   Post         Post[]
   Comment      Comment[]
@@ -194,6 +193,8 @@ model Media {
   // Indexes
   @@index([mediaType, status], name: "idx_media_status")
   @@index([createdAt], name: "idx_media_timestamp")
+  // Full-text Search
+  @@fulltext([fileContent, fileName, transcription, extractedText])
 }
 
 type SearchMetadata {
@@ -339,6 +340,8 @@ model Post {
   @@index([status, updatedAt], name: "idx_status_time")
   @@index([workflowStatus, assignedTo], name: "idx_workflow_assignment")
   @@index([backendPlatformUserId])
+  // Full-text search indexes
+  @@fulltext([title, content, description, tags])
 }
 
 /// Enhanced PollPost model
@@ -387,8 +390,8 @@ model PollPost {
   @@index([threadId], name: "idx_poll_thread")
   @@index([topicName], name: "idx_poll_topic")
   @@index([tags], name: "idx_poll_tags")
-  // Full-text search (enabled by the preview feature)
-  @@fulltext([content, title])
+  // Full-text search indexes
+  @@fulltext([title, content, tags])
 }
 
 /// Space model for workspace organization
@@ -423,9 +426,6 @@ model Space {
   searchMetadata SearchMetadata?
   tags           String[]
 
-  // Full-text Search (commented out as it's not supported in MongoDB)
-  // @@fulltext([name, description])
-
   // Indexes
   @@index([name])
   @@index([parentSpaceId, id], name: "idx_space_hierarchy")
@@ -437,6 +437,8 @@ model Space {
   @@index([accessLevel], name: "idx_space_access_level")
   @@index([isPrivate], name: "idx_space_privacy")
   @@index([tags], name: "idx_space_tags")
+  // Full-text Search (commented out as it's not supported in MongoDB)
+  @@fulltext([name, description])
 }
 
 /// Channel model for content organization
@@ -587,14 +589,15 @@ model Comment {
   // Additional Features
   extra      Json?
   aiAnalysis AIAnalysis?
-  // Full-text Search
-  // @@fulltext([content])
-  mediaId    String?        @db.ObjectId
+
+  mediaId String? @db.ObjectId
 
   @@index([postId])
   // Indexes
   @@index([postId, createdAt], name: "idx_comment_post_time")
   @@index([authorId, createdAt], name: "idx_comment_author_time")
+  // Full-text Search
+  @@fulltext([content])
 }
 
 /// Enhanced CommentReply model
