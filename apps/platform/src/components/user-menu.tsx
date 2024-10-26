@@ -58,7 +58,7 @@ export async function UserMenu({
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-[240px]" sideOffset={10} align="end">
+      <DropdownMenuContent className="w-[300px] rounded-2xl" sideOffset={10} align="end">
         {!onlySignOut && (
           <>
             <DropdownMenuLabel>

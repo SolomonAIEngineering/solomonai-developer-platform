@@ -67,9 +67,9 @@ const AnalyticsLayout: React.FC<AnalyticsLayoutProps> = ({ children }) => {
             <ProTierDock />
           </div> */}
         </main>
-        <footer className={classes.footer}>
+        {/* <footer className={classes.footer}>
           <Footer />
-        </footer>
+        </footer> */}
       </div>
     </>
   );
