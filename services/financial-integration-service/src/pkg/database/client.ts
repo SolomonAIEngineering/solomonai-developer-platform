@@ -1,13 +1,14 @@
 import { Env } from "@/env";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { ConsoleLogger } from "../metric/logger";
+import { PrismaClient as PostgresPrismaClient } from './generated/postgresql';
 
 /**
  * Database client using Prisma Accelerate (Hyperdrive) for Cloudflare Workers
  * Optimized for edge environments with connection pooling and caching
  */
 export class DatabaseClient {
-  private prisma: PrismaClient;
+  private prisma: PostgresPrismaClient;
   private logger: ConsoleLogger;
 
   constructor(env: Env) {
@@ -18,7 +19,7 @@ export class DatabaseClient {
       );
     }
 
-    this.prisma = new PrismaClient({
+    this.prisma = new PostgresPrismaClient({
       datasources: {
         db: {
           url: env.HYPERDRIVE.connectionString,
@@ -57,10 +58,6 @@ export class DatabaseClient {
     });
   }
 
-  public getClient(): PrismaClient {
-    return this.prisma;
-  }
-
   public async connect(): Promise<void> {
     try {
       await this.prisma.$connect();
@@ -94,11 +91,10 @@ export class DatabaseClient {
    */
   public async healthCheck(): Promise<boolean> {
     try {
-      // Perform a simple query to check connection
       await this.prisma.$queryRaw`SELECT 1`;
       return true;
     } catch (error) {
-      this.logger.error("Health check failed:", {
+      this.logger.error("PostgreSQL health check failed:", {
         error: error instanceof Error ? error.message : String(error),
       });
       return false;

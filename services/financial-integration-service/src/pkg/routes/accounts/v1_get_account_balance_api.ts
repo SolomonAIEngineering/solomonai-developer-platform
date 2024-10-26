@@ -1,10 +1,10 @@
 import { openApiErrorResponses as ErrorResponses } from "@/pkg/errors";
 import { App } from "@/pkg/hono/app";
 import { Provider } from "@/pkg/providers";
+import { Routes } from "@/pkg/route-definitions/routes";
 import { createRoute, z } from "@hono/zod-openapi";
 import { env } from "hono/adapter";
 import { AccountBalanceParamsSchema, AccountBalanceSchema } from "./schema";
-import { Routes } from "@/pkg/route-definitions/routes";
 
 const route = createRoute({
   tags: [...Routes.AccountBalance.base.tags],
