@@ -1,117 +1,129 @@
+// This configuration block sets up the Prisma client generation
 generator client {
   provider = "prisma-client-js"
-  output = "../src/database/generated/postgresql"
+  output   = "../src/database/generated/postgresql"
 }
 
+// Database connection configuration
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+/// Manages blocked relationships between profiles
+/// Used to implement blocking functionality across different profile types
 model blockeds {
-  created_at            String?
-  id                    BigInt  @id @default(autoincrement())
-  profile_blocked_id    BigInt?
-  profile_blocked_type  String?
-  profile_blocking_id   BigInt?
-  profile_blocking_type String?
+  created_at            String?  // Timestamp of when the block was created
+  id                    BigInt   @id @default(autoincrement())
+  profile_blocked_id    BigInt?  // ID of the profile that is blocked
+  profile_blocked_type  String?  // Type of the blocked profile (user/community)
+  profile_blocking_id   BigInt?  // ID of the profile that initiated the block
+  profile_blocking_type String?  // Type of the blocking profile (user/community)
 }
 
+/// Stores bookmarks for posts and manages relationships with users and publications
 model bookmarks {
   id            BigInt          @id @default(autoincrement())
-  post_ids      String[]
-  publications  publications[]
-  user_profiles user_profiles[]
+  post_ids      String[]       // Array of post IDs that are bookmarked
+  publications  publications[]  // Publications that have bookmarked these posts
+  user_profiles user_profiles[] // Users who have bookmarked these posts
 }
 
+/// Represents community profiles with their associated metadata and relationships
 model community_profiles {
-  algolia_id                    String?
-  community_rules               String?
-  description                   String?
-  followers                     BigInt?
+  algolia_id                    String?           // ID for Algolia search integration
+  community_rules               String?           // Community guidelines and rules
+  description                   String?           // Community description
+  followers                     BigInt?           // Number of followers
   id                            BigInt            @id @default(autoincrement())
-  name                          String?
-  news_feed_timeline_id         String?
-  notification_feed_timeline_id String?
-  personal_feed_timeline_id     String?
-  private                       Boolean?
-  profile_image_url             String?
-  virtual_profile_id            BigInt?
-  visible                       Boolean?
-  virtual_profiles              virtual_profiles? @relation(fields: [virtual_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_virtual_profiles_communities")
-  topics                        topics[]
+  name                          String?           // Community name
+  news_feed_timeline_id         String?           // ID for the community's news feed
+  notification_feed_timeline_id String?           // ID for the community's notification feed
+  personal_feed_timeline_id     String?           // ID for the community's personal feed
+  private                       Boolean?          // Whether the community is private
+  profile_image_url            String?           // URL to community's profile image
+  virtual_profile_id           BigInt?           // Reference to virtual profile
+  visible                      Boolean?          // Whether the community is visible
+  virtual_profiles             virtual_profiles? @relation(fields: [virtual_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_virtual_profiles_communities")
+  topics                       topics[]          // Topics associated with this community
 }
 
+/// Manages follower relationships between profiles
 model followers {
-  approved_at          String?
-  created_at           String?
-  id                   BigInt   @id @default(autoincrement())
-  profile_followed_id  BigInt?
-  profile_following_id BigInt?
-  request_approved     Boolean?
-  target_follower_type String?
+  approved_at          String?   // Timestamp when the follow request was approved
+  created_at           String?   // Timestamp when the follow request was created
+  id                   BigInt    @id @default(autoincrement())
+  profile_followed_id  BigInt?   // ID of the profile being followed
+  profile_following_id BigInt?   // ID of the profile that is following
+  request_approved     Boolean?  // Whether the follow request has been approved
+  target_follower_type String?   // Type of the follower relationship
 }
 
+/// Represents publications with their content and relationships
 model publications {
-  admin_backend_platform_user_id                                   String?
-  bookmark_id                                                      BigInt?
-  created_at                                                       String?
-  description                                                      String?
+  admin_backend_platform_user_id                                   String?         // Backend admin user ID
+  bookmark_id                                                      BigInt?         // Reference to bookmarks
+  created_at                                                       String?         // Creation timestamp
+  description                                                      String?         // Publication description
   id                                                               BigInt          @id @default(autoincrement())
-  post_ids                                                         String[]
-  publication_name                                                 String?
-  subjects                                                         String[]
-  tags                                                             String[]
-  type                                                             String?
+  post_ids                                                         String[]        // Array of associated post IDs
+  publication_name                                                 String?         // Name of the publication
+  subjects                                                         String[]        // Subject categories
+  tags                                                             String[]        // Publication tags
+  type                                                             String?         // Publication type
   bookmarks                                                        bookmarks?      @relation(fields: [bookmark_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_bookmarks_publications")
   user_profiles_user_profiles_admin_publication_idTopublications   user_profiles[] @relation("user_profiles_admin_publication_idTopublications")
   user_profiles_user_profiles_editors_publication_idTopublications user_profiles[] @relation("user_profiles_editors_publication_idTopublications")
 }
 
+/// Represents topics within communities
 model topics {
-  community_profile_id BigInt?
-  description          String?
+  community_profile_id BigInt?             // Reference to associated community
+  description          String?             // Topic description
   id                   BigInt              @id @default(autoincrement())
-  image_url            String?
-  topic_name           String?
+  image_url            String?             // URL to topic image
+  topic_name           String?             // Name of the topic
   community_profiles   community_profiles? @relation(fields: [community_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_community_profiles_topics")
 }
 
+/// Represents user profiles with their metadata and relationships
 model user_profiles {
-  admin_publication_id                                            BigInt?
-  algolia_id                                                      String?
-  bookmark_id                                                     BigInt?
-  editors_publication_id                                          BigInt?
-  followers                                                       BigInt?
-  following                                                       BigInt?
+  admin_publication_id                                            BigInt?           // Reference to administered publication
+  algolia_id                                                      String?           // ID for Algolia search integration
+  bookmark_id                                                     BigInt?           // Reference to bookmarks
+  editors_publication_id                                          BigInt?           // Reference to publication being edited
+  followers                                                       BigInt?           // Number of followers
+  following                                                       BigInt?           // Number of profiles being followed
   id                                                              BigInt            @id @default(autoincrement())
-  name                                                            String?
-  news_feed_timeline_id                                           String?
-  notification_feed_timeline_id                                   String?
-  personal_feed_timeline_id                                       String?
-  private                                                         Boolean?
-  profile_image_url                                               String?
-  virtual_profile_id                                              BigInt?
+  name                                                            String?           // User's name
+  news_feed_timeline_id                                           String?           // ID for user's news feed
+  notification_feed_timeline_id                                   String?           // ID for user's notification feed
+  personal_feed_timeline_id                                       String?           // ID for user's personal feed
+  private                                                         Boolean?          // Whether the profile is private
+  profile_image_url                                               String?           // URL to user's profile image
+  virtual_profile_id                                              BigInt?           // Reference to virtual profile
   publications_user_profiles_admin_publication_idTopublications   publications?     @relation("user_profiles_admin_publication_idTopublications", fields: [admin_publication_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_publications_admin")
   publications_user_profiles_editors_publication_idTopublications publications?     @relation("user_profiles_editors_publication_idTopublications", fields: [editors_publication_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_publications_editors")
   bookmarks                                                       bookmarks?        @relation(fields: [bookmark_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_profiles_bookmarks")
   virtual_profiles                                                virtual_profiles? @relation(fields: [virtual_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_virtual_profiles_user")
-  user_tags                                                       user_tags[]
+  user_tags                                                       user_tags[]       // Tags associated with this user
 }
 
+/// Manages tags associated with user profiles
 model user_tags {
-  description     String?
-  id              BigInt         @id @default(autoincrement())
-  tag_name        String?
-  user_profile_id BigInt?
-  user_profiles   user_profiles? @relation(fields: [user_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_profiles_tags")
+  description     String?         // Tag description
+  id              BigInt          @id @default(autoincrement())
+  tag_name        String?         // Name of the tag
+  user_profile_id BigInt?         // Reference to associated user profile
+  user_profiles   user_profiles?  @relation(fields: [user_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_profiles_tags")
 }
 
+/// Represents virtual profiles that can be either user or community profiles
 model virtual_profiles {
-  activated          Boolean?
+  activated          Boolean?              // Whether the profile is activated
   id                 BigInt               @id @default(autoincrement())
-  profile_type       String?
-  user_id            String?
-  community_profiles community_profiles[]
-  user_profiles      user_profiles[]
+  profile_type       String?              // Type of profile (user/community)
+  user_id            String?              // Associated user ID
+  community_profiles community_profiles[] // Related community profiles
+  user_profiles      user_profiles[]      // Related user profiles
 }

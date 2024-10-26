@@ -4,15 +4,15 @@ compatibility_flags = [ "nodejs_compat" ]
 workers_dev = false
 logpush = true
 tail_consumers = [
-  {service = "engine-tail-consumer"},
-  {service = "engine-staging-tail-consumer"},
-  {service = "engine-tail"}
+  {service = "social-service-tail-consumer"},
+  {service = "social-service-staging-tail-consumer"},
+  {service = "social-service-tail"}
 ]
 
 [env.production]
-name = "engine"
+name = "social-service"
 logpush = true
-route = { pattern = "engine.solomon-ai-platform.com/*", zone_name = "solomon-ai-platform.com" }
+route = { pattern = "social-service.solomon-ai-platform.com/*", zone_name = "solomon-ai-platform.com" }
 
 kv_namespaces = [
   { binding = "KV", id = "019720a586c448c2a88a58773da08fd8" }
@@ -48,7 +48,7 @@ head_sampling_rate = 0.01 # 10% of requests are logged
 
 [[env.production.d1_databases]]
 binding = "DB" # i.e. available in your Worker on env.DB
-database_name = "engine-production-db"
+database_name = "social-service-production-db"
 database_id = "7e9430cd-517d-4139-bb27-1be427d3474a"
 
 [[env.production.unsafe.bindings]]
@@ -58,8 +58,8 @@ namespace_id = "1001"
 simple = { limit = 50000, period = 60 }
 
 [env.staging]
-name = "engine-staging"
-route = { pattern = "engine-staging.solomon-ai-platform.com/*", zone_name = "solomon-ai-platform.com" }
+name = "social-service-staging"
+route = { pattern = "social-service-staging.solomon-ai-platform.com/*", zone_name = "solomon-ai-platform.com" }
 
 kv_namespaces = [
   { binding = "KV", id = "6745cb3ad41e4d35a45bf67bb515c08b" }
@@ -80,7 +80,7 @@ head_sampling_rate = 0.05 # 10% of requests are logged
 
 [[env.staging.d1_databases]]
 binding = "DB" # i.e. available in your Worker on env.DB
-database_name = "engine-staging-database"
+database_name = "social-service-staging-database"
 database_id = "d011debb-4697-4f62-ae29-1582d9086bc4"
 
 [env.staging.queues]
@@ -100,7 +100,7 @@ namespace_id = "1002"
 simple = { limit = 50000, period = 60 }
 
 [[env.staging.tail_consumers]]
-service = "engine-staging-tail"
+service = "social-service-staging-tail"
 
 [[env.staging.hyperdrive]]
 binding = "HYPERDRIVE"
@@ -109,7 +109,7 @@ id = "234d768ebd73498885fe06c0e7621d74" # TODO: need to create a new postgres db
 # local
 [[env.local.d1_databases]]
 binding = "DB" # i.e. available in your Worker on env.DB
-database_name = "engine-db"
+database_name = "social-service-db"
 # database_id = "50694d1f-d468-4807-a60f-3e3c9287781e"
 database_id = "00000000-0000-0000-0000-000000000000" #real value
 

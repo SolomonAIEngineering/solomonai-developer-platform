@@ -139,30 +139,76 @@ export class DatabaseClient {
   }
 
   /**
-   * Perform a transaction across both databases
-   * Note: MongoDB transactions require a replica set
+   * Perform a transaction in PostgreSQL
+   * @param callback Transaction callback function
+   * @returns Result of the transaction
    */
-  public async transaction<T>(
-    callback: (tx: {
-      postgres: PostgresPrismaClient,
-      mongo: MongoPrismaClient
-    }) => Promise<T>
+  public async postgresTransaction<T>(
+    callback: (tx: PostgresPrismaClient) => Promise<T>
   ): Promise<T> {
-    return await this.postgresClient.$transaction(async (postgresTransaction: any) => {
+    return await this.postgresClient.$transaction(async (postgresTransaction) => {
       try {
-        // MongoDB transaction would go here if using replica set
-        const result = await callback({
-          postgres: postgresTransaction as PostgresPrismaClient,
-          mongo: this.mongoClient
-        });
+        const result = await callback(postgresTransaction as PostgresPrismaClient);
         return result;
       } catch (error) {
-        this.logger.error("Transaction failed:", {
+        this.logger.error("PostgreSQL transaction failed:", {
           error: error instanceof Error ? error.message : String(error),
         });
         throw error;
       }
     });
+  }
+
+  /**
+   * Perform a transaction in MongoDB
+   * Note: MongoDB transactions in Prisma are handled differently from raw MongoDB
+   * Prisma wraps MongoDB operations in implicit transactions when using $transaction
+   * @param callback Transaction callback function
+   * @returns Result of the transaction
+   */
+  public async mongoTransaction<T>(
+    callback: (tx: MongoPrismaClient) => Promise<T>
+  ): Promise<T> {
+    try {
+      return await this.mongoClient.$transaction(async (mongoTransaction) => {
+        const result = await callback(mongoTransaction as MongoPrismaClient);
+        return result;
+      });
+    } catch (error) {
+      this.logger.error("MongoDB transaction failed:", {
+        error: error instanceof Error ? error.message : String(error),
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Perform a coordinated operation across both PostgreSQL and MongoDB
+   * Note: This is not an atomic transaction across both databases
+   * Operations are executed in sequence with individual transaction guarantees
+   */
+  public async coordinatedOperation<T>(
+    callback: (tx: {
+      postgres: PostgresPrismaClient,
+      mongo: MongoPrismaClient
+    }) => Promise<T>
+  ): Promise<T> {
+    try {
+      // Wrap both operations in their respective transaction handlers
+      return await this.postgresClient.$transaction(async (postgresTransaction) => {
+        return await this.mongoClient.$transaction(async (mongoTransaction) => {
+          return await callback({
+            postgres: postgresTransaction as PostgresPrismaClient,
+            mongo: mongoTransaction as MongoPrismaClient
+          });
+        });
+      });
+    } catch (error) {
+      this.logger.error("Coordinated operation failed:", {
+        error: error instanceof Error ? error.message : String(error),
+      });
+      throw error;
+    }
   }
 
   /**
