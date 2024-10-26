@@ -25,13 +25,18 @@ interface AnalyticsLayoutProps {
 const useLayoutClasses = (isOpen: boolean) => {
   return useMemo(
     () => ({
-      main: cn(
-        "min-h-[calc(100vh_-_56px)] bg-zinc-50 dark:bg-zinc-900 transition-[margin-left] ease-in-out duration-300 relative",
+      wrapper: cn(
+        "flex flex-col h-screen",
         isOpen ? "lg:ml-72" : "lg:ml-[90px]",
+        "transition-[margin-left] ease-in-out duration-300",
+      ),
+      main: cn(
+        "flex-1 bg-zinc-50 dark:bg-zinc-900 overflow-y-auto scroll-smooth scrollbar-hide",
+        "relative",
       ),
       footer: cn(
-        "transition-[margin-left] ease-in-out duration-300 bg-zinc-50 dark:bg-zinc-900",
-        isOpen ? "lg:ml-72" : "lg:ml-[90px]",
+        "flex-shrink-0 bg-zinc-50 dark:bg-zinc-900",
+        "transition-[margin-left] ease-in-out duration-300",
       ),
       dockWrapper:
         "fixed inset-x-0 bottom-0 flex justify-center items-center mb-[2.5%] z-50",
@@ -54,18 +59,18 @@ const AnalyticsLayout: React.FC<AnalyticsLayoutProps> = ({ children }) => {
   return (
     <>
       <Sidebar />
-
-      <main className={classes.main}>
-        {children}
-        {/* Centered dock at the bottom */}
-        {/* <div className={classes.dockWrapper}>
-          <ProTierDock />
-        </div> */}
-      </main>
-
-      <footer className={classes.footer}>
-        <Footer />
-      </footer>
+      <div className={classes.wrapper}>
+        <main className={classes.main}>
+          {children}
+          {/* Centered dock at the bottom */}
+          {/* <div className={classes.dockWrapper}>
+            <ProTierDock />
+          </div> */}
+        </main>
+        {/* <footer className={classes.footer}>
+          <Footer />
+        </footer> */}
+      </div>
     </>
   );
 };

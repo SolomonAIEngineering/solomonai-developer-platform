@@ -146,7 +146,7 @@ export const Menu: React.FC<MenuProps> = React.memo(({ isOpen }) => {
                     </span>
                     <p
                       className={cn(
-                        "max-w-[200px] truncate text-[18px] font-medium transition-[transform,opacity,display] duration-300 ease-in-out leading-7",
+                        "max-w-[200px] truncate text-[14px] font-medium transition-[transform,opacity,display] duration-300 ease-in-out leading-7",
                         isOpen === false
                           ? "-translate-x-96 opacity-0"
                           : "translate-x-0 opacity-100 ml-1.5",
@@ -201,9 +201,6 @@ export const Menu: React.FC<MenuProps> = React.memo(({ isOpen }) => {
             ))}
           </ul>
         </nav>
-      </div>
-      <div className="mt-auto pt-4">
-        <SignOut mode={"default"} />
       </div>
     </div>
   );

@@ -5,13 +5,11 @@ import { isDesktopApp } from "@todesktop/client-core/platform/todesktop";
 import { Skeleton } from "@v1/ui/skeleton";
 import React, { Suspense } from "react";
 
-import { AssistantButton } from "../assistant/button";
 import { DesktopAssistantButton } from "../assistant/button-desktop";
 import { ConnectionStatus } from "../connection-status";
 import { DesktopTrafficLight } from "../desktop-traffic-light";
 import { FeedbackForm } from "../feedback-form";
 import { MobileMenu } from "../mobile-menu";
-import { NotificationCenter } from "../notification-center";
 import { TrackerControl } from "../tracker-contol";
 import { UserMenu } from "../user-menu";
 import { SheetMenu } from "./sheet-menu";

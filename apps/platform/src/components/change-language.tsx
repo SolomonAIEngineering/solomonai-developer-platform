@@ -30,7 +30,7 @@ export function ChangeLanguage() {
   const locale = useCurrentLocale();
   const t = useI18n();
 
-  const handleOnChange = async (locale: string) => {
+  const handleOnChange = async (locale: "en" | "fr") => {
     await action.execute({ locale });
     changeLocale(locale);
   };
