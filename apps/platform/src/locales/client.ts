@@ -7,7 +7,7 @@ export const {
   I18nProviderClient,
   useCurrentLocale,
   useChangeLocale,
-  useI18n
+  useI18n,
 } = createI18nClient({
   en: () => import("./en"),
   fr: () => import("./fr"),

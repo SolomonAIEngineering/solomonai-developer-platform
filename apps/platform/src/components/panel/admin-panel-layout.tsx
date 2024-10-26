@@ -28,7 +28,7 @@ const useLayoutClasses = (isOpen: boolean) => {
       wrapper: cn(
         "flex flex-col h-screen",
         isOpen ? "lg:ml-72" : "lg:ml-[90px]",
-        "transition-[margin-left] ease-in-out duration-300"
+        "transition-[margin-left] ease-in-out duration-300",
       ),
       main: cn(
         "flex-1 bg-zinc-50 dark:bg-zinc-900 overflow-y-auto scroll-smooth scrollbar-hide",
@@ -36,7 +36,7 @@ const useLayoutClasses = (isOpen: boolean) => {
       ),
       footer: cn(
         "flex-shrink-0 bg-zinc-50 dark:bg-zinc-900",
-        "transition-[margin-left] ease-in-out duration-300"
+        "transition-[margin-left] ease-in-out duration-300",
       ),
       dockWrapper:
         "fixed inset-x-0 bottom-0 flex justify-center items-center mb-[2.5%] z-50",
