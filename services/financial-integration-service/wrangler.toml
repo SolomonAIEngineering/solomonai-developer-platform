@@ -10,7 +10,7 @@ tail_consumers = [
 ]
 
 [env.production]
-name = "engine"
+name = "financial-integration-service"
 logpush = true
 route = { pattern = "engine.solomon-ai-platform.com/*", zone_name = "solomon-ai-platform.com" }
 
@@ -37,9 +37,14 @@ consumers = [
   { queue = "user-actions-production-dlq", max_batch_size = 10, max_retries = 10 },
 ]
 
+# the hyperdrive binding is used to access the hyperdrive service
+[[env.production.hyperdrive]]
+binding = "HYPERDRIVE"
+id = "234d768ebd73498885fe06c0e7621d74"
+
 [env.production.observability]
 enabled = true
-head_sampling_rate = 0.01 # 10% of requests are logged
+head_sampling_rate = 0.01 # 1% of requests are logged
 
 [[env.production.d1_databases]]
 binding = "DB" # i.e. available in your Worker on env.DB
@@ -53,7 +58,7 @@ namespace_id = "1001"
 simple = { limit = 50000, period = 60 }
 
 [env.staging]
-name = "engine-staging"
+name = "financial-integration-service-staging"
 route = { pattern = "engine-staging.solomon-ai-platform.com/*", zone_name = "solomon-ai-platform.com" }
 
 kv_namespaces = [
@@ -97,9 +102,14 @@ simple = { limit = 50000, period = 60 }
 [[env.staging.tail_consumers]]
 service = "engine-staging-tail"
 
+[[env.staging.hyperdrive]]
+binding = "HYPERDRIVE"
+id = "234d768ebd73498885fe06c0e7621d74" # TODO: need to create a new postgres db for staging as name is way too long
+
 # local
 [[env.local.d1_databases]]
 binding = "DB" # i.e. available in your Worker on env.DB
 database_name = "engine-db"
 # database_id = "50694d1f-d468-4807-a60f-3e3c9287781e"
 database_id = "00000000-0000-0000-0000-000000000000" #real value redacted
+

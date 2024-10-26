@@ -1,7 +1,8 @@
-import type { UserActionMessageBody } from "@/message/user-action-message";
+import type { UserActionMessageBody } from "@/pkg/message/user-action-message";
 import {
   D1Database,
   Fetcher,
+  Hyperdrive,
   KVNamespace,
   Queue,
   R2Bucket,
@@ -17,6 +18,7 @@ export let zEnv = z.object({
   BANK_STATEMENTS: z.custom<R2Bucket>((ns) => typeof ns === "object"),
   RATE_LIMITER: z.custom<RateLimit>((ns) => typeof ns === "object"),
   TELLER_CERT: z.custom<Fetcher>((ns) => typeof ns === "object").optional(),
+  HYPERDRIVE: z.custom<Hyperdrive>((ns) => typeof ns === "object"),
   USER_ACTIONS_QUEUE: z
     .custom<Queue<UserActionMessageBody>>((q) => typeof q === "object")
     .optional(),
@@ -41,6 +43,7 @@ export let zEnv = z.object({
     .enum(["development", "preview", "canary", "production"])
     .default("development"),
   PLATFORM_PREFIX: z.string().default("solomonai_platform"),
+  DATABASE_URL: z.string(),
 });
 
 export type Env = z.infer<typeof zEnv>;

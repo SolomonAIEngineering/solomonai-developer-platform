@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { getLogoURL } from "@/utils/logo";
+import { getLogoURL } from "@/pkg/utils/logo";
 
 const PRIORITY_INSTITUTIONS = [
   // US

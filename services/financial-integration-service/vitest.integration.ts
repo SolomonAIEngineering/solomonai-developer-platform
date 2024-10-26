@@ -54,7 +54,7 @@ export default defineWorkersProject(async () => {
       outputFile: "./.vitest/index.html",
       include: ["./src/routes/**/*.test.ts", "./src/integration/**/*.test.ts"],
       alias: {
-        "@/": new URL("./src/", import.meta.url).pathname,
+        "@/pkg/": new URL("./src/", import.meta.url).pathname,
       },
       testTimeout: 60_000,
       teardownTimeout: 60_000,

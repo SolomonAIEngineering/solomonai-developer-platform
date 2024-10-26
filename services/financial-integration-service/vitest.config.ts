@@ -59,7 +59,7 @@ export default defineWorkersProject(async () => {
       outputFile: "./.vitest/index.html",
       include: ["./**/*.test.ts", "./**/*.test.tsx"],
       alias: {
-        "@/": new URL("./src/", import.meta.url).pathname,
+        "@/pkg/": new URL("./src/", import.meta.url).pathname,
       },
       /**
        * Pool options for worker configuration.

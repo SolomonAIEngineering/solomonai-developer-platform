@@ -7,7 +7,7 @@ import {
   cleanupTestContext,
   setupTestContext,
   TestContext,
-} from "@/test-util/test-context";
+} from "@/pkg/test-util/test-context";
 import { env } from "cloudflare:test";
 import {
   afterAll,

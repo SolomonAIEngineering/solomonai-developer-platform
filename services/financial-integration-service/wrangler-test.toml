@@ -10,7 +10,7 @@ tail_consumers = [
 ]
 
 [env.production]
-name = "engine"
+name = "financial-integration-service"
 logpush = true
 route = { pattern = "engine.solomon-ai-platform.com/*", zone_name = "solomon-ai-platform.com" }
 
@@ -53,7 +53,7 @@ namespace_id = "1001"
 simple = { limit = 50000, period = 60 }
 
 [env.staging]
-name = "engine-staging"
+name = "financial-integration-service-staging"
 route = { pattern = "engine-staging.solomon-ai-platform.com/*", zone_name = "solomon-ai-platform.com" }
 
 kv_namespaces = [

@@ -1,4 +1,4 @@
-import { newApp } from "@/hono/app";
+import { newApp } from "@/pkg/hono/app";
 import fs from "fs";
 
 const schema = newApp().getOpenAPIDocument({

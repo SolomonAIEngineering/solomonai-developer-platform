@@ -1,12 +1,12 @@
-import { openApiErrorResponses as ErrorResponses } from "@/errors";
-import { App } from "@/hono/app";
-import { createErrorResponse } from "@/utils/error";
-import { SearchClient } from "@/utils/search";
+import { openApiErrorResponses as ErrorResponses } from "@/pkg/errors";
+import { App } from "@/pkg/hono/app";
+import { Routes } from "@/pkg/route-definitions/routes";
+import { createErrorResponse } from "@/pkg/utils/error";
+import { SearchClient } from "@/pkg/utils/search";
 import { createRoute, z } from "@hono/zod-openapi";
 import { env } from "hono/adapter";
 import { UpdateUsageParamsSchema, UpdateUsageSchema } from "./schema";
 import { Document } from "./types";
-import { Routes } from "@/route-definitions/routes";
 
 /**
  * Creates the OpenAPI route configuration for updating institution usage.

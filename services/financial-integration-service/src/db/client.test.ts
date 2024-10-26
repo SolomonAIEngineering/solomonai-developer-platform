@@ -1,6 +1,6 @@
 import { DatabaseClient } from "@/db/client";
-import { DatabaseError, QueryError, TransactionError } from "@/errors";
-import { HonoEnv } from "@/hono/env";
+import { DatabaseError, QueryError, TransactionError } from "@/pkg/errors";
+import { HonoEnv } from "@/pkg/hono/env";
 import { D1Database } from "@cloudflare/workers-types";
 import { env } from "cloudflare:test";
 import { DrizzleD1Database } from "drizzle-orm/d1";

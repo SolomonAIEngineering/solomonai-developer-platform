@@ -5,6 +5,7 @@ declare module "cloudflare:test" {
     DB: D1Database;
     KV: KVNamespace;
     STORAGE: R2Bucket;
+    HYPERDRIVE: Hyperdrive;
     BANK_STATEMENTS: R2Bucket;
     RATE_LIMITER: RateLimit;
     ENGINE_BASE_URL: string;

@@ -1,5 +1,5 @@
-import { DatabaseError, QueryError, TransactionError } from "@/errors";
-import { HonoEnv } from "@/hono/env";
+import { DatabaseError, QueryError, TransactionError } from "@/pkg/errors";
+import { HonoEnv } from "@/pkg/hono/env";
 import { D1Database } from "@cloudflare/workers-types";
 import { ExtractTablesWithRelations } from "drizzle-orm";
 import { drizzle, DrizzleD1Database } from "drizzle-orm/d1";
