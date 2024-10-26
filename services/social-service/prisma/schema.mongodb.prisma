@@ -1,17 +1,11 @@
-generator client_mongo {
-  provider        = "prisma-client-js"
-  previewFeatures = ["fullTextIndex"]
-  output          = "../src/database/generated/mongo"
-}
-
-datasource db {
-  provider = "mongodb"
-  url      = env("MONGODB_DATABASE_URL")
-}
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["fullTextIndex"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 //=============================================================================
@@ -127,55 +121,11 @@ enum AccessLevel {
 }
 
 //=============================================================================
-// COMPOSITE TYPES
+// MODELS
 //=============================================================================
 
-type Entities {
-  text       String
-  label      String
-  confidence Float?
-  startPos   Int?
-  endPos     Int?
-  metadata   Json?
-}
-
-type Sentiment {
-  negative   Float
-  neutral    Float
-  positive   Float
-  compound   Float
-  confidence Float?
-}
-
-type ContentInsights {
-  sentenceCount      Int
-  wordCount          Int
-  language           String
-  languageConfidence Float
-  entities           Entities[]
-  sentiment          Sentiment
-  topics             String[]
-  keywords           String[]
-  summary            String?
-  readability        Float?
-}
-
-type MediaMetadata {
-  id          String
-  resize      MediaResize
-  crop        MediaCrop
-  imageWidth  Int
-  imageHeight Int
-  type        MediaType
-  format      String?
-  duration    Int?
-  bitrate     Int?
-  codec       String?
-  resolution  String?
-}
-
 model Media {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  id            String   @id @default(uuid())
   mediaType     String
   status        String
   fileContent   String?
@@ -193,67 +143,13 @@ model Media {
   // Indexes
   @@index([mediaType, status], name: "idx_media_status")
   @@index([createdAt], name: "idx_media_timestamp")
-  // Full-text Search
-  @@fulltext([fileContent, fileName, transcription, extractedText])
 }
-
-type SearchMetadata {
-  title           String
-  description     String?
-  keywords        String[]
-  contentType     String
-  language        String
-  fileSize        Int?
-  wordCount       Int?
-  pageCount       Int?
-  duration        Int?
-  transcription   String?
-  extractedText   String?
-  lastIndexed     DateTime
-  searchScore     Float
-  aiTags          String[]
-  classifications String[]
-  visibility      AccessLevel
-  readingLevel    String?
-  locationData    Json?
-}
-
-type FileMetadata {
-  fileName         String
-  fileSize         Int
-  mimeType         String
-  extension        String
-  hash             String
-  dimensions       Dimensions?
-  duration         Int?
-  encoding         String?
-  compression      String?
-  processingStatus String
-  version          Int
-  createdBy        String
-  modifiedBy       String
-  parentFolder     String?
-  path             String
-  checksum         String
-}
-
-type Dimensions {
-  width       Int
-  height      Int
-  depth       Int?
-  aspectRatio Float?
-  resolution  String?
-}
-
-//=============================================================================
-// MODELS
-//=============================================================================
 
 /// Enhanced Post model combining original and new features
 model Post {
-  id            String  @id @default(auto()) @map("_id") @db.ObjectId
-  authorId      String  @db.ObjectId
-  parentSpaceId String? @db.ObjectId
+  id            String  @id @default(uuid())
+  authorId      String
+  parentSpaceId String?
 
   // Basic Information
   title          String?
@@ -263,7 +159,7 @@ model Post {
   workflowStatus String?
   assignedTo     String?
   contentFormat  String    @default("markdown")
-  createdAt      String
+  createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   publishedAt    DateTime?
 
@@ -287,9 +183,9 @@ model Post {
 
   // Media and Files
   media              Media?       @relation(fields: [mediaId], references: [id])
-  mediaId            String?      @db.ObjectId
+  mediaId            String?
   backgroundImageUrl String?
-  files              FileToPost[]
+  files              File[]
 
   // Engagement Metrics
   affinityScore            Int
@@ -300,21 +196,21 @@ model Post {
   userIdToReactionMap      Json? // Map<String, Reaction>
 
   // Content Analysis
-  insights                    ContentInsights?
+  insights                    Json?
   readingTime                 String?
   aiGeneratedQuestionResponse String?
-  aiAnalysis                  AIAnalysis?
-  searchMetadata              SearchMetadata?
+  aiAnalysis                  Json?
+  searchMetadata              Json?
 
   // Relations
   comments   Comment[]
   notes      Note[]
   thread     Thread?   @relation(fields: [threadId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  threadId   String?   @db.ObjectId
+  threadId   String?
   space      Space?    @relation(fields: [spaceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  spaceId    String?   @db.ObjectId
+  spaceId    String?
   channel    Channel?  @relation(fields: [channelId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  channelId  String?   @db.ObjectId
+  channelId  String?
   // Additional Features
   extra      Json? // Custom metadata
   visibility String    @default("public")
@@ -340,14 +236,12 @@ model Post {
   @@index([status, updatedAt], name: "idx_status_time")
   @@index([workflowStatus, assignedTo], name: "idx_workflow_assignment")
   @@index([backendPlatformUserId])
-  // Full-text search indexes
-  @@fulltext([title, content, description, tags])
 }
 
 /// Enhanced PollPost model
 model PollPost {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt String
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
   action    PostType
   content   String
   title     String?
@@ -370,17 +264,17 @@ model PollPost {
 
   // Media
   media   Media?  @relation(fields: [mediaId], references: [id])
-  mediaId String? @db.ObjectId
+  mediaId String?
 
   // Relations
   comments Comment[]
   thread   Thread?   @relation(fields: [threadId], references: [id])
-  threadId String?   @db.ObjectId
+  threadId String?
 
   // Additional Features
   extra          Json?
-  searchMetadata SearchMetadata?
-  aiAnalysis     AIAnalysis?
+  searchMetadata Json?
+  aiAnalysis     Json?
 
   // Indexes
   @@index([backendPlatformUserId])
@@ -390,13 +284,11 @@ model PollPost {
   @@index([threadId], name: "idx_poll_thread")
   @@index([topicName], name: "idx_poll_topic")
   @@index([tags], name: "idx_poll_tags")
-  // Full-text search indexes
-  @@fulltext([title, content, tags])
 }
 
 /// Space model for workspace organization
 model Space {
-  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  id          String        @id @default(uuid())
   name        String
   description String?
   type        SpaceType
@@ -413,7 +305,7 @@ model Space {
 
   // Hierarchy
   parentSpace   Space?  @relation("SpaceHierarchy", fields: [parentSpaceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  parentSpaceId String? @db.ObjectId
+  parentSpaceId String?
   childSpaces   Space[] @relation("SpaceHierarchy")
 
   // Settings
@@ -423,7 +315,7 @@ model Space {
   accessLevel AccessLevel @default(ACCESS_LEVEL_ORGANIZATION)
 
   // Features
-  searchMetadata SearchMetadata?
+  searchMetadata Json?
   tags           String[]
 
   // Indexes
@@ -437,16 +329,14 @@ model Space {
   @@index([accessLevel], name: "idx_space_access_level")
   @@index([isPrivate], name: "idx_space_privacy")
   @@index([tags], name: "idx_space_tags")
-  // Full-text Search (commented out as it's not supported in MongoDB)
-  @@fulltext([name, description])
 }
 
 /// Channel model for content organization
 model Channel {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(uuid())
   name        String
   description String?
-  spaceId     String   @db.ObjectId
+  spaceId     String
   space       Space    @relation(fields: [spaceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -455,7 +345,7 @@ model Channel {
   // Content
   posts       Post[]
   files       File[]
-  pinnedPosts String[] @db.ObjectId
+  pinnedPosts String[]
 
   // Members
   members ChannelMember[]
@@ -475,17 +365,15 @@ model Channel {
   @@index([spaceId, name], name: "idx_channel_space_name")
   @@index([spaceId, createdAt], name: "idx_channel_space_created")
   @@index([status, updatedAt], name: "idx_channel_status_updated")
-  // Full-text Search (enabled by the preview feature)
-  @@fulltext([name, description])
 }
 
 /// Enhanced Thread model
 model Thread {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  id           String   @id @default(uuid())
   postIds      String[]
   parentPostId String
-  createdAt    String
-  updatedAt    String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   // Relations
   posts     Post[]
@@ -508,10 +396,10 @@ model Thread {
 
 /// Enhanced Note model
 model Note {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(uuid())
   content   String
-  createdAt String
-  authorId  String @db.ObjectId
+  createdAt DateTime @default(now())
+  authorId  String
 
   // Author Info
   backendPlatformUserId String
@@ -526,17 +414,17 @@ model Note {
 
   // Media
   media   Media?  @relation(fields: [mediaId], references: [id])
-  mediaId String? @db.ObjectId
+  mediaId String?
 
   // Relations
   post      Post     @relation(fields: [postId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  postId    String   @db.ObjectId
+  postId    String
   comment   Comment? @relation(fields: [commentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  commentId String?  @db.ObjectId
+  commentId String?
 
   // Features
-  searchMetadata SearchMetadata?
-  aiAnalysis     AIAnalysis?
+  searchMetadata Json?
+  aiAnalysis     Json?
 
   // Indexes
   @@index([postId, createdAt], name: "idx_note_post_time")
@@ -547,16 +435,14 @@ model Note {
   @@index([authorAccountType], name: "idx_note_account_type")
   @@index([mentions], name: "idx_note_mentions")
   @@index([hashtags], name: "idx_note_hashtags")
-  // Full-text Search (enabled by the preview feature)
-  @@fulltext([content])
 }
 
 /// Enhanced Comment model
 model Comment {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
-  authorId  String @db.ObjectId
+  id        String   @id @default(uuid())
+  authorId  String
   content   String
-  createdAt String
+  createdAt DateTime @default(now())
 
   // Author Info
   backendPlatformUserId String
@@ -577,34 +463,32 @@ model Comment {
   hashtags String[]
 
   // Media
-  media Media? @relation(fields: [mediaId], references: [id])
+  media     Media?   @relation(fields: [mediaId], references: [id])
+  mediaId   String?
 
   // Relations
   replies    CommentReply[]
   notes      Note[]
   post       Post           @relation(fields: [postId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  postId     String         @db.ObjectId
+  postId     String
   PollPost   PollPost?      @relation(fields: [pollPostId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  pollPostId String?        @db.ObjectId
+  pollPostId String?
+
   // Additional Features
   extra      Json?
-  aiAnalysis AIAnalysis?
-
-  mediaId String? @db.ObjectId
+  aiAnalysis Json?
 
   @@index([postId])
   // Indexes
   @@index([postId, createdAt], name: "idx_comment_post_time")
   @@index([authorId, createdAt], name: "idx_comment_author_time")
-  // Full-text Search
-  @@fulltext([content])
 }
 
 /// Enhanced CommentReply model
 model CommentReply {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(uuid())
   content   String
-  createdAt String
+  createdAt DateTime @default(now())
 
   // Author Info
   backendPlatformUserId String
@@ -625,15 +509,16 @@ model CommentReply {
   hashtags String[]
 
   // Media
-  media     Media?  @relation(fields: [mediaid], references: [id])
-  mediaid   String? @db.ObjectId
+  media     Media?   @relation(fields: [mediaId], references: [id])
+  mediaId   String?
+
   // Relations
   comment   Comment @relation(fields: [commentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  commentId String  @db.ObjectId
+  commentId String
 
   // Additional Features
   extra      Json?
-  aiAnalysis AIAnalysis?
+  aiAnalysis Json?
 
   // Indexes
   @@index([commentId])
@@ -645,16 +530,14 @@ model CommentReply {
   @@index([qualityScore], name: "idx_reply_quality")
   @@index([mentions], name: "idx_reply_mentions")
   @@index([hashtags], name: "idx_reply_hashtags")
-  // Full-text Search (enabled by the preview feature)
-  @@fulltext([content])
 }
 
 /// Membership Models
 model SpaceMember {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  spaceId     String   @db.ObjectId
+  id          String   @id @default(uuid())
+  spaceId     String
   space       Space    @relation(fields: [spaceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  userId      String   @db.ObjectId
+  userId      String
   role        String
   joinedAt    DateTime @default(now())
   status      String   @default("active")
@@ -668,10 +551,10 @@ model SpaceMember {
 }
 
 model ChannelMember {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  channelId String    @db.ObjectId
+  id        String    @id @default(uuid())
+  channelId String
   channel   Channel   @relation(fields: [channelId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  userId    String    @db.ObjectId
+  userId    String
   role      String
   joinedAt  DateTime  @default(now())
   lastRead  DateTime?
@@ -685,14 +568,14 @@ model ChannelMember {
 
 /// File Management Model
 model File {
-  id       String       @id @default(auto()) @map("_id") @db.ObjectId
+  id       String       @id @default(uuid())
   name     String
   type     MediaType
   url      String
-  metadata FileMetadata
+  metadata Json
 
   // Upload Info
-  uploadedBy String   @db.ObjectId
+  uploadedBy String
   uploadedAt DateTime @default(now())
   size       Int
 
@@ -702,15 +585,15 @@ model File {
   thumbnail String?
 
   // Analysis
-  searchMetadata SearchMetadata?
-  aiAnalysis     AIAnalysis?
+  searchMetadata Json?
+  aiAnalysis     Json?
 
   // Relations
-  posts     FileToPost[]
-  Space     Space?       @relation(fields: [spaceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  spaceId   String?      @db.ObjectId
-  Channel   Channel?     @relation(fields: [channelId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  channelId String?      @db.ObjectId
+  posts     Post[]
+  space     Space?       @relation(fields: [spaceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  spaceId   String?
+  channel   Channel?     @relation(fields: [channelId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  channelId String?
 
   @@index([type])
   @@index([uploadedBy], name: "idx_file_uploaded_by")
@@ -719,597 +602,4 @@ model File {
   @@index([size], name: "idx_file_size")
   @@index([spaceId, type], name: "idx_file_space_type")
   @@index([channelId, type], name: "idx_file_channel_type")
-  @@fulltext([name])
 }
-
-/// Explicit many-to-many relationship model
-model FileToPost {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  file      File     @relation(fields: [fileId], references: [id])
-  fileId    String   @db.ObjectId
-  post      Post     @relation(fields: [postId], references: [id])
-  postId    String   @db.ObjectId
-  createdAt DateTime @default(now())
-
-  @@unique([fileId, postId])
-}
-
-//=============================================================================
-// Complete AIAnalysis Type System
-//=============================================================================
-
-/// Main AIAnalysis type
-type AIAnalysis {
-  // Core Analysis
-  summary          String?
-  keyPoints        String[]
-  sentiment        SentimentAnalysis
-  entities         NamedEntity[]
-  topics           TopicAnalysis[]
-  keywords         Keyword[]
-  readabilityScore ReadabilityMetrics
-  qualityMetrics   ContentQuality
-  toxicity         ToxicityAnalysis
-  originality      OriginalityScore
-  language         LanguageAnalysis
-  translation      TranslationInfo
-  grammarCheck     GrammarAnalysis
-  styleAnalysis    StyleMetrics
-  intentions       IntentAnalysis[]
-  emotions         EmotionAnalysis
-  bias             BiasAnalysis
-  subjectivity     Float
-  imageAnalysis    ImageAnalysis[]
-  videoAnalysis    VideoAnalysis[]
-  audioAnalysis    AudioAnalysis[]
-  marketInsights   MarketAnalysis
-  competitiveInfo  CompetitiveAnalysis
-  actionItems      ActionItem[]
-
-  // Metadata
-  processingTime  Int
-  confidenceScore Float
-  modelVersions   ModelMetadata
-  timestamp       DateTime
-  processingCost  Float
-}
-
-type SentimentAnalysis {
-  overall    Float
-  compound   Float
-  positive   Float
-  negative   Float
-  neutral    Float
-  segments   SentimentSegment[]
-  confidence Float
-}
-
-type SentimentSegment {
-  text       String
-  sentiment  Float
-  startIndex Int
-  endIndex   Int
-  aspects    AspectSentiment[]
-}
-
-type AspectSentiment {
-  aspect     String
-  sentiment  Float
-  confidence Float
-}
-
-type NamedEntity {
-  text         String
-  type         String
-  confidence   Float
-  startIndex   Int
-  endIndex     Int
-  metadata     Json?
-  wikification WikiData
-}
-
-type WikiData {
-  entityId    String
-  url         String
-  confidence  Float
-  description String?
-}
-
-type TopicAnalysis {
-  topic      String
-  confidence Float
-  subtopics  String[]
-  relevance  Float
-  hierarchy  String[]
-  context    TopicContext
-}
-
-type TopicContext {
-  domain        String
-  category      String
-  parentTopics  String[]
-  relatedTopics String[]
-}
-
-type Keyword {
-  text       String
-  score      Float
-  frequency  Int
-  type       String
-  related    String[]
-  importance KeywordMetrics
-}
-
-type KeywordMetrics {
-  tfIdf      Float
-  textRank   Float
-  prominence Float
-  location   KeywordLocation[]
-}
-
-type KeywordLocation {
-  startIndex Int
-  endIndex   Int
-  context    String
-}
-
-type ReadabilityMetrics {
-  fleschKincaid Float
-  gunningFog    Float
-  smog          Float
-  ari           Float
-  colemanLiau   Float
-  readingTime   Int
-  grade         String
-  complexity    ComplexityMetrics
-}
-
-type ComplexityMetrics {
-  sentenceComplexity  Float
-  wordComplexity      Float
-  technicalLevel      String
-  vocabularyDiversity Float
-}
-
-type ContentQuality {
-  clarity         Float
-  coherence       Float
-  engagement      Float
-  expertise       Float
-  factualAccuracy Float
-  sources         SourceValidation[]
-  structure       StructureAnalysis
-  formatting      FormattingAnalysis
-}
-
-type SourceValidation {
-  url         String
-  credibility Float
-  type        String
-  citations   Citation[]
-}
-
-type Citation {
-  text       String
-  source     String
-  page       Int?
-  confidence Float
-}
-
-type StructureAnalysis {
-  paragraphFlow      Float
-  transitionQuality  Float
-  logicalProgression Float
-  sectioning         Float
-}
-
-type FormattingAnalysis {
-  consistency     Float
-  readability     Float
-  visualHierarchy Float
-  spacing         Float
-}
-
-type ToxicityAnalysis {
-  overall    Float
-  categories ToxicityCategories
-  threats    ThreatDetection[]
-  moderation ModerationDecision
-  severity   ToxicitySeverity
-}
-
-type ToxicityCategories {
-  hate       Float
-  harassment Float
-  profanity  Float
-  violence   Float
-  sexual     Float
-  spam       Float
-  misleading Float
-  bias       Float
-}
-
-type ThreatDetection {
-  type       String
-  severity   Float
-  confidence Float
-  context    String
-}
-
-type ModerationDecision {
-  action     String
-  confidence Float
-  reason     String
-  escalation Boolean
-}
-
-type ToxicitySeverity {
-  level          String
-  score          Float
-  recommendation String
-}
-
-type OriginalityScore {
-  overall      Float
-  uniqueness   Float
-  similarities SimilarityMatch[]
-  plagiarism   PlagiarismMetrics
-}
-
-type SimilarityMatch {
-  text       String
-  source     String
-  confidence Float
-  context    String
-}
-
-type PlagiarismMetrics {
-  score    Float
-  matches  Int
-  sources  String[]
-  severity String
-}
-
-type LanguageAnalysis {
-  detected       String
-  confidence     Float
-  alternatives   LanguageAlternative[]
-  dialects       String[]
-  scripts        String[]
-  languageFamily String
-}
-
-type LanguageAlternative {
-  language    String
-  confidence  Float
-  probability Float
-}
-
-type TranslationInfo {
-  sourceLanguage String
-  targetLanguage String
-  quality        Float
-  confidence     Float
-  provider       String
-}
-
-type GrammarAnalysis {
-  errors  GrammarError[]
-  style   StyleSuggestion[]
-  overall Float
-  fluency Float
-}
-
-type GrammarError {
-  type       String
-  suggestion String
-  context    String
-  severity   Float
-}
-
-type StyleSuggestion {
-  type       String
-  suggestion String
-  reason     String
-  importance Float
-}
-
-type StyleMetrics {
-  formality  Float
-  tone       String
-  vocabulary VocabularyMetrics
-  voice      String
-}
-
-type VocabularyMetrics {
-  diversity      Float
-  sophistication Float
-  jargon         Float
-  accessibility  Float
-}
-
-type IntentAnalysis {
-  primary    String
-  confidence Float
-  secondary  String[]
-  context    String
-}
-
-type EmotionAnalysis {
-  primary    String
-  secondary  String[]
-  intensity  Float
-  confidence Float
-  spectrum   EmotionSpectrum
-}
-
-type EmotionSpectrum {
-  joy      Float
-  sadness  Float
-  anger    Float
-  fear     Float
-  surprise Float
-  disgust  Float
-}
-
-type BiasAnalysis {
-  overall  Float
-  types    BiasType[]
-  context  String
-  severity Float
-}
-
-type BiasType {
-  category String
-  score    Float
-  evidence String[]
-}
-
-type ImageAnalysis {
-  objects     DetectedObject[]
-  faces       FaceAnalysis[]
-  text        String?
-  labels      Label[]
-  colors      ColorAnalysis
-  nsfw        NSFWAnalysis
-  quality     ImageQuality
-  composition ImageComposition
-}
-
-type DetectedObject {
-  label       String
-  confidence  Float
-  boundingBox BoundingBox
-  attributes  Json
-}
-
-type FaceAnalysis {
-  boundingBox BoundingBox
-  emotions    EmotionAnalysis
-  attributes  FaceAttributes
-  landmarks   FaceLandmark[]
-}
-
-type BoundingBox {
-  x      Float
-  y      Float
-  width  Float
-  height Float
-}
-
-type Label {
-  name       String
-  confidence Float
-  parents    String[]
-}
-
-type ColorAnalysis {
-  dominant   Color[]
-  palette    Color[]
-  brightness Float
-  contrast   Float
-}
-
-type Color {
-  hex        String
-  rgb        RGB
-  percentage Float
-}
-
-type RGB {
-  red   Int
-  green Int
-  blue  Int
-}
-
-type NSFWAnalysis {
-  score      Float
-  categories NSFWCategories
-  confidence Float
-}
-
-type NSFWCategories {
-  explicit   Float
-  suggestive Float
-  violence   Float
-  disturbing Float
-}
-
-type ImageQuality {
-  resolution Resolution
-  sharpness  Float
-  brightness Float
-  noise      Float
-}
-
-type Resolution {
-  width       Int
-  height      Int
-  aspectRatio Float
-}
-
-type ImageComposition {
-  balance   Float
-  symmetry  Float
-  focus     Float
-  aesthetic Float
-}
-
-type VideoAnalysis {
-  scenes     Scene[]
-  transcript String?
-  keyFrames  KeyFrame[]
-  actions    Action[]
-  captions   Caption[]
-  motion     MotionAnalysis
-}
-
-type Scene {
-  startTime   Float
-  endTime     Float
-  keyFrames   KeyFrame[]
-  description String
-}
-
-type KeyFrame {
-  timestamp  Float
-  image      ImageAnalysis
-  importance Float
-}
-
-type Action {
-  type       String
-  confidence Float
-  startTime  Float
-  endTime    Float
-}
-
-type Caption {
-  text       String
-  timestamp  Float
-  confidence Float
-}
-
-type MotionAnalysis {
-  activity  Float
-  stability Float
-  tracking  TrackingData[]
-}
-
-type TrackingData {
-  object     String
-  path       Json
-  confidence Float
-}
-
-type AudioAnalysis {
-  transcript String?
-  speakers   Speaker[]
-  sentiment  SentimentAnalysis
-  noise      NoiseAnalysis
-  music      MusicAnalysis
-  clarity    Float
-}
-
-type Speaker {
-  id              String
-  segments        TimeSegment[]
-  confidence      Float
-  characteristics SpeakerCharacteristics
-}
-
-type TimeSegment {
-  startTime Float
-  endTime   Float
-  text      String
-}
-
-type SpeakerCharacteristics {
-  gender  String?
-  age     String?
-  accent  String?
-  emotion EmotionAnalysis
-}
-
-type NoiseAnalysis {
-  level  Float
-  type   String[]
-  impact Float
-}
-
-type MusicAnalysis {
-  present Boolean
-  genre   String[]
-  tempo   Float
-  mood    String[]
-}
-
-type MarketAnalysis {
-  trends        Trend[]
-  sentiment     Float
-  competition   String[]
-  opportunities String[]
-}
-
-type Trend {
-  name      String
-  strength  Float
-  direction String
-  timeframe String
-}
-
-type CompetitiveAnalysis {
-  positioning     Float
-  advantages      String[]
-  threats         String[]
-  recommendations String[]
-}
-
-type ActionItem {
-  description String
-  priority    Float
-  category    String
-  deadline    DateTime?
-}
-
-type ModelMetadata {
-  modelId     String
-  version     String
-  provider    String
-  timestamp   DateTime
-  parameters  Json
-  performance ModelPerformance
-}
-
-type ModelPerformance {
-  latency       Float
-  accuracy      Float
-  confidence    Float
-  resourceUsage ResourceMetrics
-}
-
-type ResourceMetrics {
-  cpuTime     Float
-  memoryUsage Float
-  cost        Float
-}
-
-type FaceAttributes {
-  age        Int?
-  gender     String?
-  expression String?
-  glasses    Boolean
-  features   Json
-}
-
-type FaceLandmark {
-  type       String
-  position   Point
-  confidence Float
-}
-
-type Point {
-  x Float
-  y Float
-}
-

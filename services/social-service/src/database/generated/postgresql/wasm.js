@@ -122,96 +122,387 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.BlockedsScalarFieldEnum = {
-  created_at: 'created_at',
+exports.Prisma.VirtualProfileScalarFieldEnum = {
   id: 'id',
-  profile_blocked_id: 'profile_blocked_id',
-  profile_blocked_type: 'profile_blocked_type',
-  profile_blocking_id: 'profile_blocking_id',
-  profile_blocking_type: 'profile_blocking_type'
+  userId: 'userId',
+  profileType: 'profileType',
+  activated: 'activated',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
-exports.Prisma.BookmarksScalarFieldEnum = {
+exports.Prisma.UserProfileScalarFieldEnum = {
   id: 'id',
-  post_ids: 'post_ids'
-};
-
-exports.Prisma.Community_profilesScalarFieldEnum = {
-  algolia_id: 'algolia_id',
-  community_rules: 'community_rules',
-  description: 'description',
-  followers: 'followers',
-  id: 'id',
+  virtualProfileId: 'virtualProfileId',
   name: 'name',
-  news_feed_timeline_id: 'news_feed_timeline_id',
-  notification_feed_timeline_id: 'notification_feed_timeline_id',
-  personal_feed_timeline_id: 'personal_feed_timeline_id',
+  profileImageUrl: 'profileImageUrl',
+  bio: 'bio',
   private: 'private',
-  profile_image_url: 'profile_image_url',
-  virtual_profile_id: 'virtual_profile_id',
-  visible: 'visible'
+  followersCount: 'followersCount',
+  followingCount: 'followingCount',
+  newsFeedTimelineId: 'newsFeedTimelineId',
+  personalFeedTimelineId: 'personalFeedTimelineId',
+  notificationFeedTimelineId: 'notificationFeedTimelineId',
+  algoliaId: 'algoliaId',
+  metadata: 'metadata',
+  settings: 'settings',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
-exports.Prisma.FollowersScalarFieldEnum = {
-  approved_at: 'approved_at',
-  created_at: 'created_at',
+exports.Prisma.CommunityProfileScalarFieldEnum = {
   id: 'id',
-  profile_followed_id: 'profile_followed_id',
-  profile_following_id: 'profile_following_id',
-  request_approved: 'request_approved',
-  target_follower_type: 'target_follower_type'
-};
-
-exports.Prisma.PublicationsScalarFieldEnum = {
-  admin_backend_platform_user_id: 'admin_backend_platform_user_id',
-  bookmark_id: 'bookmark_id',
-  created_at: 'created_at',
+  virtualProfileId: 'virtualProfileId',
+  name: 'name',
   description: 'description',
+  communityRules: 'communityRules',
+  profileImageUrl: 'profileImageUrl',
+  private: 'private',
+  visible: 'visible',
+  followers: 'followers',
+  newsFeedTimelineId: 'newsFeedTimelineId',
+  personalFeedTimelineId: 'personalFeedTimelineId',
+  notificationFeedTimelineId: 'notificationFeedTimelineId',
+  algoliaId: 'algoliaId',
+  metadata: 'metadata',
+  settings: 'settings',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TopicScalarFieldEnum = {
   id: 'id',
-  post_ids: 'post_ids',
-  publication_name: 'publication_name',
+  communityProfileId: 'communityProfileId',
+  topicName: 'topicName',
+  description: 'description',
+  imageUrl: 'imageUrl',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PublicationScalarFieldEnum = {
+  id: 'id',
+  publicationName: 'publicationName',
+  description: 'description',
+  type: 'type',
+  postIds: 'postIds',
   subjects: 'subjects',
   tags: 'tags',
-  type: 'type'
+  adminBackendPlatformUserId: 'adminBackendPlatformUserId',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
-exports.Prisma.TopicsScalarFieldEnum = {
-  community_profile_id: 'community_profile_id',
-  description: 'description',
+exports.Prisma.MediaScalarFieldEnum = {
   id: 'id',
-  image_url: 'image_url',
-  topic_name: 'topic_name'
+  mediaType: 'mediaType',
+  status: 'status',
+  fileContent: 'fileContent',
+  fileName: 'fileName',
+  transcription: 'transcription',
+  extractedText: 'extractedText',
+  createdAt: 'createdAt'
 };
 
-exports.Prisma.User_profilesScalarFieldEnum = {
-  admin_publication_id: 'admin_publication_id',
-  algolia_id: 'algolia_id',
-  bookmark_id: 'bookmark_id',
-  editors_publication_id: 'editors_publication_id',
-  followers: 'followers',
-  following: 'following',
+exports.Prisma.PostScalarFieldEnum = {
+  id: 'id',
+  authorId: 'authorId',
+  communityId: 'communityId',
+  parentSpaceId: 'parentSpaceId',
+  title: 'title',
+  content: 'content',
+  description: 'description',
+  status: 'status',
+  workflowStatus: 'workflowStatus',
+  assignedTo: 'assignedTo',
+  contentFormat: 'contentFormat',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  publishedAt: 'publishedAt',
+  postType: 'postType',
+  category: 'category',
+  threadParticipantType: 'threadParticipantType',
+  backendPlatformUserId: 'backendPlatformUserId',
+  profileId: 'profileId',
+  authorUsername: 'authorUsername',
+  authorProfileImage: 'authorProfileImage',
+  authorAccountType: 'authorAccountType',
+  tags: 'tags',
+  mentions: 'mentions',
+  hashtags: 'hashtags',
+  topicName: 'topicName',
+  mediaId: 'mediaId',
+  backgroundImageUrl: 'backgroundImageUrl',
+  affinityScore: 'affinityScore',
+  qualityScore: 'qualityScore',
+  viewCount: 'viewCount',
+  userIdToAffinityScoreMap: 'userIdToAffinityScoreMap',
+  userIdToReportsMap: 'userIdToReportsMap',
+  userIdToReactionMap: 'userIdToReactionMap',
+  insights: 'insights',
+  readingTime: 'readingTime',
+  aiGeneratedQuestionResponse: 'aiGeneratedQuestionResponse',
+  aiAnalysis: 'aiAnalysis',
+  searchMetadata: 'searchMetadata',
+  metadata: 'metadata',
+  threadId: 'threadId',
+  spaceId: 'spaceId',
+  channelId: 'channelId',
+  extra: 'extra',
+  visibility: 'visibility',
+  isPinned: 'isPinned',
+  isArchived: 'isArchived',
+  workflow: 'workflow',
+  version: 'version'
+};
+
+exports.Prisma.PollPostScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  action: 'action',
+  content: 'content',
+  title: 'title',
+  pollOptions: 'pollOptions',
+  pollDistribution: 'pollDistribution',
+  userIdToPollResponsesMap: 'userIdToPollResponsesMap',
+  pollEndDate: 'pollEndDate',
+  mentions: 'mentions',
+  hashtags: 'hashtags',
+  tags: 'tags',
+  topicName: 'topicName',
+  backendPlatformUserId: 'backendPlatformUserId',
+  profileId: 'profileId',
+  mediaId: 'mediaId',
+  threadId: 'threadId',
+  extra: 'extra',
+  searchMetadata: 'searchMetadata',
+  aiAnalysis: 'aiAnalysis'
+};
+
+exports.Prisma.CommentScalarFieldEnum = {
+  id: 'id',
+  authorId: 'authorId',
+  content: 'content',
+  createdAt: 'createdAt',
+  backendPlatformUserId: 'backendPlatformUserId',
+  profileId: 'profileId',
+  authorUsername: 'authorUsername',
+  authorProfileImage: 'authorProfileImage',
+  authorAccountType: 'authorAccountType',
+  affinityScore: 'affinityScore',
+  qualityScore: 'qualityScore',
+  userIdToAffinityScoreMap: 'userIdToAffinityScoreMap',
+  userIdToReportsMap: 'userIdToReportsMap',
+  userIdToReactionMap: 'userIdToReactionMap',
+  mentions: 'mentions',
+  hashtags: 'hashtags',
+  mediaId: 'mediaId',
+  postId: 'postId',
+  pollPostId: 'pollPostId',
+  extra: 'extra',
+  aiAnalysis: 'aiAnalysis'
+};
+
+exports.Prisma.CommentReplyScalarFieldEnum = {
+  id: 'id',
+  content: 'content',
+  createdAt: 'createdAt',
+  backendPlatformUserId: 'backendPlatformUserId',
+  profileId: 'profileId',
+  authorUsername: 'authorUsername',
+  authorProfileImage: 'authorProfileImage',
+  authorAccountType: 'authorAccountType',
+  affinityScore: 'affinityScore',
+  qualityScore: 'qualityScore',
+  userIdToAffinityScoreMap: 'userIdToAffinityScoreMap',
+  userIdToReportsMap: 'userIdToReportsMap',
+  userIdToReactionMap: 'userIdToReactionMap',
+  mentions: 'mentions',
+  hashtags: 'hashtags',
+  mediaId: 'mediaId',
+  commentId: 'commentId',
+  extra: 'extra',
+  aiAnalysis: 'aiAnalysis'
+};
+
+exports.Prisma.ReactionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  postId: 'postId',
+  commentId: 'commentId',
+  type: 'type',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.BookmarkScalarFieldEnum = {
+  id: 'id',
+  postIds: 'postIds',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BlockScalarFieldEnum = {
+  id: 'id',
+  profileBlockingId: 'profileBlockingId',
+  profileBlockedId: 'profileBlockedId',
+  profileBlockingType: 'profileBlockingType',
+  profileBlockedType: 'profileBlockedType',
+  reason: 'reason',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.FollowScalarFieldEnum = {
+  id: 'id',
+  profileFollowingId: 'profileFollowingId',
+  profileFollowedId: 'profileFollowedId',
+  targetFollowerType: 'targetFollowerType',
+  requestApproved: 'requestApproved',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  approvedAt: 'approvedAt'
+};
+
+exports.Prisma.UserTagScalarFieldEnum = {
+  id: 'id',
+  userProfileId: 'userProfileId',
+  tagName: 'tagName',
+  description: 'description',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ReportScalarFieldEnum = {
+  id: 'id',
+  submitterId: 'submitterId',
+  postId: 'postId',
+  commentId: 'commentId',
+  userId: 'userId',
+  reason: 'reason',
+  description: 'description',
+  status: 'status',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  resolvedAt: 'resolvedAt'
+};
+
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  title: 'title',
+  content: 'content',
+  isRead: 'isRead',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  readAt: 'readAt'
+};
+
+exports.Prisma.SpaceScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  news_feed_timeline_id: 'news_feed_timeline_id',
-  notification_feed_timeline_id: 'notification_feed_timeline_id',
-  personal_feed_timeline_id: 'personal_feed_timeline_id',
-  private: 'private',
-  profile_image_url: 'profile_image_url',
-  virtual_profile_id: 'virtual_profile_id'
-};
-
-exports.Prisma.User_tagsScalarFieldEnum = {
   description: 'description',
-  id: 'id',
-  tag_name: 'tag_name',
-  user_profile_id: 'user_profile_id'
+  type: 'type',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  spaceType: 'spaceType',
+  status: 'status',
+  visibility: 'visibility',
+  parentSpaceId: 'parentSpaceId',
+  isPrivate: 'isPrivate',
+  metadata: 'metadata',
+  settings: 'settings',
+  accessLevel: 'accessLevel',
+  searchMetadata: 'searchMetadata',
+  tags: 'tags'
 };
 
-exports.Prisma.Virtual_profilesScalarFieldEnum = {
-  activated: 'activated',
+exports.Prisma.ChannelScalarFieldEnum = {
   id: 'id',
-  profile_type: 'profile_type',
-  user_id: 'user_id'
+  name: 'name',
+  description: 'description',
+  spaceId: 'spaceId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  status: 'status',
+  pinnedPosts: 'pinnedPosts',
+  isPrivate: 'isPrivate',
+  metadata: 'metadata',
+  settings: 'settings'
+};
+
+exports.Prisma.ThreadScalarFieldEnum = {
+  id: 'id',
+  postIds: 'postIds',
+  parentPostId: 'parentPostId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  metadata: 'metadata',
+  status: 'status',
+  isLocked: 'isLocked'
+};
+
+exports.Prisma.NoteScalarFieldEnum = {
+  id: 'id',
+  content: 'content',
+  createdAt: 'createdAt',
+  authorId: 'authorId',
+  backendPlatformUserId: 'backendPlatformUserId',
+  profileId: 'profileId',
+  authorUserName: 'authorUserName',
+  authorProfileImage: 'authorProfileImage',
+  authorAccountType: 'authorAccountType',
+  mentions: 'mentions',
+  hashtags: 'hashtags',
+  mediaId: 'mediaId',
+  postId: 'postId',
+  commentId: 'commentId',
+  searchMetadata: 'searchMetadata',
+  aiAnalysis: 'aiAnalysis'
+};
+
+exports.Prisma.SpaceMemberScalarFieldEnum = {
+  id: 'id',
+  spaceId: 'spaceId',
+  userId: 'userId',
+  role: 'role',
+  joinedAt: 'joinedAt',
+  status: 'status',
+  permissions: 'permissions'
+};
+
+exports.Prisma.ChannelMemberScalarFieldEnum = {
+  id: 'id',
+  channelId: 'channelId',
+  userId: 'userId',
+  role: 'role',
+  joinedAt: 'joinedAt',
+  lastRead: 'lastRead'
+};
+
+exports.Prisma.FileScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  type: 'type',
+  url: 'url',
+  metadata: 'metadata',
+  uploadedBy: 'uploadedBy',
+  uploadedAt: 'uploadedAt',
+  size: 'size',
+  status: 'status',
+  preview: 'preview',
+  thumbnail: 'thumbnail',
+  searchMetadata: 'searchMetadata',
+  aiAnalysis: 'aiAnalysis',
+  spaceId: 'spaceId',
+  channelId: 'channelId'
 };
 
 exports.Prisma.SortOrder = {
@@ -219,27 +510,182 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.MediaType = exports.$Enums.MediaType = {
+  MEDIA_TYPE_UNSPECIFIED: 'MEDIA_TYPE_UNSPECIFIED',
+  MEDIA_TYPE_IMAGE: 'MEDIA_TYPE_IMAGE',
+  MEDIA_TYPE_VIDEO: 'MEDIA_TYPE_VIDEO',
+  MEDIA_TYPE_AUDIO: 'MEDIA_TYPE_AUDIO',
+  MEDIA_TYPE_DOCUMENT: 'MEDIA_TYPE_DOCUMENT',
+  MEDIA_TYPE_SPREADSHEET: 'MEDIA_TYPE_SPREADSHEET',
+  MEDIA_TYPE_PRESENTATION: 'MEDIA_TYPE_PRESENTATION',
+  MEDIA_TYPE_PDF: 'MEDIA_TYPE_PDF',
+  MEDIA_TYPE_CODE: 'MEDIA_TYPE_CODE',
+  MEDIA_TYPE_ZIP: 'MEDIA_TYPE_ZIP',
+  MEDIA_TYPE_3D: 'MEDIA_TYPE_3D',
+  MEDIA_TYPE_AR: 'MEDIA_TYPE_AR',
+  MEDIA_TYPE_CAD: 'MEDIA_TYPE_CAD',
+  MEDIA_TYPE_VECTOR: 'MEDIA_TYPE_VECTOR'
+};
 
+exports.PostStatus = exports.$Enums.PostStatus = {
+  DRAFT: 'DRAFT',
+  PUBLISHED: 'PUBLISHED',
+  ARCHIVED: 'ARCHIVED',
+  HIDDEN: 'HIDDEN'
+};
+
+exports.PostType = exports.$Enums.PostType = {
+  POST_TYPE_UNSPECIFIED: 'POST_TYPE_UNSPECIFIED',
+  POST: 'POST',
+  REPOST: 'REPOST',
+  QUESTION: 'QUESTION',
+  ACHIEVEMENT: 'ACHIEVEMENT',
+  ANNOUNCEMENT: 'ANNOUNCEMENT',
+  POLL: 'POLL',
+  ARTICLE: 'ARTICLE',
+  SHORT_STORY: 'SHORT_STORY'
+};
+
+exports.Category = exports.$Enums.Category = {
+  CATEGORY_UNSPECIFIED: 'CATEGORY_UNSPECIFIED',
+  WORLD: 'WORLD',
+  BUSINESS: 'BUSINESS',
+  ECONOMICS: 'ECONOMICS',
+  FOREIGN_POLICY: 'FOREIGN_POLICY',
+  POLITICS: 'POLITICS',
+  TECHNOLOGY: 'TECHNOLOGY',
+  OTHER: 'OTHER'
+};
+
+exports.ThreadParticipantType = exports.$Enums.ThreadParticipantType = {
+  THREAD_PARTICIPANT_TYPE_UNSPECIFIED: 'THREAD_PARTICIPANT_TYPE_UNSPECIFIED',
+  PARENT: 'PARENT',
+  PARTICIPANT: 'PARTICIPANT'
+};
+
+exports.AccountType = exports.$Enums.AccountType = {
+  ACCOUNT_TYPE_UNSPECIFIED: 'ACCOUNT_TYPE_UNSPECIFIED',
+  USER: 'USER',
+  COMMUNITY: 'COMMUNITY'
+};
+
+exports.Visibility = exports.$Enums.Visibility = {
+  PUBLIC: 'PUBLIC',
+  PRIVATE: 'PRIVATE',
+  FOLLOWERS_ONLY: 'FOLLOWERS_ONLY',
+  COMMUNITY_ONLY: 'COMMUNITY_ONLY',
+  RESTRICTED: 'RESTRICTED',
+  ORGANIZATION: 'ORGANIZATION'
+};
+
+exports.ReactionType = exports.$Enums.ReactionType = {
+  UNSPECIFIED: 'UNSPECIFIED',
+  LIKE: 'LIKE',
+  LOVE: 'LOVE',
+  HAHA: 'HAHA',
+  WOW: 'WOW',
+  SAD: 'SAD',
+  ANGRY: 'ANGRY',
+  DISLIKE: 'DISLIKE',
+  CELEBRATE: 'CELEBRATE'
+};
+
+exports.ReportReason = exports.$Enums.ReportReason = {
+  SPAM: 'SPAM',
+  HARASSMENT: 'HARASSMENT',
+  HATE_SPEECH: 'HATE_SPEECH',
+  MISINFORMATION: 'MISINFORMATION',
+  VIOLENCE: 'VIOLENCE',
+  ADULT_CONTENT: 'ADULT_CONTENT',
+  OTHER: 'OTHER'
+};
+
+exports.ReportStatus = exports.$Enums.ReportStatus = {
+  PENDING: 'PENDING',
+  INVESTIGATING: 'INVESTIGATING',
+  RESOLVED: 'RESOLVED',
+  DISMISSED: 'DISMISSED'
+};
+
+exports.NotificationType = exports.$Enums.NotificationType = {
+  FOLLOW: 'FOLLOW',
+  LIKE: 'LIKE',
+  COMMENT: 'COMMENT',
+  MENTION: 'MENTION',
+  POST: 'POST',
+  REPORT_UPDATE: 'REPORT_UPDATE',
+  COMMUNITY_INVITE: 'COMMUNITY_INVITE',
+  COMMUNITY_UPDATE: 'COMMUNITY_UPDATE'
+};
+
+exports.SpaceType = exports.$Enums.SpaceType = {
+  SPACE_TYPE_UNSPECIFIED: 'SPACE_TYPE_UNSPECIFIED',
+  TEAM: 'TEAM',
+  PROJECT: 'PROJECT',
+  DEPARTMENT: 'DEPARTMENT',
+  ANNOUNCEMENT: 'ANNOUNCEMENT',
+  KNOWLEDGE_BASE: 'KNOWLEDGE_BASE',
+  SOCIAL: 'SOCIAL',
+  LEARNING: 'LEARNING',
+  INNOVATION: 'INNOVATION'
+};
+
+exports.AccessLevel = exports.$Enums.AccessLevel = {
+  PUBLIC: 'PUBLIC',
+  PRIVATE: 'PRIVATE',
+  RESTRICTED: 'RESTRICTED',
+  ORGANIZATION: 'ORGANIZATION'
+};
 
 exports.Prisma.ModelName = {
-  blockeds: 'blockeds',
-  bookmarks: 'bookmarks',
-  community_profiles: 'community_profiles',
-  followers: 'followers',
-  publications: 'publications',
-  topics: 'topics',
-  user_profiles: 'user_profiles',
-  user_tags: 'user_tags',
-  virtual_profiles: 'virtual_profiles'
+  VirtualProfile: 'VirtualProfile',
+  UserProfile: 'UserProfile',
+  CommunityProfile: 'CommunityProfile',
+  Topic: 'Topic',
+  Publication: 'Publication',
+  Media: 'Media',
+  Post: 'Post',
+  PollPost: 'PollPost',
+  Comment: 'Comment',
+  CommentReply: 'CommentReply',
+  Reaction: 'Reaction',
+  Bookmark: 'Bookmark',
+  Block: 'Block',
+  Follow: 'Follow',
+  UserTag: 'UserTag',
+  Report: 'Report',
+  Notification: 'Notification',
+  Space: 'Space',
+  Channel: 'Channel',
+  Thread: 'Thread',
+  Note: 'Note',
+  SpaceMember: 'SpaceMember',
+  ChannelMember: 'ChannelMember',
+  File: 'File'
 };
 
 /**
