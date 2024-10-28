@@ -23,18 +23,18 @@ export default function PrivacyPolicyComponent() {
               <p>
                 This privacy policy (“Privacy Policy”) applies to all visitors
                 and users of the Solomon AI desktop app and websites
-                (collectively, “Solomon AI”, “App” or “Apps”), which are offered
-                by Solomon AI Inc. and/or any of its affiliates (“Anysphere” or
-                “we” or “us”) and describes how we process your personal
-                information in connection with those Apps, and how we collect
-                information through the use of cookies and related technologies.
-                It also tells you how you can access and update your personal
-                information and describes the data protection rights that may be
-                available under your country&apos;s or state&apos;s laws. Please
-                read this Privacy Policy carefully. By accessing or using any
-                part of the App, you acknowledge you have been informed of and
-                consent to our practices with regard to your personal
-                information and data.
+                (collectively, “Solomon AI”, “App” or “services”), which are
+                offered by Solomon AI Inc. and/or any of its affiliates
+                (“Anysphere” or “we” or “us”) and describes how we process your
+                personal information in connection with those services, and how
+                we collect information through the use of cookies and related
+                technologies. It also tells you how you can access and update
+                your personal information and describes the data protection
+                rights that may be available under your country&apos;s or
+                state&apos;s laws. Please read this Privacy Policy carefully. By
+                accessing or using any part of the App, you acknowledge you have
+                been informed of and consent to our practices with regard to
+                your personal information and data.
               </p>
             </div>
 
@@ -70,12 +70,12 @@ export default function PrivacyPolicyComponent() {
             </h2>
             <div className="space-y-4 text-base font-normal">
               <p>
-                You may choose to interact with our Apps in ways that provide us
-                with your personal information. In some instances, a User ID is
-                generated for form and URL tracking, page views, page pings and
-                usage counts in order to ascertain product performance and
-                development. The amount and type of information that Solomon AI
-                gathers depends on the nature of your interaction with us, as
+                You may choose to interact with our services in ways that
+                provide us with your personal information. In some instances, a
+                User ID is generated for form and URL tracking, page views, page
+                pings and usage counts in order to ascertain product performance
+                and development. The amount and type of information that Solomon
+                AI gathers depends on the nature of your interaction with us, as
                 well as the amount of information you choose to share. For
                 example, we ask visitors who use our community Discord, or our
                 forum, to provide a username and email address. We will also
@@ -95,22 +95,22 @@ export default function PrivacyPolicyComponent() {
                 for advertising purposes), language settings, mobile device
                 carrier, radio/network information (e.g., WiFi, LTE, 4G), and
                 general location information such as city, state or geographic
-                area; and (ii) information about your visit to our Apps and
+                area; and (ii) information about your visit to our services and
                 online activity data (such as the referral URL, the content
                 viewed and the content interacted with). Some of this
                 information is collected using cookies, web beacons and related
                 local storage technologies. See below for further information on
                 these technologies. We collect this information to better
-                understand how visitors use our Apps, to improve our Apps and
-                experience for visitors, and to monitor the security of the
-                Apps.
+                understand how visitors use our services, to improve our
+                services and experience for visitors, and to monitor the
+                security of the services.
               </p>
               <p>
                 We may aggregate all information (including your personal
-                information) collected from our Apps for our own statistical and
-                analytics purposes and share such aggregated information with
-                third parties for our own promotional purposes (e.g. by
-                publishing a report on trends in the usage of our Apps).
+                information) collected from our services for our own statistical
+                and analytics purposes and share such aggregated information
+                with third parties for our own promotional purposes (e.g. by
+                publishing a report on trends in the usage of our services).
               </p>
             </div>
 
@@ -167,10 +167,10 @@ export default function PrivacyPolicyComponent() {
               <ul className="list-disc space-y-2 pl-8">
                 <li>
                   to improve and personalize your experience with us and our
-                  Apps and to tailor communications to you;
+                  services and to tailor communications to you;
                 </li>
                 <li>
-                  to understand how you use our Apps and to develop new
+                  to understand how you use our services and to develop new
                   products, services, features, and functionality;
                 </li>
                 <li>
@@ -195,7 +195,7 @@ export default function PrivacyPolicyComponent() {
                 </li>
                 <li>to respond to your requests, questions and feedback;</li>
                 <li>
-                  to for marketing and advertising purposes as we may from
+                  for marketing and advertising purposes as we may from
                   time-to-time send you direct marketing emails as permitted by
                   law, including, but not limited to, notifying you of special
                   promotions, offers and events; and
@@ -285,7 +285,7 @@ export default function PrivacyPolicyComponent() {
                   GitHub - open source repositories and internal project
                   management tool
                 </li>
-                <li>Datadog - application monitoring and error tracking</li>
+                <li>Newrelic - application monitoring and error tracking</li>
                 <li>Slack - internal communications tool</li>
                 <li>Amplitude - analytics</li>
                 <li>Google Workspace - internal collaboration tools</li>
@@ -321,7 +321,7 @@ export default function PrivacyPolicyComponent() {
             </h2>
             <div className="space-y-4 text-base font-normal">
               <p>
-                The Apps are hosted in the United States and the personal
+                The services are hosted in the United States and the personal
                 information we collect will be stored and processed on our
                 servers in the United States. Our employees, contractors and
                 affiliated organizations that process information for us as
@@ -350,11 +350,11 @@ export default function PrivacyPolicyComponent() {
             </h2>
             <div className="space-y-4 text-base font-normal">
               <p>
-                If you are a registered user of the Apps and have supplied your
-                email address, Solomon AI may occasionally send you an email to
-                tell you about security, system information, new features,
-                solicit your feedback, or just keep you up to date with
-                what&apos;s going on with Solomon AI and our products. We
+                If you are a registered user of the services and have supplied
+                your email address, Solomon AI may occasionally send you an
+                email to tell you about security, system information, new
+                features, solicit your feedback, or just keep you up to date
+                with what&apos;s going on with Solomon AI and our products. We
                 primarily use our blog to communicate this type of information,
                 so we expect to keep this type of email to a minimum.
                 There&apos;s an unsubscribe link located at the bottom of each
@@ -672,7 +672,7 @@ export default function PrivacyPolicyComponent() {
             </h2>
             <div className="space-y-4 text-base font-normal">
               <p>
-                If you already have an account on the Apps, you may access,
+                If you already have an account on the services, you may access,
                 update, alter, or delete your basic user profile information by
                 logging into your account and updating profile settings.
               </p>
@@ -714,7 +714,7 @@ export default function PrivacyPolicyComponent() {
             <div className="space-y-4 text-base font-normal">
               <p>
                 The relevant data controller for any personal information
-                processed in connection with our Apps is Solomon AI Inc.
+                processed in connection with our services is Solomon AI Inc.
               </p>
               <p>
                 If you have any questions about this Privacy Policy or our

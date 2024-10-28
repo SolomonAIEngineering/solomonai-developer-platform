@@ -92,10 +92,16 @@ export default function TermsOfServiceComponent() {
                   <strong className="text-gray-900">
                     Solomon AI Service Overview
                   </strong>
-                  . Our Solomon AI platform offers a suite of coding tools
-                  driven by machine learning to help developers write code more
-                  easily and efficiently and can provide suggested code, outputs
-                  or other functions.
+                  . Our Solomon AI platform offers a suite of financial tools
+                  driven by machine learning to help you make better financial
+                  decisions. Our platform includes a variety of features,
+                  including but not limited to, financial planning, budgeting,
+                  stress testing, and forecasting tools. The Service is provided
+                  to you through our website, mobile applications, and other
+                  software applications. The Service may be provided to you
+                  through a free trial, a paid subscription, or other means. The
+                  specific features and functionality of the Service may vary
+                  depending on the type of account you have.
                 </li>
 
                 <li>
@@ -1077,9 +1083,11 @@ export default function TermsOfServiceComponent() {
 
                     <li>
                       <p>
-                        <strong className="text-gray-900">Features</strong>. The
-                        Service is a fork of Midday, but does not promise that
-                        all existing features of Midday will be present.
+                        <strong className="text-gray-900">
+                          AGPL v3 Compliance
+                        </strong>
+                        . The Service is a fork of Midday, but does not promise
+                        that all existing features of Midday will be present.
                       </p>
                     </li>
                   </ol>

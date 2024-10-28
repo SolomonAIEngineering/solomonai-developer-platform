@@ -1,0 +1,489 @@
+//// ------------------------------------------------------
+//// File Storage System Schema
+////
+//// A comprehensive file storage system with advanced search
+//// capabilities, embedding support, and versioning.
+//// ------------------------------------------------------
+
+/// Configures the Prisma Client generator with advanced features
+/// @previewFeatures - Enables experimental features like fullTextSearch and multiSchema
+/// @output - Specifies the location for generated client code
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../src/database/generated/postgresql"
+  previewFeatures = ["fullTextIndex", "multiSchema", "postgresqlExtensions", "fullTextSearch"]
+}
+
+/// Database configuration with required PostgreSQL extensions
+/// @extensions
+/// - pgvector: Enables vector operations for embeddings and similarity search
+/// - pg_trgm: Provides fuzzy text search capabilities
+/// - btree_gin: Enables GIN indexing for efficient text search
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pgvector, pg_trgm, btree_gin]
+}
+
+/// Represents user accounts in the system
+/// @field auth0_user_id - External authentication identifier
+/// @field storage_quota - Maximum allowed storage in bytes
+/// @field used_storage - Current storage usage in bytes
+/// @index auth0_user_id - Optimizes authentication lookups
+model accounts {
+  auth0_user_id   String?      @db.VarChar(100) /// External auth provider ID
+  base_directory  String?      @db.VarChar(255) /// Root directory for user files
+  bucket_location String?      @db.VarChar(255) /// S3 bucket location
+  bucket_name     String?      @db.VarChar(100) /// S3 bucket name
+  id              BigInt       @id @default(autoincrement())
+  region          String?      @db.VarChar(50) /// AWS region
+  created_at      DateTime     @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime     @updatedAt @db.Timestamptz(6)
+  is_active       Boolean      @default(true) /// Account status
+  settings        Json?        @db.JsonB /// User preferences and settings
+  last_access     DateTime?    @db.Timestamptz(6) /// Last account access timestamp
+  storage_quota   BigInt? /// Maximum storage limit in bytes
+  used_storage    BigInt? /// Current storage usage in bytes
+  workspaces      workspaces[] /// Associated workspaces
+
+  @@index([auth0_user_id], map: "idx_user_auth0_user_id")
+  @@index([created_at])
+  @@index([is_active])
+}
+
+/// Stores file metadata and S3 information
+/// @field file_type - MIME type or file extension
+/// @field location - File path or URL
+/// @field checksum - File hash for integrity verification
+/// @field preview_available - Indicates if a preview is generated
+model file_metadata {
+  created_at                DateTime  @default(now()) @db.Timestamptz(6)
+  file_type                 String?   @db.VarChar(100) /// File MIME type
+  folder_metadata_id        BigInt? /// Parent folder ID
+  id                        BigInt    @id @default(autoincrement())
+  is_deleted                Boolean   @default(false) /// Soft delete flag
+  location                  String?   @db.VarChar(1000) /// File location/path
+  name                      String?   @db.VarChar(255) /// File name
+  s3_acl                    String?   @db.VarChar(50) /// S3 access control
+  s3_bucket_name            String?   @db.VarChar(100) /// S3 bucket name
+  s3_content_disposition    String?   @db.VarChar(100) /// Content disposition
+  s3_content_encoding       String?   @db.VarChar(50) /// Content encoding
+  s3_content_length         BigInt? /// File size in bytes
+  s3_content_type           String?   @db.VarChar(100) /// Content type
+  s3_etag                   String?   @db.VarChar(100) /// S3 ETag
+  s3_key                    String?   @db.VarChar(1000) /// S3 object key
+  s3_last_modified          DateTime? @db.Timestamptz(6) /// Last S3 modification
+  s3_region                 String?   @db.VarChar(50) /// S3 region
+  s3_server_side_encryption String?   @db.VarChar(50) /// Encryption type
+  s3_storage_class          String?   @db.VarChar(50) /// S3 storage class
+  s3_version_id             String?   @db.VarChar(100) /// S3 version ID
+  size                      BigInt? /// File size in bytes
+  tags                      String[] /// File tags
+  updated_at                DateTime  @updatedAt @db.Timestamptz(6)
+  upload_id                 String?   @db.VarChar(100) /// Upload session ID
+  version                   Int? /// File version number
+  version_id                String?   @db.VarChar(100) /// Version identifier
+  markdown_content          String?   @db.Text /// Markdown content
+  mime_type                 String?   @db.VarChar(100) /// Detailed MIME type
+  checksum                  String?   @db.VarChar(64) /// File hash
+  preview_available         Boolean   @default(false) /// Preview status
+  preview_status            String?   @db.VarChar(50) /// Preview generation status
+  thumbnail_url             String?   @db.VarChar(1000) /// Preview thumbnail URL
+  last_accessed             DateTime? @db.Timestamptz(6) /// Last access timestamp
+  access_count              Int       @default(0) /// Access frequency
+
+  // Relationships
+  folder_metadata folder_metadata?  @relation(fields: [folder_metadata_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_folder_metadata_files")
+  file_search     file_search?
+  file_embeddings file_embeddings[]
+  file_versions   file_versions[]
+
+  // Indexes for performance optimization
+  @@index([name, file_type])
+  @@index([created_at])
+  @@index([s3_bucket_name, s3_key])
+  @@index([folder_metadata_id])
+  @@index([tags])
+  @@index([is_deleted])
+}
+
+/// Enables full-text and semantic search for files
+/// @field content_vector - Vector representation for semantic search
+/// @field content_tokens - Tokenized content for text search
+/// @field search_text - Searchable text content
+model file_search {
+  id              BigInt                      @id @default(autoincrement())
+  file_id         BigInt                      @unique
+  content_vector  Unsupported("vector(1536)") /// Embedding vector
+  content_tokens  String                      @db.Text /// Tokenized content
+  metadata_tokens String                      @db.Text /// Tokenized metadata
+  search_text     String                      @db.Text /// Searchable content
+  language        String?                     @db.VarChar(10) /// Content language
+  last_indexed    DateTime                    @default(now()) @db.Timestamptz(6)
+  file_metadata   file_metadata               @relation(fields: [file_id], references: [id], onDelete: Cascade)
+
+  @@index([content_tokens])
+  @@index([metadata_tokens])
+  @@index([search_text])
+}
+
+/// Stores text embeddings for semantic search
+/// @field chunk_index - Position in the document
+/// @field chunk_text - Text segment
+/// @field embedding_vector - Vector representation
+model file_embeddings {
+  id               BigInt                      @id @default(autoincrement())
+  file_id          BigInt
+  chunk_index      Int /// Chunk sequence number
+  chunk_text       String                      @db.Text /// Text segment
+  embedding_vector Unsupported("vector(1536)") /// Embedding vector
+  created_at       DateTime                    @default(now()) @db.Timestamptz(6)
+  file_metadata    file_metadata               @relation(fields: [file_id], references: [id], onDelete: Cascade)
+
+  @@unique([file_id, chunk_index])
+  @@index([file_id])
+}
+
+/// Tracks file version history
+/// @field version_number - Sequential version number
+/// @field change_summary - Description of changes
+/// @field modified_by - User who made changes
+model file_versions {
+  id             BigInt        @id @default(autoincrement())
+  file_id        BigInt
+  version_number Int /// Version sequence
+  s3_version_id  String        @db.VarChar(100) /// S3 version identifier
+  created_at     DateTime      @default(now()) @db.Timestamptz(6)
+  size           BigInt? /// Version size in bytes
+  checksum       String?       @db.VarChar(64) /// Version checksum
+  modified_by    String?       @db.VarChar(100) /// User identifier
+  change_summary String?       @db.Text /// Change description
+  file_metadata  file_metadata @relation(fields: [file_id], references: [id], onDelete: Cascade)
+
+  @@unique([file_id, version_number])
+  @@index([file_id])
+}
+
+/// Manages folder structure and hierarchy
+/// @field name - Folder name
+/// @field s3_folder_path - S3 path
+/// @field metadata - Additional folder metadata
+model folder_metadata {
+  created_at         DateTime  @default(now()) @db.Timestamptz(6)
+  folder_metadata_id BigInt? /// Parent folder ID
+  id                 BigInt    @id @default(autoincrement())
+  is_deleted         Boolean   @default(false) /// Soft delete flag
+  name               String?   @db.VarChar(255) /// Folder name
+  s3_acl             String?   @db.VarChar(50) /// Access control
+  s3_bucket_name     String?   @db.VarChar(100) /// S3 bucket name
+  s3_folder_path     String?   @db.VarChar(1000) /// S3 folder path
+  s3_last_modified   DateTime? @db.Timestamptz(6) /// Last modification
+  s3_region          String?   @db.VarChar(50) /// S3 region
+  updated_at         DateTime  @updatedAt @db.Timestamptz(6)
+  version_id         String?   @db.VarChar(100) /// Version ID
+  workspace_id       BigInt? /// Parent workspace
+  description        String?   @db.Text /// Folder description
+  metadata           Json?     @db.JsonB /// Additional metadata
+
+  // Relationships
+  file_metadata         file_metadata[]
+  folder_metadata       folder_metadata?  @relation("folder_metadataTofolder_metadata", fields: [folder_metadata_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_folder_metadata_child_folder")
+  other_folder_metadata folder_metadata[] @relation("folder_metadataTofolder_metadata")
+  workspaces            workspaces?       @relation(fields: [workspace_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_workspaces_folders")
+  folder_search         folder_search?
+
+  // Indexes
+  @@index([workspace_id])
+  @@index([folder_metadata_id])
+  @@index([name])
+  @@index([s3_bucket_name, s3_folder_path])
+  @@index([is_deleted])
+}
+
+/// Enables folder content search
+/// @field content_vector - Vector for semantic search
+/// @field search_text - Searchable content
+/// @field metadata_tokens - Searchable metadata
+model folder_search {
+  id              BigInt                      @id @default(autoincrement())
+  folder_id       BigInt                      @unique
+  content_vector  Unsupported("vector(1536)") /// Embedding vector
+  search_text     String                      @db.Text /// Searchable content
+  metadata_tokens String                      @db.Text /// Tokenized metadata
+  last_indexed    DateTime                    @default(now()) @db.Timestamptz(6)
+  folder_metadata folder_metadata             @relation(fields: [folder_id], references: [id], onDelete: Cascade)
+
+  // Changed index types to standard B-tree
+  @@index([search_text])
+  @@index([metadata_tokens])
+}
+
+/// Manages workspace environments
+/// @field name - Workspace name
+/// @field storage_quota - Storage limit
+/// @field used_storage - Current usage
+/// @field metadata - Workspace settings
+model workspaces {
+  account_id        BigInt?
+  created_at        DateTime  @default(now()) @db.Timestamptz(6)
+  id                BigInt    @id @default(autoincrement())
+  is_deleted        Boolean   @default(false) /// Soft delete flag
+  name              String?   @db.VarChar(255) /// Workspace name
+  s3_acl            String?   @db.VarChar(50) /// Access control
+  s3_bucket_name    String?   @db.VarChar(100) /// S3 bucket name
+  s3_folder_path    String?   @db.VarChar(1000) /// S3 folder path
+  s3_last_modified  DateTime? @db.Timestamptz(6) /// Last modification
+  s3_region         String?   @db.VarChar(50) /// S3 region
+  tags              String[] /// Workspace tags
+  unique_identifier String?   @db.VarChar(100) /// Unique ID
+  updated_at        DateTime  @updatedAt @db.Timestamptz(6)
+  version           Int? /// Version number
+  version_id        String?   @db.VarChar(100) /// Version ID
+  description       String?   @db.Text /// Description
+  metadata          Json?     @db.JsonB /// Additional settings
+  storage_quota     BigInt? /// Storage limit
+  used_storage      BigInt? /// Current usage
+
+  // Relationships
+  folder_metadata  folder_metadata[]
+  accounts         accounts?         @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_accounts_workspace")
+  workspace_search workspace_search?
+
+  // Additional fields
+  workspace_type      String?   @db.VarChar(50) // 'personal', 'team', 'project'
+  parent_workspace_id BigInt? // For nested workspaces
+  workspace_path      String?   @db.VarChar(500) // Full path in hierarchy
+  icon_url            String?   @db.VarChar(500)
+  color_theme         String?   @db.VarChar(50)
+  is_template         Boolean   @default(false)
+  template_id         BigInt?
+  favorite_count      Int       @default(0)
+  last_activity       DateTime? @db.Timestamptz(6)
+  retention_days      Int? // Days to keep deleted items
+  default_view        String?   @db.VarChar(50) // 'list', 'grid', 'timeline'
+
+  // Workspace limits and quotas
+  max_file_size        BigInt? // Maximum file size in bytes
+  max_storage_per_user BigInt? // Per-user storage limit
+  max_versions         Int? // Maximum versions per file
+
+  // Collaboration settings
+  allow_public_sharing Boolean @default(false)
+  require_approval     Boolean @default(false)
+  member_limit         Int?
+  guest_access         Boolean @default(false)
+
+  // New relations
+  workspace_sharing      workspace_sharing[]
+  workspace_activity     workspace_activity[]
+  workspace_backups      workspace_backups[]
+  workspace_automations  workspace_automations[]
+  workspace_integrations workspace_integrations[]
+  workspace_compliance   workspace_compliance[]
+  parent_workspace       workspaces?              @relation("WorkspaceHierarchy", fields: [parent_workspace_id], references: [id])
+  child_workspaces       workspaces[]             @relation("WorkspaceHierarchy")
+
+  // Indexes
+  @@index([account_id])
+  @@index([unique_identifier])
+  @@index([name])
+  @@index([tags])
+  @@index([is_deleted])
+  // Additional indexes
+  @@index([parent_workspace_id])
+  @@index([workspace_type])
+  @@index([workspace_path])
+}
+
+/// Enables workspace content search
+/// @field content_vector - Vector for semantic search
+/// @field search_text - Searchable content
+/// @field metadata_tokens - Searchable metadata
+model workspace_search {
+  id              BigInt                      @id @default(autoincrement())
+  workspace_id    BigInt                      @unique
+  content_vector  Unsupported("vector(1536)") /// Embedding vector
+  search_text     String                      @db.Text /// Searchable content
+  metadata_tokens String                      @db.Text /// Tokenized metadata
+  last_indexed    DateTime                    @default(now()) @db.Timestamptz(6)
+  workspaces      workspaces                  @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+
+  // Changed index types to standard B-tree
+  @@index([search_text])
+  @@index([metadata_tokens])
+}
+
+/// Workspace collaboration and sharing settings
+model workspace_sharing {
+  id               BigInt     @id @default(autoincrement())
+  workspace_id     BigInt
+  shared_with_id   String     @db.VarChar(100) // Can be user ID or team ID
+  sharing_type     String     @db.VarChar(50) // 'user' or 'team'
+  permission_level String     @db.VarChar(50) // 'read', 'write', 'admin'
+  created_at       DateTime   @default(now()) @db.Timestamptz(6)
+  expires_at       DateTime?  @db.Timestamptz(6)
+  created_by       String     @db.VarChar(100)
+  access_key       String?    @db.VarChar(100) // For public sharing
+  is_active        Boolean    @default(true)
+  last_accessed    DateTime?  @db.Timestamptz(6)
+  workspaces       workspaces @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+
+  @@index([workspace_id])
+  @@index([shared_with_id])
+  @@index([access_key])
+}
+
+/// Workspace activity tracking
+model workspace_activity {
+  id             BigInt     @id @default(autoincrement())
+  workspace_id   BigInt
+  user_id        String     @db.VarChar(100)
+  action_type    String     @db.VarChar(50) // 'create', 'update', 'delete', 'share', etc.
+  action_details Json       @db.JsonB
+  timestamp      DateTime   @default(now()) @db.Timestamptz(6)
+  ip_address     String?    @db.VarChar(45)
+  user_agent     String?    @db.Text
+  affected_items String[] // IDs of affected files/folders
+  workspaces     workspaces @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+
+  @@index([workspace_id])
+  @@index([user_id])
+  @@index([timestamp])
+}
+
+/// Workspace templates for quick setup
+model workspace_templates {
+  id               BigInt   @id @default(autoincrement())
+  name             String   @db.VarChar(255)
+  description      String?  @db.Text
+  folder_structure Json     @db.JsonB
+  default_settings Json     @db.JsonB
+  tags             String[]
+  created_by       String   @db.VarChar(100)
+  created_at       DateTime @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime @updatedAt @db.Timestamptz(6)
+  is_public        Boolean  @default(false)
+  category         String   @db.VarChar(100)
+  usage_count      Int      @default(0)
+  rating           Float?   @db.Real
+
+  @@index([category])
+  @@index([tags])
+}
+
+/// Workspace backup configuration
+model workspace_backups {
+  id                 BigInt     @id @default(autoincrement())
+  workspace_id       BigInt
+  backup_frequency   String     @db.VarChar(50) // 'daily', 'weekly', 'monthly'
+  retention_period   Int // Days to keep backups
+  last_backup_at     DateTime?  @db.Timestamptz(6)
+  next_backup_at     DateTime   @db.Timestamptz(6)
+  backup_location    String     @db.VarChar(255)
+  is_enabled         Boolean    @default(true)
+  include_versions   Boolean    @default(true)
+  encryption_enabled Boolean    @default(true)
+  backup_status      String     @db.VarChar(50)
+  workspaces         workspaces @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+
+  @@index([workspace_id])
+  @@index([next_backup_at])
+}
+
+/// Workspace automation rules
+model workspace_automations {
+  id             BigInt     @id @default(autoincrement())
+  workspace_id   BigInt
+  name           String     @db.VarChar(255)
+  description    String?    @db.Text
+  trigger_type   String     @db.VarChar(50) // 'file_upload', 'schedule', 'pattern_match', etc.
+  trigger_config Json       @db.JsonB
+  actions        Json[] // Array of actions to perform
+  is_enabled     Boolean    @default(true)
+  created_at     DateTime   @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime   @updatedAt @db.Timestamptz(6)
+  last_run       DateTime?  @db.Timestamptz(6)
+  run_count      Int        @default(0)
+  workspaces     workspaces @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+
+  @@index([workspace_id])
+  @@index([trigger_type])
+}
+
+/// Workspace integrations
+model workspace_integrations {
+  id             BigInt     @id @default(autoincrement())
+  workspace_id   BigInt
+  service_name   String     @db.VarChar(100) // 'slack', 'teams', 'jira', etc.
+  config         Json       @db.JsonB
+  auth_tokens    Json?      @db.JsonB
+  webhook_url    String?    @db.VarChar(500)
+  is_active      Boolean    @default(true)
+  last_sync      DateTime?  @db.Timestamptz(6)
+  sync_frequency String?    @db.VarChar(50)
+  created_at     DateTime   @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime   @updatedAt @db.Timestamptz(6)
+  workspaces     workspaces @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+
+  @@index([workspace_id])
+  @@index([service_name])
+}
+
+/// Workspace compliance and audit settings
+model workspace_compliance {
+  id                  BigInt     @id @default(autoincrement())
+  workspace_id        BigInt
+  retention_policy    Json       @db.JsonB
+  encryption_settings Json       @db.JsonB
+  compliance_level    String     @db.VarChar(50) // 'high', 'medium', 'low'
+  audit_frequency     String     @db.VarChar(50) // 'daily', 'weekly', 'monthly'
+  last_audit          DateTime?  @db.Timestamptz(6)
+  required_tags       String[]
+  restricted_actions  String[]
+  gdpr_compliant      Boolean    @default(false)
+  hipaa_compliant     Boolean    @default(false)
+  created_at          DateTime   @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime   @updatedAt @db.Timestamptz(6)
+  workspaces          workspaces @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+
+  @@index([workspace_id])
+  @@index([compliance_level])
+}
+
+// Add this comment block for implementation guidance
+/// Search Implementation Notes:
+/// Since Prisma doesn't directly support GIN indexes with operator classes,
+/// you'll need to create them manually in PostgreSQL after deployment.
+///
+/// Example PostgreSQL commands for setting up full-text search indexes:
+/// ```sql
+/// -- For file_search
+/// CREATE INDEX idx_file_search_content
+/// ON file_search USING gin(to_tsvector('english', content_tokens));
+///
+/// CREATE INDEX idx_file_search_metadata
+/// ON file_search USING gin(to_tsvector('english', metadata_tokens));
+///
+/// CREATE INDEX idx_file_search_text
+/// ON file_search USING gin(to_tsvector('english', search_text));
+///
+/// -- For folder_search
+/// CREATE INDEX idx_folder_search_text
+/// ON folder_search USING gin(to_tsvector('english', search_text));
+///
+/// CREATE INDEX idx_folder_search_metadata
+/// ON folder_search USING gin(to_tsvector('english', metadata_tokens));
+///
+/// -- For workspace_search
+/// CREATE INDEX idx_workspace_search_text
+/// ON workspace_search USING gin(to_tsvector('english', search_text));
+///
+/// CREATE INDEX idx_workspace_search_metadata
+/// ON workspace_search USING gin(to_tsvector('english', metadata_tokens));
+/// ```
+///
+/// To use these indexes in queries:
+/// ```sql
+/// SELECT * FROM file_search
+/// WHERE to_tsvector('english', search_text) @@ to_tsquery('english', 'search_term');
+/// ```

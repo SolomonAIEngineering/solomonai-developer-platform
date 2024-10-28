@@ -1,0 +1,1006 @@
+// Generator configuration for Prisma Client
+generator client {
+  provider        = "prisma-client-js" // Specifies the client generator to use
+  output          = "../src/database/generated/postgresql" // Output directory for the generated client
+  previewFeatures = ["fullTextIndex"] // Enables preview features like full-text indexing
+}
+
+// Datasource configuration for connecting to the PostgreSQL database
+datasource db {
+  provider = "postgresql" // Specifies PostgreSQL as the database provider
+  url      = env("DATABASE_URL") // Database connection URL from environment variable
+}
+
+//
+// ENUMS
+//
+// Enum representing the status of a post
+enum PostStatus {
+  DRAFT // Post is in draft mode and not visible to others
+  PUBLISHED // Post is published and visible to others
+  ARCHIVED // Post is archived and not actively displayed
+  HIDDEN // Post is hidden from public view
+}
+
+// Enum representing visibility levels for content
+enum Visibility {
+  PUBLIC // Content is visible to everyone
+  PRIVATE // Content is visible only to the owner
+  FOLLOWERS_ONLY // Content is visible only to followers
+  COMMUNITY_ONLY // Content is visible only within a community
+  RESTRICTED // Content visibility is restricted based on criteria
+  ORGANIZATION // Content is visible only within the organization
+}
+
+// Enum representing types of reactions a user can have to content
+enum ReactionType {
+  UNSPECIFIED // Reaction type is unspecified
+  LIKE // User likes the content
+  LOVE // User loves the content
+  HAHA // User finds the content funny
+  WOW // User is amazed by the content
+  SAD // Content makes the user sad
+  ANGRY // Content makes the user angry
+  DISLIKE // User dislikes the content
+  CELEBRATE // User wants to celebrate the content
+}
+
+// Enum representing reasons for reporting content or users
+enum ReportReason {
+  SPAM // Content is spam
+  HARASSMENT // Content involves harassment
+  HATE_SPEECH // Content contains hate speech
+  MISINFORMATION // Content contains false information
+  VIOLENCE // Content depicts violence
+  ADULT_CONTENT // Content contains adult material
+  OTHER // Other reasons not specified
+}
+
+// Enum representing the status of a report
+enum ReportStatus {
+  PENDING // Report is pending review
+  INVESTIGATING // Report is under investigation
+  RESOLVED // Report has been resolved
+  DISMISSED // Report has been dismissed
+}
+
+// Enum representing different types of notifications a user can receive
+enum NotificationType {
+  FOLLOW // Notification for a new follower
+  LIKE // Notification for a like on content
+  COMMENT // Notification for a new comment
+  MENTION // Notification when mentioned in content
+  POST // Notification for a new post
+  REPORT_UPDATE // Update on a report submitted
+  COMMUNITY_INVITE // Invitation to join a community
+  COMMUNITY_UPDATE // Updates from a community
+}
+
+// Enum representing types of media resizing options
+enum MediaResize {
+  MEDIA_RESIZE_UNSPECIFIED // Resize option not specified
+  MEDIA_RESIZE_CLIP // Clip the media to fit
+  MEDIA_RESIZE_CROP // Crop the media to fit
+  MEDIA_RESIZE_SCALE // Scale the media to fit
+}
+
+// Enum representing positions for cropping media
+enum MediaCrop {
+  MEDIA_CROP_UNSPECIFIED // Crop position not specified
+  MEDIA_CROP_TOP // Crop from the top
+  MEDIA_CROP_BOTTOM // Crop from the bottom
+  MEDIA_CROP_LEFT // Crop from the left
+  MEDIA_CROP_RIGHT // Crop from the right
+  MEDIA_CROP_CENTER // Crop from the center
+}
+
+// Enum representing different types of media files
+enum MediaType {
+  MEDIA_TYPE_UNSPECIFIED // Media type not specified
+  MEDIA_TYPE_IMAGE // Image files
+  MEDIA_TYPE_VIDEO // Video files
+  MEDIA_TYPE_AUDIO // Audio files
+  MEDIA_TYPE_DOCUMENT // Document files
+  MEDIA_TYPE_SPREADSHEET // Spreadsheet files
+  MEDIA_TYPE_PRESENTATION // Presentation files
+  MEDIA_TYPE_PDF // PDF files
+  MEDIA_TYPE_CODE // Code files
+  MEDIA_TYPE_ZIP // Compressed files
+  MEDIA_TYPE_3D // 3D model files
+  MEDIA_TYPE_AR // Augmented Reality files
+  MEDIA_TYPE_CAD // CAD files
+  MEDIA_TYPE_VECTOR // Vector graphics files
+}
+
+// Enum representing different types of posts
+enum PostType {
+  POST_TYPE_UNSPECIFIED // Post type not specified
+  POST // Standard post
+  REPOST // Shared post
+  QUESTION // Question post
+  ACHIEVEMENT // Achievement announcement
+  ANNOUNCEMENT // General announcement
+  POLL // Poll post
+  ARTICLE // Article post
+  SHORT_STORY // Short story post
+}
+
+// Enum representing types of accounts
+enum AccountType {
+  ACCOUNT_TYPE_UNSPECIFIED // Account type not specified
+  USER // Individual user account
+  COMMUNITY // Community account
+}
+
+// Enum representing participant types in a thread
+enum ThreadParticipantType {
+  THREAD_PARTICIPANT_TYPE_UNSPECIFIED // Participant type not specified
+  PARENT // Original poster in the thread
+  PARTICIPANT // Participant in the thread
+}
+
+// Enum representing categories for content
+enum Category {
+  CATEGORY_UNSPECIFIED // Category not specified
+  WORLD // World news and events
+  BUSINESS // Business-related content
+  ECONOMICS // Economics-related content
+  FOREIGN_POLICY // Foreign policy topics
+  POLITICS // Political topics
+  TECHNOLOGY // Technology-related content
+  OTHER // Other categories not specified
+}
+
+// Enum representing different types of spaces
+enum SpaceType {
+  SPACE_TYPE_UNSPECIFIED // Space type not specified
+  TEAM // Team space
+  PROJECT // Project space
+  DEPARTMENT // Departmental space
+  ANNOUNCEMENT // Space for announcements
+  KNOWLEDGE_BASE // Knowledge base space
+  SOCIAL // Social space
+  LEARNING // Learning space
+  INNOVATION // Innovation space
+}
+
+// Enum representing different types of AI models
+enum AIModelType {
+  AI_MODEL_UNSPECIFIED // AI model type not specified
+  TEXT // Text models
+  IMAGE // Image models
+  AUDIO // Audio models
+  CODE // Code models
+  TRANSLATION // Translation models
+  SUMMARIZATION // Summarization models
+}
+
+// Enum representing access levels for spaces or content
+enum AccessLevel {
+  PUBLIC // Accessible to everyone
+  PRIVATE // Accessible only to specific users
+  RESTRICTED // Restricted access based on criteria
+  ORGANIZATION // Accessible within the organization
+}
+
+//
+// MODELS
+//
+
+// Model representing a virtual profile, which can be either a user or community profile
+// Core organization model
+model VirtualProfile {
+  id          String   @id @default(uuid()) // Unique identifier
+  userId      String?  @map("user_id") // Optional reference to the user ID
+  profileType String?  @map("profile_type") // Type of profile (e.g., user, community)
+  activated   Boolean? @default(true) // Indicates if the profile is activated
+  metadata    Json? // Flexible metadata storage
+  createdAt   DateTime @default(now()) @map("created_at") // Timestamp when created
+  updatedAt   DateTime @updatedAt @map("updated_at") // Timestamp when last updated
+
+  // Relations
+  userProfile      UserProfile[] // One-to-many relation to UserProfile
+  communityProfile CommunityProfile[] // One-to-many relation to CommunityProfile
+  organizationId   String // NOTE: we must always check for the existence of the organization ID in request headers
+  tenantId         String // NOTE: we must always check for the existence of the tenant ID in request headers
+
+  // Indexes
+  @@index([userId]) // Index on userId
+  @@index([organizationId])
+  @@index([tenantId])
+  @@map("virtual_profiles") // Maps to the "virtual_profiles" table in the database
+}
+
+// Model representing a user profile
+model UserProfile {
+  id                         String   @id @default(uuid()) // Unique identifier
+  virtualProfileId           String   @map("virtual_profile_id") // Reference to the associated VirtualProfile
+  name                       String? // User's display name
+  profileImageUrl            String?  @map("profile_image_url") // URL to the user's profile image
+  bio                        String? // User's biography or description
+  private                    Boolean? @default(false) // Indicates if the profile is private
+  followersCount             Int      @default(0) // Number of followers
+  followingCount             Int      @default(0) // Number of accounts the user is following
+  newsFeedTimelineId         String?  @unique @map("news_feed_timeline_id") // ID for the news feed timeline
+  personalFeedTimelineId     String?  @unique @map("personal_feed_timeline_id") // ID for the personal feed timeline
+  notificationFeedTimelineId String?  @unique @map("notification_feed_timeline_id") // ID for the notification feed timeline
+  algoliaId                  String?  @map("algolia_id") // ID for search indexing
+  metadata                   Json? // Flexible metadata storage
+  settings                   Json? // User preferences and settings
+  createdAt                  DateTime @default(now()) @map("created_at") // Timestamp when created
+  updatedAt                  DateTime @updatedAt @map("updated_at") // Timestamp when last updated
+
+  // Relations
+  virtualProfile       VirtualProfile     @relation(fields: [virtualProfileId], references: [id]) // Relation to VirtualProfile
+  bookmarks            Bookmark[] // User's bookmarks
+  tags                 UserTag[] // Tags associated with the user
+  adminPublications    Publication[]      @relation("AdminPublication") // Publications where user is admin
+  editorPublications   Publication[]      @relation("EditorPublication") // Publications where user is editor
+  blockedBy            Block[]            @relation("BlockedProfile") // Profiles that have blocked this user
+  blocking             Block[]            @relation("BlockingProfile") // Profiles that this user has blocked
+  followers            Follow[]           @relation("FollowedProfile") // Users who follow this profile
+  following            Follow[]           @relation("FollowingProfile") // Users that this profile is following
+  posts                Post[] // User's posts
+  comments             Comment[] // User's comments
+  reactions            Reaction[] // User's reactions to content
+  notifications        Notification[] // Notifications for the user
+  reportsSubmitted     Report[]           @relation("ReportSubmitter") // Reports submitted by the user
+  reportedContent      Report[]           @relation("ReportedUser") // Reports made against this user
+  moderatedCommunities CommunityProfile[] @relation("CommunityModerators") // Communities moderated by the user
+
+  // Indexes
+  @@index([virtualProfileId]) // Index on virtualProfileId
+  @@map("user_profiles") // Maps to the "user_profiles" table in the database
+}
+
+// Model representing a community profile
+model CommunityProfile {
+  id                         String   @id @default(uuid()) // Unique identifier
+  virtualProfileId           String   @map("virtual_profile_id") // Reference to the associated VirtualProfile
+  name                       String? // Community name
+  description                String? // Community description
+  communityRules             String?  @map("community_rules") // Community rules and guidelines
+  profileImageUrl            String?  @map("profile_image_url") // URL to the community's profile image
+  private                    Boolean? @default(false) // Indicates if the community is private
+  visible                    Boolean? @default(true) // Indicates if the community is visible
+  followers                  Int      @default(0) // Number of followers
+  newsFeedTimelineId         String?  @unique @map("news_feed_timeline_id") // ID for the community's news feed timeline
+  personalFeedTimelineId     String?  @unique @map("personal_feed_timeline_id") // ID for the community's personal feed timeline
+  notificationFeedTimelineId String?  @unique @map("notification_feed_timeline_id") // ID for community notifications
+  algoliaId                  String?  @map("algolia_id") // ID for search indexing
+  metadata                   Json? // Flexible metadata storage
+  settings                   Json? // Community settings
+  createdAt                  DateTime @default(now()) @map("created_at") // Timestamp when created
+  updatedAt                  DateTime @updatedAt @map("updated_at") // Timestamp when last updated
+
+  // Relations
+  virtualProfile VirtualProfile @relation(fields: [virtualProfileId], references: [id]) // Relation to VirtualProfile
+  topics         Topic[] // Topics within the community
+  posts          Post[] // Community posts
+  moderators     UserProfile[]  @relation("CommunityModerators") // Users who moderate the community
+
+  // Indexes
+  @@index([virtualProfileId]) // Index on virtualProfileId
+  @@map("community_profiles") // Maps to the "community_profiles" table in the database
+}
+
+// Model representing a topic within a community
+model Topic {
+  id                 String   @id @default(uuid()) // Unique identifier
+  communityProfileId String   @map("community_profile_id") // Reference to the associated CommunityProfile
+  topicName          String?  @map("topic_name") // Name of the topic
+  description        String? // Description of the topic
+  imageUrl           String?  @map("image_url") // Image URL representing the topic
+  metadata           Json? // Additional metadata
+  createdAt          DateTime @default(now()) @map("created_at") // Timestamp when created
+  updatedAt          DateTime @updatedAt @map("updated_at") // Timestamp when last updated
+
+  // Relations
+  communityProfile CommunityProfile @relation(fields: [communityProfileId], references: [id]) // Relation to CommunityProfile
+
+  // Indexes
+  @@index([communityProfileId]) // Index on communityProfileId
+  @@map("topics") // Maps to the "topics" table in the database
+}
+
+// Model representing a publication, such as a blog or magazine
+model Publication {
+  id                         String   @id @default(uuid())
+  publicationName            String   @map("publication_name")
+  description                String?
+  type                       String?
+  subjects                   String[]
+  tags                       String[]
+  adminBackendPlatformUserId String?  @map("admin_backend_platform_user_id")
+  metadata                   Json?
+  createdAt                  DateTime @default(now()) @map("created_at")
+  updatedAt                  DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  admins     UserProfile[] @relation("AdminPublication")
+  editors    UserProfile[] @relation("EditorPublication")
+  posts      Post[]
+  bookmark   Bookmark?     @relation(fields: [bookmarkId], references: [id]) // One-to-one: A publication belongs to one bookmark
+  bookmarkId String?       @unique // Make this unique to enforce one-to-one
+
+  @@map("publications")
+}
+
+// Model representing media files like images, videos, documents, etc.
+model Media {
+  id            String    @id @default(uuid()) // Unique identifier
+  mediaType     MediaType // Type of media
+  status        String // Processing status of the media
+  fileContent   String? // Content of the file (if applicable)
+  fileName      String // Name of the file
+  transcription String? // Transcription of audio or video content
+  extractedText String? // Extracted text from documents or images
+  createdAt     DateTime  @default(now()) // Timestamp when created
+
+  // Relations
+  commentReplies CommentReply[] // Comment replies associated with the media
+  posts          Post[] // Posts that include this media
+  comments       Comment[] // Comments that include this media
+  pollPosts      PollPost[] // Poll posts that include this media
+  notes          Note[] // Notes that include this media
+
+  // Indexes
+  @@index([mediaType, status], name: "idx_media_status") // Index on mediaType and status
+  @@index([createdAt], name: "idx_media_timestamp") // Index on creation timestamp
+}
+
+// Model representing a post created by a user
+model Post {
+  id            String  @id @default(uuid()) // Unique identifier
+  authorId      String  @map("author_id") // Reference to the author (UserProfile)
+  communityId   String? @map("community_id") // Reference to the community (if any)
+  parentSpaceId String? // Reference to the parent space (if any)
+
+  // Basic Information
+  title          String? // Title of the post
+  content        String     @db.Text // Content of the post
+  description    String? // Description or summary of the post
+  status         PostStatus @default(PUBLISHED) // Status of the post
+  workflowStatus String? // Workflow status (e.g., draft, in review)
+  assignedTo     String? // User assigned to the post (for workflow)
+  contentFormat  String     @default("markdown") // Format of the content (e.g., markdown)
+  createdAt      DateTime   @default(now()) @map("created_at") // Timestamp when created
+  updatedAt      DateTime   @updatedAt @map("updated_at") // Timestamp when last updated
+  publishedAt    DateTime? // Timestamp when published
+
+  // Post Type and Category
+  postType              PostType // Type of the post
+  category              Category? // Category of the post
+  threadParticipantType ThreadParticipantType? // Participant type in the thread
+
+  // Author Information
+  backendPlatformUserId String // Backend user ID of the author
+  profileId             Int // Profile ID of the author
+  authorUsername        String // Username of the author
+  authorProfileImage    String? // Profile image URL of the author
+  authorAccountType     AccountType // Account type of the author
+
+  // Organization
+  tags      String[] // Tags associated with the post
+  mentions  String[] // User mentions in the post
+  hashtags  String[] // Hashtags used in the post
+  topicName String? // Topic name associated with the post
+
+  // Media and Files
+  media              Media?  @relation(fields: [mediaId], references: [id]) // Media associated with the post
+  mediaId            String?
+  backgroundImageUrl String? // Background image URL for the post
+  files              File[] // Files attached to the post
+
+  // Engagement Metrics
+  affinityScore            Int   @default(0) // Affinity score for personalized ranking
+  qualityScore             Int   @default(0) // Quality score of the post
+  viewCount                Int   @default(0) @map("view_count") // Number of views
+  userIdToAffinityScoreMap Json? // Map of user IDs to affinity scores
+  userIdToReportsMap       Json? // Map of user IDs to reports
+  userIdToReactionMap      Json? // Map of user IDs to reactions
+
+  // Content Analysis
+  insights                    Json? // Insights derived from content analysis
+  readingTime                 String? // Estimated reading time
+  aiGeneratedQuestionResponse String? // AI-generated responses
+  aiAnalysis                  Json? // AI analysis results
+  searchMetadata              Json? // Metadata for search indexing
+  metadata                    Json? // Additional metadata
+
+  // Relations
+  author       UserProfile       @relation(fields: [authorId], references: [id]) // Relation to the author
+  community    CommunityProfile? @relation(fields: [communityId], references: [id]) // Relation to the community
+  comments     Comment[] // Comments on the post
+  reactions    Reaction[] // Reactions to the post
+  bookmarks    Bookmark[] // Bookmarks of the post
+  publications Publication[] // Publications featuring the post
+  reports      Report[]          @relation("ReportedPost") // Reports made against the post
+  notes        Note[] // Notes associated with the post
+  threadId     String? // Reference to the thread ID
+  thread       Thread?           @relation(fields: [threadId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the thread
+  spaceId      String? // Reference to the space ID
+  space        Space?            @relation(fields: [spaceId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the space
+  channelId    String? // Reference to the channel ID
+  channel      Channel?          @relation(fields: [channelId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the channel
+
+  // Additional Features
+  extra          Json? // Custom metadata
+  visibility     Visibility @default(PUBLIC) // Visibility of the post
+  isPinned       Boolean    @default(false) @map("is_pinned") // Indicates if the post is pinned
+  isArchived     Boolean    @default(false) @map("is_archived") // Indicates if the post is archived
+  workflow       Json? // Workflow state information
+  version        Int        @default(1) // Version number for the post
+  organizationId String?    @map("organization_id")
+  tenantId       String?    @map("tenant_id")
+
+  // Add tenant-specific fields
+  tenantVisibility   Boolean @default(true) // Visibility within tenant
+  crossTenantSharing Boolean @default(false) // Allow sharing across tenants
+
+  @@index([organizationId])
+  @@index([tenantId])
+  // Indexes for efficient querying
+  @@index([authorId, createdAt], name: "idx_author_timestamp") // Index on authorId and creation time
+  @@index([visibility, createdAt], name: "idx_content_access") // Index on visibility and creation time
+  @@index([authorId, visibility], name: "idx_author_visibility") // Index on authorId and visibility
+  @@index([spaceId, visibility, createdAt], name: "idx_space_content") // Index on spaceId, visibility, and creation time
+  @@index([affinityScore, createdAt], name: "idx_engagement_time") // Index on affinityScore and creation time
+  @@index([qualityScore, createdAt], name: "idx_quality_time") // Index on qualityScore and creation time
+  @@index([viewCount, createdAt], name: "idx_popularity") // Index on viewCount and creation time
+  @@index([updatedAt], name: "idx_last_modified") // Index on last updated time
+  @@index([publishedAt], name: "idx_publication") // Index on publication time
+  @@index([category, createdAt], name: "idx_category_time") // Index on category and creation time
+  @@index([postType, createdAt], name: "idx_post_type_time") // Index on postType and creation time
+  @@index([threadId, createdAt], name: "idx_thread_time") // Index on threadId and creation time
+  @@index([status, updatedAt], name: "idx_status_time") // Index on status and last updated time
+  @@index([workflowStatus, assignedTo], name: "idx_workflow_assignment") // Index on workflowStatus and assignedTo
+  @@index([authorId]) // Index on authorId
+  @@index([communityId]) // Index on communityId
+  @@map("posts") // Maps to the "posts" table in the database
+}
+
+// Model representing a poll post
+model PollPost {
+  id        String   @id @default(uuid()) // Unique identifier
+  createdAt DateTime @default(now()) // Timestamp when created
+  action    PostType // Type of action (should be POLL)
+  content   String // Content of the poll
+  title     String? // Title of the poll
+
+  // Poll Specific Fields
+  pollOptions              String[] // Options available in the poll
+  pollDistribution         Json? // Distribution of poll responses
+  userIdToPollResponsesMap Json? // Map of user IDs to their poll responses
+  pollEndDate              DateTime // End date of the poll
+
+  // Organization
+  mentions  String[] // User mentions in the poll
+  hashtags  String[] // Hashtags used in the poll
+  tags      String[] // Tags associated with the poll
+  topicName String? // Topic name associated with the poll
+
+  // Author Info
+  backendPlatformUserId String // Backend user ID of the author
+  profileId             Int // Profile ID of the author
+
+  // Media
+  media   Media?  @relation(fields: [mediaId], references: [id]) // Media associated with the poll
+  mediaId String?
+
+  // Relations
+  comments Comment[] // Comments on the poll
+  thread   Thread?   @relation(fields: [threadId], references: [id]) // Relation to the thread
+  threadId String?
+
+  // Additional Features
+  extra          Json? // Custom metadata
+  searchMetadata Json? // Metadata for search indexing
+  aiAnalysis     Json? // AI analysis results
+  organizationId String? @map("organization_id")
+  tenantId       String? @map("tenant_id")
+
+  // Add tenant-specific fields
+  tenantVisibility   Boolean @default(true) // Visibility within tenant
+  crossTenantSharing Boolean @default(false) // Allow sharing across tenants
+
+  @@index([organizationId])
+  @@index([tenantId])
+  // Indexes
+  @@index([backendPlatformUserId]) // Index on backendPlatformUserId
+  @@index([createdAt], name: "idx_poll_created_at") // Index on creation time
+  @@index([action], name: "idx_poll_action") // Index on action type
+  @@index([pollEndDate], name: "idx_poll_end_date") // Index on poll end date
+  @@index([threadId], name: "idx_poll_thread") // Index on threadId
+  @@index([topicName], name: "idx_poll_topic") // Index on topicName
+  @@index([tags], name: "idx_poll_tags") // Index on tags
+}
+
+// Model representing a comment on a post
+model Comment {
+  id        String   @id @default(uuid()) // Unique identifier
+  authorId  String // ID of the author (UserProfile)
+  content   String // Content of the comment
+  createdAt DateTime @default(now()) // Timestamp when created
+
+  // Author Info
+  backendPlatformUserId String // Backend user ID of the author
+  profileId             Int // Profile ID of the author
+  authorUsername        String // Username of the author
+  authorProfileImage    String? // Profile image URL of the author
+  authorAccountType     AccountType // Account type of the author
+
+  // Metrics
+  affinityScore            Int   @default(0) // Affinity score for ranking
+  qualityScore             Int   @default(0) // Quality score of the comment
+  userIdToAffinityScoreMap Json? // Map of user IDs to affinity scores
+  userIdToReportsMap       Json? // Map of user IDs to reports
+  userIdToReactionMap      Json? // Map of user IDs to reactions
+
+  // Organization
+  mentions String[] // User mentions in the comment
+  hashtags String[] // Hashtags used in the comment
+
+  // Media
+  media   Media?  @relation(fields: [mediaId], references: [id]) // Media associated with the comment
+  mediaId String?
+
+  // Relations
+  replies    CommentReply[] // Replies to the comment
+  notes      Note[] // Notes associated with the comment
+  post       Post           @relation(fields: [postId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the post
+  postId     String
+  pollPost   PollPost?      @relation(fields: [pollPostId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the poll post
+  pollPostId String?
+
+  // Additional Features
+  extra      Json? // Custom metadata
+  aiAnalysis Json? // AI analysis results
+
+  // Relations for reports and reactions
+  Report      Report[]      @relation("ReportedComment") // Reports made against the comment
+  Reaction    Reaction[] // Reactions to the comment
+  UserProfile UserProfile[] // User profiles associated with the comment
+
+  // Indexes
+  @@index([postId]) // Index on postId
+  @@index([postId, createdAt], name: "idx_comment_post_time") // Index on postId and creation time
+  @@index([authorId, createdAt], name: "idx_comment_author_time") // Index on authorId and creation time
+}
+
+// Model representing a reply to a comment
+model CommentReply {
+  id        String   @id @default(uuid()) // Unique identifier
+  content   String // Content of the reply
+  createdAt DateTime @default(now()) // Timestamp when created
+
+  // Author Info
+  backendPlatformUserId String // Backend user ID of the author
+  profileId             Int // Profile ID of the author
+  authorUsername        String // Username of the author
+  authorProfileImage    String? // Profile image URL of the author
+  authorAccountType     AccountType // Account type of the author
+
+  // Metrics
+  affinityScore            Int   @default(0) // Affinity score for ranking
+  qualityScore             Int   @default(0) // Quality score of the reply
+  userIdToAffinityScoreMap Json? // Map of user IDs to affinity scores
+  userIdToReportsMap       Json? // Map of user IDs to reports
+  userIdToReactionMap      Json? // Map of user IDs to reactions
+
+  // Organization
+  mentions String[] // User mentions in the reply
+  hashtags String[] // Hashtags used in the reply
+
+  // Media
+  media   Media?  @relation(fields: [mediaId], references: [id]) // Media associated with the reply
+  mediaId String?
+
+  // Relations
+  comment   Comment @relation(fields: [commentId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the parent comment
+  commentId String
+
+  // Additional Features
+  extra      Json? // Custom metadata
+  aiAnalysis Json? // AI analysis results
+
+  // Indexes
+  @@index([commentId]) // Index on commentId
+  @@index([commentId, createdAt], name: "idx_reply_comment_time") // Index on commentId and creation time
+  @@index([backendPlatformUserId, createdAt], name: "idx_reply_author_time") // Index on authorId and creation time
+  @@index([createdAt], name: "idx_reply_created_at") // Index on creation time
+  @@index([authorAccountType], name: "idx_reply_account_type") // Index on author account type
+  @@index([affinityScore], name: "idx_reply_affinity") // Index on affinityScore
+  @@index([qualityScore], name: "idx_reply_quality") // Index on qualityScore
+  @@index([mentions], name: "idx_reply_mentions") // Index on mentions
+  @@index([hashtags], name: "idx_reply_hashtags") // Index on hashtags
+}
+
+// Model representing a reaction (like, love, etc.) to a post or comment
+model Reaction {
+  id        String       @id @default(uuid()) // Unique identifier
+  userId    String       @map("user_id") // ID of the user who reacted
+  postId    String?      @map("post_id") // ID of the post reacted to
+  commentId String?      @map("comment_id") // ID of the comment reacted to
+  type      ReactionType // Type of reaction
+  metadata  Json? // Additional metadata
+  createdAt DateTime     @default(now()) @map("created_at") // Timestamp when created
+
+  // Relations
+  user    UserProfile @relation(fields: [userId], references: [id]) // Relation to the user
+  post    Post?       @relation(fields: [postId], references: [id]) // Relation to the post
+  comment Comment?    @relation(fields: [commentId], references: [id]) // Relation to the comment
+
+  // Constraints and indexes
+  @@unique([userId, postId, commentId, type]) // Ensures a user can react only once with the same type
+  @@index([userId]) // Index on userId
+  @@index([postId]) // Index on postId
+  @@index([commentId]) // Index on commentId
+  @@map("reactions") // Maps to the "reactions" table in the database
+}
+
+// Model representing a collection of bookmarks
+model Bookmark {
+  id        String   @id @default(uuid())
+  name      String? // Name for the bookmark collection
+  userId    String   @map("user_id") // Direct reference to owner
+  metadata  Json?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user        UserProfile  @relation(fields: [userId], references: [id])
+  posts       Post[] // Many-to-many: A bookmark can have many posts
+  publication Publication? // One-to-one: A bookmark can have one publication
+
+  @@index([userId])
+  @@map("bookmarks")
+}
+
+// Model representing a block relationship between users
+model Block {
+  id                  String   @id @default(uuid()) // Unique identifier
+  profileBlockingId   String   @map("profile_blocking_id") // ID of the profile doing the blocking
+  profileBlockedId    String   @map("profile_blocked_id") // ID of the profile being blocked
+  profileBlockingType String   @map("profile_blocking_type") // Type of profile blocking
+  profileBlockedType  String   @map("profile_blocked_type") // Type of profile being blocked
+  reason              String? // Reason for blocking
+  metadata            Json? // Additional metadata
+  createdAt           DateTime @default(now()) @map("created_at") // Timestamp when created
+
+  // Relations
+  blockingProfile UserProfile @relation("BlockingProfile", fields: [profileBlockingId], references: [id]) // Relation to the blocking profile
+  blockedProfile  UserProfile @relation("BlockedProfile", fields: [profileBlockedId], references: [id]) // Relation to the blocked profile
+
+  // Constraints and indexes
+  @@unique([profileBlockingId, profileBlockedId]) // Ensures a unique block relationship
+  @@index([profileBlockingId]) // Index on profileBlockingId
+  @@index([profileBlockedId]) // Index on profileBlockedId
+  @@map("blocks") // Maps to the "blocks" table in the database
+}
+
+// Model representing a follow relationship between users
+model Follow {
+  id                 String    @id @default(uuid()) // Unique identifier
+  profileFollowingId String    @map("profile_following_id") // ID of the profile following
+  profileFollowedId  String    @map("profile_followed_id") // ID of the profile being followed
+  targetFollowerType String    @map("target_follower_type") // Type of the follower (e.g., user, community)
+  requestApproved    Boolean   @default(false) @map("request_approved") // Indicates if the follow request is approved
+  metadata           Json? // Additional metadata
+  createdAt          DateTime  @default(now()) @map("created_at") // Timestamp when created
+  approvedAt         DateTime? @map("approved_at") // Timestamp when approved
+
+  // Relations
+  followingProfile UserProfile @relation("FollowingProfile", fields: [profileFollowingId], references: [id]) // Relation to the following profile
+  followedProfile  UserProfile @relation("FollowedProfile", fields: [profileFollowedId], references: [id]) // Relation to the followed profile
+
+  // Constraints and indexes
+  @@unique([profileFollowingId, profileFollowedId]) // Ensures a unique follow relationship
+  @@index([profileFollowingId]) // Index on profileFollowingId
+  @@index([profileFollowedId]) // Index on profileFollowedId
+  @@map("follows") // Maps to the "follows" table in the database
+}
+
+// Model representing tags associated with a user
+model UserTag {
+  id            String   @id @default(uuid()) // Unique identifier
+  userProfileId String   @map("user_profile_id") // Reference to the UserProfile
+  tagName       String?  @map("tag_name") // Name of the tag
+  description   String? // Description of the tag
+  metadata      Json? // Additional metadata
+  createdAt     DateTime @default(now()) @map("created_at") // Timestamp when created
+  updatedAt     DateTime @updatedAt @map("updated_at") // Timestamp when last updated
+
+  // Relations
+  userProfile UserProfile @relation(fields: [userProfileId], references: [id]) // Relation to the UserProfile
+
+  // Indexes
+  @@index([userProfileId]) // Index on userProfileId
+  @@map("user_tags") // Maps to the "user_tags" table in the database
+}
+
+// Model representing a report made against a user, post, or comment
+model Report {
+  id          String       @id @default(uuid()) // Unique identifier
+  submitterId String       @map("submitter_id") // ID of the user submitting the report
+  postId      String?      @map("post_id") // ID of the reported post
+  commentId   String?      @map("comment_id") // ID of the reported comment
+  userId      String?      @map("user_id") // ID of the reported user
+  reason      ReportReason // Reason for the report
+  description String?      @db.Text // Description provided by the reporter
+  status      ReportStatus @default(PENDING) // Status of the report
+  metadata    Json? // Additional metadata
+  createdAt   DateTime     @default(now()) @map("created_at") // Timestamp when created
+  updatedAt   DateTime     @updatedAt @map("updated_at") // Timestamp when last updated
+  resolvedAt  DateTime?    @map("resolved_at") // Timestamp when resolved
+
+  // Relations
+  submitter       UserProfile  @relation("ReportSubmitter", fields: [submitterId], references: [id]) // Relation to the submitter
+  reportedUser    UserProfile? @relation("ReportedUser", fields: [userId], references: [id]) // Relation to the reported user
+  reportedPost    Post?        @relation("ReportedPost", fields: [postId], references: [id]) // Relation to the reported post
+  reportedComment Comment?     @relation("ReportedComment", fields: [commentId], references: [id]) // Relation to the reported comment
+
+  // Indexes
+  @@index([submitterId]) // Index on submitterId
+  @@index([postId]) // Index on postId
+  @@index([commentId]) // Index on commentId
+  @@index([userId]) // Index on userId
+  @@map("reports") // Maps to the "reports" table in the database
+}
+
+// Model representing a notification sent to a user
+model Notification {
+  id        String           @id @default(uuid()) // Unique identifier
+  userId    String           @map("user_id") // ID of the user receiving the notification
+  type      NotificationType // Type of notification
+  title     String // Title of the notification
+  content   String // Content of the notification
+  isRead    Boolean          @default(false) @map("is_read") // Indicates if the notification has been read
+  metadata  Json? // Store related entity IDs and additional data
+  createdAt DateTime         @default(now()) @map("created_at") // Timestamp when created
+  readAt    DateTime?        @map("read_at") // Timestamp when read
+
+  // Relations
+  user UserProfile @relation(fields: [userId], references: [id]) // Relation to the user
+
+  // Indexes
+  @@index([userId]) // Index on userId
+  @@index([createdAt]) // Index on creation time
+  @@map("notifications") // Maps to the "notifications" table in the database
+}
+
+// Model representing a space (like a group or project)
+model Space {
+  id          String     @id @default(uuid()) // Unique identifier
+  name        String // Name of the space
+  description String? // Description of the space
+  type        SpaceType // Type of space
+  createdAt   DateTime   @default(now()) // Timestamp when created
+  updatedAt   DateTime   @updatedAt // Timestamp when last updated
+  spaceType   String // Custom space type
+  status      String // Status of the space
+  visibility  Visibility // Visibility level of the space
+
+  // Relations
+  members  SpaceMember[] // Members of the space
+  channels Channel[] // Channels within the space
+  posts    Post[] // Posts within the space
+  files    File[] // Files associated with the space
+
+  // Hierarchy
+  parentSpace   Space?  @relation("SpaceHierarchy", fields: [parentSpaceId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Parent space
+  parentSpaceId String?
+  childSpaces   Space[] @relation("SpaceHierarchy") // Child spaces
+
+  // Settings
+  isPrivate   Boolean     @default(false) // Indicates if the space is private
+  metadata    Json? // Additional metadata
+  settings    Json? // Space-specific settings
+  accessLevel AccessLevel @default(ORGANIZATION) // Access level for the space
+
+  // Features
+  searchMetadata Json? // Metadata for search indexing
+  tags           String[] // Tags associated with the space
+
+  // Indexes
+  @@index([name]) // Index on name
+  @@index([parentSpaceId, id], name: "idx_space_hierarchy") // Index for hierarchy
+  @@index([spaceType, status], name: "idx_space_status") // Index on spaceType and status
+  @@index([visibility, createdAt], name: "idx_space_visibility") // Index on visibility and creation time
+  @@index([type], name: "idx_space_type") // Index on type
+  @@index([createdAt], name: "idx_space_created_at") // Index on creation time
+  @@index([updatedAt], name: "idx_space_updated_at") // Index on last updated time
+  @@index([accessLevel], name: "idx_space_access_level") // Index on accessLevel
+  @@index([isPrivate], name: "idx_space_privacy") // Index on isPrivate
+  @@index([tags], name: "idx_space_tags") // Index on tags
+}
+
+// Model representing a channel within a space
+model Channel {
+  id          String   @id @default(uuid()) // Unique identifier
+  name        String // Name of the channel
+  description String? // Description of the channel
+  spaceId     String // ID of the parent space
+  space       Space    @relation(fields: [spaceId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the space
+  createdAt   DateTime @default(now()) // Timestamp when created
+  updatedAt   DateTime @updatedAt // Timestamp when last updated
+  status      String // Status of the channel
+
+  // Content
+  posts       Post[] // Posts within the channel
+  files       File[] // Files associated with the channel
+  pinnedPosts String[] // IDs of pinned posts
+
+  // Members
+  members ChannelMember[] // Members of the channel
+
+  // Settings
+  isPrivate      Boolean @default(false) // Indicates if the channel is private
+  metadata       Json? // Additional metadata
+  settings       Json? // Channel-specific settings
+  organizationId String? @map("organization_id")
+  tenantId       String? @map("tenant_id")
+
+  @@index([organizationId])
+  @@index([tenantId])
+  // Indexes
+  @@index([spaceId]) // Index on spaceId
+  @@index([spaceId, status], name: "idx_channel_status") // Index on spaceId and status
+  @@index([createdAt], name: "idx_channel_timestamp") // Index on creation time
+  @@index([name], name: "idx_channel_name") // Index on name
+  @@index([updatedAt], name: "idx_channel_updated") // Index on last updated time
+  @@index([isPrivate], name: "idx_channel_privacy") // Index on isPrivate
+  @@index([spaceId, name], name: "idx_channel_space_name") // Index on spaceId and name
+  @@index([spaceId, createdAt], name: "idx_channel_space_created") // Index on spaceId and creation time
+  @@index([status, updatedAt], name: "idx_channel_status_updated") // Index on status and last updated time
+}
+
+// Model representing a thread of posts or messages
+model Thread {
+  id           String   @id @default(uuid()) // Unique identifier
+  postIds      String[] // List of post IDs in the thread
+  parentPostId String // ID of the parent post
+  createdAt    DateTime @default(now()) // Timestamp when created
+  updatedAt    DateTime @updatedAt // Timestamp when last updated
+
+  // Relations
+  posts     Post[] // Posts in the thread
+  pollPosts PollPost[] // Poll posts in the thread
+
+  // Additional Features
+  metadata       Json? // Additional metadata
+  status         String  @default("active") // Status of the thread
+  isLocked       Boolean @default(false) // Indicates if the thread is locked
+  organizationId String? @map("organization_id")
+  tenantId       String? @map("tenant_id")
+
+  @@index([organizationId])
+  @@index([tenantId])
+  // Indexes
+  @@index([parentPostId]) // Index on parentPostId
+  @@index([createdAt], name: "idx_thread_created_at") // Index on creation time
+  @@index([updatedAt], name: "idx_thread_updated_at") // Index on last updated time
+  @@index([status], name: "idx_thread_status") // Index on status
+  @@index([isLocked], name: "idx_thread_locked") // Index on isLocked
+  @@index([parentPostId, createdAt], name: "idx_thread_parent_created") // Index on parentPostId and creation time
+  @@index([status, updatedAt], name: "idx_thread_status_updated") // Index on status and last updated time
+}
+
+// Model representing a note attached to a post or comment
+model Note {
+  id        String   @id @default(uuid()) // Unique identifier
+  content   String // Content of the note
+  createdAt DateTime @default(now()) // Timestamp when created
+  authorId  String // ID of the author (UserProfile)
+
+  // Author Info
+  backendPlatformUserId String // Backend user ID of the author
+  profileId             Int // Profile ID of the author
+  authorUserName        String // Username of the author
+  authorProfileImage    String? // Profile image URL of the author
+  authorAccountType     AccountType // Account type of the author
+
+  // Organization
+  mentions String[] // User mentions in the note
+  hashtags String[] // Hashtags used in the note
+
+  // Media
+  media   Media?  @relation(fields: [mediaId], references: [id]) // Media associated with the note
+  mediaId String?
+
+  // Relations
+  post      Post     @relation(fields: [postId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the post
+  postId    String
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the comment
+  commentId String?
+
+  // Features
+  searchMetadata Json? // Metadata for search indexing
+  aiAnalysis     Json? // AI analysis results
+
+  // Indexes
+  @@index([postId, createdAt], name: "idx_note_post_time") // Index on postId and creation time
+  @@index([authorId, createdAt], name: "idx_note_author_time") // Index on authorId and creation time
+  @@index([backendPlatformUserId], name: "idx_note_backend_user") // Index on backendPlatformUserId
+  @@index([createdAt], name: "idx_note_created_at") // Index on creation time
+  @@index([commentId], name: "idx_note_comment") // Index on commentId
+  @@index([authorAccountType], name: "idx_note_account_type") // Index on author account type
+  @@index([mentions], name: "idx_note_mentions") // Index on mentions
+  @@index([hashtags], name: "idx_note_hashtags") // Index on hashtags
+}
+
+// Model representing a member of a space
+model SpaceMember {
+  id          String   @id @default(uuid()) // Unique identifier
+  spaceId     String // ID of the space
+  space       Space    @relation(fields: [spaceId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the space
+  userId      String // ID of the user
+  role        String // Role of the user in the space
+  joinedAt    DateTime @default(now()) // Timestamp when joined
+  status      String   @default("active") // Status of the membership
+  permissions String[] // Permissions granted to the user
+
+  // Constraints and indexes
+  @@unique([spaceId, userId]) // Ensures a unique membership per space and user
+  @@index([userId], name: "idx_space_member_user") // Index on userId
+  @@index([role], name: "idx_space_member_role") // Index on role
+  @@index([status], name: "idx_space_member_status") // Index on status
+  @@index([joinedAt], name: "idx_space_member_joined") // Index on joinedAt
+}
+
+// Model representing a member of a channel
+model ChannelMember {
+  id        String    @id @default(uuid()) // Unique identifier
+  channelId String // ID of the channel
+  channel   Channel   @relation(fields: [channelId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the channel
+  userId    String // ID of the user
+  role      String // Role of the user in the channel
+  joinedAt  DateTime  @default(now()) // Timestamp when joined
+  lastRead  DateTime? // Timestamp when the user last read messages
+
+  // Constraints and indexes
+  @@unique([channelId, userId]) // Ensures a unique membership per channel and user
+  @@index([userId], name: "idx_channel_member_user") // Index on userId
+  @@index([role], name: "idx_channel_member_role") // Index on role
+  @@index([joinedAt], name: "idx_channel_member_joined") // Index on joinedAt
+  @@index([lastRead], name: "idx_channel_member_last_read") // Index on lastRead
+}
+
+// Model representing a file uploaded to the system
+model File {
+  id       String    @id @default(uuid()) // Unique identifier
+  name     String // Name of the file
+  type     MediaType // Type of the file
+  url      String // URL where the file is stored
+  metadata Json // Additional metadata
+
+  // Upload Info
+  uploadedBy String // ID of the user who uploaded the file
+  uploadedAt DateTime @default(now()) // Timestamp when uploaded
+  size       Int // Size of the file in bytes
+
+  // Processing
+  status    String  @default("processing") // Processing status
+  preview   String? // Preview URL
+  thumbnail String? // Thumbnail URL
+
+  // Analysis
+  searchMetadata Json? // Metadata for search indexing
+  aiAnalysis     Json? // AI analysis results
+
+  // Relations
+  posts     Post[] // Posts that include this file
+  space     Space?   @relation(fields: [spaceId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the space
+  spaceId   String?
+  channel   Channel? @relation(fields: [channelId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the channel
+  channelId String?
+
+  // Indexes
+  @@index([type]) // Index on file type
+  @@index([uploadedBy], name: "idx_file_uploaded_by") // Index on uploadedBy
+  @@index([uploadedAt], name: "idx_file_uploaded_at") // Index on uploadedAt
+  @@index([status], name: "idx_file_status") // Index on status
+  @@index([size], name: "idx_file_size") // Index on file size
+  @@index([spaceId, type], name: "idx_file_space_type") // Index on spaceId and type
+  @@index([channelId, type], name: "idx_file_channel_type") // Index on channelId and type
+}
