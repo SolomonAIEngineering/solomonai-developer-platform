@@ -28,6 +28,7 @@
     "studio-mongo": "bunx prisma studio --schema=./prisma/schema.mongodb.prisma",
     "migrate:postgres": "bunx prisma migrate dev --schema=./prisma/schema.postgresql.prisma",
     "format-mongo": "bunx prisma format --schema=./prisma/schema.mongodb.prisma",
+    "format:postgres": "bunx prisma format --schema=./prisma/schema.postgresql.prisma",
     "introspect:postgres": "bunx prisma db pull --schema=./prisma/schema.postgresql.prisma",
     "introspect:mongo": "bunx prisma db pull --schema=./prisma/schema.mongodb.prisma",
     "up": "drizzle-kit up:sqlite",

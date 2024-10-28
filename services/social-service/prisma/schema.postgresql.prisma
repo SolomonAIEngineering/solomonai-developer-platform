@@ -17,171 +17,171 @@ datasource db {
 
 // Enum representing the status of a post
 enum PostStatus {
-  DRAFT       // Post is in draft mode and not visible to others
-  PUBLISHED   // Post is published and visible to others
-  ARCHIVED    // Post is archived and not actively displayed
-  HIDDEN      // Post is hidden from public view
+  DRAFT // Post is in draft mode and not visible to others
+  PUBLISHED // Post is published and visible to others
+  ARCHIVED // Post is archived and not actively displayed
+  HIDDEN // Post is hidden from public view
 }
 
 // Enum representing visibility levels for content
 enum Visibility {
-  PUBLIC          // Content is visible to everyone
-  PRIVATE         // Content is visible only to the owner
-  FOLLOWERS_ONLY  // Content is visible only to followers
-  COMMUNITY_ONLY  // Content is visible only within a community
-  RESTRICTED      // Content visibility is restricted based on criteria
-  ORGANIZATION    // Content is visible only within the organization
+  PUBLIC // Content is visible to everyone
+  PRIVATE // Content is visible only to the owner
+  FOLLOWERS_ONLY // Content is visible only to followers
+  COMMUNITY_ONLY // Content is visible only within a community
+  RESTRICTED // Content visibility is restricted based on criteria
+  ORGANIZATION // Content is visible only within the organization
 }
 
 // Enum representing types of reactions a user can have to content
 enum ReactionType {
   UNSPECIFIED // Reaction type is unspecified
-  LIKE        // User likes the content
-  LOVE        // User loves the content
-  HAHA        // User finds the content funny
-  WOW         // User is amazed by the content
-  SAD         // Content makes the user sad
-  ANGRY       // Content makes the user angry
-  DISLIKE     // User dislikes the content
-  CELEBRATE   // User wants to celebrate the content
+  LIKE // User likes the content
+  LOVE // User loves the content
+  HAHA // User finds the content funny
+  WOW // User is amazed by the content
+  SAD // Content makes the user sad
+  ANGRY // Content makes the user angry
+  DISLIKE // User dislikes the content
+  CELEBRATE // User wants to celebrate the content
 }
 
 // Enum representing reasons for reporting content or users
 enum ReportReason {
-  SPAM            // Content is spam
-  HARASSMENT      // Content involves harassment
-  HATE_SPEECH     // Content contains hate speech
-  MISINFORMATION  // Content contains false information
-  VIOLENCE        // Content depicts violence
-  ADULT_CONTENT   // Content contains adult material
-  OTHER           // Other reasons not specified
+  SPAM // Content is spam
+  HARASSMENT // Content involves harassment
+  HATE_SPEECH // Content contains hate speech
+  MISINFORMATION // Content contains false information
+  VIOLENCE // Content depicts violence
+  ADULT_CONTENT // Content contains adult material
+  OTHER // Other reasons not specified
 }
 
 // Enum representing the status of a report
 enum ReportStatus {
-  PENDING        // Report is pending review
-  INVESTIGATING  // Report is under investigation
-  RESOLVED       // Report has been resolved
-  DISMISSED      // Report has been dismissed
+  PENDING // Report is pending review
+  INVESTIGATING // Report is under investigation
+  RESOLVED // Report has been resolved
+  DISMISSED // Report has been dismissed
 }
 
 // Enum representing different types of notifications a user can receive
 enum NotificationType {
-  FOLLOW            // Notification for a new follower
-  LIKE              // Notification for a like on content
-  COMMENT           // Notification for a new comment
-  MENTION           // Notification when mentioned in content
-  POST              // Notification for a new post
-  REPORT_UPDATE     // Update on a report submitted
-  COMMUNITY_INVITE  // Invitation to join a community
-  COMMUNITY_UPDATE  // Updates from a community
+  FOLLOW // Notification for a new follower
+  LIKE // Notification for a like on content
+  COMMENT // Notification for a new comment
+  MENTION // Notification when mentioned in content
+  POST // Notification for a new post
+  REPORT_UPDATE // Update on a report submitted
+  COMMUNITY_INVITE // Invitation to join a community
+  COMMUNITY_UPDATE // Updates from a community
 }
 
 // Enum representing types of media resizing options
 enum MediaResize {
   MEDIA_RESIZE_UNSPECIFIED // Resize option not specified
-  MEDIA_RESIZE_CLIP        // Clip the media to fit
-  MEDIA_RESIZE_CROP        // Crop the media to fit
-  MEDIA_RESIZE_SCALE       // Scale the media to fit
+  MEDIA_RESIZE_CLIP // Clip the media to fit
+  MEDIA_RESIZE_CROP // Crop the media to fit
+  MEDIA_RESIZE_SCALE // Scale the media to fit
 }
 
 // Enum representing positions for cropping media
 enum MediaCrop {
   MEDIA_CROP_UNSPECIFIED // Crop position not specified
-  MEDIA_CROP_TOP         // Crop from the top
-  MEDIA_CROP_BOTTOM      // Crop from the bottom
-  MEDIA_CROP_LEFT        // Crop from the left
-  MEDIA_CROP_RIGHT       // Crop from the right
-  MEDIA_CROP_CENTER      // Crop from the center
+  MEDIA_CROP_TOP // Crop from the top
+  MEDIA_CROP_BOTTOM // Crop from the bottom
+  MEDIA_CROP_LEFT // Crop from the left
+  MEDIA_CROP_RIGHT // Crop from the right
+  MEDIA_CROP_CENTER // Crop from the center
 }
 
 // Enum representing different types of media files
 enum MediaType {
-  MEDIA_TYPE_UNSPECIFIED     // Media type not specified
-  MEDIA_TYPE_IMAGE           // Image files
-  MEDIA_TYPE_VIDEO           // Video files
-  MEDIA_TYPE_AUDIO           // Audio files
-  MEDIA_TYPE_DOCUMENT        // Document files
-  MEDIA_TYPE_SPREADSHEET     // Spreadsheet files
-  MEDIA_TYPE_PRESENTATION    // Presentation files
-  MEDIA_TYPE_PDF             // PDF files
-  MEDIA_TYPE_CODE            // Code files
-  MEDIA_TYPE_ZIP             // Compressed files
-  MEDIA_TYPE_3D              // 3D model files
-  MEDIA_TYPE_AR              // Augmented Reality files
-  MEDIA_TYPE_CAD             // CAD files
-  MEDIA_TYPE_VECTOR          // Vector graphics files
+  MEDIA_TYPE_UNSPECIFIED // Media type not specified
+  MEDIA_TYPE_IMAGE // Image files
+  MEDIA_TYPE_VIDEO // Video files
+  MEDIA_TYPE_AUDIO // Audio files
+  MEDIA_TYPE_DOCUMENT // Document files
+  MEDIA_TYPE_SPREADSHEET // Spreadsheet files
+  MEDIA_TYPE_PRESENTATION // Presentation files
+  MEDIA_TYPE_PDF // PDF files
+  MEDIA_TYPE_CODE // Code files
+  MEDIA_TYPE_ZIP // Compressed files
+  MEDIA_TYPE_3D // 3D model files
+  MEDIA_TYPE_AR // Augmented Reality files
+  MEDIA_TYPE_CAD // CAD files
+  MEDIA_TYPE_VECTOR // Vector graphics files
 }
 
 // Enum representing different types of posts
 enum PostType {
   POST_TYPE_UNSPECIFIED // Post type not specified
-  POST                  // Standard post
-  REPOST                // Shared post
-  QUESTION              // Question post
-  ACHIEVEMENT           // Achievement announcement
-  ANNOUNCEMENT          // General announcement
-  POLL                  // Poll post
-  ARTICLE               // Article post
-  SHORT_STORY           // Short story post
+  POST // Standard post
+  REPOST // Shared post
+  QUESTION // Question post
+  ACHIEVEMENT // Achievement announcement
+  ANNOUNCEMENT // General announcement
+  POLL // Poll post
+  ARTICLE // Article post
+  SHORT_STORY // Short story post
 }
 
 // Enum representing types of accounts
 enum AccountType {
   ACCOUNT_TYPE_UNSPECIFIED // Account type not specified
-  USER                     // Individual user account
-  COMMUNITY                // Community account
+  USER // Individual user account
+  COMMUNITY // Community account
 }
 
 // Enum representing participant types in a thread
 enum ThreadParticipantType {
   THREAD_PARTICIPANT_TYPE_UNSPECIFIED // Participant type not specified
-  PARENT                              // Original poster in the thread
-  PARTICIPANT                         // Participant in the thread
+  PARENT // Original poster in the thread
+  PARTICIPANT // Participant in the thread
 }
 
 // Enum representing categories for content
 enum Category {
   CATEGORY_UNSPECIFIED // Category not specified
-  WORLD                // World news and events
-  BUSINESS             // Business-related content
-  ECONOMICS            // Economics-related content
-  FOREIGN_POLICY       // Foreign policy topics
-  POLITICS             // Political topics
-  TECHNOLOGY           // Technology-related content
-  OTHER                // Other categories not specified
+  WORLD // World news and events
+  BUSINESS // Business-related content
+  ECONOMICS // Economics-related content
+  FOREIGN_POLICY // Foreign policy topics
+  POLITICS // Political topics
+  TECHNOLOGY // Technology-related content
+  OTHER // Other categories not specified
 }
 
 // Enum representing different types of spaces
 enum SpaceType {
   SPACE_TYPE_UNSPECIFIED // Space type not specified
-  TEAM                   // Team space
-  PROJECT                // Project space
-  DEPARTMENT             // Departmental space
-  ANNOUNCEMENT           // Space for announcements
-  KNOWLEDGE_BASE         // Knowledge base space
-  SOCIAL                 // Social space
-  LEARNING               // Learning space
-  INNOVATION             // Innovation space
+  TEAM // Team space
+  PROJECT // Project space
+  DEPARTMENT // Departmental space
+  ANNOUNCEMENT // Space for announcements
+  KNOWLEDGE_BASE // Knowledge base space
+  SOCIAL // Social space
+  LEARNING // Learning space
+  INNOVATION // Innovation space
 }
 
 // Enum representing different types of AI models
 enum AIModelType {
   AI_MODEL_UNSPECIFIED // AI model type not specified
-  TEXT                 // Text models
-  IMAGE                // Image models
-  AUDIO                // Audio models
-  CODE                 // Code models
-  TRANSLATION          // Translation models
-  SUMMARIZATION        // Summarization models
+  TEXT // Text models
+  IMAGE // Image models
+  AUDIO // Audio models
+  CODE // Code models
+  TRANSLATION // Translation models
+  SUMMARIZATION // Summarization models
 }
 
 // Enum representing access levels for spaces or content
 enum AccessLevel {
-  PUBLIC        // Accessible to everyone
-  PRIVATE       // Accessible only to specific users
-  RESTRICTED    // Restricted access based on criteria
-  ORGANIZATION  // Accessible within the organization
+  PUBLIC // Accessible to everyone
+  PRIVATE // Accessible only to specific users
+  RESTRICTED // Restricted access based on criteria
+  ORGANIZATION // Accessible within the organization
 }
 
 //
@@ -189,21 +189,26 @@ enum AccessLevel {
 //
 
 // Model representing a virtual profile, which can be either a user or community profile
+// Core organization model
 model VirtualProfile {
-  id               String             @id @default(uuid()) // Unique identifier
-  userId           String?            @map("user_id") // Optional reference to the user ID
-  profileType      String?            @map("profile_type") // Type of profile (e.g., user, community)
-  activated        Boolean?           @default(true) // Indicates if the profile is activated
-  metadata         Json? // Flexible metadata storage
-  createdAt        DateTime           @default(now()) @map("created_at") // Timestamp when created
-  updatedAt        DateTime           @updatedAt @map("updated_at") // Timestamp when last updated
+  id          String   @id @default(uuid()) // Unique identifier
+  userId      String?  @map("user_id") // Optional reference to the user ID
+  profileType String?  @map("profile_type") // Type of profile (e.g., user, community)
+  activated   Boolean? @default(true) // Indicates if the profile is activated
+  metadata    Json? // Flexible metadata storage
+  createdAt   DateTime @default(now()) @map("created_at") // Timestamp when created
+  updatedAt   DateTime @updatedAt @map("updated_at") // Timestamp when last updated
 
   // Relations
   userProfile      UserProfile[] // One-to-many relation to UserProfile
   communityProfile CommunityProfile[] // One-to-many relation to CommunityProfile
+  organizationId   String
+  tenantId         String
 
   // Indexes
   @@index([userId]) // Index on userId
+  @@index([organizationId])
+  @@index([tenantId])
   @@map("virtual_profiles") // Maps to the "virtual_profiles" table in the database
 }
 
@@ -325,14 +330,14 @@ model Publication {
 
 // Model representing media files like images, videos, documents, etc.
 model Media {
-  id            String   @id @default(uuid()) // Unique identifier
+  id            String    @id @default(uuid()) // Unique identifier
   mediaType     MediaType // Type of media
   status        String // Processing status of the media
   fileContent   String? // Content of the file (if applicable)
   fileName      String // Name of the file
   transcription String? // Transcription of audio or video content
   extractedText String? // Extracted text from documents or images
-  createdAt     DateTime @default(now()) // Timestamp when created
+  createdAt     DateTime  @default(now()) // Timestamp when created
 
   // Relations
   commentReplies CommentReply[] // Comment replies associated with the media
@@ -348,9 +353,9 @@ model Media {
 
 // Model representing a post created by a user
 model Post {
-  id            String     @id @default(uuid()) // Unique identifier
-  authorId      String     @map("author_id") // Reference to the author (UserProfile)
-  communityId   String?    @map("community_id") // Reference to the community (if any)
+  id            String  @id @default(uuid()) // Unique identifier
+  authorId      String  @map("author_id") // Reference to the author (UserProfile)
+  communityId   String? @map("community_id") // Reference to the community (if any)
   parentSpaceId String? // Reference to the parent space (if any)
 
   // Basic Information
@@ -360,7 +365,7 @@ model Post {
   status         PostStatus @default(PUBLISHED) // Status of the post
   workflowStatus String? // Workflow status (e.g., draft, in review)
   assignedTo     String? // User assigned to the post (for workflow)
-  contentFormat  String    @default("markdown") // Format of the content (e.g., markdown)
+  contentFormat  String     @default("markdown") // Format of the content (e.g., markdown)
   createdAt      DateTime   @default(now()) @map("created_at") // Timestamp when created
   updatedAt      DateTime   @updatedAt @map("updated_at") // Timestamp when last updated
   publishedAt    DateTime? // Timestamp when published
@@ -384,15 +389,15 @@ model Post {
   topicName String? // Topic name associated with the post
 
   // Media and Files
-  media              Media?       @relation(fields: [mediaId], references: [id]) // Media associated with the post
+  media              Media?  @relation(fields: [mediaId], references: [id]) // Media associated with the post
   mediaId            String?
   backgroundImageUrl String? // Background image URL for the post
   files              File[] // Files attached to the post
 
   // Engagement Metrics
-  affinityScore            Int      @default(0) // Affinity score for personalized ranking
-  qualityScore             Int      @default(0) // Quality score of the post
-  viewCount                Int      @default(0) @map("view_count") // Number of views
+  affinityScore            Int   @default(0) // Affinity score for personalized ranking
+  qualityScore             Int   @default(0) // Quality score of the post
+  viewCount                Int   @default(0) @map("view_count") // Number of views
   userIdToAffinityScoreMap Json? // Map of user IDs to affinity scores
   userIdToReportsMap       Json? // Map of user IDs to reports
   userIdToReactionMap      Json? // Map of user IDs to reactions
@@ -415,20 +420,28 @@ model Post {
   reports      Report[]          @relation("ReportedPost") // Reports made against the post
   notes        Note[] // Notes associated with the post
   threadId     String? // Reference to the thread ID
-  thread       Thread?   @relation(fields: [threadId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the thread
+  thread       Thread?           @relation(fields: [threadId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the thread
   spaceId      String? // Reference to the space ID
-  space        Space?    @relation(fields: [spaceId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the space
+  space        Space?            @relation(fields: [spaceId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the space
   channelId    String? // Reference to the channel ID
-  channel      Channel?  @relation(fields: [channelId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the channel
+  channel      Channel?          @relation(fields: [channelId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the channel
 
   // Additional Features
-  extra      Json? // Custom metadata
-  visibility Visibility @default(PUBLIC) // Visibility of the post
-  isPinned   Boolean   @default(false) @map("is_pinned") // Indicates if the post is pinned
-  isArchived Boolean   @default(false) @map("is_archived") // Indicates if the post is archived
-  workflow   Json? // Workflow state information
-  version    Int       @default(1) // Version number for the post
+  extra          Json? // Custom metadata
+  visibility     Visibility @default(PUBLIC) // Visibility of the post
+  isPinned       Boolean    @default(false) @map("is_pinned") // Indicates if the post is pinned
+  isArchived     Boolean    @default(false) @map("is_archived") // Indicates if the post is archived
+  workflow       Json? // Workflow state information
+  version        Int        @default(1) // Version number for the post
+  organizationId String?    @map("organization_id")
+  tenantId       String?    @map("tenant_id")
 
+  // Add tenant-specific fields
+  tenantVisibility   Boolean @default(true) // Visibility within tenant
+  crossTenantSharing Boolean @default(false) // Allow sharing across tenants
+
+  @@index([organizationId])
+  @@index([tenantId])
   // Indexes for efficient querying
   @@index([authorId, createdAt], name: "idx_author_timestamp") // Index on authorId and creation time
   @@index([visibility, createdAt], name: "idx_content_access") // Index on visibility and creation time
@@ -486,7 +499,15 @@ model PollPost {
   extra          Json? // Custom metadata
   searchMetadata Json? // Metadata for search indexing
   aiAnalysis     Json? // AI analysis results
+  organizationId String? @map("organization_id")
+  tenantId       String? @map("tenant_id")
 
+  // Add tenant-specific fields
+  tenantVisibility   Boolean @default(true) // Visibility within tenant
+  crossTenantSharing Boolean @default(false) // Allow sharing across tenants
+
+  @@index([organizationId])
+  @@index([tenantId])
   // Indexes
   @@index([backendPlatformUserId]) // Index on backendPlatformUserId
   @@index([createdAt], name: "idx_poll_created_at") // Index on creation time
@@ -512,8 +533,8 @@ model Comment {
   authorAccountType     AccountType // Account type of the author
 
   // Metrics
-  affinityScore            Int      @default(0) // Affinity score for ranking
-  qualityScore             Int      @default(0) // Quality score of the comment
+  affinityScore            Int   @default(0) // Affinity score for ranking
+  qualityScore             Int   @default(0) // Quality score of the comment
   userIdToAffinityScoreMap Json? // Map of user IDs to affinity scores
   userIdToReportsMap       Json? // Map of user IDs to reports
   userIdToReactionMap      Json? // Map of user IDs to reactions
@@ -523,8 +544,8 @@ model Comment {
   hashtags String[] // Hashtags used in the comment
 
   // Media
-  media     Media?   @relation(fields: [mediaId], references: [id]) // Media associated with the comment
-  mediaId   String?
+  media   Media?  @relation(fields: [mediaId], references: [id]) // Media associated with the comment
+  mediaId String?
 
   // Relations
   replies    CommentReply[] // Replies to the comment
@@ -538,15 +559,15 @@ model Comment {
   extra      Json? // Custom metadata
   aiAnalysis Json? // AI analysis results
 
+  // Relations for reports and reactions
+  Report      Report[]      @relation("ReportedComment") // Reports made against the comment
+  Reaction    Reaction[] // Reactions to the comment
+  UserProfile UserProfile[] // User profiles associated with the comment
+
   // Indexes
   @@index([postId]) // Index on postId
   @@index([postId, createdAt], name: "idx_comment_post_time") // Index on postId and creation time
   @@index([authorId, createdAt], name: "idx_comment_author_time") // Index on authorId and creation time
-
-  // Relations for reports and reactions
-  Report      Report[]    @relation("ReportedComment") // Reports made against the comment
-  Reaction    Reaction[] // Reactions to the comment
-  UserProfile UserProfile[] // User profiles associated with the comment
 }
 
 // Model representing a reply to a comment
@@ -563,8 +584,8 @@ model CommentReply {
   authorAccountType     AccountType // Account type of the author
 
   // Metrics
-  affinityScore            Int      @default(0) // Affinity score for ranking
-  qualityScore             Int      @default(0) // Quality score of the reply
+  affinityScore            Int   @default(0) // Affinity score for ranking
+  qualityScore             Int   @default(0) // Quality score of the reply
   userIdToAffinityScoreMap Json? // Map of user IDs to affinity scores
   userIdToReportsMap       Json? // Map of user IDs to reports
   userIdToReactionMap      Json? // Map of user IDs to reactions
@@ -574,8 +595,8 @@ model CommentReply {
   hashtags String[] // Hashtags used in the reply
 
   // Media
-  media     Media?   @relation(fields: [mediaId], references: [id]) // Media associated with the reply
-  mediaId   String?
+  media   Media?  @relation(fields: [mediaId], references: [id]) // Media associated with the reply
+  mediaId String?
 
   // Relations
   comment   Comment @relation(fields: [commentId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the parent comment
@@ -751,21 +772,21 @@ model Notification {
 
 // Model representing a space (like a group or project)
 model Space {
-  id          String        @id @default(uuid()) // Unique identifier
+  id          String     @id @default(uuid()) // Unique identifier
   name        String // Name of the space
   description String? // Description of the space
   type        SpaceType // Type of space
-  createdAt   DateTime      @default(now()) // Timestamp when created
-  updatedAt   DateTime      @updatedAt // Timestamp when last updated
+  createdAt   DateTime   @default(now()) // Timestamp when created
+  updatedAt   DateTime   @updatedAt // Timestamp when last updated
   spaceType   String // Custom space type
   status      String // Status of the space
   visibility  Visibility // Visibility level of the space
 
   // Relations
-  members     SpaceMember[] // Members of the space
-  channels    Channel[] // Channels within the space
-  posts       Post[] // Posts within the space
-  files       File[] // Files associated with the space
+  members  SpaceMember[] // Members of the space
+  channels Channel[] // Channels within the space
+  posts    Post[] // Posts within the space
+  files    File[] // Files associated with the space
 
   // Hierarchy
   parentSpace   Space?  @relation("SpaceHierarchy", fields: [parentSpaceId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Parent space
@@ -815,10 +836,14 @@ model Channel {
   members ChannelMember[] // Members of the channel
 
   // Settings
-  isPrivate Boolean @default(false) // Indicates if the channel is private
-  metadata  Json? // Additional metadata
-  settings  Json? // Channel-specific settings
+  isPrivate      Boolean @default(false) // Indicates if the channel is private
+  metadata       Json? // Additional metadata
+  settings       Json? // Channel-specific settings
+  organizationId String? @map("organization_id")
+  tenantId       String? @map("tenant_id")
 
+  @@index([organizationId])
+  @@index([tenantId])
   // Indexes
   @@index([spaceId]) // Index on spaceId
   @@index([spaceId, status], name: "idx_channel_status") // Index on spaceId and status
@@ -844,10 +869,14 @@ model Thread {
   pollPosts PollPost[] // Poll posts in the thread
 
   // Additional Features
-  metadata Json? // Additional metadata
-  status   String  @default("active") // Status of the thread
-  isLocked Boolean @default(false) // Indicates if the thread is locked
+  metadata       Json? // Additional metadata
+  status         String  @default("active") // Status of the thread
+  isLocked       Boolean @default(false) // Indicates if the thread is locked
+  organizationId String? @map("organization_id")
+  tenantId       String? @map("tenant_id")
 
+  @@index([organizationId])
+  @@index([tenantId])
   // Indexes
   @@index([parentPostId]) // Index on parentPostId
   @@index([createdAt], name: "idx_thread_created_at") // Index on creation time
@@ -940,7 +969,7 @@ model ChannelMember {
 
 // Model representing a file uploaded to the system
 model File {
-  id       String       @id @default(uuid()) // Unique identifier
+  id       String    @id @default(uuid()) // Unique identifier
   name     String // Name of the file
   type     MediaType // Type of the file
   url      String // URL where the file is stored
@@ -962,9 +991,9 @@ model File {
 
   // Relations
   posts     Post[] // Posts that include this file
-  space     Space?       @relation(fields: [spaceId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the space
+  space     Space?   @relation(fields: [spaceId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the space
   spaceId   String?
-  channel   Channel?     @relation(fields: [channelId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the channel
+  channel   Channel? @relation(fields: [channelId], references: [id], onDelete: NoAction, onUpdate: NoAction) // Relation to the channel
   channelId String?
 
   // Indexes
