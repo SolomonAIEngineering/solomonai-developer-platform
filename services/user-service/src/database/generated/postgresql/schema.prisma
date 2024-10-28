@@ -1,7 +1,58 @@
+/// ------------------------------------------------------
+/// Multi-tenant Organization Management System Schema
+/// ------------------------------------------------------
+///
+/// This schema implements a hierarchical multi-tenant architecture:
+/// 1. Organizations (Top level - your direct customers)
+/// 2. Tenants (Sub-organizations within each organization)
+/// 3. Teams (Collaborative groups within organizations/tenants)
+/// 4. Users/Business Accounts (End users within the hierarchy)
+///
+/// Key Features:
+/// - Complete multi-tenant isolation
+/// - Team-based collaboration
+/// - Comprehensive audit logging
+/// - Flexible address management
+/// - Hierarchical settings management
+///
+/// Usage Example:
+/// ```typescript
+/// // Create new organization with tenant and team
+/// const setup = await prisma.$transaction(async (tx) => {
+///   // Create organization
+///   const org = await tx.organizations.create({
+///     data: {
+///       name: 'Enterprise Corp',
+///       subscription_tier: 'business',
+///       email: 'admin@enterprise.com',
+///       tenants: {
+///         create: {
+///           name: 'Division A',
+///           status: 'active'
+///         }
+///       }
+///     }
+///   });
+///
+///   // Create team
+///   const team = await tx.teams.create({
+///     data: {
+///       organization_id: org.id,
+///       tenant_id: org.tenants[0].id,
+///       name: 'Engineering',
+///       team_type: 'department',
+///       created_by: 'auth0|123'
+///     }
+///   });
+///
+///   return { org, team };
+/// });
+/// ```
+
 generator client {
   provider        = "prisma-client-js"
   output          = "../src/database/generated/postgresql"
-  previewFeatures = ["fullTextIndex"]
+  previewFeatures = ["fullTextIndex", "multiSchema"]
 }
 
 datasource db {
@@ -9,284 +60,733 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model a_ipowered_insights {
-  areas_of_interest            String[]
-  business_account_settings_id BigInt?
-  data_sharing                 Boolean?
-  id                           BigInt                     @id @default(autoincrement())
-  insight_frequency            String?
-  business_account_settings    business_account_settings? @relation(fields: [business_account_settings_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_business_account_settings_ai_powered_insights")
+/// Organization represents your direct customers (businesses using your platform)
+/// Each organization can have multiple tenants, teams, and user accounts
+///
+/// Usage:
+/// ```typescript
+/// // Create organization with subscription
+/// const org = await prisma.organizations.create({
+///   data: {
+///     name: 'Acme Corp',
+///     subscription_tier: 'business',
+///     email: 'admin@acme.com',
+///     metadata: {
+///       industry: 'technology',
+///       size: 'enterprise'
+///     }
+///   }
+/// });
+/// ```
+model organizations {
+  id                  String   @id @db.VarChar(100)
+  name                String   @db.VarChar(255)
+  display_name        String?  @db.VarChar(255)
+  domain              String?  @db.VarChar(255)
+  subscription_tier   String   @db.VarChar(50) /// Tier levels: 'free', 'premium', 'enterprise'
+  subscription_status String   @db.VarChar(50) /// Status: 'active', 'suspended', 'trialing'
+  email               String   @unique @db.VarChar(255)
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+  is_active           Boolean  @default(true)
+  metadata            Json?    @db.JsonB /// Flexible storage for organization details
+  max_users           Int? /// User limit based on subscription
+  technical_contact   String?  @db.VarChar(255)
+
+  user_id           String? @db.VarChar(100) // Auth0 or other identity provider ID - NOTE: globally unique
+  storage_quota     BigInt // Total storage quota for organization
+  used_storage      BigInt  @default(0)
+  max_workspaces    Int? // Limit based on subscription
+  max_members       Int? // Limit based on subscription
+  api_key_prefix    String  @unique @db.VarChar(10)
+  security_settings Json?   @db.JsonB // Security and compliance settings
+  feature_flags     Json?   @db.JsonB // Enabled features based on subscription
+
+  // Relations
+  tenants           tenants[]
+  org_members       org_members[]
+  org_api_keys      org_api_keys[]
+  org_usage_logs    org_usage_logs[]
+  business_accounts business_accounts[]
+  user_accounts     user_accounts[]
+  teams             teams[]
+  audit_logs        audit_logs[]
+
+  @@index([subscription_status])
+  @@index([subscription_tier])
+  @@index([domain])
 }
 
-model account_informations {
-  business_account_settings_id BigInt?
-  business_name                String?
-  business_registration_number String?
-  business_type                String?
-  id                           BigInt                     @id @default(autoincrement())
-  business_account_settings    business_account_settings? @relation(fields: [business_account_settings_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_business_account_settings_account_information")
-  contact_informations         contact_informations[]
+/// Tenants represent your customers' customers.
+/// Each tenant has isolated storage and can have its own
+/// workspaces, quotas, and API keys.
+///
+/// Example:
+/// ```typescript
+/// // Create tenant with custom quota
+/// const tenant = await prisma.tenants.create({
+///   data: {
+///     id: 'tenant_789',
+///     organization_id: 'org_123',
+///     name: 'Customer LLC',
+///     storage_quota: 50000000000, // 50GB
+///     metadata: {
+///       industry: 'healthcare',
+///       compliance_level: 'hipaa'
+///     }
+///   }
+/// });
+/// ```
+model tenants {
+  id              String   @id @db.VarChar(100)
+  organization_id String   @db.VarChar(100)
+  name            String   @db.VarChar(255)
+  external_id     String?  @db.VarChar(255) // Customer's internal identifier
+  status          String   @db.VarChar(50) // 'active', 'suspended', 'deleted'
+  created_at      DateTime @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime @updatedAt @db.Timestamptz(6)
+  storage_quota   BigInt? // Optional tenant-specific quota
+  used_storage    BigInt   @default(0)
+  metadata        Json?    @db.JsonB
+  custom_domain   String?  @db.VarChar(255)
+  email           String?  @db.VarChar(255) /// Primary contact email
+
+  // Relations
+  organization      organizations       @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+  business_accounts business_accounts[]
+  user_accounts     user_accounts[]
+  settings          settings[]
+  teams             teams[]
+  audit_logs        audit_logs[]
+  tenant_api_keys   tenant_api_keys[]
+  tenant_usage_logs tenant_usage_logs[]
+
+  @@index([organization_id])
+  @@index([external_id])
+  @@index([status])
 }
 
-model addresses {
-  address             String?
-  city                String?
-  id                  BigInt             @id @default(autoincrement())
-  lattitude           String?
-  longitude           String?
-  state               String?
-  unit                String?
-  user_account_id     BigInt?
-  zipcode             String?
-  business_account_id BigInt?
-  business_accounts   business_accounts? @relation(fields: [business_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_business_accounts_address")
-  user_accounts       user_accounts?     @relation(fields: [user_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_accounts_address")
-}
-
-model business_account_settings {
-  business_account_id   BigInt?
-  id                    BigInt                  @id @default(autoincrement())
-  a_ipowered_insights   a_ipowered_insights[]
-  account_informations  account_informations[]
-  business_accounts     business_accounts?      @relation(fields: [business_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_business_accounts_business_account_settings")
-  financial_preferences financial_preferences[]
-  integration_settings  integration_settings[]
-  notification_settings notification_settings[]
-}
-
-model business_accounts {
-  account_type                                                    String?
-  authn_account_id                                                BigInt?
-  bio                                                             String?
-  company_description                                             String?
-  company_established_date                                        String?
-  company_industry_type                                           String?
-  company_name                                                    String?
-  company_website_url                                             String?
-  created_at                                                      DateTime?                   @db.Timestamptz(6)
-  email                                                           String?
-  headline                                                        String?
-  id                                                              BigInt                      @id @default(autoincrement())
-  is_active                                                       Boolean?
-  is_email_verified                                               Boolean?
-  is_private                                                      Boolean?
-  phone_number                                                    String?
-  username                                                        String?
-  verified_at                                                     DateTime?                   @db.Timestamptz(6)
-  auth0_user_id                                                   String?
-  profile_image_url                                               String?
-  algolia_user_id                                                 String?
-  member_business_accounts_team_id                                BigInt?
-  role_id                                                         BigInt?
-  supabase_auth0_user_id                                          String?
-  team_admin_team_id                                              BigInt?
-  addresses                                                       addresses[]
-  business_account_settings                                       business_account_settings[]
-  roles_business_accounts_role_idToroles                          roles?                      @relation("business_accounts_role_idToroles", fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_roles_business")
-  teams_business_accounts_member_business_accounts_team_idToteams teams?                      @relation("business_accounts_member_business_accounts_team_idToteams", fields: [member_business_accounts_team_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_teams_member_business_accounts")
-  teams_business_accounts_team_admin_team_idToteams               teams?                      @relation("business_accounts_team_admin_team_idToteams", fields: [team_admin_team_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_teams_team_admin")
-  roles_roles_business_account_idTobusiness_accounts              roles[]                     @relation("roles_business_account_idTobusiness_accounts")
-  settings                                                        settings[]
-  tags                                                            tags[]
-}
-
-model contact_informations {
-  account_information_id BigInt?
-  address                String?
-  email                  String?
-  id                     BigInt                @id @default(autoincrement())
-  phone_number           String?
-  account_informations   account_informations? @relation(fields: [account_information_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_account_informations_contact_info")
-}
-
-model digital_worker_settings {
-  enable_logging Boolean?
-  id             BigInt    @id @default(autoincrement())
-  settings_id    BigInt?
-  worker_name    String?
-  worker_version String?
-  settings       settings? @relation(fields: [settings_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_settings_digital_worker_settings")
-}
-
-model financial_preferences {
-  business_account_settings_id BigInt?
-  currency_preference          String?
-  financial_year_start         String?
-  id                           BigInt                     @id @default(autoincrement())
-  settings_id                  BigInt?
-  tax_code                     String?
-  tax_percentage               Decimal?                   @db.Decimal
-  business_account_settings    business_account_settings? @relation(fields: [business_account_settings_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_business_account_settings_financial_preferences")
-  settings                     settings?                  @relation(fields: [settings_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_settings_financial_preferences")
-  tax_settings                 tax_settings[]
-}
-
-model integration_settings {
-  bank_account_linking         Boolean?
-  business_account_settings_id BigInt?
-  id                           BigInt                     @id @default(autoincrement())
-  third_party_apps             String[]
-  business_account_settings    business_account_settings? @relation(fields: [business_account_settings_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_business_account_settings_integration_settings")
-}
-
-model notification_settings {
-  alerts                       Boolean?
-  business_account_settings_id BigInt?
-  id                           BigInt                     @id @default(autoincrement())
-  notification_type            String?
-  settings_id                  BigInt?
-  business_account_settings    business_account_settings? @relation(fields: [business_account_settings_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_business_account_settings_notification_settings")
-  settings                     settings?                  @relation(fields: [settings_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_settings_notification_settings")
-}
-
-model role_audit_events {
-  action          String?
-  affected_fields String[]
-  client_ip       String?
-  context         String?
+/// Organization members represent users who can manage
+/// the organization settings, view usage, and manage tenants.
+///
+/// Example:
+/// ```typescript
+/// // Add admin member to organization
+/// const member = await prisma.org_members.create({
+///   data: {
+///     organization_id: 'org_123',
+///     user_id: 'auth0|123',
+///     role: 'admin',
+///     email: 'admin@startup.com',
+///     permissions: ['manage_tenants', 'view_usage', 'manage_api_keys']
+///   }
+/// });
+/// ```
+model org_members {
   id              BigInt    @id @default(autoincrement())
-  performed_by    String?
-  previous_values String[]
-  role_id         BigInt?
-  timestamp       DateTime? @db.Timestamptz(6)
-  user_agent      String?
-  roles           roles?    @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_roles_audit_log")
+  organization_id String    @db.VarChar(100)
+  user_id         String    @db.VarChar(100) // Auth0 or other identity provider ID
+  role            String    @db.VarChar(50) // 'owner', 'admin', 'member'
+  email           String    @db.VarChar(255)
+  name            String?   @db.VarChar(255)
+  joined_at       DateTime  @default(now()) @db.Timestamptz(6)
+  invited_by      String?   @db.VarChar(100)
+  status          String    @db.VarChar(50) // 'active', 'invited', 'suspended'
+  last_access     DateTime? @db.Timestamptz(6)
+  permissions     String[] // Array of specific permissions
 
-  @@index([action], map: "idx_role_audit_events_action")
-  @@index([performed_by], map: "idx_role_audit_events_performed_by")
-  @@index([timestamp], map: "idx_role_audit_events_timestamp")
+  organization organizations @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+
+  @@unique([organization_id, user_id])
+  @@index([organization_id])
+  @@index([user_id])
+  @@index([email])
 }
 
-model roles {
-  business_account_id                                            BigInt?
-  can_create_projects                                            Boolean?
-  can_create_reports                                             Boolean?
-  can_create_users                                               Boolean?
-  can_delete_projects                                            Boolean?
-  can_delete_reports                                             Boolean?
-  can_delete_users                                               Boolean?
-  can_read_projects                                              Boolean?
-  can_read_reports                                               Boolean?
-  can_read_users                                                 Boolean?
-  can_update_projects                                            Boolean?
-  can_update_reports                                             Boolean?
-  can_update_users                                               Boolean?
-  created_at                                                     DateTime?           @db.Timestamptz(6)
-  id                                                             BigInt              @id @default(autoincrement())
-  name                                                           String?
-  type                                                           String?
-  updated_at                                                     DateTime?           @db.Timestamptz(6)
-  user_account_id                                                BigInt?
-  team_id                                                        BigInt?
-  business_accounts_business_accounts_role_idToroles             business_accounts[] @relation("business_accounts_role_idToroles")
-  role_audit_events                                              role_audit_events[]
-  business_accounts_roles_business_account_idTobusiness_accounts business_accounts?  @relation("roles_business_account_idTobusiness_accounts", fields: [business_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_business_accounts_role")
-  teams_roles_team_idToteams                                     teams?              @relation("roles_team_idToteams", fields: [team_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_teams_roles")
-  user_accounts_roles_user_account_idTouser_accounts             user_accounts?      @relation("roles_user_account_idTouser_accounts", fields: [user_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_accounts_role")
-  teams_teams_role_idToroles                                     teams[]             @relation("teams_role_idToroles")
-  user_accounts_user_accounts_role_idToroles                     user_accounts[]     @relation("user_accounts_role_idToroles")
+/// API keys for organization-level access
+/// Used for managing tenants, viewing usage, and organization-wide operations
+///
+/// Example:
+/// ```typescript
+/// // Create new API key
+/// const apiKey = await prisma.org_api_keys.create({
+///   data: {
+///     organization_id: 'org_123',
+///     key_name: 'Tenant Management API',
+///     key_prefix: 'org_key_123',
+///     key_hash: hashedApiKey,
+///     scopes: ['manage_tenants', 'read_usage']
+///   }
+/// });
+/// ```
+model org_api_keys {
+  id              BigInt    @id @default(autoincrement())
+  organization_id String    @db.VarChar(100)
+  key_name        String    @db.VarChar(255)
+  key_prefix      String    @unique @db.VarChar(32)
+  key_hash        String    @db.VarChar(255) // Hashed API key
+  scopes          String[] // Array of permitted operations
+  expires_at      DateTime? @db.Timestamptz(6)
+  created_at      DateTime  @default(now()) @db.Timestamptz(6)
+  created_by      String    @db.VarChar(100)
+  last_used       DateTime? @db.Timestamptz(6)
+  is_active       Boolean   @default(true)
+
+  organization organizations @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+
+  @@index([organization_id])
+  @@index([key_prefix])
 }
 
-model settings {
-  app_theme               String?
-  business_account_id     BigInt?
-  id                      BigInt                    @id @default(autoincrement())
-  preferred_language      String?
-  risk_tolerance          String?
-  user_account_id         BigInt?
-  digital_worker_settings digital_worker_settings[]
-  financial_preferences   financial_preferences[]
-  notification_settings   notification_settings[]
-  business_accounts       business_accounts?        @relation(fields: [business_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_business_accounts_settings")
-  user_accounts           user_accounts?            @relation(fields: [user_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_accounts_settings")
+/// API keys for tenant-specific operations
+/// Used by tenants to access their own storage and manage their workspaces
+///
+/// Example:
+/// ```typescript
+/// // Create tenant API key
+/// const tenantKey = await prisma.tenant_api_keys.create({
+///   data: {
+///     tenant_id: 'tenant_456',
+///     key_name: 'Storage Access',
+///     key_prefix: 'tenant_key_789',
+///     key_hash: hashedApiKey,
+///     scopes: ['read_files', 'write_files']
+///   }
+/// });
+/// ```
+model tenant_api_keys {
+  id         BigInt    @id @default(autoincrement())
+  tenant_id  String    @db.VarChar(100)
+  key_name   String    @db.VarChar(255)
+  key_prefix String    @unique @db.VarChar(32)
+  key_hash   String    @db.VarChar(255)
+  scopes     String[]
+  expires_at DateTime? @db.Timestamptz(6)
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  created_by String    @db.VarChar(100)
+  last_used  DateTime? @db.Timestamptz(6)
+  is_active  Boolean   @default(true)
+
+  tenant tenants @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+
+  @@index([tenant_id])
+  @@index([key_prefix])
 }
 
-model tags {
-  id                  BigInt             @id @default(autoincrement())
-  metadata            String[]
-  tag_description     String?
-  tag_name            String?
+/// Tracks organization-level resource usage
+/// Used for billing and monitoring
+///
+/// Example:
+/// ```typescript
+/// // Log storage usage
+/// const usage = await prisma.org_usage_logs.create({
+///   data: {
+///     organization_id: 'org_123',
+///     event_type: 'storage',
+///     quantity: 1000000, // 1MB
+///     unit: 'bytes',
+///     details: { operation: 'file_upload', workspace_id: '123' }
+///   }
+/// });
+/// ```
+model org_usage_logs {
+  id              BigInt   @id @default(autoincrement())
+  organization_id String   @db.VarChar(100)
+  timestamp       DateTime @default(now()) @db.Timestamptz(6)
+  event_type      String   @db.VarChar(50) // 'storage', 'api', 'bandwidth'
+  quantity        BigInt // Amount of resource used
+  unit            String   @db.VarChar(20) // 'bytes', 'requests', 'mb'
+  details         Json?    @db.JsonB
+
+  organization organizations @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+
+  @@index([organization_id])
+  @@index([timestamp])
+  @@index([event_type])
+}
+
+/// Tracks tenant-level resource usage
+/// Used for monitoring and potential charge-back
+///
+/// Example:
+/// ```typescript
+/// // Log API usage
+/// const tenantUsage = await prisma.tenant_usage_logs.create({
+///   data: {
+///     tenant_id: 'tenant_456',
+///     event_type: 'api',
+///     quantity: 1,
+///     unit: 'requests',
+///     details: { endpoint: '/files/upload', status: 200 }
+///   }
+/// });
+/// ```
+model tenant_usage_logs {
+  id         BigInt   @id @default(autoincrement())
+  tenant_id  String   @db.VarChar(100)
+  timestamp  DateTime @default(now()) @db.Timestamptz(6)
+  event_type String   @db.VarChar(50)
+  quantity   BigInt
+  unit       String   @db.VarChar(20)
+  details    Json?    @db.JsonB
+
+  tenant tenants @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+
+  @@index([tenant_id])
+  @@index([timestamp])
+  @@index([event_type])
+}
+
+/// Teams enable collaboration within organizations and tenants
+/// Teams can span across user and business accounts
+///
+/// Usage:
+/// ```typescript
+/// // Create team with members
+/// const team = await prisma.teams.create({
+///   data: {
+///     organization_id: org.id,
+///     name: 'Product Team',
+///     team_type: 'project',
+///     created_by: 'auth0|123',
+///     team_members: {
+///       create: [
+///         {
+///           user_account_id: user1.id,
+///           role: 'admin'
+///         }
+///       ]
+///     }
+///   }
+/// });
+/// ```
+model teams {
+  id              BigInt   @id @default(autoincrement())
+  organization_id String
+  tenant_id       String?
+  name            String   @db.VarChar(100)
+  description     String?  @db.Text
+  team_type       String   @db.VarChar(50) /// Types: 'department', 'project', 'workgroup'
+  is_active       Boolean  @default(true)
+  metadata        Json?    @db.JsonB /// Team-specific metadata
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+  created_by      String   @db.VarChar(100) /// Auth0 ID of creator
+
+  // Relations
+  organization organizations  @relation(fields: [organization_id], references: [id])
+  tenant       tenants?       @relation(fields: [tenant_id], references: [id])
+  team_members team_members[]
+  addresses    addresses[]
+  audit_logs   audit_logs[]
+
+  @@unique([organization_id, name])
+  @@index([tenant_id])
+  @@index([created_at])
+  @@index([team_type])
+}
+
+/// Team membership management
+/// Tracks who belongs to which teams and their roles
+///
+/// Usage:
+/// ```typescript
+/// // Add member to team
+/// const membership = await prisma.team_members.create({
+///   data: {
+///     team_id: team.id,
+///     user_account_id: user.id,
+///     role: 'member',
+///     invited_by: 'auth0|123'
+///   }
+/// });
+/// ```
+model team_members {
+  id                  BigInt   @id @default(autoincrement())
+  team_id             BigInt
+  user_account_id     BigInt?
+  business_account_id BigInt?
+  role                String   @db.VarChar(50) /// Roles: 'admin', 'member', 'guest'
+  joined_at           DateTime @default(now())
+  invited_by          String   @db.VarChar(100) /// Auth0 ID of inviter
+  status              String   @db.VarChar(50) /// Status: 'active', 'invited', 'suspended'
+  metadata            Json?    @db.JsonB /// Member-specific metadata
+
+  // Relations
+  team             teams              @relation(fields: [team_id], references: [id])
+  user_account     user_accounts?     @relation(fields: [user_account_id], references: [id])
+  business_account business_accounts? @relation(fields: [business_account_id], references: [id])
+
+  @@unique([team_id, user_account_id])
+  @@unique([team_id, business_account_id])
+  @@index([role])
+  @@index([status])
+}
+
+/// Business accounts represent organizational entities within the system
+///
+/// Usage:
+/// ```typescript
+/// // Create business account
+/// const business = await prisma.business_accounts.create({
+///   data: {
+///     organization_id: org.id,
+///     company_name: 'Acme Widgets',
+///     account_type: 'supplier',
+///     metadata: {
+///       tax_id: '123456',
+///       industry: 'manufacturing'
+///     }
+///   }
+/// });
+/// ```
+model business_accounts {
+  id              BigInt   @id @default(autoincrement())
+  organization_id String?
+  tenant_id       String?
+  account_type    String?  @db.VarChar(50) /// Type: 'customer', 'supplier', 'partner'
+  company_name    String?  @db.VarChar(255)
+  email           String?  @db.VarChar(255)
+  is_active       Boolean  @default(true)
+  auth0_user_id   String?  @db.VarChar(100)
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+  status          String?  @db.VarChar(50)
+  metadata        Json?    @db.JsonB
+
+  base_directory  String?   @db.VarChar(255) /// Root directory for user files
+  bucket_location String?   @db.VarChar(255) /// S3 bucket location
+  bucket_name     String?   @db.VarChar(100) /// S3 bucket name
+  region          String?   @db.VarChar(50) /// AWS region
+  last_access     DateTime? @db.Timestamptz(6) /// Last account access timestamp
+  storage_quota   BigInt? /// Maximum storage limit in bytes
+  used_storage    BigInt? /// Current storage usage in bytes
+
+  // Relations
+  organization     organizations? @relation(fields: [organization_id], references: [id], onDelete: NoAction)
+  tenant           tenants?       @relation(fields: [tenant_id], references: [id], onDelete: NoAction)
+  settings         settings[]
+  addresses        addresses[]
+  team_memberships team_members[]
+  audit_logs       audit_logs[]
+
+  @@index([organization_id])
+  @@index([tenant_id])
+  @@index([auth0_user_id])
+  @@index([email])
+  @@index([is_active])
+}
+
+/// User accounts represent individual users within the system
+///
+/// Usage:
+/// ```typescript
+/// // Create user account
+/// const user = await prisma.user_accounts.create({
+///   data: {
+///     organization_id: org.id,
+///     email: 'john@acme.com',
+///     auth0_user_id: 'auth0|123',
+///     metadata: {
+///       department: 'engineering',
+///       title: 'Senior Developer'
+///     }
+///   }
+/// });
+/// ```
+model user_accounts {
+  id              BigInt   @id @default(autoincrement())
+  organization_id String?
+  tenant_id       String?
+  email           String?  @db.VarChar(255)
+  firstname       String?  @db.VarChar(100)
+  lastname        String?  @db.VarChar(100)
+  auth0_user_id   String?  @db.VarChar(100) /// External auth provider ID
+  is_active       Boolean  @default(true)
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+  status          String?  @db.VarChar(50) /// Status: 'active', 'inactive', 'suspended'
+  metadata        Json?    @db.JsonB /// User-specific metadata
+
+  base_directory  String?   @db.VarChar(255) /// Root directory for user files
+  bucket_location String?   @db.VarChar(255) /// S3 bucket location
+  bucket_name     String?   @db.VarChar(100) /// S3 bucket name
+  region          String?   @db.VarChar(50) /// AWS region
+  last_access     DateTime? @db.Timestamptz(6) /// Last account access timestamp
+  storage_quota   BigInt? /// Maximum storage limit in bytes
+  used_storage    BigInt? /// Current storage usage in bytes
+
+  // Relations
+  organization     organizations?  @relation(fields: [organization_id], references: [id], onDelete: NoAction)
+  tenant           tenants?        @relation(fields: [tenant_id], references: [id], onDelete: NoAction)
+  user_settings    user_settings[]
+  settings         settings[]
+  addresses        addresses[]
+  team_memberships team_members[]
+  audit_logs       audit_logs[]
+
+  @@index([organization_id])
+  @@index([tenant_id])
+  @@index([email])
+  @@index([auth0_user_id])
+  @@index([is_active])
+}
+
+/// Address management for users, businesses, and teams
+///
+/// Usage:
+/// ```typescript
+/// // Add address to business account
+/// const address = await prisma.addresses.create({
+///   data: {
+///     business_account_id: business.id,
+///     addressable_type: 'business',
+///     address_type: 'billing',
+///     address_line1: '123 Main St',
+///     city: 'San Francisco',
+///     country: 'USA',
+///     is_primary: true
+///   }
+/// });
+/// ```
+model addresses {
+  id                  BigInt   @id @default(autoincrement())
+  addressable_type    String   @db.VarChar(50) /// Type: 'user', 'business', 'team'
   user_account_id     BigInt?
   business_account_id BigInt?
   team_id             BigInt?
-  business_accounts   business_accounts? @relation(fields: [business_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_business_accounts_tags")
-  teams               teams?             @relation(fields: [team_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_teams_tags")
-  user_accounts       user_accounts?     @relation(fields: [user_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_accounts_tags")
+  address_line1       String   @db.VarChar(255)
+  address_line2       String?  @db.VarChar(255)
+  city                String   @db.VarChar(100)
+  state               String   @db.VarChar(100)
+  country             String   @db.VarChar(100)
+  postal_code         String   @db.VarChar(20)
+  latitude            Decimal? @db.Decimal(10, 8)
+  longitude           Decimal? @db.Decimal(11, 8)
+  is_primary          Boolean  @default(false)
+  address_type        String   @db.VarChar(50) /// Type: 'billing', 'shipping', 'office'
+  metadata            Json?    @db.JsonB
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+
+  // Relations
+  user_account     user_accounts?     @relation(fields: [user_account_id], references: [id])
+  business_account business_accounts? @relation(fields: [business_account_id], references: [id])
+  team             teams?             @relation(fields: [team_id], references: [id])
+
+  @@index([user_account_id])
+  @@index([business_account_id])
+  @@index([team_id])
+  @@index([address_type])
+  @@index([postal_code])
+  @@index([latitude, longitude])
 }
 
-model tax_settings {
-  financial_preferences_id BigInt?
-  id                       BigInt                 @id @default(autoincrement())
-  tax_code                 String?
-  tax_percentage           Decimal?               @db.Decimal
-  financial_preferences    financial_preferences? @relation(fields: [financial_preferences_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_financial_preferences_tax_settings")
+/// Audit logs track all system changes and activities
+/// Provides comprehensive tracking of who did what and when
+model audit_logs {
+  id              BigInt   @id @default(autoincrement())
+  organization_id String?
+  tenant_id       String?
+  actor_type      String   @db.VarChar(50) /// Who: 'user', 'business', 'system'
+  actor_id        String   @db.VarChar(100) /// Auth0 ID or system identifier
+  event_type      String   @db.VarChar(100) /// What: 'create', 'update', 'delete'
+  entity_type     String   @db.VarChar(50) /// Target: 'user', 'team', 'business'
+  entity_id       BigInt /// ID of affected entity
+  change_summary  Json?    @db.JsonB /// What changed: { old: {}, new: {} }
+  metadata        Json?    @db.JsonB /// Additional context
+  ip_address      String?  @db.VarChar(45) /// Where: IP address
+  user_agent      String?  @db.Text /// How: Browser/client info
+  created_at      DateTime @default(now()) /// When: Timestamp
+
+  // Relations
+  organization     organizations?     @relation(fields: [organization_id], references: [id], map: "audit_logs_organization_id_fkey")
+  tenant           tenants?           @relation(fields: [tenant_id], references: [id], map: "audit_logs_tenant_id_fkey")
+  user_account     user_accounts?     @relation(fields: [entity_id], references: [id], map: "audit_logs_user_account_id_fkey")
+  business_account business_accounts? @relation(fields: [entity_id], references: [id], map: "audit_logs_business_account_id_fkey")
+  team             teams?             @relation(fields: [entity_id], references: [id], map: "audit_logs_team_id_fkey")
+
+  @@index([organization_id])
+  @@index([tenant_id])
+  @@index([actor_id])
+  @@index([event_type])
+  @@index([entity_type, entity_id])
+  @@index([created_at])
 }
 
-model teams {
-  created_at                                                                  DateTime?           @db.Timestamptz(6)
-  description                                                                 String?
-  id                                                                          BigInt              @id @default(autoincrement())
-  name                                                                        String?
-  role_id                                                                     BigInt?
-  updated_at                                                                  DateTime?           @db.Timestamptz(6)
-  business_accounts_business_accounts_member_business_accounts_team_idToteams business_accounts[] @relation("business_accounts_member_business_accounts_team_idToteams")
-  business_accounts_business_accounts_team_admin_team_idToteams               business_accounts[] @relation("business_accounts_team_admin_team_idToteams")
-  roles_roles_team_idToteams                                                  roles[]             @relation("roles_team_idToteams")
-  tags                                                                        tags[]
-  roles_teams_role_idToroles                                                  roles?              @relation("teams_role_idToroles", fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_roles_team")
-  user_accounts                                                               user_accounts[]
+/// Settings management for various entities in the system
+/// Provides flexible configuration storage
+///
+/// Usage:
+/// ```typescript
+/// // Create tenant settings
+/// const settings = await prisma.settings.create({
+///   data: {
+///     tenant_id: tenant.id,
+///     settings_data: {
+///       branding: {
+///         primary_color: '#FF0000',
+///         logo_url: 'https://...'
+///       },
+///       security: {
+///         mfa_required: true,
+///         session_timeout: 3600
+///       }
+///     }
+///   }
+/// });
+/// ```
+model settings {
+  id                  BigInt   @id @default(autoincrement())
+  organization_id     String?
+  tenant_id           String?
+  business_account_id BigInt?
+  user_account_id     BigInt?
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+  settings_data       Json?    @db.JsonB /// Flexible settings storage
+
+  // Relations
+  tenant            tenants?           @relation(fields: [tenant_id], references: [id])
+  business_accounts business_accounts? @relation(fields: [business_account_id], references: [id])
+  user_accounts     user_accounts?     @relation(fields: [user_account_id], references: [id])
+
+  @@index([organization_id])
+  @@index([tenant_id])
+  @@index([business_account_id])
+  @@index([user_account_id])
 }
 
-model user_accounts {
-  authn_account_id                           BigInt?
-  bio                                        String?
-  created_at                                 DateTime?       @db.Timestamptz(6)
-  email                                      String?
-  firstname                                  String?
-  headline                                   String?
-  id                                         BigInt          @id @default(autoincrement())
-  is_active                                  Boolean?
-  is_email_verified                          Boolean?
-  is_private                                 Boolean?
-  lastname                                   String?
-  phone_number                               String?
-  username                                   String?
-  verified_at                                DateTime?       @db.Timestamptz(6)
-  company_description                        String?
-  company_established_date                   String?
-  company_industry_type                      String?
-  company_name                               String?
-  company_website_url                        String?
-  profile_type                               String?
-  account_type                               String?
-  auth0_user_id                              String?
-  profile_image_url                          String?
-  algolia_user_id                            String?
-  role_id                                    BigInt?
-  supabase_auth0_user_id                     String?
-  team_id                                    BigInt?
-  addresses                                  addresses[]
-  roles_roles_user_account_idTouser_accounts roles[]         @relation("roles_user_account_idTouser_accounts")
-  settings                                   settings[]
-  tags                                       tags[]
-  roles_user_accounts_role_idToroles         roles?          @relation("user_accounts_role_idToroles", fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_roles_user")
-  teams                                      teams?          @relation(fields: [team_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_teams_member_users_accounts")
-  user_settings                              user_settings[]
-}
-
+/// User-specific settings and preferences
+///
+/// Usage:
+/// ```typescript
+/// // Create user settings
+/// const userSettings = await prisma.user_settings.create({
+///   data: {
+///     user_account_id: user.id,
+///     preferred_language: 'en',
+///     notification_settings: {
+///       email: true,
+///       push: false,
+///       frequency: 'daily'
+///     },
+///     ui_settings: {
+///       theme: 'dark',
+///       compact_view: true
+///     }
+///   }
+/// });
+/// ```
 model user_settings {
-  app_theme                         String?
-  datetime_format                   String?
-  default_currency                  String?
-  email_notifications               Boolean?
-  enable_goal_journal               Boolean?
-  id                                BigInt         @id @default(autoincrement())
-  investment_risk_tolerance         String?
-  preferred_language                String?
-  public_profile                    Boolean?
-  push_notifications                Boolean?
-  sms_notifications                 Boolean?
-  two_factor_authentication_enabled Boolean?
-  user_account_id                   BigInt?
-  user_accounts                     user_accounts? @relation(fields: [user_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_accounts_user_settings")
+  id                    BigInt   @id @default(autoincrement())
+  user_account_id       BigInt?
+  preferred_language    String?  @db.VarChar(10) /// ISO language code
+  notification_settings Json?    @db.JsonB /// Notification preferences
+  ui_settings           Json?    @db.JsonB /// UI/UX preferences
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+
+  // Relations
+  user_accounts user_accounts? @relation(fields: [user_account_id], references: [id])
+
+  @@index([user_account_id])
 }
+
+/// Implementation Notes:
+/// 1. Data Isolation:
+///    Always include organization_id and tenant_id in queries
+///    ```typescript
+///    prisma.$use(async (params, next) => {
+///      if (params.model in ['user_accounts', 'business_accounts', 'teams']) {
+///        params.args.where = {
+///          ...params.args.where,
+///          organization_id: currentOrgId,
+///          tenant_id: currentTenantId
+///        };
+///      }
+///      return next(params);
+///    });
+///    ```
+///
+/// 2. Audit Logging:
+///    Log all important operations
+///    ```typescript
+///    const createAuditLog = async (
+///      orgId: number,
+///      actorId: string,
+///      event: string,
+///      entityType: string,
+///      entityId: number,
+///      changes: any
+///    ) => {
+///      await prisma.audit_logs.create({
+///        data: {
+///          organization_id: orgId,
+///          actor_type: 'user',
+///          actor_id: actorId,
+///          event_type: event,
+///          entity_type: entityType,
+///          entity_id: entityId,
+///          change_summary: changes
+///        }
+///      });
+///    };
+///    ```
+///
+/// 3. Address Management:
+///    Support multiple address types
+///    ```typescript
+///    const addAddress = async (
+///      entityType: 'user' | 'business' | 'team',
+///      entityId: number,
+///      addressData: any
+///    ) => {
+///      return prisma.addresses.create({
+///        data: {
+///          addressable_type: entityType,
+///          [`${entityType}_id`]: entityId,
+///          ...addressData
+///        }
+///      });
+///    };
+///    ```
+///
+/// 4. Team Management:
+///    Handle team hierarchy and membership
+///    ```typescript
+///    const addTeamMember = async (
+///      teamId: number,
+///      userId: number,
+///      role: string
+///    ) => {
+///      const membership = await prisma.team_members.create({
+///        data: {
+///          team_id: teamId,
+///          user_account_id: userId,
+///          role: role,
+///          status: 'active'
+///        }
+///      });
+///
+///      await createAuditLog(
+///        team.organization_id,
+///        'system',
+///        'team.member.add',
+///        'team_member',
+///        membership.id,
+///        { role }
+///      );
+///
+///      return membership;
+///    };
+///    ```
+
+/// Security Considerations:
+/// 1. Always validate organization and tenant access
+/// 2. Implement role-based access control
+/// 3. Audit sensitive operations
+/// 4. Validate address data
+/// 5. Sanitize metadata inputs
+/// 6. Implement rate limiting
+/// 7. Regular security audits

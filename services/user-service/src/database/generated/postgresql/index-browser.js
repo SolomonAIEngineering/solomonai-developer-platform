@@ -122,224 +122,233 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.A_ipowered_insightsScalarFieldEnum = {
-  areas_of_interest: 'areas_of_interest',
-  business_account_settings_id: 'business_account_settings_id',
-  data_sharing: 'data_sharing',
-  id: 'id',
-  insight_frequency: 'insight_frequency'
-};
-
-exports.Prisma.Account_informationsScalarFieldEnum = {
-  business_account_settings_id: 'business_account_settings_id',
-  business_name: 'business_name',
-  business_registration_number: 'business_registration_number',
-  business_type: 'business_type',
-  id: 'id'
-};
-
-exports.Prisma.AddressesScalarFieldEnum = {
-  address: 'address',
-  city: 'city',
-  id: 'id',
-  lattitude: 'lattitude',
-  longitude: 'longitude',
-  state: 'state',
-  unit: 'unit',
-  user_account_id: 'user_account_id',
-  zipcode: 'zipcode',
-  business_account_id: 'business_account_id'
-};
-
-exports.Prisma.Business_account_settingsScalarFieldEnum = {
-  business_account_id: 'business_account_id',
-  id: 'id'
-};
-
-exports.Prisma.Business_accountsScalarFieldEnum = {
-  account_type: 'account_type',
-  authn_account_id: 'authn_account_id',
-  bio: 'bio',
-  company_description: 'company_description',
-  company_established_date: 'company_established_date',
-  company_industry_type: 'company_industry_type',
-  company_name: 'company_name',
-  company_website_url: 'company_website_url',
-  created_at: 'created_at',
-  email: 'email',
-  headline: 'headline',
-  id: 'id',
-  is_active: 'is_active',
-  is_email_verified: 'is_email_verified',
-  is_private: 'is_private',
-  phone_number: 'phone_number',
-  username: 'username',
-  verified_at: 'verified_at',
-  auth0_user_id: 'auth0_user_id',
-  profile_image_url: 'profile_image_url',
-  algolia_user_id: 'algolia_user_id',
-  member_business_accounts_team_id: 'member_business_accounts_team_id',
-  role_id: 'role_id',
-  supabase_auth0_user_id: 'supabase_auth0_user_id',
-  team_admin_team_id: 'team_admin_team_id'
-};
-
-exports.Prisma.Contact_informationsScalarFieldEnum = {
-  account_information_id: 'account_information_id',
-  address: 'address',
-  email: 'email',
-  id: 'id',
-  phone_number: 'phone_number'
-};
-
-exports.Prisma.Digital_worker_settingsScalarFieldEnum = {
-  enable_logging: 'enable_logging',
-  id: 'id',
-  settings_id: 'settings_id',
-  worker_name: 'worker_name',
-  worker_version: 'worker_version'
-};
-
-exports.Prisma.Financial_preferencesScalarFieldEnum = {
-  business_account_settings_id: 'business_account_settings_id',
-  currency_preference: 'currency_preference',
-  financial_year_start: 'financial_year_start',
-  id: 'id',
-  settings_id: 'settings_id',
-  tax_code: 'tax_code',
-  tax_percentage: 'tax_percentage'
-};
-
-exports.Prisma.Integration_settingsScalarFieldEnum = {
-  bank_account_linking: 'bank_account_linking',
-  business_account_settings_id: 'business_account_settings_id',
-  id: 'id',
-  third_party_apps: 'third_party_apps'
-};
-
-exports.Prisma.Notification_settingsScalarFieldEnum = {
-  alerts: 'alerts',
-  business_account_settings_id: 'business_account_settings_id',
-  id: 'id',
-  notification_type: 'notification_type',
-  settings_id: 'settings_id'
-};
-
-exports.Prisma.Role_audit_eventsScalarFieldEnum = {
-  action: 'action',
-  affected_fields: 'affected_fields',
-  client_ip: 'client_ip',
-  context: 'context',
-  id: 'id',
-  performed_by: 'performed_by',
-  previous_values: 'previous_values',
-  role_id: 'role_id',
-  timestamp: 'timestamp',
-  user_agent: 'user_agent'
-};
-
-exports.Prisma.RolesScalarFieldEnum = {
-  business_account_id: 'business_account_id',
-  can_create_projects: 'can_create_projects',
-  can_create_reports: 'can_create_reports',
-  can_create_users: 'can_create_users',
-  can_delete_projects: 'can_delete_projects',
-  can_delete_reports: 'can_delete_reports',
-  can_delete_users: 'can_delete_users',
-  can_read_projects: 'can_read_projects',
-  can_read_reports: 'can_read_reports',
-  can_read_users: 'can_read_users',
-  can_update_projects: 'can_update_projects',
-  can_update_reports: 'can_update_reports',
-  can_update_users: 'can_update_users',
-  created_at: 'created_at',
+exports.Prisma.OrganizationsScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  type: 'type',
+  display_name: 'display_name',
+  domain: 'domain',
+  subscription_tier: 'subscription_tier',
+  subscription_status: 'subscription_status',
+  email: 'email',
+  created_at: 'created_at',
   updated_at: 'updated_at',
-  user_account_id: 'user_account_id',
-  team_id: 'team_id'
-};
-
-exports.Prisma.SettingsScalarFieldEnum = {
-  app_theme: 'app_theme',
-  business_account_id: 'business_account_id',
-  id: 'id',
-  preferred_language: 'preferred_language',
-  risk_tolerance: 'risk_tolerance',
-  user_account_id: 'user_account_id'
-};
-
-exports.Prisma.TagsScalarFieldEnum = {
-  id: 'id',
+  is_active: 'is_active',
   metadata: 'metadata',
-  tag_description: 'tag_description',
-  tag_name: 'tag_name',
-  user_account_id: 'user_account_id',
-  business_account_id: 'business_account_id',
-  team_id: 'team_id'
+  max_users: 'max_users',
+  technical_contact: 'technical_contact',
+  user_id: 'user_id',
+  storage_quota: 'storage_quota',
+  used_storage: 'used_storage',
+  max_workspaces: 'max_workspaces',
+  max_members: 'max_members',
+  api_key_prefix: 'api_key_prefix',
+  security_settings: 'security_settings',
+  feature_flags: 'feature_flags'
 };
 
-exports.Prisma.Tax_settingsScalarFieldEnum = {
-  financial_preferences_id: 'financial_preferences_id',
+exports.Prisma.TenantsScalarFieldEnum = {
   id: 'id',
-  tax_code: 'tax_code',
-  tax_percentage: 'tax_percentage'
+  organization_id: 'organization_id',
+  name: 'name',
+  external_id: 'external_id',
+  status: 'status',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  storage_quota: 'storage_quota',
+  used_storage: 'used_storage',
+  metadata: 'metadata',
+  custom_domain: 'custom_domain',
+  email: 'email'
+};
+
+exports.Prisma.Org_membersScalarFieldEnum = {
+  id: 'id',
+  organization_id: 'organization_id',
+  user_id: 'user_id',
+  role: 'role',
+  email: 'email',
+  name: 'name',
+  joined_at: 'joined_at',
+  invited_by: 'invited_by',
+  status: 'status',
+  last_access: 'last_access',
+  permissions: 'permissions'
+};
+
+exports.Prisma.Org_api_keysScalarFieldEnum = {
+  id: 'id',
+  organization_id: 'organization_id',
+  key_name: 'key_name',
+  key_prefix: 'key_prefix',
+  key_hash: 'key_hash',
+  scopes: 'scopes',
+  expires_at: 'expires_at',
+  created_at: 'created_at',
+  created_by: 'created_by',
+  last_used: 'last_used',
+  is_active: 'is_active'
+};
+
+exports.Prisma.Tenant_api_keysScalarFieldEnum = {
+  id: 'id',
+  tenant_id: 'tenant_id',
+  key_name: 'key_name',
+  key_prefix: 'key_prefix',
+  key_hash: 'key_hash',
+  scopes: 'scopes',
+  expires_at: 'expires_at',
+  created_at: 'created_at',
+  created_by: 'created_by',
+  last_used: 'last_used',
+  is_active: 'is_active'
+};
+
+exports.Prisma.Org_usage_logsScalarFieldEnum = {
+  id: 'id',
+  organization_id: 'organization_id',
+  timestamp: 'timestamp',
+  event_type: 'event_type',
+  quantity: 'quantity',
+  unit: 'unit',
+  details: 'details'
+};
+
+exports.Prisma.Tenant_usage_logsScalarFieldEnum = {
+  id: 'id',
+  tenant_id: 'tenant_id',
+  timestamp: 'timestamp',
+  event_type: 'event_type',
+  quantity: 'quantity',
+  unit: 'unit',
+  details: 'details'
 };
 
 exports.Prisma.TeamsScalarFieldEnum = {
-  created_at: 'created_at',
-  description: 'description',
   id: 'id',
+  organization_id: 'organization_id',
+  tenant_id: 'tenant_id',
   name: 'name',
-  role_id: 'role_id',
-  updated_at: 'updated_at'
+  description: 'description',
+  team_type: 'team_type',
+  is_active: 'is_active',
+  metadata: 'metadata',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  created_by: 'created_by'
+};
+
+exports.Prisma.Team_membersScalarFieldEnum = {
+  id: 'id',
+  team_id: 'team_id',
+  user_account_id: 'user_account_id',
+  business_account_id: 'business_account_id',
+  role: 'role',
+  joined_at: 'joined_at',
+  invited_by: 'invited_by',
+  status: 'status',
+  metadata: 'metadata'
+};
+
+exports.Prisma.Business_accountsScalarFieldEnum = {
+  id: 'id',
+  organization_id: 'organization_id',
+  tenant_id: 'tenant_id',
+  account_type: 'account_type',
+  company_name: 'company_name',
+  email: 'email',
+  is_active: 'is_active',
+  auth0_user_id: 'auth0_user_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  status: 'status',
+  metadata: 'metadata',
+  base_directory: 'base_directory',
+  bucket_location: 'bucket_location',
+  bucket_name: 'bucket_name',
+  region: 'region',
+  last_access: 'last_access',
+  storage_quota: 'storage_quota',
+  used_storage: 'used_storage'
 };
 
 exports.Prisma.User_accountsScalarFieldEnum = {
-  authn_account_id: 'authn_account_id',
-  bio: 'bio',
-  created_at: 'created_at',
+  id: 'id',
+  organization_id: 'organization_id',
+  tenant_id: 'tenant_id',
   email: 'email',
   firstname: 'firstname',
-  headline: 'headline',
-  id: 'id',
-  is_active: 'is_active',
-  is_email_verified: 'is_email_verified',
-  is_private: 'is_private',
   lastname: 'lastname',
-  phone_number: 'phone_number',
-  username: 'username',
-  verified_at: 'verified_at',
-  company_description: 'company_description',
-  company_established_date: 'company_established_date',
-  company_industry_type: 'company_industry_type',
-  company_name: 'company_name',
-  company_website_url: 'company_website_url',
-  profile_type: 'profile_type',
-  account_type: 'account_type',
   auth0_user_id: 'auth0_user_id',
-  profile_image_url: 'profile_image_url',
-  algolia_user_id: 'algolia_user_id',
-  role_id: 'role_id',
-  supabase_auth0_user_id: 'supabase_auth0_user_id',
-  team_id: 'team_id'
+  is_active: 'is_active',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  status: 'status',
+  metadata: 'metadata',
+  base_directory: 'base_directory',
+  bucket_location: 'bucket_location',
+  bucket_name: 'bucket_name',
+  region: 'region',
+  last_access: 'last_access',
+  storage_quota: 'storage_quota',
+  used_storage: 'used_storage'
+};
+
+exports.Prisma.AddressesScalarFieldEnum = {
+  id: 'id',
+  addressable_type: 'addressable_type',
+  user_account_id: 'user_account_id',
+  business_account_id: 'business_account_id',
+  team_id: 'team_id',
+  address_line1: 'address_line1',
+  address_line2: 'address_line2',
+  city: 'city',
+  state: 'state',
+  country: 'country',
+  postal_code: 'postal_code',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  is_primary: 'is_primary',
+  address_type: 'address_type',
+  metadata: 'metadata',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.Audit_logsScalarFieldEnum = {
+  id: 'id',
+  organization_id: 'organization_id',
+  tenant_id: 'tenant_id',
+  actor_type: 'actor_type',
+  actor_id: 'actor_id',
+  event_type: 'event_type',
+  entity_type: 'entity_type',
+  entity_id: 'entity_id',
+  change_summary: 'change_summary',
+  metadata: 'metadata',
+  ip_address: 'ip_address',
+  user_agent: 'user_agent',
+  created_at: 'created_at'
+};
+
+exports.Prisma.SettingsScalarFieldEnum = {
+  id: 'id',
+  organization_id: 'organization_id',
+  tenant_id: 'tenant_id',
+  business_account_id: 'business_account_id',
+  user_account_id: 'user_account_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  settings_data: 'settings_data'
 };
 
 exports.Prisma.User_settingsScalarFieldEnum = {
-  app_theme: 'app_theme',
-  datetime_format: 'datetime_format',
-  default_currency: 'default_currency',
-  email_notifications: 'email_notifications',
-  enable_goal_journal: 'enable_goal_journal',
   id: 'id',
-  investment_risk_tolerance: 'investment_risk_tolerance',
+  user_account_id: 'user_account_id',
   preferred_language: 'preferred_language',
-  public_profile: 'public_profile',
-  push_notifications: 'push_notifications',
-  sms_notifications: 'sms_notifications',
-  two_factor_authentication_enabled: 'two_factor_authentication_enabled',
-  user_account_id: 'user_account_id'
+  notification_settings: 'notification_settings',
+  ui_settings: 'ui_settings',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.SortOrder = {
@@ -347,9 +356,20 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 
 exports.Prisma.NullsOrder = {
@@ -359,23 +379,20 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
-  a_ipowered_insights: 'a_ipowered_insights',
-  account_informations: 'account_informations',
-  addresses: 'addresses',
-  business_account_settings: 'business_account_settings',
-  business_accounts: 'business_accounts',
-  contact_informations: 'contact_informations',
-  digital_worker_settings: 'digital_worker_settings',
-  financial_preferences: 'financial_preferences',
-  integration_settings: 'integration_settings',
-  notification_settings: 'notification_settings',
-  role_audit_events: 'role_audit_events',
-  roles: 'roles',
-  settings: 'settings',
-  tags: 'tags',
-  tax_settings: 'tax_settings',
+  organizations: 'organizations',
+  tenants: 'tenants',
+  org_members: 'org_members',
+  org_api_keys: 'org_api_keys',
+  tenant_api_keys: 'tenant_api_keys',
+  org_usage_logs: 'org_usage_logs',
+  tenant_usage_logs: 'tenant_usage_logs',
   teams: 'teams',
+  team_members: 'team_members',
+  business_accounts: 'business_accounts',
   user_accounts: 'user_accounts',
+  addresses: 'addresses',
+  audit_logs: 'audit_logs',
+  settings: 'settings',
   user_settings: 'user_settings'
 };
 

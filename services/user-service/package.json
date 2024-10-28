@@ -50,6 +50,7 @@
     "@hono/zod-openapi": "^0.16.0",
     "@hono/zod-validator": "^0.2.2",
     "@internal/keys": "workspace:*",
+    "@prisma/adapter-pg": "^5.21.1",
     "@prisma/client": "^5.21.1",
     "@types/stripe": "^8.0.417",
     "@unkey/api": "^0.26.2",

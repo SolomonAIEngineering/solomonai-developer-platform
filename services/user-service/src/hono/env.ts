@@ -1,12 +1,14 @@
 import { Analytics } from "@/analytics";
 import { ServiceCache } from "@/cache";
+import { DatabaseClient } from "@/database/client";
 import { APIKeyRepository } from "@/db-repository/api-key-repository";
 import { UserRepository } from "@/db-repository/user-repository";
 import { DrizzleDB } from "@/db/client";
 import { User } from "@/db/schema";
 import { Env } from "@/env";
-import { Logger } from "@/metric/logger";
 import { Metrics } from "@/metric";
+import { Logger } from "@/metric/logger";
+import { PrismaClient as PostgresPrismaClient } from '../database/generated/postgresql';
 
 /**
  * Represents the context for various services used in the application.
@@ -22,6 +24,8 @@ export type ServiceContext = {
   metrics: Metrics;
   /** Analytics service for tracking user behavior and application usage. */
   analytics: Analytics;
+  /** Database client for interacting with the application's data. */
+  databaseClient: PostgresPrismaClient;
   // TODO: add analytics client to pass api usage
   // TODO: add audit log client to log user actions and store in a nosql db
   // TODO: add usage limit client to check if user has exceeded their usage limits

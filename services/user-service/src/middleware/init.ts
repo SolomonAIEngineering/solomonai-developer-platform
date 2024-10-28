@@ -1,10 +1,11 @@
 import { Analytics, newId } from "@/analytics";
 import { ServiceCache } from "@/cache";
+import { DatabaseClient as PostgresDatabaseClient } from "@/database/client";
 import { APIKeyRepository } from "@/db-repository/api-key-repository";
 import { UserRepository } from "@/db-repository/user-repository";
 import { DatabaseClient } from "@/db/client";
-import { ConsoleLogger } from "@/metric/logger";
 import { LogdrainMetrics } from "@/metric/logdrain";
+import { ConsoleLogger } from "@/metric/logger";
 import { formatPlatformPrefix } from "@/utils/formatters";
 import type { MiddlewareHandler } from "hono";
 import type { HonoEnv, Repository } from "../hono/env";
@@ -103,6 +104,7 @@ export function init(): MiddlewareHandler<HonoEnv> {
       cache: cache,
       metrics: metricsClient,
       analytics: analyticsClient,
+      databaseClient: c.env.DATABASE_CLIENT.postgres, // NOTE: this should be initialized as the logic is present in the fetch function
     });
 
     c.set("repo", dataRepository);
