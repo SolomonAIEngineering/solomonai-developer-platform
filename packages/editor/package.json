@@ -107,7 +107,7 @@
     "@udecode/plate-basic-marks": "^30.1.2",
     "@udecode/plate-block-quote": "^30.1.2",
     "@udecode/plate-break": "^30.1.2",
-    "@udecode/plate-caption": "^30.1.2",
+    "@udecode/plate-caption": "^39.0.0",
     "@udecode/plate-code-block": "^30.1.2",
     "@udecode/plate-combobox": "^30.1.2",
     "@udecode/plate-comments": "^30.1.2",
