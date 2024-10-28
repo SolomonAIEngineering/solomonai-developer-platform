@@ -1,11 +1,66 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/pkg/database/generated/postgresql"
+  provider        = "prisma-client-js"
+  output          = "../src/pkg/database/generated/postgresql"
+  previewFeatures = ["postgresqlExtensions"] // Enable PostgreSQL extensions
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pgvector(map: "vector", schema: "public")] // Enable pgvector extension
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+  output   = "./ERD.svg"
+}
+
+model organizations {
+  id                  String   @id @db.VarChar(100)
+  name                String   @db.VarChar(255)
+  display_name        String?  @db.VarChar(255)
+  domain              String?  @db.VarChar(255)
+  subscription_tier   String   @db.VarChar(50) // 'free', 'startup', 'business', 'enterprise'
+  subscription_status String   @db.VarChar(50) // 'active', 'suspended', 'cancelled'
+  email               String   @db.VarChar(255) // primary contact user id - NOTE: globally unique
+  user_id             String?  @db.VarChar(100) // Auth0 or other identity provider ID - NOTE: globally unique
+  technical_contact   String?  @db.VarChar(255)
+  created_at          DateTime @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime @updatedAt @db.Timestamptz(6)
+  is_active           Boolean  @default(true)
+  metadata            Json?    @db.JsonB
+  max_members         Int? // Limit based on subscription
+  security_settings   Json?    @db.JsonB // Security and compliance settings
+  feature_flags       Json?    @db.JsonB // Enabled features based on subscription
+
+  // Relations
+  tenants tenants[]
+
+  @@index([subscription_status])
+  @@index([subscription_tier])
+  @@index([domain])
+}
+
+model tenants {
+  id              String   @id @db.VarChar(100)
+  organization_id String   @db.VarChar(100)
+  name            String   @db.VarChar(255)
+  external_id     String?  @db.VarChar(255) // Customer's internal identifier
+  status          String   @db.VarChar(50) // 'active', 'suspended', 'deleted'
+  created_at      DateTime @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime @updatedAt @db.Timestamptz(6)
+  storage_quota   BigInt? // Optional tenant-specific quota
+  used_storage    BigInt   @default(0)
+  metadata        Json?    @db.JsonB
+  custom_domain   String?  @db.VarChar(255)
+  settings        Json?    @db.JsonB
+
+  // Relations
+  organization organizations @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+
+  @@index([organization_id])
+  @@index([external_id])
+  @@index([status])
 }
 
 model account_statements {
@@ -28,17 +83,6 @@ model account_statements {
   @@index([plaid_statement_id], map: "idx_account_statements_plaid_statement_id")
 }
 
-model accounting_attachments {
-  company            String?
-  file_name          String?
-  file_url           String?
-  id                 BigInt   @id @default(autoincrement())
-  merge_record_id    String?
-  modified_at        String?
-  remote_id          String?
-  remote_was_deleted Boolean?
-}
-
 model actionable_insights {
   detailed_action           String?
   generated_time            DateTime?                @db.Timestamptz(6)
@@ -49,6 +93,12 @@ model actionable_insights {
   financial_user_profile_id BigInt?
   financial_user_profiles   financial_user_profiles? @relation(fields: [financial_user_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_financial_user_profiles_actionable_insights")
   user_profiles             user_profiles?           @relation(fields: [user_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_profiles_actionable_insights")
+
+  // Add vector embedding for action content
+  action_embedding Unsupported("vector(1536)")?
+  embedding_model  String?                      @db.VarChar(100)
+  embedding_error  String?                      @db.Text
+  last_embedded_at DateTime?                    @db.Timestamptz(6)
 
   @@index([generated_time], map: "idx_actionable_insight_generated_time")
 }
@@ -78,38 +128,6 @@ model aprs {
   percentage             Decimal?         @db.Decimal
   type                   String?
   credit_accounts        credit_accounts? @relation(fields: [credit_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_credit_accounts_aprs")
-}
-
-model attachments {
-  company                      String?
-  file_name                    String?
-  file_url                     String?
-  id                           BigInt                      @id @default(autoincrement())
-  linked_accounting_account_id BigInt?
-  merge_account_id             String?
-  modified_at                  DateTime?                   @db.Timestamptz(6)
-  remote_id                    String?
-  remote_was_deleted           Boolean?
-  linked_accounting_accounts   linked_accounting_accounts? @relation(fields: [linked_accounting_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_linked_accounting_accounts_attachments")
-}
-
-model balance_sheets {
-  company                                                                String?
-  currency                                                               String?
-  date                                                                   DateTime?       @db.Timestamptz(6)
-  id                                                                     BigInt          @id @default(autoincrement())
-  merge_account_id                                                       String?
-  modified_at                                                            DateTime?       @db.Timestamptz(6)
-  name                                                                   String?
-  net_assets                                                             BigInt?
-  remote_generated_at                                                    DateTime?       @db.Timestamptz(6)
-  remote_id                                                              String?
-  remote_was_deleted                                                     Boolean?
-  report_details_id                                                      BigInt?
-  report_details                                                         report_details? @relation(fields: [report_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_report_details_balance_sheets")
-  report_items_report_items_assets_balance_sheet_idTobalance_sheets      report_items[]  @relation("report_items_assets_balance_sheet_idTobalance_sheets")
-  report_items_report_items_equity_balance_sheet_idTobalance_sheets      report_items[]  @relation("report_items_equity_balance_sheet_idTobalance_sheets")
-  report_items_report_items_liabilities_balance_sheet_idTobalance_sheets report_items[]  @relation("report_items_liabilities_balance_sheet_idTobalance_sheets")
 }
 
 model bank_accounts {
@@ -151,69 +169,6 @@ model budgets {
   categories   categories[]
 }
 
-model business_chart_of_accounts {
-  account_number       String?
-  classification       String?
-  company              String?
-  currency             String?
-  current_balance      Decimal?           @db.Decimal
-  description          String?
-  id                   BigInt             @id @default(autoincrement())
-  merge_account_id     String?
-  modified_at          DateTime?          @db.Timestamptz(6)
-  name                 String?
-  parent_account_id    String?
-  reference_details_id BigInt?
-  remote_id            String?
-  remote_was_deleted   Boolean?
-  status               String?
-  type                 String?
-  reference_details    reference_details? @relation(fields: [reference_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_reference_details_chart_of_accounts")
-}
-
-model business_transactions {
-  account                String?
-  accounting_period      String?
-  company                String?
-  contact                String?
-  currency               String?
-  exchange_rate          String?
-  id                     BigInt                   @id @default(autoincrement())
-  merge_account_id       String?
-  modified_at            DateTime?                @db.Timestamptz(6)
-  number                 String?
-  remote_id              String?
-  remote_was_deleted     Boolean?
-  total_amount           String?
-  tracking_categories    String[]
-  transaction_date       DateTime?                @db.Timestamptz(6)
-  transaction_details_id BigInt?
-  transaction_type       String?
-  transaction_details    transaction_details?     @relation(fields: [transaction_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_transaction_details_transactions")
-  transaction_line_items transaction_line_items[]
-}
-
-model cash_flow_statements {
-  cash_at_beginning_of_period                                                                  Decimal?        @db.Decimal
-  cash_at_end_of_period                                                                        Decimal?        @db.Decimal
-  company                                                                                      String?
-  currency                                                                                     String?
-  end_period                                                                                   DateTime?       @db.Timestamptz(6)
-  id                                                                                           BigInt          @id @default(autoincrement())
-  merge_record_id                                                                              String?
-  modified_at                                                                                  DateTime?       @db.Timestamptz(6)
-  name                                                                                         String?
-  remote_generated_at                                                                          DateTime?       @db.Timestamptz(6)
-  remote_id                                                                                    String?
-  remote_was_deleted                                                                           Boolean?
-  report_details_id                                                                            BigInt?
-  start_period                                                                                 DateTime?       @db.Timestamptz(6)
-  report_details                                                                               report_details? @relation(fields: [report_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_report_details_cash_flow_statements")
-  report_items_report_items_financing_activities_cash_flow_statements_idTocash_flow_statements report_items[]  @relation("report_items_financing_activities_cash_flow_statements_idTocash_flow_statements")
-  report_items_report_items_investing_activities_cash_flow_statements_idTocash_flow_statements report_items[]  @relation("report_items_investing_activities_cash_flow_statements_idTocash_flow_statements")
-  report_items_report_items_operating_activities_cash_flow_statements_idTocash_flow_statements report_items[]  @relation("report_items_operating_activities_cash_flow_statements_idTocash_flow_statements")
-}
-
 model categories {
   budget_id     BigInt?
   description   String?
@@ -221,47 +176,6 @@ model categories {
   name          String?
   subcategories String[]
   budgets       budgets? @relation(fields: [budget_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_budgets_category")
-}
-
-model company_infos {
-  currency                     String?
-  fiscal_year_end_day          Int?
-  fiscal_year_end_month        Int?
-  id                           BigInt                      @id @default(autoincrement())
-  legal_name                   String?
-  linked_accounting_account_id BigInt?
-  merge_account_id             String?
-  modified_at                  DateTime?                   @db.Timestamptz(6)
-  name                         String?
-  phone_numbers                String[]
-  remote_created_at            DateTime?                   @db.Timestamptz(6)
-  remote_id                    String?
-  remote_was_deleted           Boolean?
-  tax_number                   String?
-  urls                         String[]
-  addresses                    addresses[]
-  linked_accounting_accounts   linked_accounting_accounts? @relation(fields: [linked_accounting_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_linked_accounting_accounts_company_info")
-}
-
-model contacts {
-  addresses_ids        String[]
-  company              String?
-  currency             String?
-  email_address        String?
-  id                   BigInt             @id @default(autoincrement())
-  is_customer          Boolean?
-  is_supplier          Boolean?
-  merge_account_id     String?
-  modified_at          DateTime?          @db.Timestamptz(6)
-  name                 String?
-  phone_numbers        String[]
-  reference_details_id BigInt?
-  remote_id            String?
-  remote_updated_at    DateTime?          @db.Timestamptz(6)
-  remote_was_deleted   Boolean?
-  status               String?
-  tax_number           String?
-  reference_details    reference_details? @relation(fields: [reference_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_reference_details_contacts")
 }
 
 model credit_accounts {
@@ -300,91 +214,6 @@ model credit_accounts {
   @@index([user_id], map: "idx_credit_account_user_id")
 }
 
-model credit_note_line_items {
-  account             String?
-  company             String?
-  credit_note_id      BigInt?
-  description         String?
-  id                  BigInt        @id @default(autoincrement())
-  item                String?
-  name                String?
-  quantity            String?
-  remote_id           String?
-  tax_rate            String?
-  total_line_amount   String?
-  tracking_categories String[]
-  tracking_category   String?
-  unit_price          String?
-  credit_notes        credit_notes? @relation(fields: [credit_note_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_credit_notes_line_items")
-}
-
-model credit_notes {
-  accounting_period      String?
-  company                String?
-  contact                String?
-  currency               String?
-  exchange_rate          String?
-  id                     BigInt                   @id @default(autoincrement())
-  merge_account_id       String?
-  modified_at            DateTime?                @db.Timestamptz(6)
-  number                 String?
-  payment_ids            String[]
-  remaining_credit       Decimal?                 @db.Decimal
-  remote_created_at      DateTime?                @db.Timestamptz(6)
-  remote_id              String?
-  remote_updated_at      DateTime?                @db.Timestamptz(6)
-  remote_was_deleted     Boolean?
-  status                 String?
-  total_amount           Decimal?                 @db.Decimal
-  tracking_categories    String[]
-  transaction_date       DateTime?                @db.Timestamptz(6)
-  transaction_details_id BigInt?
-  credit_note_line_items credit_note_line_items[]
-  transaction_details    transaction_details?     @relation(fields: [transaction_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_transaction_details_credit_notes")
-}
-
-model expense_lines {
-  account             String?
-  company             String?
-  contact             String?
-  currency            String?
-  description         String?
-  exchange_rate       String?
-  expense_id          BigInt?
-  id                  BigInt    @id @default(autoincrement())
-  item                String?
-  modified_at         DateTime? @db.Timestamptz(6)
-  net_amount          Decimal?  @db.Decimal
-  remote_id           String?
-  tracking_categories String[]
-  tracking_category   String?
-  expenses            expenses? @relation(fields: [expense_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_expenses_lines")
-}
-
-model expenses {
-  account                String?
-  accounting_period      String?
-  company                String?
-  contact                String?
-  currency               String?
-  exchange_rate          String?
-  id                     BigInt               @id @default(autoincrement())
-  memo                   String?
-  merge_account_id       String?
-  modified_at            DateTime?            @db.Timestamptz(6)
-  remote_created_at      DateTime?            @db.Timestamptz(6)
-  remote_id              String?
-  remote_was_deleted     Boolean?
-  sub_total              Decimal?             @db.Decimal
-  total_amount           Decimal?             @db.Decimal
-  total_tax_amount       Decimal?             @db.Decimal
-  tracking_categories    String[]
-  transaction_date       DateTime?            @db.Timestamptz(6)
-  transaction_details_id BigInt?
-  expense_lines          expense_lines[]
-  transaction_details    transaction_details? @relation(fields: [transaction_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_transaction_details_expenses")
-}
-
 model financial_user_profiles {
   email                        String?
   id                           BigInt                         @id @default(autoincrement())
@@ -411,27 +240,6 @@ model forecasts {
   smart_goal_id              BigInt?
   variance_amount            String?
   smart_goals                smart_goals? @relation(fields: [smart_goal_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_smart_goals_forecasts")
-}
-
-model income_statements {
-  company                                                                                 String?
-  currency                                                                                String?
-  end_period                                                                              DateTime?       @db.Timestamptz(6)
-  gross_profit                                                                            Int?
-  id                                                                                      BigInt          @id @default(autoincrement())
-  modified_at                                                                             DateTime?       @db.Timestamptz(6)
-  name                                                                                    String?
-  net_income                                                                              Int?
-  net_operating_income                                                                    Int?
-  remote_id                                                                               String?
-  remote_was_deleted                                                                      Boolean?
-  report_details_id                                                                       BigInt?
-  start_period                                                                            DateTime?       @db.Timestamptz(6)
-  report_details                                                                          report_details? @relation(fields: [report_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_report_details_income_statements")
-  report_items_report_items_cost_of_sales_income_statement_idToincome_statements          report_items[]  @relation("report_items_cost_of_sales_income_statement_idToincome_statements")
-  report_items_report_items_income_income_statement_idToincome_statements                 report_items[]  @relation("report_items_income_income_statement_idToincome_statements")
-  report_items_report_items_non_operating_expenses_income_statement_idToincome_statements report_items[]  @relation("report_items_non_operating_expenses_income_statement_idToincome_statements")
-  report_items_report_items_operating_expenses_income_statement_idToincome_statements     report_items[]  @relation("report_items_operating_expenses_income_statement_idToincome_statements")
 }
 
 model invesment_holdings {
@@ -500,127 +308,6 @@ model investment_securities {
   investment_accounts      investment_accounts? @relation(fields: [investment_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_investment_accounts_securities")
 }
 
-model invoice_line_items {
-  account             String?
-  company             String?
-  currency            String?
-  description         String?
-  exchange_rate       String?
-  id                  BigInt    @id @default(autoincrement())
-  invoice_id          BigInt?
-  item                String?
-  merge_account_id    String?
-  modified_at         DateTime? @db.Timestamptz(6)
-  quantity            Int?
-  remote_id           String?
-  total_amount        Decimal?  @db.Decimal
-  tracking_categories String[]
-  tracking_category   String?
-  unit_price          Decimal?  @db.Decimal
-  invoices            invoices? @relation(fields: [invoice_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_invoices_line_items")
-}
-
-model invoices {
-  accounting_period      String?
-  balance                Decimal?             @db.Decimal
-  company                String?
-  contact                String?
-  currency               String?
-  due_date               DateTime?            @db.Timestamptz(6)
-  exchange_rate          String?
-  id                     BigInt               @id @default(autoincrement())
-  issue_date             DateTime?            @db.Timestamptz(6)
-  memo                   String?
-  merge_account_id       String?
-  modified_at            DateTime?            @db.Timestamptz(6)
-  number                 String?
-  paid_on_date           DateTime?            @db.Timestamptz(6)
-  payments               String[]
-  purchase_orders        String[]
-  remote_id              String?
-  remote_updated_at      DateTime?            @db.Timestamptz(6)
-  remote_was_deleted     Boolean?
-  status                 String?
-  sub_total              Decimal?             @db.Decimal
-  total_amount           Decimal?             @db.Decimal
-  total_discount         Decimal?             @db.Decimal
-  total_tax_amount       Decimal?             @db.Decimal
-  tracking_categories    String[]
-  transaction_details_id BigInt?
-  type                   String?
-  invoice_line_items     invoice_line_items[]
-  transaction_details    transaction_details? @relation(fields: [transaction_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_transaction_details_invoices")
-}
-
-model items {
-  company              String?
-  id                   BigInt             @id @default(autoincrement())
-  merge_account_id     String?
-  modified_at          DateTime?          @db.Timestamptz(6)
-  name                 String?
-  purchase_account     String?
-  purchase_price       Decimal?           @db.Decimal
-  reference_details_id BigInt?
-  remote_id            String?
-  remote_updated_at    DateTime?          @db.Timestamptz(6)
-  remote_was_deleted   Boolean?
-  sales_account        String?
-  status               String?
-  unit_price           Decimal?           @db.Decimal
-  reference_details    reference_details? @relation(fields: [reference_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_reference_details_items")
-}
-
-model journal_entries {
-  accounting_period      String?
-  company                String?
-  currency               String?
-  exchange_rate          String?
-  id                     BigInt               @id @default(autoincrement())
-  journal_number         String?
-  memo                   String?
-  merge_account_id       String?
-  modified_at            DateTime?            @db.Timestamptz(6)
-  payment_ids            String[]
-  posting_status         String?
-  remote_created_at      DateTime?            @db.Timestamptz(6)
-  remote_id              String?
-  remote_updated_at      DateTime?            @db.Timestamptz(6)
-  remote_was_deleted     Boolean?
-  tracking_categories    String[]
-  transaction_date       DateTime?            @db.Timestamptz(6)
-  transaction_details_id BigInt?
-  transaction_details    transaction_details? @relation(fields: [transaction_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_transaction_details_journal_entries")
-  journal_lines          journal_lines[]
-}
-
-model journal_lines {
-  account             String?
-  company             String?
-  contact             String?
-  description         String?
-  exchange_rate       String?
-  id                  BigInt           @id @default(autoincrement())
-  journal_entry_id    BigInt?
-  modified_at         DateTime?        @db.Timestamptz(6)
-  net_amount          Decimal?         @db.Decimal
-  remote_id           String?
-  tracking_categories String[]
-  tracking_category   String?
-  journal_entries     journal_entries? @relation(fields: [journal_entry_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_journal_entries_lines")
-}
-
-model linked_accounting_accounts {
-  id                  BigInt                @id @default(autoincrement())
-  merge_link_id       BigInt?
-  attachments         attachments[]
-  company_infos       company_infos[]
-  merge_links         merge_links?          @relation(fields: [merge_link_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_merge_links_account")
-  purchase_orders     purchase_orders[]
-  reference_details   reference_details[]
-  report_details      report_details[]
-  transaction_details transaction_details[]
-}
-
 model links {
   custom_institution_name      String?
   description                  String?
@@ -654,29 +341,6 @@ model links {
   @@index([institution_name], map: "idx_link_institution_name")
   @@index([link_type], map: "idx_link_type")
   @@index([updated_at], map: "idx_link_updated_at")
-}
-
-model merge_links {
-  category                   String?
-  end_user_email_address     String?
-  end_user_organization_name String?
-  end_user_origin_id         String?
-  id                         BigInt                       @id @default(autoincrement())
-  integration                String?
-  integration_image          String?
-  integration_name           String?
-  integration_slug           String?
-  integration_square_image   String?
-  is_duplicate               Boolean?
-  merge_linked_account_id    String?
-  status                     String?
-  user_profile_id            BigInt?
-  webhook_listener_url       String?
-  financial_user_profile_id  BigInt?
-  linked_accounting_accounts linked_accounting_accounts[]
-  financial_user_profiles    financial_user_profiles?     @relation(fields: [financial_user_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_financial_user_profiles_merge_liink")
-  user_profiles              user_profiles?               @relation(fields: [user_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_profiles_merge_liink")
-  tokens                     tokens[]
 }
 
 model milestones {
@@ -733,26 +397,6 @@ model mortgage_accounts {
 
   @@index([account_number], map: "idx_mortgage_account_number")
   @@index([plaid_account_id], map: "idx_mortgage_account_plaid_account_id")
-}
-
-model payments {
-  account                String?
-  accounting_period      String?
-  company                String?
-  contact                String?
-  currency               String?
-  exchange_rate          String?
-  id                     BigInt               @id @default(autoincrement())
-  merge_account_id       String?
-  modified_at            DateTime?            @db.Timestamptz(6)
-  remote_id              String?
-  remote_updated_at      DateTime?            @db.Timestamptz(6)
-  remote_was_deleted     Boolean?
-  total_amount           Decimal?             @db.Decimal
-  tracking_categories    String[]
-  transaction_date       DateTime?            @db.Timestamptz(6)
-  transaction_details_id BigInt?
-  transaction_details    transaction_details? @relation(fields: [transaction_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_transaction_details_payments")
 }
 
 model personal_actionable_insights {
@@ -890,6 +534,12 @@ model plaid_account_transactions {
   smart_notes                        smart_notes[]
   transaction_splits                 transaction_splits[]
 
+  // Add these new fields for embeddings
+  embedding        Float[] // Vector embedding
+  embedding_model  String?   @db.VarChar(100) // e.g., "openai:text-embedding-3-small"
+  embedding_error  String?   @db.Text // Store any errors during embedding generation
+  last_embedded_at DateTime? @db.Timestamptz(6)
+
   @@index([account_id], map: "idx_transaction_account_id")
   @@index([transaction_id], map: "idx_transaction_id")
   @@index([merchant_name], map: "idx_transaction_merchant_name")
@@ -935,6 +585,583 @@ model pockets {
   smart_goals       smart_goals[]
 
   @@index([type], map: "idx_pocket_type")
+}
+
+model smart_goals {
+  current_amount String?
+  description    String?
+  duration       String?
+  end_date       String?
+  goal_type      String?
+  id             BigInt        @id @default(autoincrement())
+  is_completed   Boolean?
+  name           String?
+  pocket_id      BigInt?
+  start_date     String?
+  target_amount  String?
+  user_id        String?
+  forecasts      forecasts[]
+  milestones     milestones[]
+  pockets        pockets?      @relation(fields: [pocket_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_pockets_goals")
+  smart_notes    smart_notes[]
+
+  @@index([name], map: "idx_smart_goal_name")
+  @@index([goal_type], map: "idx_smart_goal_type")
+  @@index([user_id], map: "idx_smart_goal_user_id")
+}
+
+model smart_notes {
+  content       String?
+  created_at    DateTime? @db.Timestamptz(6)
+  id            BigInt    @id @default(autoincrement())
+  smart_goal_id BigInt?
+  updated_at    DateTime? @db.Timestamptz(6)
+  user_id       String?
+
+  // Add vector embedding for note content
+  content_embedding Unsupported("vector(1536)")?
+  embedding_model   String?                      @db.VarChar(100)
+  embedding_error   String?                      @db.Text
+  last_embedded_at  DateTime?                    @db.Timestamptz(6)
+
+  plaid_account_investment_transaction_id BigInt?
+  plaid_account_recurring_transaction_id  BigInt?
+  plaid_account_transaction_id            BigInt?
+  financial_user_profile_id               BigInt?
+  financial_user_profiles                 financial_user_profiles?               @relation(fields: [financial_user_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_financial_user_profiles_notes")
+  plaid_account_investment_transactions   plaid_account_investment_transactions? @relation(fields: [plaid_account_investment_transaction_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_plaid_account_investment_transactions_notes")
+  plaid_account_recurring_transactions    plaid_account_recurring_transactions?  @relation(fields: [plaid_account_recurring_transaction_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_plaid_account_recurring_transactions_notes")
+  plaid_account_transactions              plaid_account_transactions?            @relation(fields: [plaid_account_transaction_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_plaid_account_transactions_notes")
+  smart_goals                             smart_goals?                           @relation(fields: [smart_goal_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_smart_goals_notes")
+
+  @@index([user_id], map: "idx_smart_note_user_id")
+}
+
+model stripe_subscriptions {
+  id                               BigInt                   @id @default(autoincrement())
+  is_trialing                      Boolean?
+  stripe_subscription_active_until String?
+  stripe_subscription_id           String?
+  stripe_subscription_status       String?
+  stripe_webhook_latest_timestamp  String?
+  user_profile_id                  BigInt?
+  financial_user_profile_id        BigInt?
+  financial_user_profiles          financial_user_profiles? @relation(fields: [financial_user_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_financial_user_profiles_stripe_subscriptions")
+  user_profiles                    user_profiles?           @relation(fields: [user_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_profiles_stripe_subscriptions")
+}
+
+model student_loan_accounts {
+  disbursement_dates                     String[]
+  expected_payoff_date                   String?
+  guarantor                              String?
+  id                                     BigInt               @id @default(autoincrement())
+  interest_rate_percentage               Decimal?             @db.Decimal
+  is_overdue                             Boolean?
+  last_payment_amount                    Decimal?             @db.Decimal
+  last_payment_date                      String?
+  last_statement_issue_date              String?
+  link_id                                BigInt?
+  loan_end_date                          String?
+  loan_name                              String?
+  loan_type                              String?
+  minimum_payment_amount                 Decimal?             @db.Decimal
+  name                                   String?
+  next_payment_due_date                  String?
+  origination_date                       String?
+  origination_principal_amount           Decimal?             @db.Decimal
+  outstanding_interest_amount            Decimal?             @db.Decimal
+  payment_reference_number               String?
+  plaid_account_id                       String?
+  pslf_status_estimated_eligibility_date String?
+  pslf_status_payments_made              Int?
+  pslf_status_payments_remaining         Int?
+  repayment_plan_description             String?
+  repayment_plan_type                    String?
+  sequence_number                        String?
+  servicer_address_city                  String?
+  servicer_address_country               String?
+  servicer_address_postal_code           String?
+  servicer_address_region                String?
+  servicer_address_state                 String?
+  servicer_address_street                String?
+  status                                 String?
+  user_id                                String?
+  ytd_interest_paid                      Decimal?             @db.Decimal
+  ytd_principal_paid                     Decimal?             @db.Decimal
+  plaid_account_type                     String?
+  type                                   String?
+  account_statements                     account_statements[]
+  links                                  links?               @relation(fields: [link_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_links_student_loan_accounts")
+
+  @@index([plaid_account_id], map: "idx_student_loan_plaid_account_id")
+}
+
+model transaction_splits {
+  amount                             Decimal?                    @db.Decimal
+  authorized_date                    DateTime?                   @db.Timestamptz(6)
+  authorized_datetime                DateTime?                   @db.Timestamptz(6)
+  categories                         String[]
+  description                        String?
+  id                                 BigInt                      @id @default(autoincrement())
+  link_id                            BigInt?
+  personal_finance_category_detailed String?
+  personal_finance_category_primary  String?
+  plaid_account_transaction_id       BigInt?
+  tags                               String[]
+  time_of_split                      DateTime?                   @db.Timestamptz(6)
+  user_id                            String?
+  plaid_account_transactions         plaid_account_transactions? @relation(fields: [plaid_account_transaction_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_plaid_account_transactions_splits")
+}
+
+model user_profiles {
+  email                String?
+  id                   BigInt                 @id @default(autoincrement())
+  stripe_customer_id   String?
+  user_id              BigInt?
+  actionable_insights  actionable_insights[]
+  links                links[]
+  merge_links          merge_links[]
+  stripe_subscriptions stripe_subscriptions[]
+}
+
+// ACCOUNTING MODELS
+model attachments {
+  company                      String?
+  file_name                    String?
+  file_url                     String?
+  id                           BigInt                      @id @default(autoincrement())
+  linked_accounting_account_id BigInt?
+  merge_account_id             String?
+  modified_at                  DateTime?                   @db.Timestamptz(6)
+  remote_id                    String?
+  remote_was_deleted           Boolean?
+  linked_accounting_accounts   linked_accounting_accounts? @relation(fields: [linked_accounting_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_linked_accounting_accounts_attachments")
+}
+
+model balance_sheets {
+  company                                                                String?
+  currency                                                               String?
+  date                                                                   DateTime?       @db.Timestamptz(6)
+  id                                                                     BigInt          @id @default(autoincrement())
+  merge_account_id                                                       String?
+  modified_at                                                            DateTime?       @db.Timestamptz(6)
+  name                                                                   String?
+  net_assets                                                             BigInt?
+  remote_generated_at                                                    DateTime?       @db.Timestamptz(6)
+  remote_id                                                              String?
+  remote_was_deleted                                                     Boolean?
+  report_details_id                                                      BigInt?
+  report_details                                                         report_details? @relation(fields: [report_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_report_details_balance_sheets")
+  report_items_report_items_assets_balance_sheet_idTobalance_sheets      report_items[]  @relation("report_items_assets_balance_sheet_idTobalance_sheets")
+  report_items_report_items_equity_balance_sheet_idTobalance_sheets      report_items[]  @relation("report_items_equity_balance_sheet_idTobalance_sheets")
+  report_items_report_items_liabilities_balance_sheet_idTobalance_sheets report_items[]  @relation("report_items_liabilities_balance_sheet_idTobalance_sheets")
+}
+
+model business_chart_of_accounts {
+  account_number       String?
+  classification       String?
+  company              String?
+  currency             String?
+  current_balance      Decimal?           @db.Decimal
+  description          String?
+  id                   BigInt             @id @default(autoincrement())
+  merge_account_id     String?
+  modified_at          DateTime?          @db.Timestamptz(6)
+  name                 String?
+  parent_account_id    String?
+  reference_details_id BigInt?
+  remote_id            String?
+  remote_was_deleted   Boolean?
+  status               String?
+  type                 String?
+  reference_details    reference_details? @relation(fields: [reference_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_reference_details_chart_of_accounts")
+}
+
+model cash_flow_statements {
+  cash_at_beginning_of_period                                                                  Decimal?        @db.Decimal
+  cash_at_end_of_period                                                                        Decimal?        @db.Decimal
+  company                                                                                      String?
+  currency                                                                                     String?
+  end_period                                                                                   DateTime?       @db.Timestamptz(6)
+  id                                                                                           BigInt          @id @default(autoincrement())
+  merge_record_id                                                                              String?
+  modified_at                                                                                  DateTime?       @db.Timestamptz(6)
+  name                                                                                         String?
+  remote_generated_at                                                                          DateTime?       @db.Timestamptz(6)
+  remote_id                                                                                    String?
+  remote_was_deleted                                                                           Boolean?
+  report_details_id                                                                            BigInt?
+  start_period                                                                                 DateTime?       @db.Timestamptz(6)
+  report_details                                                                               report_details? @relation(fields: [report_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_report_details_cash_flow_statements")
+  report_items_report_items_financing_activities_cash_flow_statements_idTocash_flow_statements report_items[]  @relation("report_items_financing_activities_cash_flow_statements_idTocash_flow_statements")
+  report_items_report_items_investing_activities_cash_flow_statements_idTocash_flow_statements report_items[]  @relation("report_items_investing_activities_cash_flow_statements_idTocash_flow_statements")
+  report_items_report_items_operating_activities_cash_flow_statements_idTocash_flow_statements report_items[]  @relation("report_items_operating_activities_cash_flow_statements_idTocash_flow_statements")
+}
+
+model company_infos {
+  currency                     String?
+  fiscal_year_end_day          Int?
+  fiscal_year_end_month        Int
+  id                           BigInt                      @id @default(autoincrement())
+  legal_name                   String?
+  linked_accounting_account_id BigInt?
+  merge_account_id             String?
+  modified_at                  DateTime?                   @db.Timestamptz(6)
+  name                         String?
+  phone_numbers                String[]
+  remote_created_at            DateTime?                   @db.Timestamptz(6)
+  remote_id                    String?
+  remote_was_deleted           Boolean?
+  tax_number                   String?
+  urls                         String[]
+  addresses                    addresses[]
+  linked_accounting_accounts   linked_accounting_accounts? @relation(fields: [linked_accounting_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_linked_accounting_accounts_company_info")
+}
+
+model contacts {
+  addresses_ids        String[]
+  company              String?
+  currency             String?
+  email_address        String?
+  id                   BigInt             @id @default(autoincrement())
+  is_customer          Boolean?
+  is_supplier          Boolean?
+  merge_account_id     String?
+  modified_at          DateTime?          @db.Timestamptz(6)
+  name                 String?
+  phone_numbers        String[]
+  reference_details_id BigInt?
+  remote_id            String?
+  remote_updated_at    DateTime?          @db.Timestamptz(6)
+  remote_was_deleted   Boolean?
+  status               String?
+  tax_number           String?
+  reference_details    reference_details? @relation(fields: [reference_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_reference_details_contacts")
+}
+
+model credit_note_line_items {
+  account             String?
+  company             String?
+  credit_note_id      BigInt?
+  description         String?
+  id                  BigInt        @id @default(autoincrement())
+  item                String?
+  name                String?
+  quantity            String?
+  remote_id           String?
+  tax_rate            String?
+  total_line_amount   String?
+  tracking_categories String[]
+  tracking_category   String?
+  unit_price          String?
+  credit_notes        credit_notes? @relation(fields: [credit_note_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_credit_notes_line_items")
+}
+
+model credit_notes {
+  accounting_period      String?
+  company                String?
+  contact                String?
+  currency               String?
+  exchange_rate          String?
+  id                     BigInt                   @id @default(autoincrement())
+  merge_account_id       String?
+  modified_at            DateTime?                @db.Timestamptz(6)
+  number                 String?
+  payment_ids            String[]
+  remaining_credit       Decimal?                 @db.Decimal
+  remote_created_at      DateTime?                @db.Timestamptz(6)
+  remote_id              String?
+  remote_updated_at      DateTime?                @db.Timestamptz(6)
+  remote_was_deleted     Boolean?
+  status                 String?
+  total_amount           Decimal?                 @db.Decimal
+  tracking_categories    String[]
+  transaction_date       DateTime?                @db.Timestamptz(6)
+  transaction_details_id BigInt?
+  credit_note_line_items credit_note_line_items[]
+  transaction_details    transaction_details?     @relation(fields: [transaction_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_transaction_details_credit_notes")
+}
+
+model expense_lines {
+  account             String?
+  company             String?
+  contact             String?
+  currency            String?
+  description         String?
+  exchange_rate       String?
+  expense_id          BigInt?
+  id                  BigInt    @id @default(autoincrement())
+  item                String?
+  modified_at         DateTime? @db.Timestamptz(6)
+  net_amount          Decimal?  @db.Decimal
+  remote_id           String?
+  tracking_categories String[]
+  tracking_category   String?
+  expenses            expenses? @relation(fields: [expense_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_expenses_lines")
+}
+
+model expenses {
+  account                String?
+  accounting_period      String?
+  company                String?
+  contact                String?
+  currency               String?
+  exchange_rate          String?
+  id                     BigInt               @id @default(autoincrement())
+  memo                   String?
+  merge_account_id       String?
+  modified_at            DateTime?            @db.Timestamptz(6)
+  remote_created_at      DateTime?            @db.Timestamptz(6)
+  remote_id              String?
+  remote_was_deleted     Boolean?
+  sub_total              Decimal?             @db.Decimal
+  total_amount           Decimal?             @db.Decimal
+  total_tax_amount       Decimal?             @db.Decimal
+  tracking_categories    String[]
+  transaction_date       DateTime?            @db.Timestamptz(6)
+  transaction_details_id BigInt?
+  expense_lines          expense_lines[]
+  transaction_details    transaction_details? @relation(fields: [transaction_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_transaction_details_expenses")
+}
+
+model income_statements {
+  company                                                                                 String?
+  currency                                                                                String?
+  end_period                                                                              DateTime?       @db.Timestamptz(6)
+  gross_profit                                                                            Int?
+  id                                                                                      BigInt          @id @default(autoincrement())
+  modified_at                                                                             DateTime?       @db.Timestamptz(6)
+  name                                                                                    String?
+  net_income                                                                              Int?
+  net_operating_income                                                                    Int?
+  remote_id                                                                               String?
+  remote_was_deleted                                                                      Boolean?
+  report_details_id                                                                       BigInt?
+  start_period                                                                            DateTime?       @db.Timestamptz(6)
+  report_details                                                                          report_details? @relation(fields: [report_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_report_details_income_statements")
+  report_items_report_items_cost_of_sales_income_statement_idToincome_statements          report_items[]  @relation("report_items_cost_of_sales_income_statement_idToincome_statements")
+  report_items_report_items_income_income_statement_idToincome_statements                 report_items[]  @relation("report_items_income_income_statement_idToincome_statements")
+  report_items_report_items_non_operating_expenses_income_statement_idToincome_statements report_items[]  @relation("report_items_non_operating_expenses_income_statement_idToincome_statements")
+  report_items_report_items_operating_expenses_income_statement_idToincome_statements     report_items[]  @relation("report_items_operating_expenses_income_statement_idToincome_statements")
+}
+
+model invoice_line_items {
+  account             String?
+  company             String?
+  currency            String?
+  description         String?
+  exchange_rate       String?
+  id                  BigInt    @id @default(autoincrement())
+  invoice_id          BigInt?
+  item                String?
+  merge_account_id    String?
+  modified_at         DateTime? @db.Timestamptz(6)
+  quantity            Int?
+  remote_id           String?
+  total_amount        Decimal?  @db.Decimal
+  tracking_categories String[]
+  tracking_category   String?
+  unit_price          Decimal?  @db.Decimal
+  invoices            invoices? @relation(fields: [invoice_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_invoices_line_items")
+}
+
+model invoices {
+  accounting_period      String?
+  balance                Decimal?             @db.Decimal
+  company                String?
+  contact                String?
+  currency               String?
+  due_date               DateTime?            @db.Timestamptz(6)
+  exchange_rate          String?
+  id                     BigInt               @id @default(autoincrement())
+  issue_date             DateTime?            @db.Timestamptz(6)
+  memo                   String?
+  merge_account_id       String?
+  modified_at            DateTime?            @db.Timestamptz(6)
+  number                 String?
+  paid_on_date           DateTime?            @db.Timestamptz(6)
+  payments               String[]
+  purchase_orders        String[]
+  remote_id              String?
+  remote_updated_at      DateTime?            @db.Timestamptz(6)
+  remote_was_deleted     Boolean?
+  status                 String?
+  sub_total              Decimal?             @db.Decimal
+  total_amount           Decimal?             @db.Decimal
+  total_discount         Decimal?             @db.Decimal
+  total_tax_amount       Decimal?             @db.Decimal
+  tracking_categories    String[]
+  transaction_details_id BigInt?
+  type                   String?
+  invoice_line_items     invoice_line_items[]
+  transaction_details    transaction_details? @relation(fields: [transaction_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_transaction_details_invoices")
+}
+
+model items {
+  company              String?
+  id                   BigInt             @id @default(autoincrement())
+  merge_account_id     String?
+  modified_at          DateTime?          @db.Timestamptz(6)
+  name                 String?
+  purchase_account     String?
+  purchase_price       Decimal?           @db.Decimal
+  reference_details_id BigInt?
+  remote_id            String?
+  remote_updated_at    DateTime?          @db.Timestamptz(6)
+  remote_was_deleted   Boolean?
+  sales_account        String?
+  status               String?
+  unit_price           Decimal?           @db.Decimal
+  reference_details    reference_details? @relation(fields: [reference_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_reference_details_items")
+}
+
+model journal_entries {
+  accounting_period      String?
+  company                String?
+  currency               String?
+  exchange_rate          String?
+  id                     BigInt               @id @default(autoincrement())
+  journal_number         String?
+  memo                   String?
+  merge_account_id       String?
+  modified_at            DateTime?            @db.Timestamptz(6)
+  payment_ids            String[]
+  posting_status         String?
+  remote_created_at      DateTime?            @db.Timestamptz(6)
+  remote_id              String?
+  remote_updated_at      DateTime?            @db.Timestamptz(6)
+  remote_was_deleted     Boolean?
+  tracking_categories    String[]
+  transaction_date       DateTime?            @db.Timestamptz(6)
+  transaction_details_id BigInt?
+  transaction_details    transaction_details? @relation(fields: [transaction_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_transaction_details_journal_entries")
+  journal_lines          journal_lines[]
+}
+
+model journal_lines {
+  account             String?
+  company             String?
+  contact             String?
+  description         String?
+  exchange_rate       String?
+  id                  BigInt           @id @default(autoincrement())
+  journal_entry_id    BigInt?
+  modified_at         DateTime?        @db.Timestamptz(6)
+  net_amount          Decimal?         @db.Decimal
+  remote_id           String?
+  tracking_categories String[]
+  tracking_category   String?
+  journal_entries     journal_entries? @relation(fields: [journal_entry_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_journal_entries_lines")
+}
+
+model linked_accounting_accounts {
+  id                  BigInt                @id @default(autoincrement())
+  merge_link_id       BigInt?
+  attachments         attachments[]
+  company_infos       company_infos[]
+  merge_links         merge_links?          @relation(fields: [merge_link_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_merge_links_account")
+  purchase_orders     purchase_orders[]
+  reference_details   reference_details[]
+  report_details      report_details[]
+  transaction_details transaction_details[]
+}
+
+model merge_links {
+  category                   String?
+  end_user_email_address     String?
+  end_user_organization_name String?
+  end_user_origin_id         String?
+  id                         BigInt                       @id @default(autoincrement())
+  integration                String?
+  integration_image          String?
+  integration_name           String?
+  integration_slug           String?
+  integration_square_image   String?
+  is_duplicate               Boolean?
+  merge_linked_account_id    String?
+  status                     String?
+  user_profile_id            BigInt?
+  webhook_listener_url       String?
+  financial_user_profile_id  BigInt?
+  linked_accounting_accounts linked_accounting_accounts[]
+  financial_user_profiles    financial_user_profiles?     @relation(fields: [financial_user_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_financial_user_profiles_merge_liink")
+  user_profiles              user_profiles?               @relation(fields: [user_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_profiles_merge_liink")
+  tokens                     tokens[]
+}
+
+model payments {
+  account                String?
+  accounting_period      String?
+  company                String?
+  contact                String?
+  currency               String?
+  exchange_rate          String?
+  id                     BigInt               @id @default(autoincrement())
+  merge_account_id       String?
+  modified_at            DateTime?            @db.Timestamptz(6)
+  remote_id              String?
+  remote_updated_at      DateTime?            @db.Timestamptz(6)
+  remote_was_deleted     Boolean?
+  total_amount           Decimal?             @db.Decimal
+  tracking_categories    String[]
+  transaction_date       DateTime?            @db.Timestamptz(6)
+  transaction_details_id BigInt?
+  transaction_details    transaction_details? @relation(fields: [transaction_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_transaction_details_payments")
+}
+
+model tax_rates {
+  company              String?
+  description          String?
+  effective_tax_rate   Decimal?           @db.Decimal
+  id                   BigInt             @id @default(autoincrement())
+  merge_account_id     String?
+  modified_at          DateTime?          @db.Timestamptz(6)
+  reference_details_id BigInt?
+  remote_id            String?
+  remote_was_deleted   Boolean?
+  total_tax_rate       Decimal?           @db.Decimal
+  reference_details    reference_details? @relation(fields: [reference_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_reference_details_tax_rates")
+}
+
+model tokens {
+  access_token             String?
+  id                       BigInt       @id @default(autoincrement())
+  item_id                  String?
+  key_id                   String?
+  link_id                  BigInt?
+  version                  String?
+  last_merge_created_at    DateTime?    @db.Timestamptz(6)
+  merge_end_user_origin_id String?
+  merge_integration_slug   String?
+  merge_link_id            BigInt?
+  links                    links?       @relation(fields: [link_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_links_token")
+  merge_links              merge_links? @relation(fields: [merge_link_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_merge_links_token")
+
+  @@index([item_id], map: "idx_token_item_id")
+}
+
+model tracking_categories {
+  category_type      String?
+  company            String?
+  id                 BigInt    @id @default(autoincrement())
+  merge_account_id   String?
+  modified_at        DateTime? @db.Timestamptz(6)
+  parent_category    String?
+  remote_id          String?
+  remote_was_deleted Boolean?
+}
+
+model transaction_details {
+  id                           BigInt                      @id @default(autoincrement())
+  linked_accounting_account_id BigInt?
+  business_transactions        business_transactions[]
+  credit_notes                 credit_notes[]
+  expenses                     expenses[]
+  invoices                     invoices[]
+  journal_entries              journal_entries[]
+  payments                     payments[]
+  linked_accounting_accounts   linked_accounting_accounts? @relation(fields: [linked_accounting_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_linked_accounting_accounts_transactions_details")
+  vendor_credits               vendor_credits[]
 }
 
 model purchase_order_line_items {
@@ -1032,161 +1259,26 @@ model report_items {
   income_statements_report_items_operating_expenses_income_statement_idToincome_statements             income_statements?    @relation("report_items_operating_expenses_income_statement_idToincome_statements", fields: [operating_expenses_income_statement_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_income_statements_operating_expenses")
 }
 
-model smart_goals {
-  current_amount String?
-  description    String?
-  duration       String?
-  end_date       String?
-  goal_type      String?
-  id             BigInt        @id @default(autoincrement())
-  is_completed   Boolean?
-  name           String?
-  pocket_id      BigInt?
-  start_date     String?
-  target_amount  String?
-  user_id        String?
-  forecasts      forecasts[]
-  milestones     milestones[]
-  pockets        pockets?      @relation(fields: [pocket_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_pockets_goals")
-  smart_notes    smart_notes[]
-
-  @@index([name], map: "idx_smart_goal_name")
-  @@index([goal_type], map: "idx_smart_goal_type")
-  @@index([user_id], map: "idx_smart_goal_user_id")
-}
-
-model smart_notes {
-  content                                 String?
-  created_at                              DateTime?                              @db.Timestamptz(6)
-  id                                      BigInt                                 @id @default(autoincrement())
-  smart_goal_id                           BigInt?
-  updated_at                              DateTime?                              @db.Timestamptz(6)
-  user_id                                 String?
-  plaid_account_investment_transaction_id BigInt?
-  plaid_account_recurring_transaction_id  BigInt?
-  plaid_account_transaction_id            BigInt?
-  financial_user_profile_id               BigInt?
-  financial_user_profiles                 financial_user_profiles?               @relation(fields: [financial_user_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_financial_user_profiles_notes")
-  plaid_account_investment_transactions   plaid_account_investment_transactions? @relation(fields: [plaid_account_investment_transaction_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_plaid_account_investment_transactions_notes")
-  plaid_account_recurring_transactions    plaid_account_recurring_transactions?  @relation(fields: [plaid_account_recurring_transaction_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_plaid_account_recurring_transactions_notes")
-  plaid_account_transactions              plaid_account_transactions?            @relation(fields: [plaid_account_transaction_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_plaid_account_transactions_notes")
-  smart_goals                             smart_goals?                           @relation(fields: [smart_goal_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_smart_goals_notes")
-
-  @@index([user_id], map: "idx_smart_note_user_id")
-}
-
-model stripe_subscriptions {
-  id                               BigInt                   @id @default(autoincrement())
-  is_trialing                      Boolean?
-  stripe_subscription_active_until String?
-  stripe_subscription_id           String?
-  stripe_subscription_status       String?
-  stripe_webhook_latest_timestamp  String?
-  user_profile_id                  BigInt?
-  financial_user_profile_id        BigInt?
-  financial_user_profiles          financial_user_profiles? @relation(fields: [financial_user_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_financial_user_profiles_stripe_subscriptions")
-  user_profiles                    user_profiles?           @relation(fields: [user_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_profiles_stripe_subscriptions")
-}
-
-model student_loan_accounts {
-  disbursement_dates                     String[]
-  expected_payoff_date                   String?
-  guarantor                              String?
-  id                                     BigInt               @id @default(autoincrement())
-  interest_rate_percentage               Decimal?             @db.Decimal
-  is_overdue                             Boolean?
-  last_payment_amount                    Decimal?             @db.Decimal
-  last_payment_date                      String?
-  last_statement_issue_date              String?
-  link_id                                BigInt?
-  loan_end_date                          String?
-  loan_name                              String?
-  loan_type                              String?
-  minimum_payment_amount                 Decimal?             @db.Decimal
-  name                                   String?
-  next_payment_due_date                  String?
-  origination_date                       String?
-  origination_principal_amount           Decimal?             @db.Decimal
-  outstanding_interest_amount            Decimal?             @db.Decimal
-  payment_reference_number               String?
-  plaid_account_id                       String?
-  pslf_status_estimated_eligibility_date String?
-  pslf_status_payments_made              Int?
-  pslf_status_payments_remaining         Int?
-  repayment_plan_description             String?
-  repayment_plan_type                    String?
-  sequence_number                        String?
-  servicer_address_city                  String?
-  servicer_address_country               String?
-  servicer_address_postal_code           String?
-  servicer_address_region                String?
-  servicer_address_state                 String?
-  servicer_address_street                String?
-  status                                 String?
-  user_id                                String?
-  ytd_interest_paid                      Decimal?             @db.Decimal
-  ytd_principal_paid                     Decimal?             @db.Decimal
-  plaid_account_type                     String?
-  type                                   String?
-  account_statements                     account_statements[]
-  links                                  links?               @relation(fields: [link_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_links_student_loan_accounts")
-
-  @@index([plaid_account_id], map: "idx_student_loan_plaid_account_id")
-}
-
-model tax_rates {
-  company              String?
-  description          String?
-  effective_tax_rate   Decimal?           @db.Decimal
-  id                   BigInt             @id @default(autoincrement())
-  merge_account_id     String?
-  modified_at          DateTime?          @db.Timestamptz(6)
-  reference_details_id BigInt?
-  remote_id            String?
-  remote_was_deleted   Boolean?
-  total_tax_rate       Decimal?           @db.Decimal
-  reference_details    reference_details? @relation(fields: [reference_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_reference_details_tax_rates")
-}
-
-model tokens {
-  access_token             String?
-  id                       BigInt       @id @default(autoincrement())
-  item_id                  String?
-  key_id                   String?
-  link_id                  BigInt?
-  version                  String?
-  last_merge_created_at    DateTime?    @db.Timestamptz(6)
-  merge_end_user_origin_id String?
-  merge_integration_slug   String?
-  merge_link_id            BigInt?
-  links                    links?       @relation(fields: [link_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_links_token")
-  merge_links              merge_links? @relation(fields: [merge_link_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_merge_links_token")
-
-  @@index([item_id], map: "idx_token_item_id")
-}
-
-model tracking_categories {
-  category_type      String?
-  company            String?
-  id                 BigInt    @id @default(autoincrement())
-  merge_account_id   String?
-  modified_at        DateTime? @db.Timestamptz(6)
-  parent_category    String?
-  remote_id          String?
-  remote_was_deleted Boolean?
-}
-
-model transaction_details {
-  id                           BigInt                      @id @default(autoincrement())
-  linked_accounting_account_id BigInt?
-  business_transactions        business_transactions[]
-  credit_notes                 credit_notes[]
-  expenses                     expenses[]
-  invoices                     invoices[]
-  journal_entries              journal_entries[]
-  payments                     payments[]
-  linked_accounting_accounts   linked_accounting_accounts? @relation(fields: [linked_accounting_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_linked_accounting_accounts_transactions_details")
-  vendor_credits               vendor_credits[]
+model business_transactions {
+  account                String?
+  accounting_period      String?
+  company                String?
+  contact                String?
+  currency               String?
+  exchange_rate          String?
+  id                     BigInt                   @id @default(autoincrement())
+  merge_account_id       String?
+  modified_at            DateTime?                @db.Timestamptz(6)
+  number                 String?
+  remote_id              String?
+  remote_was_deleted     Boolean?
+  total_amount           String?
+  tracking_categories    String[]
+  transaction_date       DateTime?                @db.Timestamptz(6)
+  transaction_details_id BigInt?
+  transaction_type       String?
+  transaction_details    transaction_details?     @relation(fields: [transaction_details_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_transaction_details_transactions")
+  transaction_line_items transaction_line_items[]
 }
 
 model transaction_line_items {
@@ -1209,32 +1301,15 @@ model transaction_line_items {
   business_transactions   business_transactions? @relation(fields: [business_transaction_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_business_transactions_line_items")
 }
 
-model transaction_splits {
-  amount                             Decimal?                    @db.Decimal
-  authorized_date                    DateTime?                   @db.Timestamptz(6)
-  authorized_datetime                DateTime?                   @db.Timestamptz(6)
-  categories                         String[]
-  description                        String?
-  id                                 BigInt                      @id @default(autoincrement())
-  link_id                            BigInt?
-  personal_finance_category_detailed String?
-  personal_finance_category_primary  String?
-  plaid_account_transaction_id       BigInt?
-  tags                               String[]
-  time_of_split                      DateTime?                   @db.Timestamptz(6)
-  user_id                            String?
-  plaid_account_transactions         plaid_account_transactions? @relation(fields: [plaid_account_transaction_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_plaid_account_transactions_splits")
-}
-
-model user_profiles {
-  email                String?
-  id                   BigInt                 @id @default(autoincrement())
-  stripe_customer_id   String?
-  user_id              BigInt?
-  actionable_insights  actionable_insights[]
-  links                links[]
-  merge_links          merge_links[]
-  stripe_subscriptions stripe_subscriptions[]
+model accounting_attachments {
+  company            String?
+  file_name          String?
+  file_url           String?
+  id                 BigInt   @id @default(autoincrement())
+  merge_record_id    String?
+  modified_at        String?
+  remote_id          String?
+  remote_was_deleted Boolean?
 }
 
 model vendor_credit_lines {

@@ -1,7 +1,7 @@
 import { Env } from "@/env";
 import { Prisma } from "@prisma/client";
 import { ConsoleLogger } from "../metric/logger";
-import { PrismaClient as PostgresPrismaClient } from './generated/postgresql';
+import { PrismaClient as PostgresPrismaClient } from "./generated/postgresql";
 
 /**
  * Database client using Prisma Accelerate (Hyperdrive) for Cloudflare Workers
