@@ -1,7 +1,11 @@
 import { DatabaseClient as PostgresDatabaseClient } from '@/database/client';
-import { Context, Next } from 'hono';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { PrismaClient } from '@prisma/client';
+import { Context, MiddlewareHandler, Next } from 'hono';
+import { createMiddleware } from 'hono/factory';
 import { HTTPException } from 'hono/http-exception';
-
+import { Pool } from 'pg';
+import postgres from 'postgres';
 /**
  * Combined authentication middleware for Hono applications.
  * Handles API key validation, organization verification, and user authentication.
