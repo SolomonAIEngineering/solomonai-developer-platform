@@ -113,288 +113,6 @@ datasource db {
 ///   }
 /// });
 /// ```
-model organizations {
-  id                  String   @id @db.VarChar(100)
-  name                String   @db.VarChar(255)
-  display_name        String?  @db.VarChar(255)
-  domain              String?  @db.VarChar(255)
-  subscription_tier   String   @db.VarChar(50) // 'free', 'startup', 'business', 'enterprise'
-  subscription_status String   @db.VarChar(50) // 'active', 'suspended', 'cancelled'
-  email               String   @db.VarChar(255) // primary contact user id - NOTE: globally unique
-  user_id             String?  @db.VarChar(100) // Auth0 or other identity provider ID - NOTE: globally unique
-  technical_contact   String?  @db.VarChar(255)
-  created_at          DateTime @default(now()) @db.Timestamptz(6)
-  updated_at          DateTime @updatedAt @db.Timestamptz(6)
-  is_active           Boolean  @default(true)
-  metadata            Json?    @db.JsonB
-  storage_quota       BigInt // Total storage quota for organization
-  used_storage        BigInt   @default(0)
-  max_workspaces      Int? // Limit based on subscription
-  max_members         Int? // Limit based on subscription
-  api_key_prefix      String   @unique @db.VarChar(10)
-  security_settings   Json?    @db.JsonB // Security and compliance settings
-  feature_flags       Json?    @db.JsonB // Enabled features based on subscription
-
-  // Relations
-  tenants        tenants[]
-  org_members    org_members[]
-  org_api_keys   org_api_keys[]
-  org_usage_logs org_usage_logs[]
-  accounts       accounts[] // Modified existing accounts relation
-
-  @@index([subscription_status])
-  @@index([subscription_tier])
-  @@index([domain])
-}
-
-/// Tenants represent your customers' customers.
-/// Each tenant has isolated storage and can have its own
-/// workspaces, quotas, and API keys.
-///
-/// Example:
-/// ```typescript
-/// // Create tenant with custom quota
-/// const tenant = await prisma.tenants.create({
-///   data: {
-///     id: 'tenant_789',
-///     organization_id: 'org_123',
-///     name: 'Customer LLC',
-///     storage_quota: 50000000000, // 50GB
-///     metadata: {
-///       industry: 'healthcare',
-///       compliance_level: 'hipaa'
-///     }
-///   }
-/// });
-/// ```
-model tenants {
-  id              String   @id @db.VarChar(100)
-  organization_id String   @db.VarChar(100)
-  name            String   @db.VarChar(255)
-  external_id     String?  @db.VarChar(255) // Customer's internal identifier
-  status          String   @db.VarChar(50) // 'active', 'suspended', 'deleted'
-  created_at      DateTime @default(now()) @db.Timestamptz(6)
-  updated_at      DateTime @updatedAt @db.Timestamptz(6)
-  storage_quota   BigInt? // Optional tenant-specific quota
-  used_storage    BigInt   @default(0)
-  metadata        Json?    @db.JsonB
-  custom_domain   String?  @db.VarChar(255)
-  settings        Json?    @db.JsonB
-
-  // Relations
-  organization      organizations       @relation(fields: [organization_id], references: [id], onDelete: Cascade)
-  workspaces        workspaces[]
-  tenant_api_keys   tenant_api_keys[]
-  tenant_usage_logs tenant_usage_logs[]
-
-  @@index([organization_id])
-  @@index([external_id])
-  @@index([status])
-}
-
-/// Organization members represent users who can manage
-/// the organization settings, view usage, and manage tenants.
-///
-/// Example:
-/// ```typescript
-/// // Add admin member to organization
-/// const member = await prisma.org_members.create({
-///   data: {
-///     organization_id: 'org_123',
-///     user_id: 'auth0|123',
-///     role: 'admin',
-///     email: 'admin@startup.com',
-///     permissions: ['manage_tenants', 'view_usage', 'manage_api_keys']
-///   }
-/// });
-/// ```
-model org_members {
-  id              BigInt    @id @default(autoincrement())
-  organization_id String    @db.VarChar(100)
-  user_id         String    @db.VarChar(100) // Auth0 or other identity provider ID
-  role            String    @db.VarChar(50) // 'owner', 'admin', 'member'
-  email           String    @db.VarChar(255)
-  name            String?   @db.VarChar(255)
-  joined_at       DateTime  @default(now()) @db.Timestamptz(6)
-  invited_by      String?   @db.VarChar(100)
-  status          String    @db.VarChar(50) // 'active', 'invited', 'suspended'
-  last_access     DateTime? @db.Timestamptz(6)
-  permissions     String[] // Array of specific permissions
-
-  organization organizations @relation(fields: [organization_id], references: [id], onDelete: Cascade)
-
-  @@unique([organization_id, user_id])
-  @@index([organization_id])
-  @@index([user_id])
-  @@index([email])
-}
-
-/// API keys for organization-level access
-/// Used for managing tenants, viewing usage, and organization-wide operations
-///
-/// Example:
-/// ```typescript
-/// // Create new API key
-/// const apiKey = await prisma.org_api_keys.create({
-///   data: {
-///     organization_id: 'org_123',
-///     key_name: 'Tenant Management API',
-///     key_prefix: 'org_key_123',
-///     key_hash: hashedApiKey,
-///     scopes: ['manage_tenants', 'read_usage']
-///   }
-/// });
-/// ```
-model org_api_keys {
-  id              BigInt    @id @default(autoincrement())
-  organization_id String    @db.VarChar(100)
-  key_name        String    @db.VarChar(255)
-  key_prefix      String    @unique @db.VarChar(32)
-  key_hash        String    @db.VarChar(255) // Hashed API key
-  scopes          String[] // Array of permitted operations
-  expires_at      DateTime? @db.Timestamptz(6)
-  created_at      DateTime  @default(now()) @db.Timestamptz(6)
-  created_by      String    @db.VarChar(100)
-  last_used       DateTime? @db.Timestamptz(6)
-  is_active       Boolean   @default(true)
-
-  organization organizations @relation(fields: [organization_id], references: [id], onDelete: Cascade)
-
-  @@index([organization_id])
-  @@index([key_prefix])
-}
-
-/// API keys for tenant-specific operations
-/// Used by tenants to access their own storage and manage their workspaces
-///
-/// Example:
-/// ```typescript
-/// // Create tenant API key
-/// const tenantKey = await prisma.tenant_api_keys.create({
-///   data: {
-///     tenant_id: 'tenant_456',
-///     key_name: 'Storage Access',
-///     key_prefix: 'tenant_key_789',
-///     key_hash: hashedApiKey,
-///     scopes: ['read_files', 'write_files']
-///   }
-/// });
-/// ```
-model tenant_api_keys {
-  id         BigInt    @id @default(autoincrement())
-  tenant_id  String    @db.VarChar(100)
-  key_name   String    @db.VarChar(255)
-  key_prefix String    @unique @db.VarChar(32)
-  key_hash   String    @db.VarChar(255)
-  scopes     String[]
-  expires_at DateTime? @db.Timestamptz(6)
-  created_at DateTime  @default(now()) @db.Timestamptz(6)
-  created_by String    @db.VarChar(100)
-  last_used  DateTime? @db.Timestamptz(6)
-  is_active  Boolean   @default(true)
-
-  tenant tenants @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
-
-  @@index([tenant_id])
-  @@index([key_prefix])
-}
-
-/// Tracks organization-level resource usage
-/// Used for billing and monitoring
-///
-/// Example:
-/// ```typescript
-/// // Log storage usage
-/// const usage = await prisma.org_usage_logs.create({
-///   data: {
-///     organization_id: 'org_123',
-///     event_type: 'storage',
-///     quantity: 1000000, // 1MB
-///     unit: 'bytes',
-///     details: { operation: 'file_upload', workspace_id: '123' }
-///   }
-/// });
-/// ```
-model org_usage_logs {
-  id              BigInt   @id @default(autoincrement())
-  organization_id String   @db.VarChar(100)
-  timestamp       DateTime @default(now()) @db.Timestamptz(6)
-  event_type      String   @db.VarChar(50) // 'storage', 'api', 'bandwidth'
-  quantity        BigInt // Amount of resource used
-  unit            String   @db.VarChar(20) // 'bytes', 'requests', 'mb'
-  details         Json?    @db.JsonB
-
-  organization organizations @relation(fields: [organization_id], references: [id], onDelete: Cascade)
-
-  @@index([organization_id])
-  @@index([timestamp])
-  @@index([event_type])
-}
-
-/// Tracks tenant-level resource usage
-/// Used for monitoring and potential charge-back
-///
-/// Example:
-/// ```typescript
-/// // Log API usage
-/// const tenantUsage = await prisma.tenant_usage_logs.create({
-///   data: {
-///     tenant_id: 'tenant_456',
-///     event_type: 'api',
-///     quantity: 1,
-///     unit: 'requests',
-///     details: { endpoint: '/files/upload', status: 200 }
-///   }
-/// });
-/// ```
-model tenant_usage_logs {
-  id         BigInt   @id @default(autoincrement())
-  tenant_id  String   @db.VarChar(100)
-  timestamp  DateTime @default(now()) @db.Timestamptz(6)
-  event_type String   @db.VarChar(50)
-  quantity   BigInt
-  unit       String   @db.VarChar(20)
-  details    Json?    @db.JsonB
-
-  tenant tenants @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
-
-  @@index([tenant_id])
-  @@index([timestamp])
-  @@index([event_type])
-}
-
-/// Represents user accounts in the system
-/// @field auth0_user_id - External authentication identifier
-/// @field storage_quota - Maximum allowed storage in bytes
-/// @field used_storage - Current storage usage in bytes
-/// @index auth0_user_id - Optimizes authentication lookups
-model accounts {
-  auth0_user_id   String?      @db.VarChar(100) /// External auth provider ID
-  base_directory  String?      @db.VarChar(255) /// Root directory for user files
-  bucket_location String?      @db.VarChar(255) /// S3 bucket location
-  bucket_name     String?      @db.VarChar(100) /// S3 bucket name
-  id              BigInt       @id @default(autoincrement())
-  region          String?      @db.VarChar(50) /// AWS region
-  created_at      DateTime     @default(now()) @db.Timestamptz(6)
-  updated_at      DateTime     @updatedAt @db.Timestamptz(6)
-  is_active       Boolean      @default(true) /// Account status
-  settings        Json?        @db.JsonB /// User preferences and settings
-  last_access     DateTime?    @db.Timestamptz(6) /// Last account access timestamp
-  storage_quota   BigInt? /// Maximum storage limit in bytes
-  used_storage    BigInt? /// Current storage usage in bytes
-  workspaces      workspaces[] /// Associated workspaces
-  organization_id String?      @db.VarChar(100) // Optional org association
-  tenant_id       String?      @db.VarChar(100) // Optional tenant association
-
-  // Add relations
-  organization organizations? @relation(fields: [organization_id], references: [id])
-
-  @@index([auth0_user_id], map: "idx_user_auth0_user_id")
-  @@index([created_at])
-  @@index([is_active])
-  @@index([organization_id])
-  @@index([tenant_id])
-}
 
 /// Stores file metadata and S3 information
 /// @field file_type - MIME type or file extension
@@ -591,12 +309,11 @@ model workspaces {
   storage_quota     BigInt? /// Storage limit
   used_storage      BigInt? /// Current usage
   tenant_id         String?   @db.VarChar(100) // Optional tenant association
+  organization_id   String?   @db.VarChar(100) // Optional tenant association
 
   // Relationships
   folder_metadata  folder_metadata[]
-  accounts         accounts?         @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_accounts_workspace")
   workspace_search workspace_search?
-  tenant           tenants?          @relation(fields: [tenant_id], references: [id])
 
   // Additional fields
   workspace_type      String?   @db.VarChar(50) // 'personal', 'team', 'project'
@@ -800,39 +517,242 @@ model workspace_compliance {
   @@index([compliance_level])
 }
 
-/// Search Implementation Notes:
-/// Since Prisma doesn't directly support GIN indexes with operator classes,
-/// you'll need to create them manually in PostgreSQL after deployment.
+/// Architecture Overview:
+/// This schema implements a hierarchical multi-tenant architecture with built-in
+/// search capabilities and usage tracking. The system is designed to support
+/// SaaS providers offering storage solutions to organizations.
 ///
-/// Example PostgreSQL commands for setting up full-text search indexes:
-/// ```sql
-/// -- For file_search
-/// CREATE INDEX idx_file_search_content
-/// ON file_search USING gin(to_tsvector('english', content_tokens));
+/// Key Components:
+/// 1. Multi-tenant Structure
+///    - Organizations (Top level - your direct customers)
+///    - Tenants (Sub-level - your customers' customers)
+///    - Workspaces (Configurable spaces within tenants)
 ///
-/// CREATE INDEX idx_file_search_metadata
-/// ON file_search USING gin(to_tsvector('english', metadata_tokens));
+/// 2. Storage Management
+///    - Files and folders with metadata
+///    - S3 integration
+///    - Version control
+///    - Preview generation
 ///
-/// CREATE INDEX idx_file_search_text
-/// ON file_search USING gin(to_tsvector('english', search_text));
+/// 3. Search System
+///    - Full-text search
+///    - Vector/semantic search
+///    - Multi-language support
+///    - Metadata indexing
 ///
-/// -- For folder_search
-/// CREATE INDEX idx_folder_search_text
-/// ON folder_search USING gin(to_tsvector('english', search_text));
+/// Usage Examples:
+/// ```typescript
+/// Create organization with tenant
+/// const org = await prisma.organizations.create({
+///   data: {
+///     id: 'org_123',
+///     name: 'TechCorp',
+///     subscription_tier: 'business',
+///     storage_quota: 1000000000000, // 1TB
+///     tenants: {
+///       create: {
+///         id: 'tenant_456',
+///         name: 'Division A',
+///         storage_quota: 100000000000 // 100GB
+///       }
+///     }
+///   }
+/// });
 ///
-/// CREATE INDEX idx_folder_search_metadata
-/// ON folder_search USING gin(to_tsvector('english', metadata_tokens));
+/// Create workspace with folder structure
+/// const workspace = await prisma.workspaces.create({
+///   data: {
+///     tenant_id: 'tenant_456',
+///     name: 'Project X',
+///     storage_quota: 10000000000, // 10GB
+///     folder_metadata: {
+///       create: {
+///         name: 'Root',
+///         s3_folder_path: '/tenant_456/project_x/'
+///       }
+///     }
+///   }
+/// });
 ///
-/// -- For workspace_search
-/// CREATE INDEX idx_workspace_search_text
-/// ON workspace_search USING gin(to_tsvector('english', search_text));
+/// // Upload file with search indexing
+/// const file = await prisma.$transaction(async (tx) => {
+///   const metadata = await tx.file_metadata.create({
+///     data: {
+///       name: 'document.pdf',
+///       tenant_id: 'tenant_456',
+///       s3_key: 's3://bucket/path/document.pdf',
+///       size: 1024000
+///     }
+///   });
 ///
-/// CREATE INDEX idx_workspace_search_metadata
-/// ON workspace_search USING gin(to_tsvector('english', metadata_tokens));
+///   await tx.file_search.create({
+///     data: {
+///       file_id: metadata.id,
+///       content_tokens: 'extracted text content',
+///       metadata_tokens: 'pdf,document,project',
+///       search_text: 'Full searchable content'
+///     }
+///   });
+///
+///   return metadata;
+/// });
 /// ```
 ///
-/// To use these indexes in queries:
-/// ```sql
-/// SELECT * FROM file_search
-/// WHERE to_tsvector('english', search_text) @@ to_tsquery('english', 'search_term');
+/// Security Considerations:
+/// 1. Data Isolation
+///    - Always include tenant_id in queries
+///    - Use middleware for automatic tenant scoping
+///    ```typescript
+///    prisma.$use(async (params, next) => {
+///      if (params.model === 'file_metadata') {
+///        params.args.where = {
+///          ...params.args.where,
+///          tenant_id: currentTenantId
+///        };
+///      }
+///      return next(params);
+///    });
+///    ```
+///
+/// 2. Quota Management
+///    - Check quotas before operations
+///    ```typescript
+///    const checkQuota = async (tenantId: string, size: number) => {
+///      const tenant = await prisma.tenants.findUnique({
+///        where: { id: tenantId }
+///      });
+///      if (tenant.used_storage + size > tenant.storage_quota) {
+///        throw new Error('Quota exceeded');
+///      }
+///    };
+///    ```
+///
+/// 3. API Key Security
+///    - Never store raw API keys
+///    - Use key_prefix for lookups
+///    - Store hashed values only
+///
+/// Search Implementation:
+/// 1. Full-text Search
+///    ```typescript
+///    const searchFiles = async (query: string, tenantId: string) => {
+///      return prisma.file_search.findMany({
+///        where: {
+///          search_text: { contains: query },
+///          file_metadata: { tenant_id: tenantId }
+///        },
+///        include: { file_metadata: true }
+///      });
+///    };
+///    ```
+///
+/// 2. Vector Search
+///    ```typescript
+///    const semanticSearch = async (
+///      embedding: number[],
+///      tenantId: string
+///    ) => {
+///      Using native PostgreSQL vector operations
+///      const results = await prisma.$queryRaw`
+///        SELECT * FROM file_search fs
+///        JOIN file_metadata fm ON fs.file_id = fm.id
+///        WHERE fm.tenant_id = ${tenantId}
+///        ORDER BY fs.content_vector <-> ${embedding}::vector
+///        LIMIT 10
+///      `;
+///      return results;
+///    };
+///    ```
+///
+/// Usage Tracking:
+/// ```typescript
+/// const logUsage = async (
+///   tenantId: string,
+///   type: string,
+///   quantity: number
+/// ) => {
+///   await prisma.$transaction([
+///     prisma.tenant_usage_logs.create({
+///       data: {
+///         tenant_id: tenantId,
+///         event_type: type,
+///         quantity: quantity,
+///         unit: type === 'storage' ? 'bytes' : 'requests'
+///       }
+///     }),
+///     prisma.tenants.update({
+///       where: { id: tenantId },
+///       data: {
+///         used_storage: { increment: quantity }
+///       }
+///     })
+///   ]);
+/// };
 /// ```
+///
+/// Performance Optimization:
+/// 1. Indexes
+///    - Ensure all foreign keys are indexed
+///    - Create composite indexes for common queries
+///    - Use GIN indexes for search tables
+///
+/// 2. Batch Operations
+///    ```typescript
+///    const batchUpdateFiles = async (files: any[]) => {
+///      await prisma.$transaction(
+///        files.map(file =>
+///          prisma.file_metadata.update({
+///            where: { id: file.id },
+///            data: { ...file }
+///          })
+///        )
+///      );
+///    };
+///    ```
+///
+/// 3. Pagination
+///    ```typescript
+///    const listFiles = async (
+///      tenantId: string,
+///      skip: number,
+///      take: number
+///    ) => {
+///      return prisma.file_metadata.findMany({
+///        where: { tenant_id: tenantId },
+///        skip,
+///        take,
+///        orderBy: { created_at: 'desc' }
+///      });
+///    };
+///    ```
+///
+/// Required PostgreSQL Extensions:
+/// ```sql
+/// CREATE EXTENSION IF NOT EXISTS pgvector;
+/// CREATE EXTENSION IF NOT EXISTS pg_trgm;
+/// CREATE EXTENSION IF NOT EXISTS btree_gin;
+/// ```
+///
+/// Search Indexing Setup:
+/// ```sql
+/// -- Create GIN indexes for full-text search
+/// CREATE INDEX idx_file_search_content ON file_search
+/// USING gin(to_tsvector('english', content_tokens));
+///
+/// CREATE INDEX idx_file_search_metadata ON file_search
+/// USING gin(to_tsvector('english', metadata_tokens));
+///
+/// -- Create index for vector similarity search
+/// CREATE INDEX idx_file_search_vector ON file_search
+/// USING ivfflat (content_vector vector_cosine_ops)
+/// WITH (lists = 100);
+/// ```
+///
+/// Best Practices:
+/// 1. Always use transactions for related operations
+/// 2. Implement proper error handling and rollbacks
+/// 3. Use middleware for tenant isolation
+/// 4. Regular monitoring of usage and quotas
+/// 5. Implement rate limiting for API access
+/// 6. Regular backup of search indexes
+/// 7. Monitor and optimize search performance

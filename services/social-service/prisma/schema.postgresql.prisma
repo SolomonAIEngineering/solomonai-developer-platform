@@ -14,7 +14,6 @@ datasource db {
 //
 // ENUMS
 //
-
 // Enum representing the status of a post
 enum PostStatus {
   DRAFT // Post is in draft mode and not visible to others
@@ -202,8 +201,8 @@ model VirtualProfile {
   // Relations
   userProfile      UserProfile[] // One-to-many relation to UserProfile
   communityProfile CommunityProfile[] // One-to-many relation to CommunityProfile
-  organizationId   String
-  tenantId         String
+  organizationId   String // NOTE: we must always check for the existence of the organization ID in request headers
+  tenantId         String // NOTE: we must always check for the existence of the tenant ID in request headers
 
   // Indexes
   @@index([userId]) // Index on userId
@@ -306,26 +305,25 @@ model Topic {
 
 // Model representing a publication, such as a blog or magazine
 model Publication {
-  id                         String   @id @default(uuid()) // Unique identifier
-  publicationName            String?  @map("publication_name") // Name of the publication
-  description                String? // Description of the publication
-  type                       String? // Type of publication
-  postIds                    String[] @map("post_ids") // List of post IDs associated with the publication
-  subjects                   String[] // Subjects covered by the publication
-  tags                       String[] // Tags associated with the publication
-  adminBackendPlatformUserId String?  @map("admin_backend_platform_user_id") // Admin user ID
-  metadata                   Json? // Additional metadata
-  createdAt                  DateTime @default(now()) @map("created_at") // Timestamp when created
-  updatedAt                  DateTime @updatedAt @map("updated_at") // Timestamp when last updated
+  id                         String   @id @default(uuid())
+  publicationName            String   @map("publication_name")
+  description                String?
+  type                       String?
+  subjects                   String[]
+  tags                       String[]
+  adminBackendPlatformUserId String?  @map("admin_backend_platform_user_id")
+  metadata                   Json?
+  createdAt                  DateTime @default(now()) @map("created_at")
+  updatedAt                  DateTime @updatedAt @map("updated_at")
 
   // Relations
-  bookmarks Bookmark[] // Bookmarks associated with the publication
-  admins    UserProfile[] @relation("AdminPublication") // Admins of the publication
-  editors   UserProfile[] @relation("EditorPublication") // Editors of the publication
-  posts     Post[] // Posts published in the publication
+  admins     UserProfile[] @relation("AdminPublication")
+  editors    UserProfile[] @relation("EditorPublication")
+  posts      Post[]
+  bookmark   Bookmark?     @relation(fields: [bookmarkId], references: [id]) // One-to-one: A publication belongs to one bookmark
+  bookmarkId String?       @unique // Make this unique to enforce one-to-one
 
-  // Mapping
-  @@map("publications") // Maps to the "publications" table in the database
+  @@map("publications")
 }
 
 // Model representing media files like images, videos, documents, etc.
@@ -643,19 +641,20 @@ model Reaction {
 
 // Model representing a collection of bookmarks
 model Bookmark {
-  id        String   @id @default(uuid()) // Unique identifier
-  postIds   String[] @map("post_ids") // List of post IDs bookmarked
-  metadata  Json? // Additional metadata
-  createdAt DateTime @default(now()) @map("created_at") // Timestamp when created
-  updatedAt DateTime @updatedAt @map("updated_at") // Timestamp when last updated
+  id        String   @id @default(uuid())
+  name      String? // Name for the bookmark collection
+  userId    String   @map("user_id") // Direct reference to owner
+  metadata  Json?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   // Relations
-  publications Publication[] // Publications associated with the bookmark
-  users        UserProfile[] // Users who have this bookmark
-  posts        Post[] // Posts included in the bookmark
+  user        UserProfile  @relation(fields: [userId], references: [id])
+  posts       Post[] // Many-to-many: A bookmark can have many posts
+  publication Publication? // One-to-one: A bookmark can have one publication
 
-  // Mapping
-  @@map("bookmarks") // Maps to the "bookmarks" table in the database
+  @@index([userId])
+  @@map("bookmarks")
 }
 
 // Model representing a block relationship between users

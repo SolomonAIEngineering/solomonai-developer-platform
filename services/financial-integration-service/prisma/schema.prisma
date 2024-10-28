@@ -15,30 +15,6 @@ generator erd {
   output   = "./ERD.svg"
 }
 
-model organizations {
-  id                      String                    @id @db.VarChar(100)
-  name                    String                    @db.VarChar(255)
-  display_name            String?                   @db.VarChar(255)
-  domain                  String?                   @db.VarChar(255)
-  subscription_tier       String                    @db.VarChar(50) // 'free', 'startup', 'business', 'enterprise'
-  subscription_status     String                    @db.VarChar(50) // 'active', 'suspended', 'cancelled'
-  email                   String                    @db.VarChar(255) // primary contact user id - NOTE: globally unique
-  user_id                 String?                   @db.VarChar(100) // Auth0 or other identity provider ID - NOTE: globally unique
-  technical_contact       String?                   @db.VarChar(255)
-  created_at              DateTime                  @default(now()) @db.Timestamptz(6)
-  updated_at              DateTime                  @updatedAt @db.Timestamptz(6)
-  is_active               Boolean                   @default(true)
-  metadata                Json?                     @db.JsonB
-  max_members             Int? // Limit based on subscription
-  security_settings       Json?                     @db.JsonB // Security and compliance settings
-  feature_flags           Json?                     @db.JsonB // Enabled features based on subscription
-  financial_user_profiles financial_user_profiles[]
-
-  @@index([subscription_status])
-  @@index([subscription_tier])
-  @@index([domain])
-}
-
 model account_statements {
   bank_account_id         BigInt?
   credit_account_id       BigInt?
@@ -209,13 +185,11 @@ model financial_user_profiles {
   stripe_customer_id           String?
   user_id                      String?
   organization_id              String                         @db.VarChar(100)
+  tenant_id                    String                         @db.VarChar(100)
   actionable_insights          actionable_insights[]
   links                        links[]
   personal_actionable_insights personal_actionable_insights[]
   smart_notes                  smart_notes[]
-
-  // Relations
-  organization organizations @relation(fields: [organization_id], references: [id], onDelete: Cascade)
 
   @@index([email], map: "idx_financial_user_profile_email")
   @@index([stripe_customer_id], map: "idx_financial_user_profile_stripe_customer_id")
