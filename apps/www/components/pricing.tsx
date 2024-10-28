@@ -565,7 +565,9 @@ export const PearCreditsTooltip = ({ type }: { type: string }) => {
             Current models include Claude 3.5 Sonnet and GPT4o.
             <br /> <br />
             Your Solomon AI Credits usage depend on your prompt input and output
-            sizes. On average, this equates to around {pearCreditsCount(type)}{" "}
+            sizes. On average, this equates to around {pearCreditsCount(
+              type,
+            )}{" "}
             requests{type === "free" && " for our current free trial"}.
             {type !== "free" && (
               <>
