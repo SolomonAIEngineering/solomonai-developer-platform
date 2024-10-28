@@ -1,8 +1,11 @@
 import { Env } from "@/env";
-import { PrismaPg } from '@prisma/adapter-pg';
-import { Pool } from 'pg';
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
 import { ConsoleLogger } from "../metric/logger";
-import { Prisma as PostgresPrisma, PrismaClient as PostgresPrismaClient } from './generated/postgresql';
+import {
+  Prisma as PostgresPrisma,
+  PrismaClient as PostgresPrismaClient,
+} from "./generated/postgresql";
 
 type PrismaLogEvent = PostgresPrisma.LogEvent;
 type PrismaQueryEvent = PostgresPrisma.QueryEvent;
@@ -44,9 +47,9 @@ export class DatabaseClient {
     if (env.ENVIRONMENT === "development") {
       // PostgreSQL query logging
       (this.postgresClient.$on as any)("query", (event: PrismaQueryEvent) => {
-        this.logger.debug(`[PostgreSQL] Query: ${ event.query } `);
-        this.logger.debug(`[PostgreSQL] Params: ${ event.params } `);
-        this.logger.debug(`[PostgreSQL] Duration: ${ event.duration } ms`);
+        this.logger.debug(`[PostgreSQL] Query: ${event.query} `);
+        this.logger.debug(`[PostgreSQL] Params: ${event.params} `);
+        this.logger.debug(`[PostgreSQL] Duration: ${event.duration} ms`);
       });
     }
 
@@ -72,12 +75,11 @@ export class DatabaseClient {
    */
   public async connect(): Promise<void> {
     try {
-      await Promise.all([
-        this.postgresClient.$connect(),
-      ]);
+      await Promise.all([this.postgresClient.$connect()]);
       this.logger.info("Successfully connected to all databases");
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
       this.logger.error("Failed to connect to databases:", {
         error: errorMessage,
         timestamp: new Date().toISOString(),
@@ -91,9 +93,7 @@ export class DatabaseClient {
    */
   public async disconnect(): Promise<void> {
     try {
-      await Promise.all([
-        this.postgresClient.$disconnect(),
-      ]);
+      await Promise.all([this.postgresClient.$disconnect()]);
       this.logger.info("Disconnected from all databases");
     } catch (error) {
       this.logger.error("Error disconnecting from databases:", {
@@ -108,19 +108,23 @@ export class DatabaseClient {
    * @returns Result of the transaction
    */
   public async postgresTransaction<T>(
-    callback: (tx: PostgresPrismaClient) => Promise<T>
+    callback: (tx: PostgresPrismaClient) => Promise<T>,
   ): Promise<T> {
-    return await this.postgresClient.$transaction(async (postgresTransaction) => {
-      try {
-        const result = await callback(postgresTransaction as PostgresPrismaClient);
-        return result;
-      } catch (error) {
-        this.logger.error("PostgreSQL transaction failed:", {
-          error: error instanceof Error ? error.message : String(error),
-        });
-        throw error;
-      }
-    });
+    return await this.postgresClient.$transaction(
+      async (postgresTransaction) => {
+        try {
+          const result = await callback(
+            postgresTransaction as PostgresPrismaClient,
+          );
+          return result;
+        } catch (error) {
+          this.logger.error("PostgreSQL transaction failed:", {
+            error: error instanceof Error ? error.message : String(error),
+          });
+          throw error;
+        }
+      },
+    );
   }
 
   /**
@@ -130,16 +134,18 @@ export class DatabaseClient {
    */
   public async coordinatedOperation<T>(
     callback: (tx: {
-      postgres: PostgresPrismaClient,
-    }) => Promise<T>
+      postgres: PostgresPrismaClient;
+    }) => Promise<T>,
   ): Promise<T> {
     try {
       // Wrap both operations in their respective transaction handlers
-      return await this.postgresClient.$transaction(async (postgresTransaction) => {
+      return await this.postgresClient.$transaction(
+        async (postgresTransaction) => {
           return await callback({
             postgres: postgresTransaction as PostgresPrismaClient,
-        });
-      });
+          });
+        },
+      );
     } catch (error) {
       this.logger.error("Coordinated operation failed:", {
         error: error instanceof Error ? error.message : String(error),
@@ -157,7 +163,7 @@ export class DatabaseClient {
   }> {
     const health = {
       postgres: false,
-      mongo: false
+      mongo: false,
     };
 
     try {
@@ -183,7 +189,9 @@ export function initializeDatabase(env: Env): DatabaseClient {
 
 export function getDatabase(): DatabaseClient {
   if (!context.dbClient) {
-    throw new Error("Database client not initialized. Call initializeDatabase first.");
+    throw new Error(
+      "Database client not initialized. Call initializeDatabase first.",
+    );
   }
   return context.dbClient;
 }

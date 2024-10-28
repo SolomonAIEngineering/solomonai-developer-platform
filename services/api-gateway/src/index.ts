@@ -26,7 +26,7 @@ const handler = {
           message: "Some environment variables are missing or are invalid",
           errors: parsedEnv.error,
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -46,14 +46,16 @@ const handler = {
         requestId: "",
         environment: env.ENVIRONMENT,
         application: "api",
-      }).fatal(`DATABASE_CONNECTION_ERROR: ${error instanceof Error ? error.message : "Unknown error"}`);
+      }).fatal(
+        `DATABASE_CONNECTION_ERROR: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
       return Response.json(
         {
           code: "DATABASE_CONNECTION_ERROR",
           message: "Failed to connect to the database",
           errors: error,
         },
-        { status: 500 }
+        { status: 500 },
       );
     } finally {
       // Ensure the database client is disconnected
@@ -64,7 +66,7 @@ const handler = {
   queue: async (
     batch: MessageBatch<UserActionMessageBody>,
     env: Env,
-    _executionContext: ExecutionContext
+    _executionContext: ExecutionContext,
   ) => {
     const logger = new ConsoleLogger({
       requestId: "queue",

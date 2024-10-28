@@ -8,7 +8,7 @@ import { User } from "@/db/schema";
 import { Env } from "@/env";
 import { Metrics } from "@/metric";
 import { Logger } from "@/metric/logger";
-import { PrismaClient as PostgresPrismaClient } from '../database/generated/postgresql';
+import { PrismaClient as PostgresPrismaClient } from "../database/generated/postgresql";
 
 /**
  * Represents the context for various services used in the application.

@@ -1,7 +1,13 @@
 import { Env } from "@/env";
 import { ConsoleLogger } from "../metric/logger";
-import { Prisma as MongoPrisma, PrismaClient as MongoPrismaClient } from './generated/mongo';
-import { Prisma as PostgresPrisma, PrismaClient as PostgresPrismaClient } from './generated/postgresql';
+import {
+  Prisma as MongoPrisma,
+  PrismaClient as MongoPrismaClient,
+} from "./generated/mongo";
+import {
+  Prisma as PostgresPrisma,
+  PrismaClient as PostgresPrismaClient,
+} from "./generated/postgresql";
 
 type PrismaLogEvent = PostgresPrisma.LogEvent | MongoPrisma.LogEvent;
 type PrismaQueryEvent = PostgresPrisma.QueryEvent | MongoPrisma.QueryEvent;
@@ -59,16 +65,16 @@ export class DatabaseClient {
     if (env.ENVIRONMENT === "development") {
       // PostgreSQL query logging
       (this.postgresClient.$on as any)("query", (event: PrismaQueryEvent) => {
-        this.logger.debug(`[PostgreSQL] Query: ${ event.query } `);
-        this.logger.debug(`[PostgreSQL] Params: ${ event.params } `);
-        this.logger.debug(`[PostgreSQL] Duration: ${ event.duration } ms`);
+        this.logger.debug(`[PostgreSQL] Query: ${event.query} `);
+        this.logger.debug(`[PostgreSQL] Params: ${event.params} `);
+        this.logger.debug(`[PostgreSQL] Duration: ${event.duration} ms`);
       });
 
       // MongoDB query logging
       (this.mongoClient.$on as any)("query", (event: PrismaQueryEvent) => {
-        this.logger.debug(`[MongoDB] Query: ${ event.query } `);
-        this.logger.debug(`[MongoDB] Params: ${ event.params } `);
-        this.logger.debug(`[MongoDB] Duration: ${ event.duration } ms`);
+        this.logger.debug(`[MongoDB] Query: ${event.query} `);
+        this.logger.debug(`[MongoDB] Params: ${event.params} `);
+        this.logger.debug(`[MongoDB] Duration: ${event.duration} ms`);
       });
     }
 
@@ -108,11 +114,12 @@ export class DatabaseClient {
     try {
       await Promise.all([
         this.postgresClient.$connect(),
-        this.mongoClient.$connect()
+        this.mongoClient.$connect(),
       ]);
       this.logger.info("Successfully connected to all databases");
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
       this.logger.error("Failed to connect to databases:", {
         error: errorMessage,
         timestamp: new Date().toISOString(),
@@ -128,7 +135,7 @@ export class DatabaseClient {
     try {
       await Promise.all([
         this.postgresClient.$disconnect(),
-        this.mongoClient.$disconnect()
+        this.mongoClient.$disconnect(),
       ]);
       this.logger.info("Disconnected from all databases");
     } catch (error) {
@@ -144,19 +151,23 @@ export class DatabaseClient {
    * @returns Result of the transaction
    */
   public async postgresTransaction<T>(
-    callback: (tx: PostgresPrismaClient) => Promise<T>
+    callback: (tx: PostgresPrismaClient) => Promise<T>,
   ): Promise<T> {
-    return await this.postgresClient.$transaction(async (postgresTransaction) => {
-      try {
-        const result = await callback(postgresTransaction as PostgresPrismaClient);
-        return result;
-      } catch (error) {
-        this.logger.error("PostgreSQL transaction failed:", {
-          error: error instanceof Error ? error.message : String(error),
-        });
-        throw error;
-      }
-    });
+    return await this.postgresClient.$transaction(
+      async (postgresTransaction) => {
+        try {
+          const result = await callback(
+            postgresTransaction as PostgresPrismaClient,
+          );
+          return result;
+        } catch (error) {
+          this.logger.error("PostgreSQL transaction failed:", {
+            error: error instanceof Error ? error.message : String(error),
+          });
+          throw error;
+        }
+      },
+    );
   }
 
   /**
@@ -167,7 +178,7 @@ export class DatabaseClient {
    * @returns Result of the transaction
    */
   public async mongoTransaction<T>(
-    callback: (tx: MongoPrismaClient) => Promise<T>
+    callback: (tx: MongoPrismaClient) => Promise<T>,
   ): Promise<T> {
     try {
       return await this.mongoClient.$transaction(async (mongoTransaction) => {
@@ -189,20 +200,24 @@ export class DatabaseClient {
    */
   public async coordinatedOperation<T>(
     callback: (tx: {
-      postgres: PostgresPrismaClient,
-      mongo: MongoPrismaClient
-    }) => Promise<T>
+      postgres: PostgresPrismaClient;
+      mongo: MongoPrismaClient;
+    }) => Promise<T>,
   ): Promise<T> {
     try {
       // Wrap both operations in their respective transaction handlers
-      return await this.postgresClient.$transaction(async (postgresTransaction) => {
-        return await this.mongoClient.$transaction(async (mongoTransaction) => {
-          return await callback({
-            postgres: postgresTransaction as PostgresPrismaClient,
-            mongo: mongoTransaction as MongoPrismaClient
-          });
-        });
-      });
+      return await this.postgresClient.$transaction(
+        async (postgresTransaction) => {
+          return await this.mongoClient.$transaction(
+            async (mongoTransaction) => {
+              return await callback({
+                postgres: postgresTransaction as PostgresPrismaClient,
+                mongo: mongoTransaction as MongoPrismaClient,
+              });
+            },
+          );
+        },
+      );
     } catch (error) {
       this.logger.error("Coordinated operation failed:", {
         error: error instanceof Error ? error.message : String(error),
@@ -220,7 +235,7 @@ export class DatabaseClient {
   }> {
     const health = {
       postgres: false,
-      mongo: false
+      mongo: false,
     };
 
     try {
@@ -255,7 +270,9 @@ export function initializeDatabase(env: Env): DatabaseClient {
 
 export function getDatabase(): DatabaseClient {
   if (!context.dbClient) {
-    throw new Error("Database client not initialized. Call initializeDatabase first.");
+    throw new Error(
+      "Database client not initialized. Call initializeDatabase first.",
+    );
   }
   return context.dbClient;
 }
