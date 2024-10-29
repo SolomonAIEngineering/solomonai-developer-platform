@@ -2,6 +2,39 @@ import { PrismaClient, Prisma } from "./generated/postgresql";
 import { QueryOptions, RequestContext } from "./types";
 
 /**
+ * User roles within the system
+ */
+export enum UserRole {
+  ADMIN = "admin",
+  USER_MANAGER = "user_manager",
+  TEAM_MANAGER = "team_manager",
+}
+
+/**
+ * Role-based permissions configuration
+ */
+const ROLE_PERMISSIONS = {
+  [UserRole.ADMIN]: [
+    'manage_users',
+    'manage_teams',
+    'manage_settings',
+    'manage_api_keys',
+    'view_audit_logs',
+    'manage_storage',
+    'manage_organizations',
+  ],
+  [UserRole.USER_MANAGER]: [
+    'manage_users',
+    'view_audit_logs',
+    'manage_settings',
+  ],
+  [UserRole.TEAM_MANAGER]: [
+    'manage_teams',
+    'view_team_audit_logs',
+    'manage_team_settings',
+  ]
+};
+/**
  * Retrieve all model names from the Prisma Client.
  * This will be used to ensure type safety and to reference models dynamically.
  */
@@ -98,8 +131,19 @@ export class QueryMiddleware {
   private static readonly ACCESS_POLICIES: AccessPolicy<PrismaModels>[] = [
     {
       model: Prisma.ModelName.user_accounts,
-      operations: ["findMany", "findUnique", "create", "update"],
-      roles: ["admin", "user_manager"],
+      operations: ["findMany", "findUnique", "create", "update", "delete"],
+      roles: [UserRole.ADMIN, UserRole.USER_MANAGER],
+      conditions: (context) =>
+        context.permissions?.includes("manage_users") ?? false,
+      filters: (context) => ({
+        organization_id: context.organizationId,
+        tenant_id: context.tenantId,
+      }),
+    },
+    {
+      model: Prisma.ModelName.business_accounts,
+      operations: ["findMany", "findUnique", "create", "update", "delete"],
+      roles: [UserRole.ADMIN, UserRole.USER_MANAGER],
       conditions: (context) =>
         context.permissions?.includes("manage_users") ?? false,
       filters: (context) => ({
@@ -110,14 +154,47 @@ export class QueryMiddleware {
     {
       model: Prisma.ModelName.teams,
       operations: ["findMany", "findUnique", "create", "update", "delete"],
-      roles: ["admin", "team_manager"],
+      roles: [UserRole.ADMIN, UserRole.TEAM_MANAGER],
       filters: (context) => ({
         organization_id: context.organizationId,
         tenant_id: context.tenantId,
       }),
     },
     {
+      model: Prisma.ModelName.team_members,
+      operations: ["findMany", "findUnique", "create", "update", "delete"],
+      roles: [UserRole.ADMIN, UserRole.USER_MANAGER, UserRole.TEAM_MANAGER],
+      filters: (context) => ({
+        user_account: {
+          organization_id: context.organizationId,
+          tenant_id: context.tenantId,
+        },
+      }),
+    },
+    {
       model: Prisma.ModelName.addresses,
+      operations: ["findMany", "findUnique", "create", "update", "delete"],
+      roles: ["admin", "user_manager", "team_manager"],
+      filters: (context) => ({
+        user_account: {
+          organization_id: context.organizationId,
+          tenant_id: context.tenantId,
+        },
+      }),
+    },
+    {
+      model: Prisma.ModelName.audit_logs,
+      operations: ["findMany", "findUnique", "create", "update", "delete"],
+      roles: ["admin", "user_manager", "team_manager"],
+      filters: (context) => ({
+        user_account: {
+          organization_id: context.organizationId,
+          tenant_id: context.tenantId,
+        },
+      }),
+    },
+    {
+      model: Prisma.ModelName.settings,
       operations: ["findMany", "findUnique", "create", "update", "delete"],
       roles: ["admin", "user_manager", "team_manager"],
       filters: (context) => ({
