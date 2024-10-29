@@ -1,4 +1,4 @@
-import { initializeDatabase } from "./database/client";
+import { DatabaseClient } from "./database/client";
 import { Env, zEnv } from "./env";
 import { newApp } from "./hono/app";
 import { UserActionMessageBody } from "./message";
@@ -31,10 +31,8 @@ const handler = {
     }
 
     // Initialize and connect the DatabaseClient
-    const dbClient = initializeDatabase(parsedEnv.data);
+    const dbClient = new DatabaseClient(parsedEnv.data);
     try {
-      await dbClient.connect();
-
       // Attach dbClient to the context so that routes can access it
       parsedEnv.data.DATABASE_CLIENT = dbClient;
 
@@ -57,9 +55,6 @@ const handler = {
         },
         { status: 500 },
       );
-    } finally {
-      // Ensure the database client is disconnected
-      await dbClient.disconnect();
     }
   },
 
@@ -83,10 +78,8 @@ const handler = {
     }
 
     // Initialize and connect the DatabaseClient
-    const dbClient = initializeDatabase(parsedEnv.data);
+    const dbClient = new DatabaseClient(parsedEnv.data);
     try {
-      await dbClient.connect();
-
       // Attach dbClient to the environment for use in message processing
       parsedEnv.data.DATABASE_CLIENT = dbClient;
 
@@ -136,9 +129,6 @@ const handler = {
       logger.error("Error processing queue messages:", {
         error: error instanceof Error ? error.message : String(error),
       });
-    } finally {
-      // Ensure the database client is disconnected
-      await dbClient.disconnect();
     }
   },
 } satisfies ExportedHandler<Env, UserActionMessageBody>;

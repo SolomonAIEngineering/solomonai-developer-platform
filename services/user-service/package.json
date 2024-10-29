@@ -46,7 +46,12 @@
     "create-d1-database": "wrangler d1 create engine-production-db",
     "create-namespace-queue-results": "wrangler kv:namespace create QUEUE_RESULTS",
     "create-namespace-kv-namespace": "wrangler kv:namespace create KV_NAMESPACE",
-    "create-namespace-r2-bucket": "wrangler r2 bucket create template-service-bucket"
+    "create-namespace-r2-bucket": "wrangler r2 bucket create template-service-bucket",
+    "compose:up": "docker compose up -d",
+    "compose:down": "docker compose down",
+    "compose:logs": "docker compose logs -f",
+    "compose:kill": "docker compose kill",
+    "compose:restart": "docker compose restart"
   },
   "dependencies": {
     "@axiomhq/js": "^1.2.0",

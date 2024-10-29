@@ -1,5 +1,5 @@
-import { PrismaClient, Prisma } from "./generated/postgresql";
-import { QueryOptions, RequestContext } from "./middleware/types";
+import { PrismaClient, Prisma } from "../generated/postgresql";
+import { QueryOptions, RequestContext } from "./types";
 
 /**
  * Retrieve all model names from the Prisma Client.
@@ -23,7 +23,11 @@ type ValidOperations =
   | "findUnique"
   | "create"
   | "update"
-  | "delete";
+  | "delete"
+  | "count"
+  | "updateMany"
+  | "deleteMany"
+  | "findFirst";
 
 /**
  * Utility type to extract the argument types for a given model and operation.
@@ -136,7 +140,6 @@ export class QueryMiddleware {
    * @param model - The model on which the operation is to be performed.
    * @param operation - The operation to be performed (e.g., findMany, create).
    * @param args - The arguments for the operation.
-   * @param options - Additional query options to modify the behavior.
    * @returns The result of the database operation.
    *
    * @example
@@ -163,13 +166,6 @@ export class QueryMiddleware {
    *       {
    *         where: { is_active: true },
    *         include: { team_memberships: true },
-   *       },
-   *       {
-   *         includeInactive: false,
-   *         includeRelations: ['profiles', 'roles'],
-   *         pagination: { take: 10, skip: 0 },
-   *         useCache: true,
-   *         cacheTTL: 300,
    *       }
    *     );
    *
@@ -189,21 +185,20 @@ export class QueryMiddleware {
     model: TModel,
     operation: TOperation,
     args: OperationArgs<TModel, TOperation>,
-    options?: QueryOptions,
+    queryOptions?: QueryOptions,
   ): Promise<TResult> {
     // Validate that the user has access to perform the operation on the model.
     this.validateAccess(model, operation);
 
     // Enhance the query arguments with tenant isolation and other enhancements.
-    const enhancedArgs = this.enhanceQuery(model, operation, args, options);
+    const enhancedArgs = this.enhanceQuery(model, operation, args);
 
-    // Execute the query with proper error handling and timeout.
+    // Execute the query with proper error handling.
     return await this.executeQuery<TModel, TOperation, TResult>(
       prisma,
       model,
       operation,
       enhancedArgs,
-      options,
     );
   }
 
@@ -337,18 +332,15 @@ export class QueryMiddleware {
 
   /**
    * Enhances the query arguments with additional data, such as tenant IDs and audit fields.
-   * It also applies query options like including inactive records, relations, and pagination.
    * @param model - The model on which the operation is to be performed.
    * @param operation - The operation to be performed.
    * @param args - The original arguments for the operation.
-   * @param options - Additional query options to modify the behavior.
    * @returns The enhanced arguments with additional fields.
    */
   private enhanceQuery<TModel extends PrismaModels>(
     model: TModel,
     operation: ValidOperations,
     args: any,
-    options?: QueryOptions,
   ): any {
     const enhancedArgs = { ...args };
 
@@ -357,49 +349,6 @@ export class QueryMiddleware {
       model,
       args: enhancedArgs,
     });
-
-    // Apply query options.
-    if (options) {
-      // Include inactive records if specified.
-      if (!options.includeInactive) {
-        isolatedArgs.where = {
-          ...isolatedArgs.where,
-          is_active: true,
-        };
-      }
-
-      // Include specified relations.
-      if (options.includeRelations && options.includeRelations.length > 0) {
-        isolatedArgs.include = options.includeRelations.reduce(
-          (acc: any, relation: string) => {
-            acc[relation] = true;
-            return acc;
-          },
-          isolatedArgs.include || {},
-        );
-      }
-
-      // Include memberships.
-      if (options.includeMemberships) {
-        isolatedArgs.include = {
-          ...isolatedArgs.include,
-          memberships: true,
-        };
-      }
-
-      // Apply pagination options.
-      if (options.pagination) {
-        if (options.pagination.take !== undefined) {
-          isolatedArgs.take = options.pagination.take;
-        }
-        if (options.pagination.skip !== undefined) {
-          isolatedArgs.skip = options.pagination.skip;
-        }
-        if (options.pagination.cursor !== undefined) {
-          isolatedArgs.cursor = options.pagination.cursor;
-        }
-      }
-    }
 
     // Add operation-specific enhancements.
     switch (operation) {
@@ -439,12 +388,11 @@ export class QueryMiddleware {
   }
 
   /**
-   * Executes the database query with proper error handling and optional timeout.
+   * Executes the database query with proper error handling.
    * @param prisma - The Prisma client instance.
    * @param model - The model on which the operation is to be performed.
    * @param operation - The operation to be performed.
    * @param args - The arguments for the operation.
-   * @param options - Additional query options, such as timeout.
    * @returns The result of the database operation.
    */
   private async executeQuery<
@@ -456,7 +404,6 @@ export class QueryMiddleware {
     model: TModel,
     operation: TOperation,
     args: OperationArgs<TModel, TOperation>,
-    options?: QueryOptions,
   ): Promise<TResult> {
     try {
       // Retrieve the model client from the Prisma client.
@@ -470,16 +417,8 @@ export class QueryMiddleware {
         throw new Error(`Invalid operation ${operation} for model ${model}`);
       }
 
-      // Execute the operation with the provided arguments and optional timeout.
-      const execute = async () => {
-        return (await (modelClient as any)[operation](args)) as TResult;
-      };
-
-      if (options?.timeout) {
-        return await this.withTimeout(execute, options.timeout);
-      } else {
-        return await execute();
-      }
+      // Execute the operation with the provided arguments.
+      return (await (modelClient as any)[operation](args)) as TResult;
     } catch (error) {
       // Handle known Prisma errors with custom messages.
       if (this.isPrismaError(error)) {
@@ -489,33 +428,6 @@ export class QueryMiddleware {
       // Re-throw any other errors.
       throw error;
     }
-  }
-
-  /**
-   * Executes a promise with a timeout.
-   * @param promiseFn - The promise-returning function to execute.
-   * @param timeoutMs - The timeout in milliseconds.
-   * @returns The result of the promise if it resolves before the timeout.
-   */
-  private async withTimeout<T>(
-    promiseFn: () => Promise<T>,
-    timeoutMs: number,
-  ): Promise<T> {
-    return new Promise<T>((resolve, reject) => {
-      const timeoutId = setTimeout(() => {
-        reject(new Error("Operation timed out"));
-      }, timeoutMs);
-
-      promiseFn()
-        .then((result) => {
-          clearTimeout(timeoutId);
-          resolve(result);
-        })
-        .catch((error) => {
-          clearTimeout(timeoutId);
-          reject(error);
-        });
-    });
   }
 
   /**
@@ -669,7 +581,7 @@ export type AccessValidator = (
 /**
  * Usage Examples:
  *
- * ### Performing a Type-Safe Query with QueryOptions
+ * ### Performing a Type-Safe Query
  *
  * ```typescript
  * // Create a new instance of PrismaClient.
@@ -684,7 +596,7 @@ export type AccessValidator = (
  *   permissions: ['manage_users', 'view_reports'],
  * });
  *
- * // Perform a type-safe query with additional query options.
+ * // Perform a type-safe query with inferred return type.
  * (async () => {
  *   try {
  *     const users = await middleware.enforceQueryRules(
@@ -692,19 +604,12 @@ export type AccessValidator = (
  *       Prisma.ModelName.user_accounts,
  *       'findMany',
  *       {
- *         where: { },
- *       },
- *       {
- *         includeInactive: false,
- *         includeRelations: ['profiles', 'roles'],
- *         pagination: { take: 10, skip: 0 },
- *         useCache: true,
- *         cacheTTL: 300,
- *         timeout: 5000,
+ *         where: { is_active: true },
+ *         include: { team_memberships: true },
  *       }
  *     );
  *
- *     console.log('Active users with profiles and roles:', users);
+ *     console.log('Active users:', users);
  *   } catch (error) {
  *     console.error('Error fetching users:', error);
  *   }
@@ -724,9 +629,6 @@ export type AccessValidator = (
  *       {
  *         where: { id: 123 },
  *         data: { email: 'new.email@example.com' },
- *       },
- *       {
- *         timeout: 3000,
  *       }
  *     );
  *
@@ -768,5 +670,5 @@ export type AccessValidator = (
  * ```
  *
  * These examples demonstrate how to use the `QueryMiddleware` class
- * in a type-safe manner with proper context and options, including the new `QueryOptions`.
+ * in a type-safe manner with proper context and options.
  */

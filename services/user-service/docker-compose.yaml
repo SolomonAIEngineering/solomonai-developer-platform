@@ -4,17 +4,17 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15
-    container_name: social_service_db
+    container_name: user_service_db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: social_service
+      POSTGRES_DB: user_service
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d social_service"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d user_service"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -24,7 +24,7 @@ services:
   # Optional: Add pgAdmin for database management
   pgadmin:
     image: dpage/pgadmin4
-    container_name: social_service_pgadmin
+    container_name: user_service_pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin
@@ -38,11 +38,11 @@ services:
   # MongoDB service
   mongodb:
     image: mongo:latest
-    container_name: social_service_mongodb
+    container_name: user_service_mongodb
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: rootpassword
-      MONGO_INITDB_DATABASE: social_service
+      MONGO_INITDB_DATABASE: user_service
     ports:
       - "27017:27017"
     volumes:
@@ -58,7 +58,7 @@ services:
   # Optional: Add Mongo Express for MongoDB management
   mongo-express:
     image: mongo-express
-    container_name: social_service_mongo_express
+    container_name: user_service_mongo_express
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: rootpassword
@@ -76,6 +76,6 @@ networks:
 
 volumes:
   postgres_data:
-    name: social_service_postgres_data
+    name: user_service_postgres_data
   mongodb_data:
-    name: social_service_mongodb_data
+    name: user_service_mongodb_data
