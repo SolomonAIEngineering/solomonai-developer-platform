@@ -4,12 +4,13 @@
  * This context is critical for enforcing access control and multi-tenancy.
  */
 export interface RequestContext {
-  organizationId: string;
-  tenantId: string;
-  userId: string;
-  roles: string[];
-  ip?: string;
-  userAgent?: string;
+  organizationId: string; // The ID of the organization the request is scoped to
+  tenantId?: string; // The ID of the tenant the request is scoped to
+  userId: string; // The ID of the user making the request
+  roles: string[]; // The roles of the user making the request
+  ip?: string; // The IP address of the user making the request
+  apiKey?: string; // The API key used to authenticate the request
+  userAgent?: string; // The user agent of the user making the request
   permissions?: string[];
 }
 
