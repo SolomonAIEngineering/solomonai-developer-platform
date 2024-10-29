@@ -10,6 +10,8 @@ import type { MiddlewareHandler } from "hono";
 import { QueryMiddlewareFactory } from "@/database/client";
 import { HTTPException } from "hono/http-exception";
 import { RequestContext } from "@/database/types";
+import { HeaderKey, RequestHeaders } from "@/header-utils";
+
 
 let isolateId: string | undefined;
 let isolateCreatedAt: number | undefined;
@@ -55,17 +57,18 @@ export function init(): MiddlewareHandler {
       user: new UserRepository(db),
     };
 
-    // Validate required headers
-    const orgId = c.req.header("x-org-id");
+    // Validate and extract required headers
+    const headers = c.req.header as unknown as RequestHeaders;
+    const orgId = headers[HeaderKey.ORG_ID];
     if (!orgId) throw new HTTPException(401, { message: "Organization ID required" });
 
-    const userId = c.req.header("x-user-id");
+    const userId = headers[HeaderKey.USER_ID];
     if (!userId) throw new HTTPException(401, { message: "User ID required" });
 
     // Extract optional and role-based headers
-    const roles = (c.req.header("x-user-roles") ?? "").split(",").map(role => role.trim());
-    const tenantId = c.req.header("x-tenant-id"); // Optional as not all routes are tenant-specific
-    const apiKey = c.req.header("x-api-key"); // API key is optional for context
+    const roles = (headers[HeaderKey.USER_ROLES] ?? "").split(",").map(role => role.trim());
+    const tenantId = headers[HeaderKey.TENANT_ID];
+    const apiKey = headers[HeaderKey.API_KEY];
 
     // Define request context for downstream services
     const ctx: RequestContext = {

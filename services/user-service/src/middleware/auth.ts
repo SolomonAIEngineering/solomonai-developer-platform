@@ -1,11 +1,10 @@
 import { Context, Next } from "hono";
-import { cache } from "hono/cache";
 import { HTTPException } from "hono/http-exception";
-import { a } from "vitest/dist/suite-ynYMzeLu.js";
 import constants from "../constants/constant";
 import { APIKeyRepository } from "../db-repository/api-key-repository";
 import { UserRepository } from "../db-repository/user-repository";
 import { User } from "../db/schema";
+import { HeaderKey, RequestHeaders } from "@/header-utils";
 
 /**
  * Authentication middleware
@@ -24,8 +23,10 @@ export const authMiddleware = async (
     return next();
   }
 
-  const apiKey = c.req.header("X-API-Key");
-  const userIdStr = c.req.header("X-User-Id");
+  const headers = c.req.header as unknown as RequestHeaders;
+
+  const apiKey = headers[HeaderKey.API_KEY];
+  const userIdStr = headers[HeaderKey.USER_ID];
   const userId = userIdStr ? parseInt(userIdStr, 10) : null;
 
   if (!apiKey || !userId || isNaN(userId)) {
