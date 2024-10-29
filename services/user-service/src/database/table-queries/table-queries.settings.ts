@@ -1,5 +1,8 @@
 import { PrismaClient, Prisma } from "../generated/postgresql";
-import { QueryMiddleware, QueryMiddlewareFactory } from "../middleware/query.middleware";
+import {
+  QueryMiddleware,
+  QueryMiddlewareFactory,
+} from "../middleware/query.middleware";
 import { QueryOptions, RequestContext } from "../middleware/types";
 
 type SettingsWithRelations = Prisma.settingsGetPayload<{
@@ -35,7 +38,7 @@ export class SettingsQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'create',
+      "create",
       {
         data: {
           ...data,
@@ -47,23 +50,25 @@ export class SettingsQueries {
           business_accounts: true,
           user_accounts: true,
         },
-      }
+      },
     );
   }
 
   /**
    * Bulk create settings entries
    */
-  async bulkCreateSettings(settingsArray: Array<{
-    organization_id?: string;
-    tenant_id?: string;
-    business_account_id?: bigint;
-    user_account_id?: bigint;
-    settings_data?: Record<string, any>;
-    preferred_language?: string;
-    notification_settings?: Record<string, any>;
-    ui_settings?: Record<string, any>;
-  }>) {
+  async bulkCreateSettings(
+    settingsArray: Array<{
+      organization_id?: string;
+      tenant_id?: string;
+      business_account_id?: bigint;
+      user_account_id?: bigint;
+      settings_data?: Record<string, any>;
+      preferred_language?: string;
+      notification_settings?: Record<string, any>;
+      ui_settings?: Record<string, any>;
+    }>,
+  ) {
     const results = await this.prisma.$transaction(async (tx) => {
       const createdSettings = [];
       for (const settings of settingsArray) {
@@ -71,14 +76,14 @@ export class SettingsQueries {
           const created = await this.middleware.enforceQueryRules(
             tx as unknown as PrismaClient,
             Prisma.ModelName.settings,
-            'create',
+            "create",
             {
               data: {
                 ...settings,
                 created_at: new Date(),
                 updated_at: new Date(),
               },
-            }
+            },
           );
           createdSettings.push({ success: true, settings: created });
         } catch (error) {
@@ -98,14 +103,16 @@ export class SettingsQueries {
   /**
    * Get settings with flexible filtering
    */
-  async getSettings(options?: QueryOptions & {
-    organization_id?: string;
-    tenant_id?: string;
-    business_account_id?: bigint;
-    user_account_id?: bigint;
-    preferred_language?: string;
-    includeRelations?: boolean;
-  }) {
+  async getSettings(
+    options?: QueryOptions & {
+      organization_id?: string;
+      tenant_id?: string;
+      business_account_id?: bigint;
+      user_account_id?: bigint;
+      preferred_language?: string;
+      includeRelations?: boolean;
+    },
+  ) {
     const {
       organization_id,
       tenant_id,
@@ -120,25 +127,26 @@ export class SettingsQueries {
 
     if (organization_id) whereClause.organization_id = organization_id;
     if (tenant_id) whereClause.tenant_id = tenant_id;
-    if (business_account_id) whereClause.business_account_id = business_account_id;
+    if (business_account_id)
+      whereClause.business_account_id = business_account_id;
     if (user_account_id) whereClause.user_account_id = user_account_id;
     if (preferred_language) whereClause.preferred_language = preferred_language;
 
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'findMany',
+      "findMany",
       {
         where: whereClause,
         include: includeRelations
           ? {
-            tenant: true,
-            business_accounts: true,
-            user_accounts: true,
-          }
+              tenant: true,
+              business_accounts: true,
+              user_accounts: true,
+            }
           : undefined,
       },
-      queryOptions
+      queryOptions,
     );
   }
 
@@ -147,25 +155,25 @@ export class SettingsQueries {
    */
   async getSettingsById(
     id: bigint,
-    options?: QueryOptions & { includeRelations?: boolean }
+    options?: QueryOptions & { includeRelations?: boolean },
   ): Promise<SettingsWithRelations | null> {
     const { includeRelations, ...queryOptions } = options || {};
 
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'findUnique',
+      "findUnique",
       {
         where: { id },
         include: includeRelations
           ? {
-            tenant: true,
-            business_accounts: true,
-            user_accounts: true,
-          }
+              tenant: true,
+              business_accounts: true,
+              user_accounts: true,
+            }
           : undefined,
       },
-      queryOptions
+      queryOptions,
     );
   }
 
@@ -179,12 +187,12 @@ export class SettingsQueries {
       preferred_language?: string;
       notification_settings?: Record<string, any>;
       ui_settings?: Record<string, any>;
-    }
+    },
   ) {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'update',
+      "update",
       {
         where: { id },
         data: {
@@ -196,7 +204,7 @@ export class SettingsQueries {
           business_accounts: true,
           user_accounts: true,
         },
-      }
+      },
     );
   }
 
@@ -207,10 +215,10 @@ export class SettingsQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'delete',
+      "delete",
       {
         where: { id },
-      }
+      },
     );
   }
 
@@ -224,19 +232,19 @@ export class SettingsQueries {
       preferred_language?: string;
       notification_settings?: Record<string, any>;
       ui_settings?: Record<string, any>;
-    }
+    },
   ) {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'updateMany',
+      "updateMany",
       {
         where: { id: { in: ids } },
         data: {
           ...data,
           updated_at: new Date(),
         },
-      }
+      },
     );
   }
 
@@ -247,10 +255,10 @@ export class SettingsQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'deleteMany',
+      "deleteMany",
       {
         where: { id: { in: ids } },
-      }
+      },
     );
   }
 
@@ -261,7 +269,7 @@ export class SettingsQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'findMany',
+      "findMany",
       {
         where: { preferred_language: language },
         include: {
@@ -269,7 +277,7 @@ export class SettingsQueries {
           business_accounts: true,
           user_accounts: true,
         },
-      }
+      },
     );
   }
 
@@ -280,28 +288,31 @@ export class SettingsQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'findFirst',
+      "findFirst",
       {
         where: { user_account_id },
         select: {
           notification_settings: true,
         },
-      }
+      },
     );
   }
 
   /**
    * Update notification settings for user
    */
-  async updateNotificationSettings(user_account_id: bigint, settings: Record<string, any>) {
+  async updateNotificationSettings(
+    user_account_id: bigint,
+    settings: Record<string, any>,
+  ) {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'updateMany',
+      "updateMany",
       {
         where: { user_account_id },
         data: { notification_settings: settings },
-      }
+      },
     );
   }
 
@@ -312,7 +323,7 @@ export class SettingsQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'findMany',
+      "findMany",
       {
         where: {
           ui_settings: {
@@ -323,7 +334,7 @@ export class SettingsQueries {
         include: {
           user_accounts: true,
         },
-      }
+      },
     );
   }
 
@@ -334,14 +345,14 @@ export class SettingsQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'findMany',
+      "findMany",
       {
         where: {
           organization_id,
           updated_at: { gte: startDate },
         },
-        orderBy: { updated_at: 'desc' },
-      }
+        orderBy: { updated_at: "desc" },
+      },
     );
   }
 
@@ -352,35 +363,36 @@ export class SettingsQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'groupBy',
+      "groupBy",
       {
-        by: ['preferred_language'],
+        by: ["preferred_language"],
         _count: { id: true },
-        orderBy: undefined
-      }
+        orderBy: undefined,
+      },
     );
   }
-
 
   /**
    * Get settings changes by user over time
    */
-  async getUserSettingsHistory(user_account_id: bigint, startDate: Date, endDate?: Date) {
+  async getUserSettingsHistory(
+    user_account_id: bigint,
+    startDate: Date,
+    endDate?: Date,
+  ) {
     const whereClause: Prisma.settingsWhereInput = {
       user_account_id,
-      updated_at: { gte: startDate, ...(endDate ? { lte: endDate }
-        : {})
-      },
+      updated_at: { gte: startDate, ...(endDate ? { lte: endDate } : {}) },
     };
 
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'findMany',
+      "findMany",
       {
         where: whereClause,
-        orderBy: { updated_at: 'desc' },
-      }
+        orderBy: { updated_at: "desc" },
+      },
     );
   }
 
@@ -391,7 +403,7 @@ export class SettingsQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'findMany',
+      "findMany",
       {
         where: {
           notification_settings: {
@@ -404,7 +416,7 @@ export class SettingsQueries {
           business_accounts: true,
           user_accounts: true,
         },
-      }
+      },
     );
   }
 
@@ -415,12 +427,12 @@ export class SettingsQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'groupBy',
+      "groupBy",
       {
-        by: ['organization_id'],
+        by: ["organization_id"],
         _count: { id: true },
-        orderBy: undefined
-      }
+        orderBy: undefined,
+      },
     );
   }
 
@@ -429,7 +441,7 @@ export class SettingsQueries {
    */
   async findDuplicateSettingsByAccount(
     user_account_id?: bigint,
-    business_account_id?: bigint
+    business_account_id?: bigint,
   ) {
     const whereClause: Prisma.settingsWhereInput = {
       ...(user_account_id ? { user_account_id } : {}),
@@ -439,11 +451,11 @@ export class SettingsQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'findMany',
+      "findMany",
       {
         where: whereClause,
-        orderBy: { created_at: 'desc' },
-      }
+        orderBy: { created_at: "desc" },
+      },
     );
   }
 
@@ -454,16 +466,16 @@ export class SettingsQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'findMany',
+      "findMany",
       {
-        orderBy: { updated_at: 'desc' },
+        orderBy: { updated_at: "desc" },
         take: limit,
         select: {
           ui_settings: true,
           updated_at: true,
           user_accounts: true,
         },
-      }
+      },
     );
   }
 
@@ -472,16 +484,16 @@ export class SettingsQueries {
    */
   async bulkUpdateUiSettingsForOrganization(
     organization_id: string,
-    ui_settings: Record<string, any>
+    ui_settings: Record<string, any>,
   ) {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'updateMany',
+      "updateMany",
       {
         where: { organization_id },
         data: { ui_settings },
-      }
+      },
     );
   }
 
@@ -492,7 +504,7 @@ export class SettingsQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'findMany',
+      "findMany",
       {
         where: {
           settings_data: {
@@ -503,7 +515,7 @@ export class SettingsQueries {
         include: {
           tenant: true,
         },
-      }
+      },
     );
   }
 
@@ -514,7 +526,7 @@ export class SettingsQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'findMany',
+      "findMany",
       {
         where: {
           updated_at: { gte: startDate },
@@ -523,8 +535,8 @@ export class SettingsQueries {
         include: {
           user_accounts: true,
         },
-        orderBy: { updated_at: 'desc' },
-      }
+        orderBy: { updated_at: "desc" },
+      },
     );
   }
 
@@ -535,11 +547,11 @@ export class SettingsQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'updateMany',
+      "updateMany",
       {
         where: { tenant_id },
         data: { notification_settings: {} },
-      }
+      },
     );
   }
 
@@ -550,11 +562,11 @@ export class SettingsQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'findMany',
+      "findMany",
       {
         where: { organization_id },
         select: { preferred_language: true },
-      }
+      },
     );
   }
 }
