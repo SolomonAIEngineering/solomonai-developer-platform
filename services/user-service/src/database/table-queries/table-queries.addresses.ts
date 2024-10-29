@@ -1,5 +1,5 @@
+import { Prisma, PrismaClient } from "@/database/generated/postgresql/edge";
 import { QueryMiddleware, QueryMiddlewareFactory } from "../client";
-import { Prisma, PrismaClient } from "../generated/postgresql";
 import { QueryOptions, RequestContext } from "../types";
 
 type AddressType = "billing" | "shipping" | "office";
