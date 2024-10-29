@@ -391,15 +391,15 @@ export class TeamMemberQueries {
     // Validate unique membership in target team
     await this.validateUniqueMembership(
       targetTeamId,
-      sourceMember.user_account_id,
-      sourceMember.business_account_id
+      sourceMember.user_account_id || undefined,
+      sourceMember.business_account_id || undefined
     );
 
     // Create new membership
     const newMember = await this.createTeamMember({
       team_id: targetTeamId,
-      user_account_id: sourceMember.user_account_id,
-      business_account_id: sourceMember.business_account_id,
+      user_account_id: sourceMember.user_account_id || undefined,
+      business_account_id: sourceMember.business_account_id || undefined,
       role: keepRole ? sourceMember.role as TeamMemberRole : 'member',
       metadata: keepMetadata ? sourceMember.metadata as Record<string, any> : undefined
     });
@@ -510,6 +510,44 @@ export class TeamMemberQueries {
       return await this.updateMemberStatus(id, 'active');
     } else {
       return await this.removeTeamMember(id);
+    }
+  }
+
+
+  /**
+   * Validate that the member doesn't already exist in the team
+   */
+  private async validateUniqueMembership(
+    teamId: bigint,
+    userAccountId?: bigint,
+    businessAccountId?: bigint
+  ): Promise<void> {
+    if (!userAccountId && !businessAccountId) {
+      throw new Error('Either user_account_id or business_account_id must be provided');
+    }
+
+    const existingMember = await this.middleware.enforceQueryRules(
+      this.prisma,
+      Prisma.ModelName.team_members,
+      'findFirst',
+      {
+        where: {
+          team_id: teamId,
+          OR: [
+            userAccountId ? { user_account_id: userAccountId } : {},
+            businessAccountId ? { business_account_id: businessAccountId } : {}
+          ],
+          status: {
+            in: ['active', 'invited'] // Check both active and invited members
+          }
+        }
+      }
+    );
+
+    if (existingMember) {
+      throw new Error(
+        `Member already exists in team with status: ${existingMember.status}`
+      );
     }
   }
 }
