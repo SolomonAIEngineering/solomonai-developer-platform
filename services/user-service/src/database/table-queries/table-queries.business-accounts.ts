@@ -1,6 +1,6 @@
-import { QueryOptions } from "@axiomhq/js";
 import { QueryMiddleware, QueryMiddlewareFactory } from "../client";
 import { PrismaClient, Prisma } from "../generated/postgresql";
+import { QueryOptions, RequestContext } from "../types";
 
 
 type BusinessAccountType = "customer" | "supplier" | "partner";

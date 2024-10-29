@@ -1,9 +1,7 @@
+import { QueryMiddleware, QueryMiddlewareFactory } from "../client";
 import { PrismaClient, Prisma } from "../generated/postgresql";
-import {
-  QueryMiddleware,
-  QueryMiddlewareFactory,
-} from "../middleware/query.middleware";
-import { QueryOptions, RequestContext } from "../middleware/types";
+import { QueryOptions, RequestContext } from "../types";
+
 
 type OrganizationWithRelations = Prisma.organizationsGetPayload<{
   include: {
@@ -615,7 +613,7 @@ export class OrganizationQueries {
     );
 
     // Then filter in memory for those over the threshold
-    return organizations.filter((org) => {
+    return organizations.filter((org: { used_storage: any; storage_quota: any; }) => {
       const usedPercentage =
         (Number(org.used_storage) / Number(org.storage_quota)) * 100;
       return usedPercentage >= thresholdPercentage;

@@ -1,9 +1,6 @@
+import { QueryMiddleware, QueryMiddlewareFactory } from "../client";
 import { PrismaClient, Prisma } from "../generated/postgresql";
-import {
-  QueryMiddleware,
-  QueryMiddlewareFactory,
-} from "../middleware/query.middleware";
-import { RequestContext } from "../middleware/types";
+import { RequestContext } from "../types";
 
 /**
  * Event types for usage logging

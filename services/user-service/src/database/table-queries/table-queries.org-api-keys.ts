@@ -6,10 +6,9 @@ import {
 import {
   QueryMiddleware,
   QueryMiddlewareFactory,
-} from "../middleware/query.middleware";
-import { QueryOptions, RequestContext } from "../middleware/types";
+} from "../client";
 import * as crypto from "crypto";
-
+import { QueryOptions, RequestContext } from "../types";
 type APIKeyWithRelations = Prisma.org_api_keysGetPayload<{
   include: {
     organization: true;

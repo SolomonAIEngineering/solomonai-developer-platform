@@ -1,9 +1,7 @@
+import { QueryMiddleware, QueryMiddlewareFactory } from "../client";
 import { PrismaClient, Prisma } from "../generated/postgresql";
-import {
-  QueryMiddleware,
-  QueryMiddlewareFactory,
-} from "../middleware/query.middleware";
-import { QueryOptions, RequestContext } from "../middleware/types";
+import { QueryOptions, RequestContext } from "../types";
+
 
 type OrgMemberWithRelations = Prisma.org_membersGetPayload<{
   include: {

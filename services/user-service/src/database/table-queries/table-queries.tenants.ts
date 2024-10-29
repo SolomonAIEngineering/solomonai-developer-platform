@@ -1,9 +1,7 @@
+import { QueryMiddleware } from "../client";
 import { PrismaClient, Prisma } from "../generated/postgresql";
-import {
-  QueryMiddleware,
-  QueryMiddlewareFactory,
-} from "../middleware/query.middleware";
-import { QueryOptions, RequestContext } from "../middleware/types";
+import { QueryMiddlewareFactory } from "../client";
+import { QueryOptions, RequestContext } from "../types";
 
 type TenantWithRelations = Prisma.tenantsGetPayload<{
   include: {

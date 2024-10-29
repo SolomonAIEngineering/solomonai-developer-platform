@@ -1,10 +1,7 @@
 import { newKey } from "@internal/keys/src/util";
 import { PrismaClient, Prisma } from "../generated/postgresql";
-import {
-  QueryMiddleware,
-  QueryMiddlewareFactory,
-} from "../middleware/query.middleware";
-import { QueryOptions, RequestContext } from "../middleware/types";
+import { QueryMiddleware, QueryMiddlewareFactory } from "../client";
+import { QueryOptions, RequestContext } from "../types";
 import * as crypto from "crypto";
 
 type TenantAPIKeyWithRelations = Prisma.tenant_api_keysGetPayload<{

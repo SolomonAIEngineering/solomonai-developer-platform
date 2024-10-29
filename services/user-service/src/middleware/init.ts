@@ -9,7 +9,7 @@ import { formatPlatformPrefix } from "@/utils/formatters";
 import type { MiddlewareHandler } from "hono";
 import type { HonoEnv, Repository } from "../hono/env";
 import { QueryMiddlewareFactory } from "@/database/client";
-import { RequestContext } from "@/database/middleware/types";
+import { RequestContext } from "@/database/types";
 import { HTTPException } from "hono/http-exception";
 
 /**

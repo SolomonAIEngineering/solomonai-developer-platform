@@ -1,4 +1,5 @@
 import { PrismaClient, Prisma } from "./generated/postgresql";
+import { QueryOptions, RequestContext } from "./types";
 
 /**
  * Retrieve all model names from the Prisma Client.
@@ -23,7 +24,12 @@ type ValidOperations =
   | "create"
   | "update"
   | "delete"
-  | "findFirst";
+  | "count"
+  | "updateMany"
+  | "deleteMany"
+  | "findFirst"
+  | "createMany"
+  | "groupBy";
 
 /**
  * Utility type to extract the argument types for a given model and operation.

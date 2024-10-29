@@ -1,9 +1,8 @@
+import { QueryMiddleware } from "../client";
+import { QueryMiddlewareFactory } from "../client";
 import { Prisma, PrismaClient } from "../generated/postgresql";
-import {
-  QueryMiddlewareFactory,
-  QueryMiddleware,
-} from "../middleware/query.middleware";
-import { QueryOptions, RequestContext } from "../middleware/types";
+
+import { QueryOptions, RequestContext } from "../types";
 
 /**
  * Table-specific query implementation with type-safe methods

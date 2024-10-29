@@ -2,8 +2,8 @@ import { PrismaClient, Prisma } from "../generated/postgresql";
 import {
   QueryMiddleware,
   QueryMiddlewareFactory,
-} from "../middleware/query.middleware";
-import { QueryOptions, RequestContext } from "../middleware/types";
+} from "../client";
+import { QueryOptions, RequestContext } from "../types";
 
 type ActorType = "user" | "business" | "system";
 type EventType = "create" | "update" | "delete";
