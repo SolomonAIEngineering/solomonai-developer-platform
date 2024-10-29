@@ -1,9 +1,6 @@
+import { QueryMiddlewareFactory } from "../client";
 import { PrismaClient, Prisma } from "../generated/postgresql";
-import {
-  QueryMiddleware,
-  QueryMiddlewareFactory,
-} from "../middleware/query.middleware";
-import { QueryOptions, RequestContext } from "../middleware/types";
+
 
 type UserAccountStatus = "active" | "inactive" | "suspended";
 
@@ -25,7 +22,7 @@ export class UserAccountQueries {
   private prisma: PrismaClient;
 
   constructor(context: RequestContext, prisma: PrismaClient) {
-    this.middleware = QueryMiddlewareFactory.create(context);
+    this.middleware = QueryMiddlewareFactory.create(context, prisma);
     this.prisma = prisma;
   }
 

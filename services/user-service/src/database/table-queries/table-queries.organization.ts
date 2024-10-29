@@ -24,7 +24,7 @@ export class OrganizationQueries {
   private prisma: PrismaClient;
 
   constructor(context: RequestContext, prisma: PrismaClient) {
-    this.middleware = QueryMiddlewareFactory.create(context);
+    this.middleware = QueryMiddlewareFactory.create(context, prisma);
     this.prisma = prisma;
   }
 
@@ -833,7 +833,7 @@ export class OrganizationQueries {
     const archiveData = {
       organization_data: org,
       archived_at: new Date(),
-      archived_by: this.middleware.getContext().userId,
+      archived_by: this.middleware.getContext().tenantId,
     };
 
     // Store archive data (implementation depends on your archive storage solution)

@@ -1,5 +1,4 @@
 import { PrismaClient, Prisma } from "./generated/postgresql";
-import { QueryOptions, RequestContext } from "./middleware/types";
 
 /**
  * Retrieve all model names from the Prisma Client.
@@ -23,7 +22,8 @@ type ValidOperations =
   | "findUnique"
   | "create"
   | "update"
-  | "delete";
+  | "delete"
+  | "findFirst";
 
 /**
  * Utility type to extract the argument types for a given model and operation.
@@ -72,6 +72,7 @@ interface AccessPolicy<TModel extends PrismaModels> {
  * and are properly scoped to the tenant and organization.
  */
 export class QueryMiddleware {
+  private prisma: PrismaClient;
   /**
    * A list of protected models that require special access controls.
    * Access to these models is typically restricted to admin roles.
@@ -126,7 +127,12 @@ export class QueryMiddleware {
    * Initializes a new instance of the `QueryMiddleware` class.
    * @param context - The request context containing user and organization information.
    */
-  constructor(private context: RequestContext) {}
+  constructor(
+    private context: RequestContext,
+    prisma: PrismaClient,
+  ) {
+    this.prisma = prisma;
+  }
 
   /**
    * Enforces query rules including tenant isolation and access control.
@@ -407,7 +413,7 @@ export class QueryMiddleware {
         // For create operations, add the 'created_by' field.
         isolatedArgs.data = {
           ...isolatedArgs.data,
-          created_by: this.context.userId,
+          created_by: this.context.tenantId,
         };
         break;
 
@@ -415,7 +421,7 @@ export class QueryMiddleware {
         // For update operations, add 'updated_by' and 'updated_at' fields.
         isolatedArgs.data = {
           ...isolatedArgs.data,
-          updated_by: this.context.userId,
+          updated_by: this.context.tenantId,
           updated_at: new Date(),
         };
         break;
@@ -427,7 +433,7 @@ export class QueryMiddleware {
             where: isolatedArgs.where,
             data: {
               is_active: false,
-              deleted_by: this.context.userId,
+              deleted_by: this.context.tenantId,
               deleted_at: new Date(),
             },
           };
@@ -621,9 +627,10 @@ export class QueryMiddlewareFactory {
    */
   static create(
     context: RequestContext | ExtendedRequestContext,
+    prisma: PrismaClient,
   ): QueryMiddleware {
     this.validateContext(context);
-    return new QueryMiddleware(context);
+    return new QueryMiddleware(context, prisma);
   }
 
   /**
@@ -636,7 +643,7 @@ export class QueryMiddlewareFactory {
       throw new Error("Organization ID is required");
     }
 
-    if (!context.userId) {
+    if (!context.tenantId) {
       throw new Error("User ID is required");
     }
 

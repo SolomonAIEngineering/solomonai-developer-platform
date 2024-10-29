@@ -9,7 +9,7 @@ import {
   RateLimit,
 } from "@cloudflare/workers-types";
 import { z } from "zod";
-import { DatabaseClient } from "./database/client";
+import { PrismaClient } from "@prisma/client";
 
 export let zEnv = z.object({
   VERSION: z.string().default("unknown"),
@@ -20,7 +20,7 @@ export let zEnv = z.object({
   RATE_LIMITER: z.custom<RateLimit>((ns) => typeof ns === "object"),
   HYPERDRIVE: z.custom<Hyperdrive>((ns) => typeof ns === "object"),
   TELLER_CERT: z.custom<Fetcher>((ns) => typeof ns === "object").optional(),
-  DATABASE_CLIENT: z.custom<DatabaseClient>((ns) => typeof ns === "object"),
+  DATABASE_CLIENT: z.custom<PrismaClient>((ns) => typeof ns === "object"),
   USER_ACTIONS_QUEUE: z
     .custom<Queue<UserActionMessageBody>>((q) => typeof q === "object")
     .optional(),

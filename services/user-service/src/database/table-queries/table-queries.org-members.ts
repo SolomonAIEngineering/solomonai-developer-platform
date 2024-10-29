@@ -80,7 +80,7 @@ export class OrgMemberQueries {
   };
 
   constructor(context: RequestContext, prisma: PrismaClient) {
-    this.middleware = QueryMiddlewareFactory.create(context);
+    this.middleware = QueryMiddlewareFactory.create(context, prisma);
     this.prisma = prisma;
   }
 

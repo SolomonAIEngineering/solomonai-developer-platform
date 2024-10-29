@@ -52,7 +52,7 @@
 generator client {
   provider        = "prisma-client-js"
   output          = "../src/database/generated/postgresql"
-  previewFeatures = ["fullTextIndex", "multiSchema"]
+  previewFeatures = ["fullTextIndex", "multiSchema", "driverAdapters"]
 }
 
 datasource db {

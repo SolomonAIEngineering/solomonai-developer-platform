@@ -14,7 +14,7 @@ export class UserTableQueries {
   private prisma: PrismaClient;
 
   constructor(context: RequestContext, prisma: PrismaClient) {
-    this.middleware = QueryMiddlewareFactory.create(context);
+    this.middleware = QueryMiddlewareFactory.create(context, prisma);
     this.prisma = prisma;
   }
 
@@ -62,7 +62,7 @@ export class UserTableQueries {
         include: {
           team_memberships: options?.includeMemberships,
           addresses: true,
-          user_settings: true,
+          settings: true,
         },
       },
       queryOptions,

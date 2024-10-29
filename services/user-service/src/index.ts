@@ -1,9 +1,12 @@
-import { DatabaseClient } from "./database/client";
 import { Env, zEnv } from "./env";
 import { newApp } from "./hono/app";
 import { UserActionMessageBody } from "./message";
 import { ConsoleLogger } from "./metric/logger";
 import { setupRoutes } from "./routes";
+import { Pool } from "pg";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "@prisma/client";
+import { QueryMiddlewareFactory } from "./database/middleware/query.middleware";
 
 const app = newApp();
 
@@ -30,11 +33,15 @@ const handler = {
       );
     }
 
-    // Initialize and connect the DatabaseClient
-    const dbClient = new DatabaseClient(parsedEnv.data);
+    const pool = new Pool({
+      connectionString: parsedEnv.data.HYPERDRIVE.connectionString,
+    });
+    const adapter = new PrismaPg(pool);
+    const prisma = new PrismaClient({ adapter });
+
     try {
       // Attach dbClient to the context so that routes can access it
-      parsedEnv.data.DATABASE_CLIENT = dbClient;
+      parsedEnv.data.DATABASE_CLIENT = prisma;
 
       // Pass the updated env with dbClient to the app
       const response = await app.fetch(req, parsedEnv.data, executionCtx);
@@ -77,11 +84,15 @@ const handler = {
       return;
     }
 
-    // Initialize and connect the DatabaseClient
-    const dbClient = new DatabaseClient(parsedEnv.data);
+    const pool = new Pool({
+      connectionString: parsedEnv.data.HYPERDRIVE.connectionString,
+    });
+    const adapter = new PrismaPg(pool);
+    const prisma = new PrismaClient({ adapter });
+
     try {
       // Attach dbClient to the environment for use in message processing
-      parsedEnv.data.DATABASE_CLIENT = dbClient;
+      parsedEnv.data.DATABASE_CLIENT = prisma;
 
       switch (batch.queue) {
         case "key-migrations-development":
