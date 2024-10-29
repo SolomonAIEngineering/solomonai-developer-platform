@@ -541,9 +541,8 @@ model user_accounts {
   used_storage    BigInt? /// Current storage usage in bytes
 
   // Relations
-  organization     organizations?  @relation(fields: [organization_id], references: [id], onDelete: NoAction)
-  tenant           tenants?        @relation(fields: [tenant_id], references: [id], onDelete: NoAction)
-  user_settings    user_settings[]
+  organization     organizations? @relation(fields: [organization_id], references: [id], onDelete: NoAction)
+  tenant           tenants?       @relation(fields: [tenant_id], references: [id], onDelete: NoAction)
   settings         settings[]
   addresses        addresses[]
   team_memberships team_members[]
@@ -662,59 +661,25 @@ model audit_logs {
 /// });
 /// ```
 model settings {
-  id                  BigInt   @id @default(autoincrement())
-  organization_id     String?
-  tenant_id           String?
-  business_account_id BigInt?
-  user_account_id     BigInt?
-  created_at          DateTime @default(now())
-  updated_at          DateTime @updatedAt
-  settings_data       Json?    @db.JsonB /// Flexible settings storage
-
+  id                    BigInt             @id @default(autoincrement())
+  organization_id       String?
+  tenant_id             String?
+  business_account_id   BigInt?
+  user_account_id       BigInt?
+  created_at            DateTime           @default(now())
+  updated_at            DateTime           @updatedAt
+  settings_data         Json?              @db.JsonB /// Flexible settings storage
+  preferred_language    String?            @db.VarChar(10) /// ISO language code
+  notification_settings Json?              @db.JsonB /// Notification preferences
+  ui_settings           Json?              @db.JsonB /// UI/UX preferences
   // Relations
-  tenant            tenants?           @relation(fields: [tenant_id], references: [id])
-  business_accounts business_accounts? @relation(fields: [business_account_id], references: [id])
-  user_accounts     user_accounts?     @relation(fields: [user_account_id], references: [id])
+  tenant                tenants?           @relation(fields: [tenant_id], references: [id])
+  business_accounts     business_accounts? @relation(fields: [business_account_id], references: [id])
+  user_accounts         user_accounts?     @relation(fields: [user_account_id], references: [id])
 
   @@index([organization_id])
   @@index([tenant_id])
   @@index([business_account_id])
-  @@index([user_account_id])
-}
-
-/// User-specific settings and preferences
-///
-/// Usage:
-/// ```typescript
-/// // Create user settings
-/// const userSettings = await prisma.user_settings.create({
-///   data: {
-///     user_account_id: user.id,
-///     preferred_language: 'en',
-///     notification_settings: {
-///       email: true,
-///       push: false,
-///       frequency: 'daily'
-///     },
-///     ui_settings: {
-///       theme: 'dark',
-///       compact_view: true
-///     }
-///   }
-/// });
-/// ```
-model user_settings {
-  id                    BigInt   @id @default(autoincrement())
-  user_account_id       BigInt?
-  preferred_language    String?  @db.VarChar(10) /// ISO language code
-  notification_settings Json?    @db.JsonB /// Notification preferences
-  ui_settings           Json?    @db.JsonB /// UI/UX preferences
-  created_at            DateTime @default(now())
-  updated_at            DateTime @updatedAt
-
-  // Relations
-  user_accounts user_accounts? @relation(fields: [user_account_id], references: [id])
-
   @@index([user_account_id])
 }
 

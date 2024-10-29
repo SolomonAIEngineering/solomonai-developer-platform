@@ -63,7 +63,6 @@ export class UserAccountQueries {
         include: {
           organization: true,
           tenant: true,
-          user_settings: true,
           settings: true,
           addresses: true,
           team_memberships: true,
@@ -171,7 +170,6 @@ export class UserAccountQueries {
           ? {
               organization: true,
               tenant: true,
-              user_settings: true,
               settings: true,
               addresses: true,
               team_memberships: true,
@@ -203,7 +201,6 @@ export class UserAccountQueries {
           ? {
               organization: true,
               tenant: true,
-              user_settings: true,
               settings: true,
               addresses: true,
               team_memberships: true,
@@ -248,7 +245,6 @@ export class UserAccountQueries {
         include: {
           organization: true,
           tenant: true,
-          user_settings: true,
           settings: true,
           addresses: true,
           team_memberships: true,
@@ -331,7 +327,6 @@ export class UserAccountQueries {
           ? {
               organization: true,
               tenant: true,
-              user_settings: true,
               settings: true,
               addresses: true,
               team_memberships: true,
@@ -398,7 +393,6 @@ export class UserAccountQueries {
           ? {
               organization: true,
               tenant: true,
-              user_settings: true,
               settings: true,
               addresses: true,
               team_memberships: true,
@@ -501,7 +495,6 @@ export class UserAccountQueries {
         include: {
           organization: true,
           tenant: true,
-          user_settings: true,
           settings: true,
           addresses: true,
           team_memberships: true,
@@ -553,7 +546,6 @@ export class UserAccountQueries {
         include: {
           organization: true,
           tenant: true,
-          user_settings: true,
           settings: true,
           addresses: true,
           team_memberships: true,

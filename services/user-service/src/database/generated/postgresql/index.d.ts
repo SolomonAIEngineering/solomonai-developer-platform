@@ -17,7 +17,7 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  * Model organizations
  * Organization represents your direct customers (businesses using your platform)
  * Each organization can have multiple tenants, teams, and user accounts
- *
+ * 
  * Usage:
  * ```typescript
  * // Create organization with subscription
@@ -40,7 +40,7 @@ export type organizations = $Result.DefaultSelection<Prisma.$organizationsPayloa
  * Tenants represent your customers' customers.
  * Each tenant has isolated storage and can have its own
  * workspaces, quotas, and API keys.
- *
+ * 
  * Example:
  * ```typescript
  * // Create tenant with custom quota
@@ -63,7 +63,7 @@ export type tenants = $Result.DefaultSelection<Prisma.$tenantsPayload>
  * Model org_members
  * Organization members represent users who can manage
  * the organization settings, view usage, and manage tenants.
- *
+ * 
  * Example:
  * ```typescript
  * // Add admin member to organization
@@ -81,14 +81,14 @@ export type tenants = $Result.DefaultSelection<Prisma.$tenantsPayload>
 export type org_members = $Result.DefaultSelection<Prisma.$org_membersPayload>
 /**
  * Model org_api_keys
- *
+ * 
  */
 export type org_api_keys = $Result.DefaultSelection<Prisma.$org_api_keysPayload>
 /**
  * Model tenant_api_keys
  * API keys for tenant-specific operations
  * Used by tenants to access their own storage and manage their workspaces
- *
+ * 
  * Example:
  * ```typescript
  * // Create tenant API key
@@ -108,7 +108,7 @@ export type tenant_api_keys = $Result.DefaultSelection<Prisma.$tenant_api_keysPa
  * Model org_usage_logs
  * Tracks organization-level resource usage
  * Used for billing and monitoring
- *
+ * 
  * Example:
  * ```typescript
  * // Log storage usage
@@ -128,7 +128,7 @@ export type org_usage_logs = $Result.DefaultSelection<Prisma.$org_usage_logsPayl
  * Model tenant_usage_logs
  * Tracks tenant-level resource usage
  * Used for monitoring and potential charge-back
- *
+ * 
  * Example:
  * ```typescript
  * // Log API usage
@@ -148,7 +148,7 @@ export type tenant_usage_logs = $Result.DefaultSelection<Prisma.$tenant_usage_lo
  * Model teams
  * Teams enable collaboration within organizations and tenants
  * Teams can span across user and business accounts
- *
+ * 
  * Usage:
  * ```typescript
  * // Create team with members
@@ -175,7 +175,7 @@ export type teams = $Result.DefaultSelection<Prisma.$teamsPayload>
  * Model team_members
  * Team membership management
  * Tracks who belongs to which teams and their roles
- *
+ * 
  * Usage:
  * ```typescript
  * // Add member to team
@@ -193,7 +193,7 @@ export type team_members = $Result.DefaultSelection<Prisma.$team_membersPayload>
 /**
  * Model business_accounts
  * Business accounts represent organizational entities within the system
- *
+ * 
  * Usage:
  * ```typescript
  * // Create business account
@@ -214,7 +214,7 @@ export type business_accounts = $Result.DefaultSelection<Prisma.$business_accoun
 /**
  * Model user_accounts
  * User accounts represent individual users within the system
- *
+ * 
  * Usage:
  * ```typescript
  * // Create user account
@@ -235,7 +235,7 @@ export type user_accounts = $Result.DefaultSelection<Prisma.$user_accountsPayloa
 /**
  * Model addresses
  * Address management for users, businesses, and teams
- *
+ * 
  * Usage:
  * ```typescript
  * // Add address to business account
@@ -263,7 +263,7 @@ export type audit_logs = $Result.DefaultSelection<Prisma.$audit_logsPayload>
  * Model settings
  * Settings management for various entities in the system
  * Provides flexible configuration storage
- *
+ * 
  * Usage:
  * ```typescript
  * // Create tenant settings
@@ -285,31 +285,6 @@ export type audit_logs = $Result.DefaultSelection<Prisma.$audit_logsPayload>
  * ```
  */
 export type settings = $Result.DefaultSelection<Prisma.$settingsPayload>
-/**
- * Model user_settings
- * User-specific settings and preferences
- *
- * Usage:
- * ```typescript
- * // Create user settings
- * const userSettings = await prisma.user_settings.create({
- * data: {
- * user_account_id: user.id,
- * preferred_language: 'en',
- * notification_settings: {
- * email: true,
- * push: false,
- * frequency: 'daily'
- * },
- * ui_settings: {
- * theme: 'dark',
- * compact_view: true
- * }
- * }
- * });
- * ```
- */
-export type user_settings = $Result.DefaultSelection<Prisma.$user_settingsPayload>
 
 /**
  * Enums
@@ -331,7 +306,7 @@ export const APIKeyEnvironment: typeof $Enums.APIKeyEnvironment
 
 /**
  * ##  Prisma Client ʲˢ
- *
+ * 
  * Type-safe database client for TypeScript & Node.js
  * @example
  * ```
@@ -340,7 +315,7 @@ export const APIKeyEnvironment: typeof $Enums.APIKeyEnvironment
  * const organizations = await prisma.organizations.findMany()
  * ```
  *
- *
+ * 
  * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
  */
 export class PrismaClient<
@@ -352,7 +327,7 @@ export class PrismaClient<
 
     /**
    * ##  Prisma Client ʲˢ
-   *
+   * 
    * Type-safe database client for TypeScript & Node.js
    * @example
    * ```
@@ -361,7 +336,7 @@ export class PrismaClient<
    * const organizations = await prisma.organizations.findMany()
    * ```
    *
-   *
+   * 
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
    */
 
@@ -391,7 +366,7 @@ export class PrismaClient<
    * ```
    * const result = await prisma.$executeRaw`UPDATE User SET cool = ${true} WHERE email = ${'user@email.com'};`
    * ```
-   *
+   * 
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $executeRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<number>;
@@ -403,7 +378,7 @@ export class PrismaClient<
    * ```
    * const result = await prisma.$executeRawUnsafe('UPDATE User SET cool = $1 WHERE email = $2 ;', true, 'user@email.com')
    * ```
-   *
+   * 
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $executeRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<number>;
@@ -414,7 +389,7 @@ export class PrismaClient<
    * ```
    * const result = await prisma.$queryRaw`SELECT * FROM User WHERE id = ${1} OR email = ${'user@email.com'};`
    * ```
-   *
+   * 
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $queryRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<T>;
@@ -426,7 +401,7 @@ export class PrismaClient<
    * ```
    * const result = await prisma.$queryRawUnsafe('SELECT * FROM User WHERE id = $1 OR email = $2;', 1, 'user@email.com')
    * ```
-   *
+   * 
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $queryRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<T>;
@@ -442,7 +417,7 @@ export class PrismaClient<
    *   prisma.user.create({ data: { name: 'Alice' } }),
    * ])
    * ```
-   *
+   * 
    * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
    */
   $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
@@ -591,16 +566,6 @@ export class PrismaClient<
     * ```
     */
   get settings(): Prisma.settingsDelegate<ExtArgs>;
-
-  /**
-   * `prisma.user_settings`: Exposes CRUD operations for the **user_settings** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more User_settings
-    * const user_settings = await prisma.user_settings.findMany()
-    * ```
-    */
-  get user_settings(): Prisma.user_settingsDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -642,7 +607,7 @@ export namespace Prisma {
   export type DecimalJsLike = runtime.DecimalJsLike
 
   /**
-   * Metrics
+   * Metrics 
    */
   export type Metrics = runtime.Metrics
   export type Metric<T> = runtime.Metric<T>
@@ -667,7 +632,7 @@ export namespace Prisma {
     client: string
   }
 
-  export const prismaVersion: PrismaVersion
+  export const prismaVersion: PrismaVersion 
 
   /**
    * Utility Types
@@ -683,15 +648,15 @@ export namespace Prisma {
 
   /**
    * Types of the values used to represent different kinds of `null` values when working with JSON fields.
-   *
+   * 
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
   namespace NullTypes {
     /**
     * Type of `Prisma.DbNull`.
-    *
+    * 
     * You cannot use other instances of this class. Please use the `Prisma.DbNull` value.
-    *
+    * 
     * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
     */
     class DbNull {
@@ -701,9 +666,9 @@ export namespace Prisma {
 
     /**
     * Type of `Prisma.JsonNull`.
-    *
+    * 
     * You cannot use other instances of this class. Please use the `Prisma.JsonNull` value.
-    *
+    * 
     * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
     */
     class JsonNull {
@@ -713,9 +678,9 @@ export namespace Prisma {
 
     /**
     * Type of `Prisma.AnyNull`.
-    *
+    * 
     * You cannot use other instances of this class. Please use the `Prisma.AnyNull` value.
-    *
+    * 
     * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
     */
     class AnyNull {
@@ -726,21 +691,21 @@ export namespace Prisma {
 
   /**
    * Helper for filtering JSON entries that have `null` on the database (empty on the db)
-   *
+   * 
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
   export const DbNull: NullTypes.DbNull
 
   /**
    * Helper for filtering JSON entries that have JSON `null` values (not empty on the db)
-   *
+   * 
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
   export const JsonNull: NullTypes.JsonNull
 
   /**
    * Helper for filtering JSON entries that are `Prisma.DbNull` or `Prisma.JsonNull`
-   *
+   * 
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
   export const AnyNull: NullTypes.AnyNull
@@ -1055,8 +1020,7 @@ export namespace Prisma {
     user_accounts: 'user_accounts',
     addresses: 'addresses',
     audit_logs: 'audit_logs',
-    settings: 'settings',
-    user_settings: 'user_settings'
+    settings: 'settings'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1072,7 +1036,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "organizations" | "tenants" | "org_members" | "org_api_keys" | "tenant_api_keys" | "org_usage_logs" | "tenant_usage_logs" | "teams" | "team_members" | "business_accounts" | "user_accounts" | "addresses" | "audit_logs" | "settings" | "user_settings"
+      modelProps: "organizations" | "tenants" | "org_members" | "org_api_keys" | "tenant_api_keys" | "org_usage_logs" | "tenant_usage_logs" | "teams" | "team_members" | "business_accounts" | "user_accounts" | "addresses" | "audit_logs" | "settings"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2056,76 +2020,6 @@ export namespace Prisma {
           }
         }
       }
-      user_settings: {
-        payload: Prisma.$user_settingsPayload<ExtArgs>
-        fields: Prisma.user_settingsFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.user_settingsFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$user_settingsPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.user_settingsFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$user_settingsPayload>
-          }
-          findFirst: {
-            args: Prisma.user_settingsFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$user_settingsPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.user_settingsFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$user_settingsPayload>
-          }
-          findMany: {
-            args: Prisma.user_settingsFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$user_settingsPayload>[]
-          }
-          create: {
-            args: Prisma.user_settingsCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$user_settingsPayload>
-          }
-          createMany: {
-            args: Prisma.user_settingsCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.user_settingsCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$user_settingsPayload>[]
-          }
-          delete: {
-            args: Prisma.user_settingsDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$user_settingsPayload>
-          }
-          update: {
-            args: Prisma.user_settingsUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$user_settingsPayload>
-          }
-          deleteMany: {
-            args: Prisma.user_settingsDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.user_settingsUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.user_settingsUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$user_settingsPayload>
-          }
-          aggregate: {
-            args: Prisma.User_settingsAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateUser_settings>
-          }
-          groupBy: {
-            args: Prisma.user_settingsGroupByArgs<ExtArgs>
-            result: $Utils.Optional<User_settingsGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.user_settingsCountArgs<ExtArgs>
-            result: $Utils.Optional<User_settingsCountAggregateOutputType> | number
-          }
-        }
-      }
     }
   } & {
     other: {
@@ -2171,7 +2065,7 @@ export namespace Prisma {
      * ```
      * // Defaults to stdout
      * log: ['query', 'info', 'warn', 'error']
-     *
+     * 
      * // Emit as events
      * log: [
      *   { emit: 'stdout', level: 'query' },
@@ -2573,7 +2467,6 @@ export namespace Prisma {
    */
 
   export type User_accountsCountOutputType = {
-    user_settings: number
     settings: number
     addresses: number
     team_memberships: number
@@ -2582,7 +2475,6 @@ export namespace Prisma {
   }
 
   export type User_accountsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user_settings?: boolean | User_accountsCountOutputTypeCountUser_settingsArgs
     settings?: boolean | User_accountsCountOutputTypeCountSettingsArgs
     addresses?: boolean | User_accountsCountOutputTypeCountAddressesArgs
     team_memberships?: boolean | User_accountsCountOutputTypeCountTeam_membershipsArgs
@@ -2599,13 +2491,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the User_accountsCountOutputType
      */
     select?: User_accountsCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * User_accountsCountOutputType without action
-   */
-  export type User_accountsCountOutputTypeCountUser_settingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: user_settingsWhereInput
   }
 
   /**
@@ -2834,55 +2719,55 @@ export namespace Prisma {
     where?: organizationsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of organizations to fetch.
      */
     orderBy?: organizationsOrderByWithRelationInput | organizationsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: organizationsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` organizations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` organizations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned organizations
     **/
     _count?: true | OrganizationsCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: OrganizationsAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: OrganizationsSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: OrganizationsMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: OrganizationsMaxAggregateInputType
@@ -3102,7 +2987,7 @@ export namespace Prisma {
 
   type organizationsGetPayload<S extends boolean | null | undefined | organizationsDefaultArgs> = $Result.GetResult<Prisma.$organizationsPayload, S>
 
-  type organizationsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+  type organizationsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
     Omit<organizationsFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: OrganizationsCountAggregateInputType | true
     }
@@ -3123,7 +3008,7 @@ export namespace Prisma {
     findUnique<T extends organizationsFindUniqueArgs>(args: SelectSubset<T, organizationsFindUniqueArgs<ExtArgs>>): Prisma__organizationsClient<$Result.GetResult<Prisma.$organizationsPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one Organizations that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Organizations that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {organizationsFindUniqueOrThrowArgs} args - Arguments to find a Organizations
      * @example
@@ -3175,13 +3060,13 @@ export namespace Prisma {
      * @example
      * // Get all Organizations
      * const organizations = await prisma.organizations.findMany()
-     *
+     * 
      * // Get first 10 Organizations
      * const organizations = await prisma.organizations.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const organizationsWithIdOnly = await prisma.organizations.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends organizationsFindManyArgs>(args?: SelectSubset<T, organizationsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$organizationsPayload<ExtArgs>, T, "findMany">>
 
@@ -3195,7 +3080,7 @@ export namespace Prisma {
      *     // ... data to create a Organizations
      *   }
      * })
-     *
+     * 
      */
     create<T extends organizationsCreateArgs>(args: SelectSubset<T, organizationsCreateArgs<ExtArgs>>): Prisma__organizationsClient<$Result.GetResult<Prisma.$organizationsPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
@@ -3209,7 +3094,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends organizationsCreateManyArgs>(args?: SelectSubset<T, organizationsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -3223,9 +3108,9 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Organizations and only return the `id`
-     * const organizationsWithIdOnly = await prisma.organizations.createManyAndReturn({
+     * const organizationsWithIdOnly = await prisma.organizations.createManyAndReturn({ 
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -3233,7 +3118,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends organizationsCreateManyAndReturnArgs>(args?: SelectSubset<T, organizationsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$organizationsPayload<ExtArgs>, T, "createManyAndReturn">>
 
@@ -3247,7 +3132,7 @@ export namespace Prisma {
      *     // ... filter to delete one Organizations
      *   }
      * })
-     *
+     * 
      */
     delete<T extends organizationsDeleteArgs>(args: SelectSubset<T, organizationsDeleteArgs<ExtArgs>>): Prisma__organizationsClient<$Result.GetResult<Prisma.$organizationsPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
@@ -3264,7 +3149,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends organizationsUpdateArgs>(args: SelectSubset<T, organizationsUpdateArgs<ExtArgs>>): Prisma__organizationsClient<$Result.GetResult<Prisma.$organizationsPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
@@ -3278,7 +3163,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends organizationsDeleteManyArgs>(args?: SelectSubset<T, organizationsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -3297,7 +3182,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends organizationsUpdateManyArgs>(args: SelectSubset<T, organizationsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -3386,7 +3271,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends organizationsGroupByArgs,
@@ -3495,7 +3380,7 @@ export namespace Prisma {
 
   /**
    * Fields of the organizations model
-   */
+   */ 
   interface organizationsFieldRefs {
     readonly id: FieldRef<"organizations", 'String'>
     readonly name: FieldRef<"organizations", 'String'>
@@ -3519,7 +3404,7 @@ export namespace Prisma {
     readonly security_settings: FieldRef<"organizations", 'Json'>
     readonly feature_flags: FieldRef<"organizations", 'Json'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -3576,31 +3461,31 @@ export namespace Prisma {
     where?: organizationsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of organizations to fetch.
      */
     orderBy?: organizationsOrderByWithRelationInput | organizationsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for organizations.
      */
     cursor?: organizationsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` organizations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` organizations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of organizations.
      */
     distinct?: OrganizationsScalarFieldEnum | OrganizationsScalarFieldEnum[]
@@ -3624,31 +3509,31 @@ export namespace Prisma {
     where?: organizationsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of organizations to fetch.
      */
     orderBy?: organizationsOrderByWithRelationInput | organizationsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for organizations.
      */
     cursor?: organizationsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` organizations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` organizations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of organizations.
      */
     distinct?: OrganizationsScalarFieldEnum | OrganizationsScalarFieldEnum[]
@@ -3672,25 +3557,25 @@ export namespace Prisma {
     where?: organizationsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of organizations to fetch.
      */
     orderBy?: organizationsOrderByWithRelationInput | organizationsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing organizations.
      */
     cursor?: organizationsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` organizations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` organizations.
      */
     skip?: number
@@ -4134,55 +4019,55 @@ export namespace Prisma {
     where?: tenantsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of tenants to fetch.
      */
     orderBy?: tenantsOrderByWithRelationInput | tenantsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: tenantsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` tenants from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` tenants.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned tenants
     **/
     _count?: true | TenantsCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: TenantsAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: TenantsSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: TenantsMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: TenantsMaxAggregateInputType
@@ -4351,7 +4236,7 @@ export namespace Prisma {
 
   type tenantsGetPayload<S extends boolean | null | undefined | tenantsDefaultArgs> = $Result.GetResult<Prisma.$tenantsPayload, S>
 
-  type tenantsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+  type tenantsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
     Omit<tenantsFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: TenantsCountAggregateInputType | true
     }
@@ -4372,7 +4257,7 @@ export namespace Prisma {
     findUnique<T extends tenantsFindUniqueArgs>(args: SelectSubset<T, tenantsFindUniqueArgs<ExtArgs>>): Prisma__tenantsClient<$Result.GetResult<Prisma.$tenantsPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one Tenants that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Tenants that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {tenantsFindUniqueOrThrowArgs} args - Arguments to find a Tenants
      * @example
@@ -4424,13 +4309,13 @@ export namespace Prisma {
      * @example
      * // Get all Tenants
      * const tenants = await prisma.tenants.findMany()
-     *
+     * 
      * // Get first 10 Tenants
      * const tenants = await prisma.tenants.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const tenantsWithIdOnly = await prisma.tenants.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends tenantsFindManyArgs>(args?: SelectSubset<T, tenantsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$tenantsPayload<ExtArgs>, T, "findMany">>
 
@@ -4444,7 +4329,7 @@ export namespace Prisma {
      *     // ... data to create a Tenants
      *   }
      * })
-     *
+     * 
      */
     create<T extends tenantsCreateArgs>(args: SelectSubset<T, tenantsCreateArgs<ExtArgs>>): Prisma__tenantsClient<$Result.GetResult<Prisma.$tenantsPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
@@ -4458,7 +4343,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends tenantsCreateManyArgs>(args?: SelectSubset<T, tenantsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -4472,9 +4357,9 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Tenants and only return the `id`
-     * const tenantsWithIdOnly = await prisma.tenants.createManyAndReturn({
+     * const tenantsWithIdOnly = await prisma.tenants.createManyAndReturn({ 
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -4482,7 +4367,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends tenantsCreateManyAndReturnArgs>(args?: SelectSubset<T, tenantsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$tenantsPayload<ExtArgs>, T, "createManyAndReturn">>
 
@@ -4496,7 +4381,7 @@ export namespace Prisma {
      *     // ... filter to delete one Tenants
      *   }
      * })
-     *
+     * 
      */
     delete<T extends tenantsDeleteArgs>(args: SelectSubset<T, tenantsDeleteArgs<ExtArgs>>): Prisma__tenantsClient<$Result.GetResult<Prisma.$tenantsPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
@@ -4513,7 +4398,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends tenantsUpdateArgs>(args: SelectSubset<T, tenantsUpdateArgs<ExtArgs>>): Prisma__tenantsClient<$Result.GetResult<Prisma.$tenantsPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
@@ -4527,7 +4412,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends tenantsDeleteManyArgs>(args?: SelectSubset<T, tenantsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -4546,7 +4431,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends tenantsUpdateManyArgs>(args: SelectSubset<T, tenantsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -4635,7 +4520,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends tenantsGroupByArgs,
@@ -4744,7 +4629,7 @@ export namespace Prisma {
 
   /**
    * Fields of the tenants model
-   */
+   */ 
   interface tenantsFieldRefs {
     readonly id: FieldRef<"tenants", 'String'>
     readonly organization_id: FieldRef<"tenants", 'String'>
@@ -4759,7 +4644,7 @@ export namespace Prisma {
     readonly custom_domain: FieldRef<"tenants", 'String'>
     readonly email: FieldRef<"tenants", 'String'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -4816,31 +4701,31 @@ export namespace Prisma {
     where?: tenantsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of tenants to fetch.
      */
     orderBy?: tenantsOrderByWithRelationInput | tenantsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for tenants.
      */
     cursor?: tenantsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` tenants from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` tenants.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of tenants.
      */
     distinct?: TenantsScalarFieldEnum | TenantsScalarFieldEnum[]
@@ -4864,31 +4749,31 @@ export namespace Prisma {
     where?: tenantsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of tenants to fetch.
      */
     orderBy?: tenantsOrderByWithRelationInput | tenantsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for tenants.
      */
     cursor?: tenantsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` tenants from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` tenants.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of tenants.
      */
     distinct?: TenantsScalarFieldEnum | TenantsScalarFieldEnum[]
@@ -4912,25 +4797,25 @@ export namespace Prisma {
     where?: tenantsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of tenants to fetch.
      */
     orderBy?: tenantsOrderByWithRelationInput | tenantsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing tenants.
      */
     cursor?: tenantsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` tenants from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` tenants.
      */
     skip?: number
@@ -5348,55 +5233,55 @@ export namespace Prisma {
     where?: org_membersWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of org_members to fetch.
      */
     orderBy?: org_membersOrderByWithRelationInput | org_membersOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: org_membersWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` org_members from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` org_members.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned org_members
     **/
     _count?: true | Org_membersCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: Org_membersAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: Org_membersSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: Org_membersMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: Org_membersMaxAggregateInputType
@@ -5534,7 +5419,7 @@ export namespace Prisma {
 
   type org_membersGetPayload<S extends boolean | null | undefined | org_membersDefaultArgs> = $Result.GetResult<Prisma.$org_membersPayload, S>
 
-  type org_membersCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+  type org_membersCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
     Omit<org_membersFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: Org_membersCountAggregateInputType | true
     }
@@ -5555,7 +5440,7 @@ export namespace Prisma {
     findUnique<T extends org_membersFindUniqueArgs>(args: SelectSubset<T, org_membersFindUniqueArgs<ExtArgs>>): Prisma__org_membersClient<$Result.GetResult<Prisma.$org_membersPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one Org_members that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Org_members that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {org_membersFindUniqueOrThrowArgs} args - Arguments to find a Org_members
      * @example
@@ -5607,13 +5492,13 @@ export namespace Prisma {
      * @example
      * // Get all Org_members
      * const org_members = await prisma.org_members.findMany()
-     *
+     * 
      * // Get first 10 Org_members
      * const org_members = await prisma.org_members.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const org_membersWithIdOnly = await prisma.org_members.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends org_membersFindManyArgs>(args?: SelectSubset<T, org_membersFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$org_membersPayload<ExtArgs>, T, "findMany">>
 
@@ -5627,7 +5512,7 @@ export namespace Prisma {
      *     // ... data to create a Org_members
      *   }
      * })
-     *
+     * 
      */
     create<T extends org_membersCreateArgs>(args: SelectSubset<T, org_membersCreateArgs<ExtArgs>>): Prisma__org_membersClient<$Result.GetResult<Prisma.$org_membersPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
@@ -5641,7 +5526,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends org_membersCreateManyArgs>(args?: SelectSubset<T, org_membersCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5655,9 +5540,9 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Org_members and only return the `id`
-     * const org_membersWithIdOnly = await prisma.org_members.createManyAndReturn({
+     * const org_membersWithIdOnly = await prisma.org_members.createManyAndReturn({ 
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -5665,7 +5550,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends org_membersCreateManyAndReturnArgs>(args?: SelectSubset<T, org_membersCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$org_membersPayload<ExtArgs>, T, "createManyAndReturn">>
 
@@ -5679,7 +5564,7 @@ export namespace Prisma {
      *     // ... filter to delete one Org_members
      *   }
      * })
-     *
+     * 
      */
     delete<T extends org_membersDeleteArgs>(args: SelectSubset<T, org_membersDeleteArgs<ExtArgs>>): Prisma__org_membersClient<$Result.GetResult<Prisma.$org_membersPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
@@ -5696,7 +5581,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends org_membersUpdateArgs>(args: SelectSubset<T, org_membersUpdateArgs<ExtArgs>>): Prisma__org_membersClient<$Result.GetResult<Prisma.$org_membersPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
@@ -5710,7 +5595,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends org_membersDeleteManyArgs>(args?: SelectSubset<T, org_membersDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5729,7 +5614,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends org_membersUpdateManyArgs>(args: SelectSubset<T, org_membersUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5818,7 +5703,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends org_membersGroupByArgs,
@@ -5920,7 +5805,7 @@ export namespace Prisma {
 
   /**
    * Fields of the org_members model
-   */
+   */ 
   interface org_membersFieldRefs {
     readonly id: FieldRef<"org_members", 'BigInt'>
     readonly organization_id: FieldRef<"org_members", 'String'>
@@ -5934,7 +5819,7 @@ export namespace Prisma {
     readonly last_access: FieldRef<"org_members", 'DateTime'>
     readonly permissions: FieldRef<"org_members", 'String[]'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -5991,31 +5876,31 @@ export namespace Prisma {
     where?: org_membersWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of org_members to fetch.
      */
     orderBy?: org_membersOrderByWithRelationInput | org_membersOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for org_members.
      */
     cursor?: org_membersWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` org_members from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` org_members.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of org_members.
      */
     distinct?: Org_membersScalarFieldEnum | Org_membersScalarFieldEnum[]
@@ -6039,31 +5924,31 @@ export namespace Prisma {
     where?: org_membersWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of org_members to fetch.
      */
     orderBy?: org_membersOrderByWithRelationInput | org_membersOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for org_members.
      */
     cursor?: org_membersWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` org_members from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` org_members.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of org_members.
      */
     distinct?: Org_membersScalarFieldEnum | Org_membersScalarFieldEnum[]
@@ -6087,25 +5972,25 @@ export namespace Prisma {
     where?: org_membersWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of org_members to fetch.
      */
     orderBy?: org_membersOrderByWithRelationInput | org_membersOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing org_members.
      */
     cursor?: org_membersWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` org_members from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` org_members.
      */
     skip?: number
@@ -6459,55 +6344,55 @@ export namespace Prisma {
     where?: org_api_keysWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of org_api_keys to fetch.
      */
     orderBy?: org_api_keysOrderByWithRelationInput | org_api_keysOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: org_api_keysWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` org_api_keys from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` org_api_keys.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned org_api_keys
     **/
     _count?: true | Org_api_keysCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: Org_api_keysAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: Org_api_keysSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: Org_api_keysMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: Org_api_keysMaxAggregateInputType
@@ -6710,7 +6595,7 @@ export namespace Prisma {
 
   type org_api_keysGetPayload<S extends boolean | null | undefined | org_api_keysDefaultArgs> = $Result.GetResult<Prisma.$org_api_keysPayload, S>
 
-  type org_api_keysCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+  type org_api_keysCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
     Omit<org_api_keysFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: Org_api_keysCountAggregateInputType | true
     }
@@ -6731,7 +6616,7 @@ export namespace Prisma {
     findUnique<T extends org_api_keysFindUniqueArgs>(args: SelectSubset<T, org_api_keysFindUniqueArgs<ExtArgs>>): Prisma__org_api_keysClient<$Result.GetResult<Prisma.$org_api_keysPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one Org_api_keys that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Org_api_keys that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {org_api_keysFindUniqueOrThrowArgs} args - Arguments to find a Org_api_keys
      * @example
@@ -6783,13 +6668,13 @@ export namespace Prisma {
      * @example
      * // Get all Org_api_keys
      * const org_api_keys = await prisma.org_api_keys.findMany()
-     *
+     * 
      * // Get first 10 Org_api_keys
      * const org_api_keys = await prisma.org_api_keys.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const org_api_keysWithIdOnly = await prisma.org_api_keys.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends org_api_keysFindManyArgs>(args?: SelectSubset<T, org_api_keysFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$org_api_keysPayload<ExtArgs>, T, "findMany">>
 
@@ -6803,7 +6688,7 @@ export namespace Prisma {
      *     // ... data to create a Org_api_keys
      *   }
      * })
-     *
+     * 
      */
     create<T extends org_api_keysCreateArgs>(args: SelectSubset<T, org_api_keysCreateArgs<ExtArgs>>): Prisma__org_api_keysClient<$Result.GetResult<Prisma.$org_api_keysPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
@@ -6817,7 +6702,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends org_api_keysCreateManyArgs>(args?: SelectSubset<T, org_api_keysCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -6831,9 +6716,9 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Org_api_keys and only return the `id`
-     * const org_api_keysWithIdOnly = await prisma.org_api_keys.createManyAndReturn({
+     * const org_api_keysWithIdOnly = await prisma.org_api_keys.createManyAndReturn({ 
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -6841,7 +6726,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends org_api_keysCreateManyAndReturnArgs>(args?: SelectSubset<T, org_api_keysCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$org_api_keysPayload<ExtArgs>, T, "createManyAndReturn">>
 
@@ -6855,7 +6740,7 @@ export namespace Prisma {
      *     // ... filter to delete one Org_api_keys
      *   }
      * })
-     *
+     * 
      */
     delete<T extends org_api_keysDeleteArgs>(args: SelectSubset<T, org_api_keysDeleteArgs<ExtArgs>>): Prisma__org_api_keysClient<$Result.GetResult<Prisma.$org_api_keysPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
@@ -6872,7 +6757,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends org_api_keysUpdateArgs>(args: SelectSubset<T, org_api_keysUpdateArgs<ExtArgs>>): Prisma__org_api_keysClient<$Result.GetResult<Prisma.$org_api_keysPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
@@ -6886,7 +6771,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends org_api_keysDeleteManyArgs>(args?: SelectSubset<T, org_api_keysDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -6905,7 +6790,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends org_api_keysUpdateManyArgs>(args: SelectSubset<T, org_api_keysUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -6994,7 +6879,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends org_api_keysGroupByArgs,
@@ -7097,7 +6982,7 @@ export namespace Prisma {
 
   /**
    * Fields of the org_api_keys model
-   */
+   */ 
   interface org_api_keysFieldRefs {
     readonly id: FieldRef<"org_api_keys", 'BigInt'>
     readonly organization_id: FieldRef<"org_api_keys", 'String'>
@@ -7123,7 +7008,7 @@ export namespace Prisma {
     readonly last_used: FieldRef<"org_api_keys", 'DateTime'>
     readonly is_active: FieldRef<"org_api_keys", 'Boolean'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -7180,31 +7065,31 @@ export namespace Prisma {
     where?: org_api_keysWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of org_api_keys to fetch.
      */
     orderBy?: org_api_keysOrderByWithRelationInput | org_api_keysOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for org_api_keys.
      */
     cursor?: org_api_keysWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` org_api_keys from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` org_api_keys.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of org_api_keys.
      */
     distinct?: Org_api_keysScalarFieldEnum | Org_api_keysScalarFieldEnum[]
@@ -7228,31 +7113,31 @@ export namespace Prisma {
     where?: org_api_keysWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of org_api_keys to fetch.
      */
     orderBy?: org_api_keysOrderByWithRelationInput | org_api_keysOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for org_api_keys.
      */
     cursor?: org_api_keysWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` org_api_keys from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` org_api_keys.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of org_api_keys.
      */
     distinct?: Org_api_keysScalarFieldEnum | Org_api_keysScalarFieldEnum[]
@@ -7276,25 +7161,25 @@ export namespace Prisma {
     where?: org_api_keysWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of org_api_keys to fetch.
      */
     orderBy?: org_api_keysOrderByWithRelationInput | org_api_keysOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing org_api_keys.
      */
     cursor?: org_api_keysWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` org_api_keys from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` org_api_keys.
      */
     skip?: number
@@ -7593,55 +7478,55 @@ export namespace Prisma {
     where?: tenant_api_keysWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of tenant_api_keys to fetch.
      */
     orderBy?: tenant_api_keysOrderByWithRelationInput | tenant_api_keysOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: tenant_api_keysWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` tenant_api_keys from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` tenant_api_keys.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned tenant_api_keys
     **/
     _count?: true | Tenant_api_keysCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: Tenant_api_keysAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: Tenant_api_keysSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: Tenant_api_keysMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: Tenant_api_keysMaxAggregateInputType
@@ -7784,7 +7669,7 @@ export namespace Prisma {
 
   type tenant_api_keysGetPayload<S extends boolean | null | undefined | tenant_api_keysDefaultArgs> = $Result.GetResult<Prisma.$tenant_api_keysPayload, S>
 
-  type tenant_api_keysCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+  type tenant_api_keysCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
     Omit<tenant_api_keysFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: Tenant_api_keysCountAggregateInputType | true
     }
@@ -7805,7 +7690,7 @@ export namespace Prisma {
     findUnique<T extends tenant_api_keysFindUniqueArgs>(args: SelectSubset<T, tenant_api_keysFindUniqueArgs<ExtArgs>>): Prisma__tenant_api_keysClient<$Result.GetResult<Prisma.$tenant_api_keysPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one Tenant_api_keys that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Tenant_api_keys that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {tenant_api_keysFindUniqueOrThrowArgs} args - Arguments to find a Tenant_api_keys
      * @example
@@ -7857,13 +7742,13 @@ export namespace Prisma {
      * @example
      * // Get all Tenant_api_keys
      * const tenant_api_keys = await prisma.tenant_api_keys.findMany()
-     *
+     * 
      * // Get first 10 Tenant_api_keys
      * const tenant_api_keys = await prisma.tenant_api_keys.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const tenant_api_keysWithIdOnly = await prisma.tenant_api_keys.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends tenant_api_keysFindManyArgs>(args?: SelectSubset<T, tenant_api_keysFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$tenant_api_keysPayload<ExtArgs>, T, "findMany">>
 
@@ -7877,7 +7762,7 @@ export namespace Prisma {
      *     // ... data to create a Tenant_api_keys
      *   }
      * })
-     *
+     * 
      */
     create<T extends tenant_api_keysCreateArgs>(args: SelectSubset<T, tenant_api_keysCreateArgs<ExtArgs>>): Prisma__tenant_api_keysClient<$Result.GetResult<Prisma.$tenant_api_keysPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
@@ -7891,7 +7776,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends tenant_api_keysCreateManyArgs>(args?: SelectSubset<T, tenant_api_keysCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -7905,9 +7790,9 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Tenant_api_keys and only return the `id`
-     * const tenant_api_keysWithIdOnly = await prisma.tenant_api_keys.createManyAndReturn({
+     * const tenant_api_keysWithIdOnly = await prisma.tenant_api_keys.createManyAndReturn({ 
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -7915,7 +7800,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends tenant_api_keysCreateManyAndReturnArgs>(args?: SelectSubset<T, tenant_api_keysCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$tenant_api_keysPayload<ExtArgs>, T, "createManyAndReturn">>
 
@@ -7929,7 +7814,7 @@ export namespace Prisma {
      *     // ... filter to delete one Tenant_api_keys
      *   }
      * })
-     *
+     * 
      */
     delete<T extends tenant_api_keysDeleteArgs>(args: SelectSubset<T, tenant_api_keysDeleteArgs<ExtArgs>>): Prisma__tenant_api_keysClient<$Result.GetResult<Prisma.$tenant_api_keysPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
@@ -7946,7 +7831,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends tenant_api_keysUpdateArgs>(args: SelectSubset<T, tenant_api_keysUpdateArgs<ExtArgs>>): Prisma__tenant_api_keysClient<$Result.GetResult<Prisma.$tenant_api_keysPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
@@ -7960,7 +7845,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends tenant_api_keysDeleteManyArgs>(args?: SelectSubset<T, tenant_api_keysDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -7979,7 +7864,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends tenant_api_keysUpdateManyArgs>(args: SelectSubset<T, tenant_api_keysUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -8068,7 +7953,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends tenant_api_keysGroupByArgs,
@@ -8170,7 +8055,7 @@ export namespace Prisma {
 
   /**
    * Fields of the tenant_api_keys model
-   */
+   */ 
   interface tenant_api_keysFieldRefs {
     readonly id: FieldRef<"tenant_api_keys", 'BigInt'>
     readonly tenant_id: FieldRef<"tenant_api_keys", 'String'>
@@ -8185,7 +8070,7 @@ export namespace Prisma {
     readonly last_used: FieldRef<"tenant_api_keys", 'DateTime'>
     readonly is_active: FieldRef<"tenant_api_keys", 'Boolean'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -8242,31 +8127,31 @@ export namespace Prisma {
     where?: tenant_api_keysWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of tenant_api_keys to fetch.
      */
     orderBy?: tenant_api_keysOrderByWithRelationInput | tenant_api_keysOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for tenant_api_keys.
      */
     cursor?: tenant_api_keysWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` tenant_api_keys from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` tenant_api_keys.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of tenant_api_keys.
      */
     distinct?: Tenant_api_keysScalarFieldEnum | Tenant_api_keysScalarFieldEnum[]
@@ -8290,31 +8175,31 @@ export namespace Prisma {
     where?: tenant_api_keysWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of tenant_api_keys to fetch.
      */
     orderBy?: tenant_api_keysOrderByWithRelationInput | tenant_api_keysOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for tenant_api_keys.
      */
     cursor?: tenant_api_keysWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` tenant_api_keys from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` tenant_api_keys.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of tenant_api_keys.
      */
     distinct?: Tenant_api_keysScalarFieldEnum | Tenant_api_keysScalarFieldEnum[]
@@ -8338,25 +8223,25 @@ export namespace Prisma {
     where?: tenant_api_keysWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of tenant_api_keys to fetch.
      */
     orderBy?: tenant_api_keysOrderByWithRelationInput | tenant_api_keysOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing tenant_api_keys.
      */
     cursor?: tenant_api_keysWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` tenant_api_keys from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` tenant_api_keys.
      */
     skip?: number
@@ -8614,55 +8499,55 @@ export namespace Prisma {
     where?: org_usage_logsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of org_usage_logs to fetch.
      */
     orderBy?: org_usage_logsOrderByWithRelationInput | org_usage_logsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: org_usage_logsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` org_usage_logs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` org_usage_logs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned org_usage_logs
     **/
     _count?: true | Org_usage_logsCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: Org_usage_logsAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: Org_usage_logsSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: Org_usage_logsMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: Org_usage_logsMaxAggregateInputType
@@ -8780,7 +8665,7 @@ export namespace Prisma {
 
   type org_usage_logsGetPayload<S extends boolean | null | undefined | org_usage_logsDefaultArgs> = $Result.GetResult<Prisma.$org_usage_logsPayload, S>
 
-  type org_usage_logsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+  type org_usage_logsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
     Omit<org_usage_logsFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: Org_usage_logsCountAggregateInputType | true
     }
@@ -8801,7 +8686,7 @@ export namespace Prisma {
     findUnique<T extends org_usage_logsFindUniqueArgs>(args: SelectSubset<T, org_usage_logsFindUniqueArgs<ExtArgs>>): Prisma__org_usage_logsClient<$Result.GetResult<Prisma.$org_usage_logsPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one Org_usage_logs that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Org_usage_logs that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {org_usage_logsFindUniqueOrThrowArgs} args - Arguments to find a Org_usage_logs
      * @example
@@ -8853,13 +8738,13 @@ export namespace Prisma {
      * @example
      * // Get all Org_usage_logs
      * const org_usage_logs = await prisma.org_usage_logs.findMany()
-     *
+     * 
      * // Get first 10 Org_usage_logs
      * const org_usage_logs = await prisma.org_usage_logs.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const org_usage_logsWithIdOnly = await prisma.org_usage_logs.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends org_usage_logsFindManyArgs>(args?: SelectSubset<T, org_usage_logsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$org_usage_logsPayload<ExtArgs>, T, "findMany">>
 
@@ -8873,7 +8758,7 @@ export namespace Prisma {
      *     // ... data to create a Org_usage_logs
      *   }
      * })
-     *
+     * 
      */
     create<T extends org_usage_logsCreateArgs>(args: SelectSubset<T, org_usage_logsCreateArgs<ExtArgs>>): Prisma__org_usage_logsClient<$Result.GetResult<Prisma.$org_usage_logsPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
@@ -8887,7 +8772,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends org_usage_logsCreateManyArgs>(args?: SelectSubset<T, org_usage_logsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -8901,9 +8786,9 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Org_usage_logs and only return the `id`
-     * const org_usage_logsWithIdOnly = await prisma.org_usage_logs.createManyAndReturn({
+     * const org_usage_logsWithIdOnly = await prisma.org_usage_logs.createManyAndReturn({ 
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -8911,7 +8796,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends org_usage_logsCreateManyAndReturnArgs>(args?: SelectSubset<T, org_usage_logsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$org_usage_logsPayload<ExtArgs>, T, "createManyAndReturn">>
 
@@ -8925,7 +8810,7 @@ export namespace Prisma {
      *     // ... filter to delete one Org_usage_logs
      *   }
      * })
-     *
+     * 
      */
     delete<T extends org_usage_logsDeleteArgs>(args: SelectSubset<T, org_usage_logsDeleteArgs<ExtArgs>>): Prisma__org_usage_logsClient<$Result.GetResult<Prisma.$org_usage_logsPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
@@ -8942,7 +8827,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends org_usage_logsUpdateArgs>(args: SelectSubset<T, org_usage_logsUpdateArgs<ExtArgs>>): Prisma__org_usage_logsClient<$Result.GetResult<Prisma.$org_usage_logsPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
@@ -8956,7 +8841,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends org_usage_logsDeleteManyArgs>(args?: SelectSubset<T, org_usage_logsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -8975,7 +8860,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends org_usage_logsUpdateManyArgs>(args: SelectSubset<T, org_usage_logsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -9064,7 +8949,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends org_usage_logsGroupByArgs,
@@ -9166,7 +9051,7 @@ export namespace Prisma {
 
   /**
    * Fields of the org_usage_logs model
-   */
+   */ 
   interface org_usage_logsFieldRefs {
     readonly id: FieldRef<"org_usage_logs", 'BigInt'>
     readonly organization_id: FieldRef<"org_usage_logs", 'String'>
@@ -9176,7 +9061,7 @@ export namespace Prisma {
     readonly unit: FieldRef<"org_usage_logs", 'String'>
     readonly details: FieldRef<"org_usage_logs", 'Json'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -9233,31 +9118,31 @@ export namespace Prisma {
     where?: org_usage_logsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of org_usage_logs to fetch.
      */
     orderBy?: org_usage_logsOrderByWithRelationInput | org_usage_logsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for org_usage_logs.
      */
     cursor?: org_usage_logsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` org_usage_logs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` org_usage_logs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of org_usage_logs.
      */
     distinct?: Org_usage_logsScalarFieldEnum | Org_usage_logsScalarFieldEnum[]
@@ -9281,31 +9166,31 @@ export namespace Prisma {
     where?: org_usage_logsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of org_usage_logs to fetch.
      */
     orderBy?: org_usage_logsOrderByWithRelationInput | org_usage_logsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for org_usage_logs.
      */
     cursor?: org_usage_logsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` org_usage_logs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` org_usage_logs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of org_usage_logs.
      */
     distinct?: Org_usage_logsScalarFieldEnum | Org_usage_logsScalarFieldEnum[]
@@ -9329,25 +9214,25 @@ export namespace Prisma {
     where?: org_usage_logsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of org_usage_logs to fetch.
      */
     orderBy?: org_usage_logsOrderByWithRelationInput | org_usage_logsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing org_usage_logs.
      */
     cursor?: org_usage_logsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` org_usage_logs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` org_usage_logs.
      */
     skip?: number
@@ -9605,55 +9490,55 @@ export namespace Prisma {
     where?: tenant_usage_logsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of tenant_usage_logs to fetch.
      */
     orderBy?: tenant_usage_logsOrderByWithRelationInput | tenant_usage_logsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: tenant_usage_logsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` tenant_usage_logs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` tenant_usage_logs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned tenant_usage_logs
     **/
     _count?: true | Tenant_usage_logsCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: Tenant_usage_logsAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: Tenant_usage_logsSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: Tenant_usage_logsMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: Tenant_usage_logsMaxAggregateInputType
@@ -9771,7 +9656,7 @@ export namespace Prisma {
 
   type tenant_usage_logsGetPayload<S extends boolean | null | undefined | tenant_usage_logsDefaultArgs> = $Result.GetResult<Prisma.$tenant_usage_logsPayload, S>
 
-  type tenant_usage_logsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+  type tenant_usage_logsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
     Omit<tenant_usage_logsFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: Tenant_usage_logsCountAggregateInputType | true
     }
@@ -9792,7 +9677,7 @@ export namespace Prisma {
     findUnique<T extends tenant_usage_logsFindUniqueArgs>(args: SelectSubset<T, tenant_usage_logsFindUniqueArgs<ExtArgs>>): Prisma__tenant_usage_logsClient<$Result.GetResult<Prisma.$tenant_usage_logsPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one Tenant_usage_logs that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Tenant_usage_logs that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {tenant_usage_logsFindUniqueOrThrowArgs} args - Arguments to find a Tenant_usage_logs
      * @example
@@ -9844,13 +9729,13 @@ export namespace Prisma {
      * @example
      * // Get all Tenant_usage_logs
      * const tenant_usage_logs = await prisma.tenant_usage_logs.findMany()
-     *
+     * 
      * // Get first 10 Tenant_usage_logs
      * const tenant_usage_logs = await prisma.tenant_usage_logs.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const tenant_usage_logsWithIdOnly = await prisma.tenant_usage_logs.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends tenant_usage_logsFindManyArgs>(args?: SelectSubset<T, tenant_usage_logsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$tenant_usage_logsPayload<ExtArgs>, T, "findMany">>
 
@@ -9864,7 +9749,7 @@ export namespace Prisma {
      *     // ... data to create a Tenant_usage_logs
      *   }
      * })
-     *
+     * 
      */
     create<T extends tenant_usage_logsCreateArgs>(args: SelectSubset<T, tenant_usage_logsCreateArgs<ExtArgs>>): Prisma__tenant_usage_logsClient<$Result.GetResult<Prisma.$tenant_usage_logsPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
@@ -9878,7 +9763,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends tenant_usage_logsCreateManyArgs>(args?: SelectSubset<T, tenant_usage_logsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -9892,9 +9777,9 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Tenant_usage_logs and only return the `id`
-     * const tenant_usage_logsWithIdOnly = await prisma.tenant_usage_logs.createManyAndReturn({
+     * const tenant_usage_logsWithIdOnly = await prisma.tenant_usage_logs.createManyAndReturn({ 
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -9902,7 +9787,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends tenant_usage_logsCreateManyAndReturnArgs>(args?: SelectSubset<T, tenant_usage_logsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$tenant_usage_logsPayload<ExtArgs>, T, "createManyAndReturn">>
 
@@ -9916,7 +9801,7 @@ export namespace Prisma {
      *     // ... filter to delete one Tenant_usage_logs
      *   }
      * })
-     *
+     * 
      */
     delete<T extends tenant_usage_logsDeleteArgs>(args: SelectSubset<T, tenant_usage_logsDeleteArgs<ExtArgs>>): Prisma__tenant_usage_logsClient<$Result.GetResult<Prisma.$tenant_usage_logsPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
@@ -9933,7 +9818,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends tenant_usage_logsUpdateArgs>(args: SelectSubset<T, tenant_usage_logsUpdateArgs<ExtArgs>>): Prisma__tenant_usage_logsClient<$Result.GetResult<Prisma.$tenant_usage_logsPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
@@ -9947,7 +9832,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends tenant_usage_logsDeleteManyArgs>(args?: SelectSubset<T, tenant_usage_logsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -9966,7 +9851,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends tenant_usage_logsUpdateManyArgs>(args: SelectSubset<T, tenant_usage_logsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -10055,7 +9940,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends tenant_usage_logsGroupByArgs,
@@ -10157,7 +10042,7 @@ export namespace Prisma {
 
   /**
    * Fields of the tenant_usage_logs model
-   */
+   */ 
   interface tenant_usage_logsFieldRefs {
     readonly id: FieldRef<"tenant_usage_logs", 'BigInt'>
     readonly tenant_id: FieldRef<"tenant_usage_logs", 'String'>
@@ -10167,7 +10052,7 @@ export namespace Prisma {
     readonly unit: FieldRef<"tenant_usage_logs", 'String'>
     readonly details: FieldRef<"tenant_usage_logs", 'Json'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -10224,31 +10109,31 @@ export namespace Prisma {
     where?: tenant_usage_logsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of tenant_usage_logs to fetch.
      */
     orderBy?: tenant_usage_logsOrderByWithRelationInput | tenant_usage_logsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for tenant_usage_logs.
      */
     cursor?: tenant_usage_logsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` tenant_usage_logs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` tenant_usage_logs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of tenant_usage_logs.
      */
     distinct?: Tenant_usage_logsScalarFieldEnum | Tenant_usage_logsScalarFieldEnum[]
@@ -10272,31 +10157,31 @@ export namespace Prisma {
     where?: tenant_usage_logsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of tenant_usage_logs to fetch.
      */
     orderBy?: tenant_usage_logsOrderByWithRelationInput | tenant_usage_logsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for tenant_usage_logs.
      */
     cursor?: tenant_usage_logsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` tenant_usage_logs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` tenant_usage_logs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of tenant_usage_logs.
      */
     distinct?: Tenant_usage_logsScalarFieldEnum | Tenant_usage_logsScalarFieldEnum[]
@@ -10320,25 +10205,25 @@ export namespace Prisma {
     where?: tenant_usage_logsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of tenant_usage_logs to fetch.
      */
     orderBy?: tenant_usage_logsOrderByWithRelationInput | tenant_usage_logsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing tenant_usage_logs.
      */
     cursor?: tenant_usage_logsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` tenant_usage_logs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` tenant_usage_logs.
      */
     skip?: number
@@ -10616,55 +10501,55 @@ export namespace Prisma {
     where?: teamsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of teams to fetch.
      */
     orderBy?: teamsOrderByWithRelationInput | teamsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: teamsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` teams from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` teams.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned teams
     **/
     _count?: true | TeamsCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: TeamsAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: TeamsSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: TeamsMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: TeamsMaxAggregateInputType
@@ -10827,7 +10712,7 @@ export namespace Prisma {
 
   type teamsGetPayload<S extends boolean | null | undefined | teamsDefaultArgs> = $Result.GetResult<Prisma.$teamsPayload, S>
 
-  type teamsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+  type teamsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
     Omit<teamsFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: TeamsCountAggregateInputType | true
     }
@@ -10848,7 +10733,7 @@ export namespace Prisma {
     findUnique<T extends teamsFindUniqueArgs>(args: SelectSubset<T, teamsFindUniqueArgs<ExtArgs>>): Prisma__teamsClient<$Result.GetResult<Prisma.$teamsPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one Teams that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Teams that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {teamsFindUniqueOrThrowArgs} args - Arguments to find a Teams
      * @example
@@ -10900,13 +10785,13 @@ export namespace Prisma {
      * @example
      * // Get all Teams
      * const teams = await prisma.teams.findMany()
-     *
+     * 
      * // Get first 10 Teams
      * const teams = await prisma.teams.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const teamsWithIdOnly = await prisma.teams.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends teamsFindManyArgs>(args?: SelectSubset<T, teamsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$teamsPayload<ExtArgs>, T, "findMany">>
 
@@ -10920,7 +10805,7 @@ export namespace Prisma {
      *     // ... data to create a Teams
      *   }
      * })
-     *
+     * 
      */
     create<T extends teamsCreateArgs>(args: SelectSubset<T, teamsCreateArgs<ExtArgs>>): Prisma__teamsClient<$Result.GetResult<Prisma.$teamsPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
@@ -10934,7 +10819,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends teamsCreateManyArgs>(args?: SelectSubset<T, teamsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -10948,9 +10833,9 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Teams and only return the `id`
-     * const teamsWithIdOnly = await prisma.teams.createManyAndReturn({
+     * const teamsWithIdOnly = await prisma.teams.createManyAndReturn({ 
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -10958,7 +10843,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends teamsCreateManyAndReturnArgs>(args?: SelectSubset<T, teamsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$teamsPayload<ExtArgs>, T, "createManyAndReturn">>
 
@@ -10972,7 +10857,7 @@ export namespace Prisma {
      *     // ... filter to delete one Teams
      *   }
      * })
-     *
+     * 
      */
     delete<T extends teamsDeleteArgs>(args: SelectSubset<T, teamsDeleteArgs<ExtArgs>>): Prisma__teamsClient<$Result.GetResult<Prisma.$teamsPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
@@ -10989,7 +10874,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends teamsUpdateArgs>(args: SelectSubset<T, teamsUpdateArgs<ExtArgs>>): Prisma__teamsClient<$Result.GetResult<Prisma.$teamsPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
@@ -11003,7 +10888,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends teamsDeleteManyArgs>(args?: SelectSubset<T, teamsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -11022,7 +10907,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends teamsUpdateManyArgs>(args: SelectSubset<T, teamsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -11111,7 +10996,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends teamsGroupByArgs,
@@ -11217,7 +11102,7 @@ export namespace Prisma {
 
   /**
    * Fields of the teams model
-   */
+   */ 
   interface teamsFieldRefs {
     readonly id: FieldRef<"teams", 'BigInt'>
     readonly organization_id: FieldRef<"teams", 'String'>
@@ -11231,7 +11116,7 @@ export namespace Prisma {
     readonly updated_at: FieldRef<"teams", 'DateTime'>
     readonly created_by: FieldRef<"teams", 'String'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -11288,31 +11173,31 @@ export namespace Prisma {
     where?: teamsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of teams to fetch.
      */
     orderBy?: teamsOrderByWithRelationInput | teamsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for teams.
      */
     cursor?: teamsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` teams from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` teams.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of teams.
      */
     distinct?: TeamsScalarFieldEnum | TeamsScalarFieldEnum[]
@@ -11336,31 +11221,31 @@ export namespace Prisma {
     where?: teamsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of teams to fetch.
      */
     orderBy?: teamsOrderByWithRelationInput | teamsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for teams.
      */
     cursor?: teamsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` teams from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` teams.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of teams.
      */
     distinct?: TeamsScalarFieldEnum | TeamsScalarFieldEnum[]
@@ -11384,25 +11269,25 @@ export namespace Prisma {
     where?: teamsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of teams to fetch.
      */
     orderBy?: teamsOrderByWithRelationInput | teamsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing teams.
      */
     cursor?: teamsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` teams from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` teams.
      */
     skip?: number
@@ -11755,55 +11640,55 @@ export namespace Prisma {
     where?: team_membersWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of team_members to fetch.
      */
     orderBy?: team_membersOrderByWithRelationInput | team_membersOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: team_membersWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` team_members from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` team_members.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned team_members
     **/
     _count?: true | Team_membersCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: Team_membersAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: Team_membersSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: Team_membersMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: Team_membersMaxAggregateInputType
@@ -11953,7 +11838,7 @@ export namespace Prisma {
 
   type team_membersGetPayload<S extends boolean | null | undefined | team_membersDefaultArgs> = $Result.GetResult<Prisma.$team_membersPayload, S>
 
-  type team_membersCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+  type team_membersCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
     Omit<team_membersFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: Team_membersCountAggregateInputType | true
     }
@@ -11974,7 +11859,7 @@ export namespace Prisma {
     findUnique<T extends team_membersFindUniqueArgs>(args: SelectSubset<T, team_membersFindUniqueArgs<ExtArgs>>): Prisma__team_membersClient<$Result.GetResult<Prisma.$team_membersPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one Team_members that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Team_members that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {team_membersFindUniqueOrThrowArgs} args - Arguments to find a Team_members
      * @example
@@ -12026,13 +11911,13 @@ export namespace Prisma {
      * @example
      * // Get all Team_members
      * const team_members = await prisma.team_members.findMany()
-     *
+     * 
      * // Get first 10 Team_members
      * const team_members = await prisma.team_members.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const team_membersWithIdOnly = await prisma.team_members.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends team_membersFindManyArgs>(args?: SelectSubset<T, team_membersFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$team_membersPayload<ExtArgs>, T, "findMany">>
 
@@ -12046,7 +11931,7 @@ export namespace Prisma {
      *     // ... data to create a Team_members
      *   }
      * })
-     *
+     * 
      */
     create<T extends team_membersCreateArgs>(args: SelectSubset<T, team_membersCreateArgs<ExtArgs>>): Prisma__team_membersClient<$Result.GetResult<Prisma.$team_membersPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
@@ -12060,7 +11945,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends team_membersCreateManyArgs>(args?: SelectSubset<T, team_membersCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -12074,9 +11959,9 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Team_members and only return the `id`
-     * const team_membersWithIdOnly = await prisma.team_members.createManyAndReturn({
+     * const team_membersWithIdOnly = await prisma.team_members.createManyAndReturn({ 
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -12084,7 +11969,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends team_membersCreateManyAndReturnArgs>(args?: SelectSubset<T, team_membersCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$team_membersPayload<ExtArgs>, T, "createManyAndReturn">>
 
@@ -12098,7 +11983,7 @@ export namespace Prisma {
      *     // ... filter to delete one Team_members
      *   }
      * })
-     *
+     * 
      */
     delete<T extends team_membersDeleteArgs>(args: SelectSubset<T, team_membersDeleteArgs<ExtArgs>>): Prisma__team_membersClient<$Result.GetResult<Prisma.$team_membersPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
@@ -12115,7 +12000,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends team_membersUpdateArgs>(args: SelectSubset<T, team_membersUpdateArgs<ExtArgs>>): Prisma__team_membersClient<$Result.GetResult<Prisma.$team_membersPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
@@ -12129,7 +12014,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends team_membersDeleteManyArgs>(args?: SelectSubset<T, team_membersDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -12148,7 +12033,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends team_membersUpdateManyArgs>(args: SelectSubset<T, team_membersUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -12237,7 +12122,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends team_membersGroupByArgs,
@@ -12341,7 +12226,7 @@ export namespace Prisma {
 
   /**
    * Fields of the team_members model
-   */
+   */ 
   interface team_membersFieldRefs {
     readonly id: FieldRef<"team_members", 'BigInt'>
     readonly team_id: FieldRef<"team_members", 'BigInt'>
@@ -12353,7 +12238,7 @@ export namespace Prisma {
     readonly status: FieldRef<"team_members", 'String'>
     readonly metadata: FieldRef<"team_members", 'Json'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -12410,31 +12295,31 @@ export namespace Prisma {
     where?: team_membersWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of team_members to fetch.
      */
     orderBy?: team_membersOrderByWithRelationInput | team_membersOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for team_members.
      */
     cursor?: team_membersWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` team_members from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` team_members.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of team_members.
      */
     distinct?: Team_membersScalarFieldEnum | Team_membersScalarFieldEnum[]
@@ -12458,31 +12343,31 @@ export namespace Prisma {
     where?: team_membersWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of team_members to fetch.
      */
     orderBy?: team_membersOrderByWithRelationInput | team_membersOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for team_members.
      */
     cursor?: team_membersWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` team_members from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` team_members.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of team_members.
      */
     distinct?: Team_membersScalarFieldEnum | Team_membersScalarFieldEnum[]
@@ -12506,25 +12391,25 @@ export namespace Prisma {
     where?: team_membersWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of team_members to fetch.
      */
     orderBy?: team_membersOrderByWithRelationInput | team_membersOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing team_members.
      */
     cursor?: team_membersWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` team_members from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` team_members.
      */
     skip?: number
@@ -12888,55 +12773,55 @@ export namespace Prisma {
     where?: business_accountsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of business_accounts to fetch.
      */
     orderBy?: business_accountsOrderByWithRelationInput | business_accountsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: business_accountsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` business_accounts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` business_accounts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned business_accounts
     **/
     _count?: true | Business_accountsCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: Business_accountsAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: Business_accountsSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: Business_accountsMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: Business_accountsMaxAggregateInputType
@@ -13157,7 +13042,7 @@ export namespace Prisma {
 
   type business_accountsGetPayload<S extends boolean | null | undefined | business_accountsDefaultArgs> = $Result.GetResult<Prisma.$business_accountsPayload, S>
 
-  type business_accountsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+  type business_accountsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
     Omit<business_accountsFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: Business_accountsCountAggregateInputType | true
     }
@@ -13178,7 +13063,7 @@ export namespace Prisma {
     findUnique<T extends business_accountsFindUniqueArgs>(args: SelectSubset<T, business_accountsFindUniqueArgs<ExtArgs>>): Prisma__business_accountsClient<$Result.GetResult<Prisma.$business_accountsPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one Business_accounts that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Business_accounts that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {business_accountsFindUniqueOrThrowArgs} args - Arguments to find a Business_accounts
      * @example
@@ -13230,13 +13115,13 @@ export namespace Prisma {
      * @example
      * // Get all Business_accounts
      * const business_accounts = await prisma.business_accounts.findMany()
-     *
+     * 
      * // Get first 10 Business_accounts
      * const business_accounts = await prisma.business_accounts.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const business_accountsWithIdOnly = await prisma.business_accounts.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends business_accountsFindManyArgs>(args?: SelectSubset<T, business_accountsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$business_accountsPayload<ExtArgs>, T, "findMany">>
 
@@ -13250,7 +13135,7 @@ export namespace Prisma {
      *     // ... data to create a Business_accounts
      *   }
      * })
-     *
+     * 
      */
     create<T extends business_accountsCreateArgs>(args: SelectSubset<T, business_accountsCreateArgs<ExtArgs>>): Prisma__business_accountsClient<$Result.GetResult<Prisma.$business_accountsPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
@@ -13264,7 +13149,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends business_accountsCreateManyArgs>(args?: SelectSubset<T, business_accountsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -13278,9 +13163,9 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Business_accounts and only return the `id`
-     * const business_accountsWithIdOnly = await prisma.business_accounts.createManyAndReturn({
+     * const business_accountsWithIdOnly = await prisma.business_accounts.createManyAndReturn({ 
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -13288,7 +13173,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends business_accountsCreateManyAndReturnArgs>(args?: SelectSubset<T, business_accountsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$business_accountsPayload<ExtArgs>, T, "createManyAndReturn">>
 
@@ -13302,7 +13187,7 @@ export namespace Prisma {
      *     // ... filter to delete one Business_accounts
      *   }
      * })
-     *
+     * 
      */
     delete<T extends business_accountsDeleteArgs>(args: SelectSubset<T, business_accountsDeleteArgs<ExtArgs>>): Prisma__business_accountsClient<$Result.GetResult<Prisma.$business_accountsPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
@@ -13319,7 +13204,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends business_accountsUpdateArgs>(args: SelectSubset<T, business_accountsUpdateArgs<ExtArgs>>): Prisma__business_accountsClient<$Result.GetResult<Prisma.$business_accountsPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
@@ -13333,7 +13218,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends business_accountsDeleteManyArgs>(args?: SelectSubset<T, business_accountsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -13352,7 +13237,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends business_accountsUpdateManyArgs>(args: SelectSubset<T, business_accountsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -13441,7 +13326,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends business_accountsGroupByArgs,
@@ -13548,7 +13433,7 @@ export namespace Prisma {
 
   /**
    * Fields of the business_accounts model
-   */
+   */ 
   interface business_accountsFieldRefs {
     readonly id: FieldRef<"business_accounts", 'BigInt'>
     readonly organization_id: FieldRef<"business_accounts", 'String'>
@@ -13570,7 +13455,7 @@ export namespace Prisma {
     readonly storage_quota: FieldRef<"business_accounts", 'BigInt'>
     readonly used_storage: FieldRef<"business_accounts", 'BigInt'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -13627,31 +13512,31 @@ export namespace Prisma {
     where?: business_accountsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of business_accounts to fetch.
      */
     orderBy?: business_accountsOrderByWithRelationInput | business_accountsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for business_accounts.
      */
     cursor?: business_accountsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` business_accounts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` business_accounts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of business_accounts.
      */
     distinct?: Business_accountsScalarFieldEnum | Business_accountsScalarFieldEnum[]
@@ -13675,31 +13560,31 @@ export namespace Prisma {
     where?: business_accountsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of business_accounts to fetch.
      */
     orderBy?: business_accountsOrderByWithRelationInput | business_accountsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for business_accounts.
      */
     cursor?: business_accountsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` business_accounts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` business_accounts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of business_accounts.
      */
     distinct?: Business_accountsScalarFieldEnum | Business_accountsScalarFieldEnum[]
@@ -13723,25 +13608,25 @@ export namespace Prisma {
     where?: business_accountsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of business_accounts to fetch.
      */
     orderBy?: business_accountsOrderByWithRelationInput | business_accountsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing business_accounts.
      */
     cursor?: business_accountsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` business_accounts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` business_accounts.
      */
     skip?: number
@@ -14185,55 +14070,55 @@ export namespace Prisma {
     where?: user_accountsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of user_accounts to fetch.
      */
     orderBy?: user_accountsOrderByWithRelationInput | user_accountsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: user_accountsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` user_accounts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` user_accounts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned user_accounts
     **/
     _count?: true | User_accountsCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: User_accountsAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: User_accountsSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: User_accountsMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: User_accountsMaxAggregateInputType
@@ -14327,7 +14212,6 @@ export namespace Prisma {
     used_storage?: boolean
     organization?: boolean | user_accounts$organizationArgs<ExtArgs>
     tenant?: boolean | user_accounts$tenantArgs<ExtArgs>
-    user_settings?: boolean | user_accounts$user_settingsArgs<ExtArgs>
     settings?: boolean | user_accounts$settingsArgs<ExtArgs>
     addresses?: boolean | user_accounts$addressesArgs<ExtArgs>
     team_memberships?: boolean | user_accounts$team_membershipsArgs<ExtArgs>
@@ -14385,7 +14269,6 @@ export namespace Prisma {
   export type user_accountsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organization?: boolean | user_accounts$organizationArgs<ExtArgs>
     tenant?: boolean | user_accounts$tenantArgs<ExtArgs>
-    user_settings?: boolean | user_accounts$user_settingsArgs<ExtArgs>
     settings?: boolean | user_accounts$settingsArgs<ExtArgs>
     addresses?: boolean | user_accounts$addressesArgs<ExtArgs>
     team_memberships?: boolean | user_accounts$team_membershipsArgs<ExtArgs>
@@ -14403,7 +14286,6 @@ export namespace Prisma {
     objects: {
       organization: Prisma.$organizationsPayload<ExtArgs> | null
       tenant: Prisma.$tenantsPayload<ExtArgs> | null
-      user_settings: Prisma.$user_settingsPayload<ExtArgs>[]
       settings: Prisma.$settingsPayload<ExtArgs>[]
       addresses: Prisma.$addressesPayload<ExtArgs>[]
       team_memberships: Prisma.$team_membersPayload<ExtArgs>[]
@@ -14466,7 +14348,7 @@ export namespace Prisma {
 
   type user_accountsGetPayload<S extends boolean | null | undefined | user_accountsDefaultArgs> = $Result.GetResult<Prisma.$user_accountsPayload, S>
 
-  type user_accountsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+  type user_accountsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
     Omit<user_accountsFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: User_accountsCountAggregateInputType | true
     }
@@ -14487,7 +14369,7 @@ export namespace Prisma {
     findUnique<T extends user_accountsFindUniqueArgs>(args: SelectSubset<T, user_accountsFindUniqueArgs<ExtArgs>>): Prisma__user_accountsClient<$Result.GetResult<Prisma.$user_accountsPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one User_accounts that matches the filter or throw an error with `error.code='P2025'`
+     * Find one User_accounts that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {user_accountsFindUniqueOrThrowArgs} args - Arguments to find a User_accounts
      * @example
@@ -14539,13 +14421,13 @@ export namespace Prisma {
      * @example
      * // Get all User_accounts
      * const user_accounts = await prisma.user_accounts.findMany()
-     *
+     * 
      * // Get first 10 User_accounts
      * const user_accounts = await prisma.user_accounts.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const user_accountsWithIdOnly = await prisma.user_accounts.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends user_accountsFindManyArgs>(args?: SelectSubset<T, user_accountsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_accountsPayload<ExtArgs>, T, "findMany">>
 
@@ -14559,7 +14441,7 @@ export namespace Prisma {
      *     // ... data to create a User_accounts
      *   }
      * })
-     *
+     * 
      */
     create<T extends user_accountsCreateArgs>(args: SelectSubset<T, user_accountsCreateArgs<ExtArgs>>): Prisma__user_accountsClient<$Result.GetResult<Prisma.$user_accountsPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
@@ -14573,7 +14455,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends user_accountsCreateManyArgs>(args?: SelectSubset<T, user_accountsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -14587,9 +14469,9 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many User_accounts and only return the `id`
-     * const user_accountsWithIdOnly = await prisma.user_accounts.createManyAndReturn({
+     * const user_accountsWithIdOnly = await prisma.user_accounts.createManyAndReturn({ 
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -14597,7 +14479,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends user_accountsCreateManyAndReturnArgs>(args?: SelectSubset<T, user_accountsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_accountsPayload<ExtArgs>, T, "createManyAndReturn">>
 
@@ -14611,7 +14493,7 @@ export namespace Prisma {
      *     // ... filter to delete one User_accounts
      *   }
      * })
-     *
+     * 
      */
     delete<T extends user_accountsDeleteArgs>(args: SelectSubset<T, user_accountsDeleteArgs<ExtArgs>>): Prisma__user_accountsClient<$Result.GetResult<Prisma.$user_accountsPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
@@ -14628,7 +14510,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends user_accountsUpdateArgs>(args: SelectSubset<T, user_accountsUpdateArgs<ExtArgs>>): Prisma__user_accountsClient<$Result.GetResult<Prisma.$user_accountsPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
@@ -14642,7 +14524,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends user_accountsDeleteManyArgs>(args?: SelectSubset<T, user_accountsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -14661,7 +14543,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends user_accountsUpdateManyArgs>(args: SelectSubset<T, user_accountsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -14750,7 +14632,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends user_accountsGroupByArgs,
@@ -14826,7 +14708,6 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     organization<T extends user_accounts$organizationArgs<ExtArgs> = {}>(args?: Subset<T, user_accounts$organizationArgs<ExtArgs>>): Prisma__organizationsClient<$Result.GetResult<Prisma.$organizationsPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     tenant<T extends user_accounts$tenantArgs<ExtArgs> = {}>(args?: Subset<T, user_accounts$tenantArgs<ExtArgs>>): Prisma__tenantsClient<$Result.GetResult<Prisma.$tenantsPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
-    user_settings<T extends user_accounts$user_settingsArgs<ExtArgs> = {}>(args?: Subset<T, user_accounts$user_settingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "findMany"> | Null>
     settings<T extends user_accounts$settingsArgs<ExtArgs> = {}>(args?: Subset<T, user_accounts$settingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$settingsPayload<ExtArgs>, T, "findMany"> | Null>
     addresses<T extends user_accounts$addressesArgs<ExtArgs> = {}>(args?: Subset<T, user_accounts$addressesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$addressesPayload<ExtArgs>, T, "findMany"> | Null>
     team_memberships<T extends user_accounts$team_membershipsArgs<ExtArgs> = {}>(args?: Subset<T, user_accounts$team_membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$team_membersPayload<ExtArgs>, T, "findMany"> | Null>
@@ -14859,7 +14740,7 @@ export namespace Prisma {
 
   /**
    * Fields of the user_accounts model
-   */
+   */ 
   interface user_accountsFieldRefs {
     readonly id: FieldRef<"user_accounts", 'BigInt'>
     readonly organization_id: FieldRef<"user_accounts", 'String'>
@@ -14881,7 +14762,7 @@ export namespace Prisma {
     readonly storage_quota: FieldRef<"user_accounts", 'BigInt'>
     readonly used_storage: FieldRef<"user_accounts", 'BigInt'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -14938,31 +14819,31 @@ export namespace Prisma {
     where?: user_accountsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of user_accounts to fetch.
      */
     orderBy?: user_accountsOrderByWithRelationInput | user_accountsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for user_accounts.
      */
     cursor?: user_accountsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` user_accounts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` user_accounts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of user_accounts.
      */
     distinct?: User_accountsScalarFieldEnum | User_accountsScalarFieldEnum[]
@@ -14986,31 +14867,31 @@ export namespace Prisma {
     where?: user_accountsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of user_accounts to fetch.
      */
     orderBy?: user_accountsOrderByWithRelationInput | user_accountsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for user_accounts.
      */
     cursor?: user_accountsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` user_accounts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` user_accounts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of user_accounts.
      */
     distinct?: User_accountsScalarFieldEnum | User_accountsScalarFieldEnum[]
@@ -15034,25 +14915,25 @@ export namespace Prisma {
     where?: user_accountsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of user_accounts to fetch.
      */
     orderBy?: user_accountsOrderByWithRelationInput | user_accountsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing user_accounts.
      */
     cursor?: user_accountsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` user_accounts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` user_accounts.
      */
     skip?: number
@@ -15225,26 +15106,6 @@ export namespace Prisma {
      */
     include?: tenantsInclude<ExtArgs> | null
     where?: tenantsWhereInput
-  }
-
-  /**
-   * user_accounts.user_settings
-   */
-  export type user_accounts$user_settingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
-    where?: user_settingsWhereInput
-    orderBy?: user_settingsOrderByWithRelationInput | user_settingsOrderByWithRelationInput[]
-    cursor?: user_settingsWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: User_settingsScalarFieldEnum | User_settingsScalarFieldEnum[]
   }
 
   /**
@@ -15542,55 +15403,55 @@ export namespace Prisma {
     where?: addressesWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of addresses to fetch.
      */
     orderBy?: addressesOrderByWithRelationInput | addressesOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: addressesWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` addresses from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` addresses.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned addresses
     **/
     _count?: true | AddressesCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: AddressesAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: AddressesSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AddressesMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: AddressesMaxAggregateInputType
@@ -15779,7 +15640,7 @@ export namespace Prisma {
 
   type addressesGetPayload<S extends boolean | null | undefined | addressesDefaultArgs> = $Result.GetResult<Prisma.$addressesPayload, S>
 
-  type addressesCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+  type addressesCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
     Omit<addressesFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: AddressesCountAggregateInputType | true
     }
@@ -15800,7 +15661,7 @@ export namespace Prisma {
     findUnique<T extends addressesFindUniqueArgs>(args: SelectSubset<T, addressesFindUniqueArgs<ExtArgs>>): Prisma__addressesClient<$Result.GetResult<Prisma.$addressesPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one Addresses that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Addresses that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {addressesFindUniqueOrThrowArgs} args - Arguments to find a Addresses
      * @example
@@ -15852,13 +15713,13 @@ export namespace Prisma {
      * @example
      * // Get all Addresses
      * const addresses = await prisma.addresses.findMany()
-     *
+     * 
      * // Get first 10 Addresses
      * const addresses = await prisma.addresses.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const addressesWithIdOnly = await prisma.addresses.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends addressesFindManyArgs>(args?: SelectSubset<T, addressesFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$addressesPayload<ExtArgs>, T, "findMany">>
 
@@ -15872,7 +15733,7 @@ export namespace Prisma {
      *     // ... data to create a Addresses
      *   }
      * })
-     *
+     * 
      */
     create<T extends addressesCreateArgs>(args: SelectSubset<T, addressesCreateArgs<ExtArgs>>): Prisma__addressesClient<$Result.GetResult<Prisma.$addressesPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
@@ -15886,7 +15747,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends addressesCreateManyArgs>(args?: SelectSubset<T, addressesCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -15900,9 +15761,9 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Addresses and only return the `id`
-     * const addressesWithIdOnly = await prisma.addresses.createManyAndReturn({
+     * const addressesWithIdOnly = await prisma.addresses.createManyAndReturn({ 
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -15910,7 +15771,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends addressesCreateManyAndReturnArgs>(args?: SelectSubset<T, addressesCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$addressesPayload<ExtArgs>, T, "createManyAndReturn">>
 
@@ -15924,7 +15785,7 @@ export namespace Prisma {
      *     // ... filter to delete one Addresses
      *   }
      * })
-     *
+     * 
      */
     delete<T extends addressesDeleteArgs>(args: SelectSubset<T, addressesDeleteArgs<ExtArgs>>): Prisma__addressesClient<$Result.GetResult<Prisma.$addressesPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
@@ -15941,7 +15802,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends addressesUpdateArgs>(args: SelectSubset<T, addressesUpdateArgs<ExtArgs>>): Prisma__addressesClient<$Result.GetResult<Prisma.$addressesPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
@@ -15955,7 +15816,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends addressesDeleteManyArgs>(args?: SelectSubset<T, addressesDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -15974,7 +15835,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends addressesUpdateManyArgs>(args: SelectSubset<T, addressesUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -16063,7 +15924,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends addressesGroupByArgs,
@@ -16167,7 +16028,7 @@ export namespace Prisma {
 
   /**
    * Fields of the addresses model
-   */
+   */ 
   interface addressesFieldRefs {
     readonly id: FieldRef<"addresses", 'BigInt'>
     readonly addressable_type: FieldRef<"addresses", 'String'>
@@ -16188,7 +16049,7 @@ export namespace Prisma {
     readonly created_at: FieldRef<"addresses", 'DateTime'>
     readonly updated_at: FieldRef<"addresses", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -16245,31 +16106,31 @@ export namespace Prisma {
     where?: addressesWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of addresses to fetch.
      */
     orderBy?: addressesOrderByWithRelationInput | addressesOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for addresses.
      */
     cursor?: addressesWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` addresses from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` addresses.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of addresses.
      */
     distinct?: AddressesScalarFieldEnum | AddressesScalarFieldEnum[]
@@ -16293,31 +16154,31 @@ export namespace Prisma {
     where?: addressesWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of addresses to fetch.
      */
     orderBy?: addressesOrderByWithRelationInput | addressesOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for addresses.
      */
     cursor?: addressesWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` addresses from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` addresses.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of addresses.
      */
     distinct?: AddressesScalarFieldEnum | AddressesScalarFieldEnum[]
@@ -16341,25 +16202,25 @@ export namespace Prisma {
     where?: addressesWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of addresses to fetch.
      */
     orderBy?: addressesOrderByWithRelationInput | addressesOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing addresses.
      */
     cursor?: addressesWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` addresses from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` addresses.
      */
     skip?: number
@@ -16694,55 +16555,55 @@ export namespace Prisma {
     where?: audit_logsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of audit_logs to fetch.
      */
     orderBy?: audit_logsOrderByWithRelationInput | audit_logsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: audit_logsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` audit_logs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` audit_logs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned audit_logs
     **/
     _count?: true | Audit_logsCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: Audit_logsAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: Audit_logsSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: Audit_logsMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: Audit_logsMaxAggregateInputType
@@ -16940,7 +16801,7 @@ export namespace Prisma {
 
   type audit_logsGetPayload<S extends boolean | null | undefined | audit_logsDefaultArgs> = $Result.GetResult<Prisma.$audit_logsPayload, S>
 
-  type audit_logsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+  type audit_logsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
     Omit<audit_logsFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: Audit_logsCountAggregateInputType | true
     }
@@ -16961,7 +16822,7 @@ export namespace Prisma {
     findUnique<T extends audit_logsFindUniqueArgs>(args: SelectSubset<T, audit_logsFindUniqueArgs<ExtArgs>>): Prisma__audit_logsClient<$Result.GetResult<Prisma.$audit_logsPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one Audit_logs that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Audit_logs that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {audit_logsFindUniqueOrThrowArgs} args - Arguments to find a Audit_logs
      * @example
@@ -17013,13 +16874,13 @@ export namespace Prisma {
      * @example
      * // Get all Audit_logs
      * const audit_logs = await prisma.audit_logs.findMany()
-     *
+     * 
      * // Get first 10 Audit_logs
      * const audit_logs = await prisma.audit_logs.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const audit_logsWithIdOnly = await prisma.audit_logs.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends audit_logsFindManyArgs>(args?: SelectSubset<T, audit_logsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$audit_logsPayload<ExtArgs>, T, "findMany">>
 
@@ -17033,7 +16894,7 @@ export namespace Prisma {
      *     // ... data to create a Audit_logs
      *   }
      * })
-     *
+     * 
      */
     create<T extends audit_logsCreateArgs>(args: SelectSubset<T, audit_logsCreateArgs<ExtArgs>>): Prisma__audit_logsClient<$Result.GetResult<Prisma.$audit_logsPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
@@ -17047,7 +16908,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends audit_logsCreateManyArgs>(args?: SelectSubset<T, audit_logsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -17061,9 +16922,9 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Audit_logs and only return the `id`
-     * const audit_logsWithIdOnly = await prisma.audit_logs.createManyAndReturn({
+     * const audit_logsWithIdOnly = await prisma.audit_logs.createManyAndReturn({ 
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -17071,7 +16932,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends audit_logsCreateManyAndReturnArgs>(args?: SelectSubset<T, audit_logsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$audit_logsPayload<ExtArgs>, T, "createManyAndReturn">>
 
@@ -17085,7 +16946,7 @@ export namespace Prisma {
      *     // ... filter to delete one Audit_logs
      *   }
      * })
-     *
+     * 
      */
     delete<T extends audit_logsDeleteArgs>(args: SelectSubset<T, audit_logsDeleteArgs<ExtArgs>>): Prisma__audit_logsClient<$Result.GetResult<Prisma.$audit_logsPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
@@ -17102,7 +16963,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends audit_logsUpdateArgs>(args: SelectSubset<T, audit_logsUpdateArgs<ExtArgs>>): Prisma__audit_logsClient<$Result.GetResult<Prisma.$audit_logsPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
@@ -17116,7 +16977,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends audit_logsDeleteManyArgs>(args?: SelectSubset<T, audit_logsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -17135,7 +16996,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends audit_logsUpdateManyArgs>(args: SelectSubset<T, audit_logsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -17224,7 +17085,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends audit_logsGroupByArgs,
@@ -17330,7 +17191,7 @@ export namespace Prisma {
 
   /**
    * Fields of the audit_logs model
-   */
+   */ 
   interface audit_logsFieldRefs {
     readonly id: FieldRef<"audit_logs", 'BigInt'>
     readonly organization_id: FieldRef<"audit_logs", 'String'>
@@ -17346,7 +17207,7 @@ export namespace Prisma {
     readonly user_agent: FieldRef<"audit_logs", 'String'>
     readonly created_at: FieldRef<"audit_logs", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -17403,31 +17264,31 @@ export namespace Prisma {
     where?: audit_logsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of audit_logs to fetch.
      */
     orderBy?: audit_logsOrderByWithRelationInput | audit_logsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for audit_logs.
      */
     cursor?: audit_logsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` audit_logs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` audit_logs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of audit_logs.
      */
     distinct?: Audit_logsScalarFieldEnum | Audit_logsScalarFieldEnum[]
@@ -17451,31 +17312,31 @@ export namespace Prisma {
     where?: audit_logsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of audit_logs to fetch.
      */
     orderBy?: audit_logsOrderByWithRelationInput | audit_logsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for audit_logs.
      */
     cursor?: audit_logsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` audit_logs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` audit_logs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of audit_logs.
      */
     distinct?: Audit_logsScalarFieldEnum | Audit_logsScalarFieldEnum[]
@@ -17499,25 +17360,25 @@ export namespace Prisma {
     where?: audit_logsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of audit_logs to fetch.
      */
     orderBy?: audit_logsOrderByWithRelationInput | audit_logsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing audit_logs.
      */
     cursor?: audit_logsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` audit_logs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` audit_logs.
      */
     skip?: number
@@ -17784,6 +17645,7 @@ export namespace Prisma {
     user_account_id: bigint | null
     created_at: Date | null
     updated_at: Date | null
+    preferred_language: string | null
   }
 
   export type SettingsMaxAggregateOutputType = {
@@ -17794,6 +17656,7 @@ export namespace Prisma {
     user_account_id: bigint | null
     created_at: Date | null
     updated_at: Date | null
+    preferred_language: string | null
   }
 
   export type SettingsCountAggregateOutputType = {
@@ -17805,6 +17668,9 @@ export namespace Prisma {
     created_at: number
     updated_at: number
     settings_data: number
+    preferred_language: number
+    notification_settings: number
+    ui_settings: number
     _all: number
   }
 
@@ -17829,6 +17695,7 @@ export namespace Prisma {
     user_account_id?: true
     created_at?: true
     updated_at?: true
+    preferred_language?: true
   }
 
   export type SettingsMaxAggregateInputType = {
@@ -17839,6 +17706,7 @@ export namespace Prisma {
     user_account_id?: true
     created_at?: true
     updated_at?: true
+    preferred_language?: true
   }
 
   export type SettingsCountAggregateInputType = {
@@ -17850,6 +17718,9 @@ export namespace Prisma {
     created_at?: true
     updated_at?: true
     settings_data?: true
+    preferred_language?: true
+    notification_settings?: true
+    ui_settings?: true
     _all?: true
   }
 
@@ -17860,55 +17731,55 @@ export namespace Prisma {
     where?: settingsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of settings to fetch.
      */
     orderBy?: settingsOrderByWithRelationInput | settingsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: settingsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` settings from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` settings.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned settings
     **/
     _count?: true | SettingsCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: SettingsAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: SettingsSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: SettingsMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: SettingsMaxAggregateInputType
@@ -17948,6 +17819,9 @@ export namespace Prisma {
     created_at: Date
     updated_at: Date
     settings_data: JsonValue | null
+    preferred_language: string | null
+    notification_settings: JsonValue | null
+    ui_settings: JsonValue | null
     _count: SettingsCountAggregateOutputType | null
     _avg: SettingsAvgAggregateOutputType | null
     _sum: SettingsSumAggregateOutputType | null
@@ -17978,6 +17852,9 @@ export namespace Prisma {
     created_at?: boolean
     updated_at?: boolean
     settings_data?: boolean
+    preferred_language?: boolean
+    notification_settings?: boolean
+    ui_settings?: boolean
     tenant?: boolean | settings$tenantArgs<ExtArgs>
     business_accounts?: boolean | settings$business_accountsArgs<ExtArgs>
     user_accounts?: boolean | settings$user_accountsArgs<ExtArgs>
@@ -17992,6 +17869,9 @@ export namespace Prisma {
     created_at?: boolean
     updated_at?: boolean
     settings_data?: boolean
+    preferred_language?: boolean
+    notification_settings?: boolean
+    ui_settings?: boolean
     tenant?: boolean | settings$tenantArgs<ExtArgs>
     business_accounts?: boolean | settings$business_accountsArgs<ExtArgs>
     user_accounts?: boolean | settings$user_accountsArgs<ExtArgs>
@@ -18006,6 +17886,9 @@ export namespace Prisma {
     created_at?: boolean
     updated_at?: boolean
     settings_data?: boolean
+    preferred_language?: boolean
+    notification_settings?: boolean
+    ui_settings?: boolean
   }
 
   export type settingsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -18038,13 +17921,25 @@ export namespace Prisma {
        * Flexible settings storage
        */
       settings_data: Prisma.JsonValue | null
+      /**
+       * ISO language code
+       */
+      preferred_language: string | null
+      /**
+       * Notification preferences
+       */
+      notification_settings: Prisma.JsonValue | null
+      /**
+       * UI/UX preferences
+       */
+      ui_settings: Prisma.JsonValue | null
     }, ExtArgs["result"]["settings"]>
     composites: {}
   }
 
   type settingsGetPayload<S extends boolean | null | undefined | settingsDefaultArgs> = $Result.GetResult<Prisma.$settingsPayload, S>
 
-  type settingsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+  type settingsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
     Omit<settingsFindManyArgs, 'select' | 'include' | 'distinct'> & {
       select?: SettingsCountAggregateInputType | true
     }
@@ -18065,7 +17960,7 @@ export namespace Prisma {
     findUnique<T extends settingsFindUniqueArgs>(args: SelectSubset<T, settingsFindUniqueArgs<ExtArgs>>): Prisma__settingsClient<$Result.GetResult<Prisma.$settingsPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
 
     /**
-     * Find one Settings that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Settings that matches the filter or throw an error with `error.code='P2025'` 
      * if no matches were found.
      * @param {settingsFindUniqueOrThrowArgs} args - Arguments to find a Settings
      * @example
@@ -18117,13 +18012,13 @@ export namespace Prisma {
      * @example
      * // Get all Settings
      * const settings = await prisma.settings.findMany()
-     *
+     * 
      * // Get first 10 Settings
      * const settings = await prisma.settings.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const settingsWithIdOnly = await prisma.settings.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends settingsFindManyArgs>(args?: SelectSubset<T, settingsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$settingsPayload<ExtArgs>, T, "findMany">>
 
@@ -18137,7 +18032,7 @@ export namespace Prisma {
      *     // ... data to create a Settings
      *   }
      * })
-     *
+     * 
      */
     create<T extends settingsCreateArgs>(args: SelectSubset<T, settingsCreateArgs<ExtArgs>>): Prisma__settingsClient<$Result.GetResult<Prisma.$settingsPayload<ExtArgs>, T, "create">, never, ExtArgs>
 
@@ -18151,7 +18046,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends settingsCreateManyArgs>(args?: SelectSubset<T, settingsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -18165,9 +18060,9 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Settings and only return the `id`
-     * const settingsWithIdOnly = await prisma.settings.createManyAndReturn({
+     * const settingsWithIdOnly = await prisma.settings.createManyAndReturn({ 
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -18175,7 +18070,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends settingsCreateManyAndReturnArgs>(args?: SelectSubset<T, settingsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$settingsPayload<ExtArgs>, T, "createManyAndReturn">>
 
@@ -18189,7 +18084,7 @@ export namespace Prisma {
      *     // ... filter to delete one Settings
      *   }
      * })
-     *
+     * 
      */
     delete<T extends settingsDeleteArgs>(args: SelectSubset<T, settingsDeleteArgs<ExtArgs>>): Prisma__settingsClient<$Result.GetResult<Prisma.$settingsPayload<ExtArgs>, T, "delete">, never, ExtArgs>
 
@@ -18206,7 +18101,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends settingsUpdateArgs>(args: SelectSubset<T, settingsUpdateArgs<ExtArgs>>): Prisma__settingsClient<$Result.GetResult<Prisma.$settingsPayload<ExtArgs>, T, "update">, never, ExtArgs>
 
@@ -18220,7 +18115,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends settingsDeleteManyArgs>(args?: SelectSubset<T, settingsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -18239,7 +18134,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends settingsUpdateManyArgs>(args: SelectSubset<T, settingsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -18328,7 +18223,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends settingsGroupByArgs,
@@ -18432,7 +18327,7 @@ export namespace Prisma {
 
   /**
    * Fields of the settings model
-   */
+   */ 
   interface settingsFieldRefs {
     readonly id: FieldRef<"settings", 'BigInt'>
     readonly organization_id: FieldRef<"settings", 'String'>
@@ -18442,8 +18337,11 @@ export namespace Prisma {
     readonly created_at: FieldRef<"settings", 'DateTime'>
     readonly updated_at: FieldRef<"settings", 'DateTime'>
     readonly settings_data: FieldRef<"settings", 'Json'>
+    readonly preferred_language: FieldRef<"settings", 'String'>
+    readonly notification_settings: FieldRef<"settings", 'Json'>
+    readonly ui_settings: FieldRef<"settings", 'Json'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -18500,31 +18398,31 @@ export namespace Prisma {
     where?: settingsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of settings to fetch.
      */
     orderBy?: settingsOrderByWithRelationInput | settingsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for settings.
      */
     cursor?: settingsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` settings from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` settings.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of settings.
      */
     distinct?: SettingsScalarFieldEnum | SettingsScalarFieldEnum[]
@@ -18548,31 +18446,31 @@ export namespace Prisma {
     where?: settingsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of settings to fetch.
      */
     orderBy?: settingsOrderByWithRelationInput | settingsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for settings.
      */
     cursor?: settingsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` settings from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` settings.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of settings.
      */
     distinct?: SettingsScalarFieldEnum | SettingsScalarFieldEnum[]
@@ -18596,25 +18494,25 @@ export namespace Prisma {
     where?: settingsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of settings to fetch.
      */
     orderBy?: settingsOrderByWithRelationInput | settingsOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing settings.
      */
     cursor?: settingsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` settings from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` settings.
      */
     skip?: number
@@ -18816,1017 +18714,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: settingsInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model user_settings
-   */
-
-  export type AggregateUser_settings = {
-    _count: User_settingsCountAggregateOutputType | null
-    _avg: User_settingsAvgAggregateOutputType | null
-    _sum: User_settingsSumAggregateOutputType | null
-    _min: User_settingsMinAggregateOutputType | null
-    _max: User_settingsMaxAggregateOutputType | null
-  }
-
-  export type User_settingsAvgAggregateOutputType = {
-    id: number | null
-    user_account_id: number | null
-  }
-
-  export type User_settingsSumAggregateOutputType = {
-    id: bigint | null
-    user_account_id: bigint | null
-  }
-
-  export type User_settingsMinAggregateOutputType = {
-    id: bigint | null
-    user_account_id: bigint | null
-    preferred_language: string | null
-    created_at: Date | null
-    updated_at: Date | null
-  }
-
-  export type User_settingsMaxAggregateOutputType = {
-    id: bigint | null
-    user_account_id: bigint | null
-    preferred_language: string | null
-    created_at: Date | null
-    updated_at: Date | null
-  }
-
-  export type User_settingsCountAggregateOutputType = {
-    id: number
-    user_account_id: number
-    preferred_language: number
-    notification_settings: number
-    ui_settings: number
-    created_at: number
-    updated_at: number
-    _all: number
-  }
-
-
-  export type User_settingsAvgAggregateInputType = {
-    id?: true
-    user_account_id?: true
-  }
-
-  export type User_settingsSumAggregateInputType = {
-    id?: true
-    user_account_id?: true
-  }
-
-  export type User_settingsMinAggregateInputType = {
-    id?: true
-    user_account_id?: true
-    preferred_language?: true
-    created_at?: true
-    updated_at?: true
-  }
-
-  export type User_settingsMaxAggregateInputType = {
-    id?: true
-    user_account_id?: true
-    preferred_language?: true
-    created_at?: true
-    updated_at?: true
-  }
-
-  export type User_settingsCountAggregateInputType = {
-    id?: true
-    user_account_id?: true
-    preferred_language?: true
-    notification_settings?: true
-    ui_settings?: true
-    created_at?: true
-    updated_at?: true
-    _all?: true
-  }
-
-  export type User_settingsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which user_settings to aggregate.
-     */
-    where?: user_settingsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
-     * Determine the order of user_settings to fetch.
-     */
-    orderBy?: user_settingsOrderByWithRelationInput | user_settingsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
-     * Sets the start position
-     */
-    cursor?: user_settingsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
-     * Take `±n` user_settings from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
-     * Skip the first `n` user_settings.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
-     * Count returned user_settings
-    **/
-    _count?: true | User_settingsCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
-     * Select which fields to average
-    **/
-    _avg?: User_settingsAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
-     * Select which fields to sum
-    **/
-    _sum?: User_settingsSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
-     * Select which fields to find the minimum value
-    **/
-    _min?: User_settingsMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
-     * Select which fields to find the maximum value
-    **/
-    _max?: User_settingsMaxAggregateInputType
-  }
-
-  export type GetUser_settingsAggregateType<T extends User_settingsAggregateArgs> = {
-        [P in keyof T & keyof AggregateUser_settings]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateUser_settings[P]>
-      : GetScalarType<T[P], AggregateUser_settings[P]>
-  }
-
-
-
-
-  export type user_settingsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: user_settingsWhereInput
-    orderBy?: user_settingsOrderByWithAggregationInput | user_settingsOrderByWithAggregationInput[]
-    by: User_settingsScalarFieldEnum[] | User_settingsScalarFieldEnum
-    having?: user_settingsScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: User_settingsCountAggregateInputType | true
-    _avg?: User_settingsAvgAggregateInputType
-    _sum?: User_settingsSumAggregateInputType
-    _min?: User_settingsMinAggregateInputType
-    _max?: User_settingsMaxAggregateInputType
-  }
-
-  export type User_settingsGroupByOutputType = {
-    id: bigint
-    user_account_id: bigint | null
-    preferred_language: string | null
-    notification_settings: JsonValue | null
-    ui_settings: JsonValue | null
-    created_at: Date
-    updated_at: Date
-    _count: User_settingsCountAggregateOutputType | null
-    _avg: User_settingsAvgAggregateOutputType | null
-    _sum: User_settingsSumAggregateOutputType | null
-    _min: User_settingsMinAggregateOutputType | null
-    _max: User_settingsMaxAggregateOutputType | null
-  }
-
-  type GetUser_settingsGroupByPayload<T extends user_settingsGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<User_settingsGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof User_settingsGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], User_settingsGroupByOutputType[P]>
-            : GetScalarType<T[P], User_settingsGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type user_settingsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    user_account_id?: boolean
-    preferred_language?: boolean
-    notification_settings?: boolean
-    ui_settings?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-    user_accounts?: boolean | user_settings$user_accountsArgs<ExtArgs>
-  }, ExtArgs["result"]["user_settings"]>
-
-  export type user_settingsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    user_account_id?: boolean
-    preferred_language?: boolean
-    notification_settings?: boolean
-    ui_settings?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-    user_accounts?: boolean | user_settings$user_accountsArgs<ExtArgs>
-  }, ExtArgs["result"]["user_settings"]>
-
-  export type user_settingsSelectScalar = {
-    id?: boolean
-    user_account_id?: boolean
-    preferred_language?: boolean
-    notification_settings?: boolean
-    ui_settings?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-  }
-
-  export type user_settingsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user_accounts?: boolean | user_settings$user_accountsArgs<ExtArgs>
-  }
-  export type user_settingsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user_accounts?: boolean | user_settings$user_accountsArgs<ExtArgs>
-  }
-
-  export type $user_settingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "user_settings"
-    objects: {
-      user_accounts: Prisma.$user_accountsPayload<ExtArgs> | null
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: bigint
-      user_account_id: bigint | null
-      /**
-       * ISO language code
-       */
-      preferred_language: string | null
-      /**
-       * Notification preferences
-       */
-      notification_settings: Prisma.JsonValue | null
-      /**
-       * UI/UX preferences
-       */
-      ui_settings: Prisma.JsonValue | null
-      created_at: Date
-      updated_at: Date
-    }, ExtArgs["result"]["user_settings"]>
-    composites: {}
-  }
-
-  type user_settingsGetPayload<S extends boolean | null | undefined | user_settingsDefaultArgs> = $Result.GetResult<Prisma.$user_settingsPayload, S>
-
-  type user_settingsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<user_settingsFindManyArgs, 'select' | 'include' | 'distinct'> & {
-      select?: User_settingsCountAggregateInputType | true
-    }
-
-  export interface user_settingsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['user_settings'], meta: { name: 'user_settings' } }
-    /**
-     * Find zero or one User_settings that matches the filter.
-     * @param {user_settingsFindUniqueArgs} args - Arguments to find a User_settings
-     * @example
-     * // Get one User_settings
-     * const user_settings = await prisma.user_settings.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends user_settingsFindUniqueArgs>(args: SelectSubset<T, user_settingsFindUniqueArgs<ExtArgs>>): Prisma__user_settingsClient<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
-
-    /**
-     * Find one User_settings that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {user_settingsFindUniqueOrThrowArgs} args - Arguments to find a User_settings
-     * @example
-     * // Get one User_settings
-     * const user_settings = await prisma.user_settings.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends user_settingsFindUniqueOrThrowArgs>(args: SelectSubset<T, user_settingsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__user_settingsClient<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
-
-    /**
-     * Find the first User_settings that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {user_settingsFindFirstArgs} args - Arguments to find a User_settings
-     * @example
-     * // Get one User_settings
-     * const user_settings = await prisma.user_settings.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends user_settingsFindFirstArgs>(args?: SelectSubset<T, user_settingsFindFirstArgs<ExtArgs>>): Prisma__user_settingsClient<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
-
-    /**
-     * Find the first User_settings that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {user_settingsFindFirstOrThrowArgs} args - Arguments to find a User_settings
-     * @example
-     * // Get one User_settings
-     * const user_settings = await prisma.user_settings.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends user_settingsFindFirstOrThrowArgs>(args?: SelectSubset<T, user_settingsFindFirstOrThrowArgs<ExtArgs>>): Prisma__user_settingsClient<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
-
-    /**
-     * Find zero or more User_settings that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {user_settingsFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all User_settings
-     * const user_settings = await prisma.user_settings.findMany()
-     *
-     * // Get first 10 User_settings
-     * const user_settings = await prisma.user_settings.findMany({ take: 10 })
-     *
-     * // Only select the `id`
-     * const user_settingsWithIdOnly = await prisma.user_settings.findMany({ select: { id: true } })
-     *
-     */
-    findMany<T extends user_settingsFindManyArgs>(args?: SelectSubset<T, user_settingsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "findMany">>
-
-    /**
-     * Create a User_settings.
-     * @param {user_settingsCreateArgs} args - Arguments to create a User_settings.
-     * @example
-     * // Create one User_settings
-     * const User_settings = await prisma.user_settings.create({
-     *   data: {
-     *     // ... data to create a User_settings
-     *   }
-     * })
-     *
-     */
-    create<T extends user_settingsCreateArgs>(args: SelectSubset<T, user_settingsCreateArgs<ExtArgs>>): Prisma__user_settingsClient<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "create">, never, ExtArgs>
-
-    /**
-     * Create many User_settings.
-     * @param {user_settingsCreateManyArgs} args - Arguments to create many User_settings.
-     * @example
-     * // Create many User_settings
-     * const user_settings = await prisma.user_settings.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *
-     */
-    createMany<T extends user_settingsCreateManyArgs>(args?: SelectSubset<T, user_settingsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many User_settings and returns the data saved in the database.
-     * @param {user_settingsCreateManyAndReturnArgs} args - Arguments to create many User_settings.
-     * @example
-     * // Create many User_settings
-     * const user_settings = await prisma.user_settings.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *
-     * // Create many User_settings and only return the `id`
-     * const user_settingsWithIdOnly = await prisma.user_settings.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     *
-     */
-    createManyAndReturn<T extends user_settingsCreateManyAndReturnArgs>(args?: SelectSubset<T, user_settingsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "createManyAndReturn">>
-
-    /**
-     * Delete a User_settings.
-     * @param {user_settingsDeleteArgs} args - Arguments to delete one User_settings.
-     * @example
-     * // Delete one User_settings
-     * const User_settings = await prisma.user_settings.delete({
-     *   where: {
-     *     // ... filter to delete one User_settings
-     *   }
-     * })
-     *
-     */
-    delete<T extends user_settingsDeleteArgs>(args: SelectSubset<T, user_settingsDeleteArgs<ExtArgs>>): Prisma__user_settingsClient<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "delete">, never, ExtArgs>
-
-    /**
-     * Update one User_settings.
-     * @param {user_settingsUpdateArgs} args - Arguments to update one User_settings.
-     * @example
-     * // Update one User_settings
-     * const user_settings = await prisma.user_settings.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     *
-     */
-    update<T extends user_settingsUpdateArgs>(args: SelectSubset<T, user_settingsUpdateArgs<ExtArgs>>): Prisma__user_settingsClient<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "update">, never, ExtArgs>
-
-    /**
-     * Delete zero or more User_settings.
-     * @param {user_settingsDeleteManyArgs} args - Arguments to filter User_settings to delete.
-     * @example
-     * // Delete a few User_settings
-     * const { count } = await prisma.user_settings.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     *
-     */
-    deleteMany<T extends user_settingsDeleteManyArgs>(args?: SelectSubset<T, user_settingsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more User_settings.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {user_settingsUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many User_settings
-     * const user_settings = await prisma.user_settings.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     *
-     */
-    updateMany<T extends user_settingsUpdateManyArgs>(args: SelectSubset<T, user_settingsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one User_settings.
-     * @param {user_settingsUpsertArgs} args - Arguments to update or create a User_settings.
-     * @example
-     * // Update or create a User_settings
-     * const user_settings = await prisma.user_settings.upsert({
-     *   create: {
-     *     // ... data to create a User_settings
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the User_settings we want to update
-     *   }
-     * })
-     */
-    upsert<T extends user_settingsUpsertArgs>(args: SelectSubset<T, user_settingsUpsertArgs<ExtArgs>>): Prisma__user_settingsClient<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
-
-
-    /**
-     * Count the number of User_settings.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {user_settingsCountArgs} args - Arguments to filter User_settings to count.
-     * @example
-     * // Count the number of User_settings
-     * const count = await prisma.user_settings.count({
-     *   where: {
-     *     // ... the filter for the User_settings we want to count
-     *   }
-     * })
-    **/
-    count<T extends user_settingsCountArgs>(
-      args?: Subset<T, user_settingsCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], User_settingsCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a User_settings.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {User_settingsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends User_settingsAggregateArgs>(args: Subset<T, User_settingsAggregateArgs>): Prisma.PrismaPromise<GetUser_settingsAggregateType<T>>
-
-    /**
-     * Group by User_settings.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {user_settingsGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     *
-    **/
-    groupBy<
-      T extends user_settingsGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: user_settingsGroupByArgs['orderBy'] }
-        : { orderBy?: user_settingsGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, user_settingsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUser_settingsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the user_settings model
-   */
-  readonly fields: user_settingsFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for user_settings.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__user_settingsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    user_accounts<T extends user_settings$user_accountsArgs<ExtArgs> = {}>(args?: Subset<T, user_settings$user_accountsArgs<ExtArgs>>): Prisma__user_accountsClient<$Result.GetResult<Prisma.$user_accountsPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the user_settings model
-   */
-  interface user_settingsFieldRefs {
-    readonly id: FieldRef<"user_settings", 'BigInt'>
-    readonly user_account_id: FieldRef<"user_settings", 'BigInt'>
-    readonly preferred_language: FieldRef<"user_settings", 'String'>
-    readonly notification_settings: FieldRef<"user_settings", 'Json'>
-    readonly ui_settings: FieldRef<"user_settings", 'Json'>
-    readonly created_at: FieldRef<"user_settings", 'DateTime'>
-    readonly updated_at: FieldRef<"user_settings", 'DateTime'>
-  }
-
-
-  // Custom InputTypes
-  /**
-   * user_settings findUnique
-   */
-  export type user_settingsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
-    /**
-     * Filter, which user_settings to fetch.
-     */
-    where: user_settingsWhereUniqueInput
-  }
-
-  /**
-   * user_settings findUniqueOrThrow
-   */
-  export type user_settingsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
-    /**
-     * Filter, which user_settings to fetch.
-     */
-    where: user_settingsWhereUniqueInput
-  }
-
-  /**
-   * user_settings findFirst
-   */
-  export type user_settingsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
-    /**
-     * Filter, which user_settings to fetch.
-     */
-    where?: user_settingsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
-     * Determine the order of user_settings to fetch.
-     */
-    orderBy?: user_settingsOrderByWithRelationInput | user_settingsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
-     * Sets the position for searching for user_settings.
-     */
-    cursor?: user_settingsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
-     * Take `±n` user_settings from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
-     * Skip the first `n` user_settings.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
-     * Filter by unique combinations of user_settings.
-     */
-    distinct?: User_settingsScalarFieldEnum | User_settingsScalarFieldEnum[]
-  }
-
-  /**
-   * user_settings findFirstOrThrow
-   */
-  export type user_settingsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
-    /**
-     * Filter, which user_settings to fetch.
-     */
-    where?: user_settingsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
-     * Determine the order of user_settings to fetch.
-     */
-    orderBy?: user_settingsOrderByWithRelationInput | user_settingsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
-     * Sets the position for searching for user_settings.
-     */
-    cursor?: user_settingsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
-     * Take `±n` user_settings from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
-     * Skip the first `n` user_settings.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
-     * Filter by unique combinations of user_settings.
-     */
-    distinct?: User_settingsScalarFieldEnum | User_settingsScalarFieldEnum[]
-  }
-
-  /**
-   * user_settings findMany
-   */
-  export type user_settingsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
-    /**
-     * Filter, which user_settings to fetch.
-     */
-    where?: user_settingsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
-     * Determine the order of user_settings to fetch.
-     */
-    orderBy?: user_settingsOrderByWithRelationInput | user_settingsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
-     * Sets the position for listing user_settings.
-     */
-    cursor?: user_settingsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
-     * Take `±n` user_settings from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
-     * Skip the first `n` user_settings.
-     */
-    skip?: number
-    distinct?: User_settingsScalarFieldEnum | User_settingsScalarFieldEnum[]
-  }
-
-  /**
-   * user_settings create
-   */
-  export type user_settingsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
-    /**
-     * The data needed to create a user_settings.
-     */
-    data: XOR<user_settingsCreateInput, user_settingsUncheckedCreateInput>
-  }
-
-  /**
-   * user_settings createMany
-   */
-  export type user_settingsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many user_settings.
-     */
-    data: user_settingsCreateManyInput | user_settingsCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * user_settings createManyAndReturn
-   */
-  export type user_settingsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * The data used to create many user_settings.
-     */
-    data: user_settingsCreateManyInput | user_settingsCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * user_settings update
-   */
-  export type user_settingsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
-    /**
-     * The data needed to update a user_settings.
-     */
-    data: XOR<user_settingsUpdateInput, user_settingsUncheckedUpdateInput>
-    /**
-     * Choose, which user_settings to update.
-     */
-    where: user_settingsWhereUniqueInput
-  }
-
-  /**
-   * user_settings updateMany
-   */
-  export type user_settingsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update user_settings.
-     */
-    data: XOR<user_settingsUpdateManyMutationInput, user_settingsUncheckedUpdateManyInput>
-    /**
-     * Filter which user_settings to update
-     */
-    where?: user_settingsWhereInput
-  }
-
-  /**
-   * user_settings upsert
-   */
-  export type user_settingsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
-    /**
-     * The filter to search for the user_settings to update in case it exists.
-     */
-    where: user_settingsWhereUniqueInput
-    /**
-     * In case the user_settings found by the `where` argument doesn't exist, create a new user_settings with this data.
-     */
-    create: XOR<user_settingsCreateInput, user_settingsUncheckedCreateInput>
-    /**
-     * In case the user_settings was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<user_settingsUpdateInput, user_settingsUncheckedUpdateInput>
-  }
-
-  /**
-   * user_settings delete
-   */
-  export type user_settingsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
-    /**
-     * Filter which user_settings to delete.
-     */
-    where: user_settingsWhereUniqueInput
-  }
-
-  /**
-   * user_settings deleteMany
-   */
-  export type user_settingsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which user_settings to delete
-     */
-    where?: user_settingsWhereInput
-  }
-
-  /**
-   * user_settings.user_accounts
-   */
-  export type user_settings$user_accountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_accounts
-     */
-    select?: user_accountsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_accountsInclude<ExtArgs> | null
-    where?: user_accountsWhereInput
-  }
-
-  /**
-   * user_settings without action
-   */
-  export type user_settingsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
   }
 
 
@@ -20112,23 +18999,13 @@ export namespace Prisma {
     user_account_id: 'user_account_id',
     created_at: 'created_at',
     updated_at: 'updated_at',
-    settings_data: 'settings_data'
+    settings_data: 'settings_data',
+    preferred_language: 'preferred_language',
+    notification_settings: 'notification_settings',
+    ui_settings: 'ui_settings'
   };
 
   export type SettingsScalarFieldEnum = (typeof SettingsScalarFieldEnum)[keyof typeof SettingsScalarFieldEnum]
-
-
-  export const User_settingsScalarFieldEnum: {
-    id: 'id',
-    user_account_id: 'user_account_id',
-    preferred_language: 'preferred_language',
-    notification_settings: 'notification_settings',
-    ui_settings: 'ui_settings',
-    created_at: 'created_at',
-    updated_at: 'updated_at'
-  };
-
-  export type User_settingsScalarFieldEnum = (typeof User_settingsScalarFieldEnum)[keyof typeof User_settingsScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -20173,7 +19050,7 @@ export namespace Prisma {
 
 
   /**
-   * Field references
+   * Field references 
    */
 
 
@@ -20181,112 +19058,112 @@ export namespace Prisma {
    * Reference to a field of type 'String'
    */
   export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
-
+    
 
 
   /**
    * Reference to a field of type 'String[]'
    */
   export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-
+    
 
 
   /**
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-
+    
 
 
   /**
    * Reference to a field of type 'Json'
    */
   export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-
+    
 
 
   /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-
+    
 
 
   /**
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'BigInt'
    */
   export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
-
+    
 
 
   /**
    * Reference to a field of type 'BigInt[]'
    */
   export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'APIKeyEnvironment'
    */
   export type EnumAPIKeyEnvironmentFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'APIKeyEnvironment'>
-
+    
 
 
   /**
    * Reference to a field of type 'APIKeyEnvironment[]'
    */
   export type ListEnumAPIKeyEnvironmentFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'APIKeyEnvironment[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'Decimal'
    */
   export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
-
+    
 
 
   /**
    * Reference to a field of type 'Decimal[]'
    */
   export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-
+    
 
 
   /**
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-
+    
   /**
    * Deep Input Types
    */
@@ -21379,7 +20256,6 @@ export namespace Prisma {
     used_storage?: BigIntNullableFilter<"user_accounts"> | bigint | number | null
     organization?: XOR<OrganizationsNullableRelationFilter, organizationsWhereInput> | null
     tenant?: XOR<TenantsNullableRelationFilter, tenantsWhereInput> | null
-    user_settings?: User_settingsListRelationFilter
     settings?: SettingsListRelationFilter
     addresses?: AddressesListRelationFilter
     team_memberships?: Team_membersListRelationFilter
@@ -21409,7 +20285,6 @@ export namespace Prisma {
     used_storage?: SortOrderInput | SortOrder
     organization?: organizationsOrderByWithRelationInput
     tenant?: tenantsOrderByWithRelationInput
-    user_settings?: user_settingsOrderByRelationAggregateInput
     settings?: settingsOrderByRelationAggregateInput
     addresses?: addressesOrderByRelationAggregateInput
     team_memberships?: team_membersOrderByRelationAggregateInput
@@ -21442,7 +20317,6 @@ export namespace Prisma {
     used_storage?: BigIntNullableFilter<"user_accounts"> | bigint | number | null
     organization?: XOR<OrganizationsNullableRelationFilter, organizationsWhereInput> | null
     tenant?: XOR<TenantsNullableRelationFilter, tenantsWhereInput> | null
-    user_settings?: User_settingsListRelationFilter
     settings?: SettingsListRelationFilter
     addresses?: AddressesListRelationFilter
     team_memberships?: Team_membersListRelationFilter
@@ -21751,6 +20625,9 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"settings"> | Date | string
     updated_at?: DateTimeFilter<"settings"> | Date | string
     settings_data?: JsonNullableFilter<"settings">
+    preferred_language?: StringNullableFilter<"settings"> | string | null
+    notification_settings?: JsonNullableFilter<"settings">
+    ui_settings?: JsonNullableFilter<"settings">
     tenant?: XOR<TenantsNullableRelationFilter, tenantsWhereInput> | null
     business_accounts?: XOR<Business_accountsNullableRelationFilter, business_accountsWhereInput> | null
     user_accounts?: XOR<User_accountsNullableRelationFilter, user_accountsWhereInput> | null
@@ -21765,6 +20642,9 @@ export namespace Prisma {
     created_at?: SortOrder
     updated_at?: SortOrder
     settings_data?: SortOrderInput | SortOrder
+    preferred_language?: SortOrderInput | SortOrder
+    notification_settings?: SortOrderInput | SortOrder
+    ui_settings?: SortOrderInput | SortOrder
     tenant?: tenantsOrderByWithRelationInput
     business_accounts?: business_accountsOrderByWithRelationInput
     user_accounts?: user_accountsOrderByWithRelationInput
@@ -21782,6 +20662,9 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"settings"> | Date | string
     updated_at?: DateTimeFilter<"settings"> | Date | string
     settings_data?: JsonNullableFilter<"settings">
+    preferred_language?: StringNullableFilter<"settings"> | string | null
+    notification_settings?: JsonNullableFilter<"settings">
+    ui_settings?: JsonNullableFilter<"settings">
     tenant?: XOR<TenantsNullableRelationFilter, tenantsWhereInput> | null
     business_accounts?: XOR<Business_accountsNullableRelationFilter, business_accountsWhereInput> | null
     user_accounts?: XOR<User_accountsNullableRelationFilter, user_accountsWhereInput> | null
@@ -21796,6 +20679,9 @@ export namespace Prisma {
     created_at?: SortOrder
     updated_at?: SortOrder
     settings_data?: SortOrderInput | SortOrder
+    preferred_language?: SortOrderInput | SortOrder
+    notification_settings?: SortOrderInput | SortOrder
+    ui_settings?: SortOrderInput | SortOrder
     _count?: settingsCountOrderByAggregateInput
     _avg?: settingsAvgOrderByAggregateInput
     _max?: settingsMaxOrderByAggregateInput
@@ -21815,73 +20701,9 @@ export namespace Prisma {
     created_at?: DateTimeWithAggregatesFilter<"settings"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"settings"> | Date | string
     settings_data?: JsonNullableWithAggregatesFilter<"settings">
-  }
-
-  export type user_settingsWhereInput = {
-    AND?: user_settingsWhereInput | user_settingsWhereInput[]
-    OR?: user_settingsWhereInput[]
-    NOT?: user_settingsWhereInput | user_settingsWhereInput[]
-    id?: BigIntFilter<"user_settings"> | bigint | number
-    user_account_id?: BigIntNullableFilter<"user_settings"> | bigint | number | null
-    preferred_language?: StringNullableFilter<"user_settings"> | string | null
-    notification_settings?: JsonNullableFilter<"user_settings">
-    ui_settings?: JsonNullableFilter<"user_settings">
-    created_at?: DateTimeFilter<"user_settings"> | Date | string
-    updated_at?: DateTimeFilter<"user_settings"> | Date | string
-    user_accounts?: XOR<User_accountsNullableRelationFilter, user_accountsWhereInput> | null
-  }
-
-  export type user_settingsOrderByWithRelationInput = {
-    id?: SortOrder
-    user_account_id?: SortOrderInput | SortOrder
-    preferred_language?: SortOrderInput | SortOrder
-    notification_settings?: SortOrderInput | SortOrder
-    ui_settings?: SortOrderInput | SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-    user_accounts?: user_accountsOrderByWithRelationInput
-  }
-
-  export type user_settingsWhereUniqueInput = Prisma.AtLeast<{
-    id?: bigint | number
-    AND?: user_settingsWhereInput | user_settingsWhereInput[]
-    OR?: user_settingsWhereInput[]
-    NOT?: user_settingsWhereInput | user_settingsWhereInput[]
-    user_account_id?: BigIntNullableFilter<"user_settings"> | bigint | number | null
-    preferred_language?: StringNullableFilter<"user_settings"> | string | null
-    notification_settings?: JsonNullableFilter<"user_settings">
-    ui_settings?: JsonNullableFilter<"user_settings">
-    created_at?: DateTimeFilter<"user_settings"> | Date | string
-    updated_at?: DateTimeFilter<"user_settings"> | Date | string
-    user_accounts?: XOR<User_accountsNullableRelationFilter, user_accountsWhereInput> | null
-  }, "id">
-
-  export type user_settingsOrderByWithAggregationInput = {
-    id?: SortOrder
-    user_account_id?: SortOrderInput | SortOrder
-    preferred_language?: SortOrderInput | SortOrder
-    notification_settings?: SortOrderInput | SortOrder
-    ui_settings?: SortOrderInput | SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-    _count?: user_settingsCountOrderByAggregateInput
-    _avg?: user_settingsAvgOrderByAggregateInput
-    _max?: user_settingsMaxOrderByAggregateInput
-    _min?: user_settingsMinOrderByAggregateInput
-    _sum?: user_settingsSumOrderByAggregateInput
-  }
-
-  export type user_settingsScalarWhereWithAggregatesInput = {
-    AND?: user_settingsScalarWhereWithAggregatesInput | user_settingsScalarWhereWithAggregatesInput[]
-    OR?: user_settingsScalarWhereWithAggregatesInput[]
-    NOT?: user_settingsScalarWhereWithAggregatesInput | user_settingsScalarWhereWithAggregatesInput[]
-    id?: BigIntWithAggregatesFilter<"user_settings"> | bigint | number
-    user_account_id?: BigIntNullableWithAggregatesFilter<"user_settings"> | bigint | number | null
-    preferred_language?: StringNullableWithAggregatesFilter<"user_settings"> | string | null
-    notification_settings?: JsonNullableWithAggregatesFilter<"user_settings">
-    ui_settings?: JsonNullableWithAggregatesFilter<"user_settings">
-    created_at?: DateTimeWithAggregatesFilter<"user_settings"> | Date | string
-    updated_at?: DateTimeWithAggregatesFilter<"user_settings"> | Date | string
+    preferred_language?: StringNullableWithAggregatesFilter<"settings"> | string | null
+    notification_settings?: JsonNullableWithAggregatesFilter<"settings">
+    ui_settings?: JsonNullableWithAggregatesFilter<"settings">
   }
 
   export type organizationsCreateInput = {
@@ -23112,7 +21934,6 @@ export namespace Prisma {
     used_storage?: bigint | number | null
     organization?: organizationsCreateNestedOneWithoutUser_accountsInput
     tenant?: tenantsCreateNestedOneWithoutUser_accountsInput
-    user_settings?: user_settingsCreateNestedManyWithoutUser_accountsInput
     settings?: settingsCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersCreateNestedManyWithoutUser_accountInput
@@ -23140,7 +21961,6 @@ export namespace Prisma {
     last_access?: Date | string | null
     storage_quota?: bigint | number | null
     used_storage?: bigint | number | null
-    user_settings?: user_settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     settings?: settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesUncheckedCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersUncheckedCreateNestedManyWithoutUser_accountInput
@@ -23168,7 +21988,6 @@ export namespace Prisma {
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     organization?: organizationsUpdateOneWithoutUser_accountsNestedInput
     tenant?: tenantsUpdateOneWithoutUser_accountsNestedInput
-    user_settings?: user_settingsUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUpdateManyWithoutUser_accountNestedInput
@@ -23196,7 +22015,6 @@ export namespace Prisma {
     last_access?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    user_settings?: user_settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUncheckedUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUncheckedUpdateManyWithoutUser_accountNestedInput
@@ -23531,6 +22349,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
     tenant?: tenantsCreateNestedOneWithoutSettingsInput
     business_accounts?: business_accountsCreateNestedOneWithoutSettingsInput
     user_accounts?: user_accountsCreateNestedOneWithoutSettingsInput
@@ -23545,6 +22366,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type settingsUpdateInput = {
@@ -23553,6 +22377,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
     tenant?: tenantsUpdateOneWithoutSettingsNestedInput
     business_accounts?: business_accountsUpdateOneWithoutSettingsNestedInput
     user_accounts?: user_accountsUpdateOneWithoutSettingsNestedInput
@@ -23567,6 +22394,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type settingsCreateManyInput = {
@@ -23578,6 +22408,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type settingsUpdateManyMutationInput = {
@@ -23586,6 +22419,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type settingsUncheckedUpdateManyInput = {
@@ -23597,75 +22433,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
-  }
-
-  export type user_settingsCreateInput = {
-    id?: bigint | number
-    preferred_language?: string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: Date | string
-    updated_at?: Date | string
-    user_accounts?: user_accountsCreateNestedOneWithoutUser_settingsInput
-  }
-
-  export type user_settingsUncheckedCreateInput = {
-    id?: bigint | number
-    user_account_id?: bigint | number | null
-    preferred_language?: string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type user_settingsUpdateInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
     preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
     notification_settings?: NullableJsonNullValueInput | InputJsonValue
     ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user_accounts?: user_accountsUpdateOneWithoutUser_settingsNestedInput
-  }
-
-  export type user_settingsUncheckedUpdateInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
-    user_account_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type user_settingsCreateManyInput = {
-    id?: bigint | number
-    user_account_id?: bigint | number | null
-    preferred_language?: string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type user_settingsUpdateManyMutationInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
-    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type user_settingsUncheckedUpdateManyInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
-    user_account_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -23713,7 +22483,7 @@ export namespace Prisma {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
-  export type JsonNullableFilter<$PrismaModel = never> =
+  export type JsonNullableFilter<$PrismaModel = never> = 
     | PatchUndefined<
         Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
         Required<JsonNullableFilterBase<$PrismaModel>>
@@ -23982,7 +22752,7 @@ export namespace Prisma {
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
   }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> = 
     | PatchUndefined<
         Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
         Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
@@ -24735,16 +23505,6 @@ export namespace Prisma {
     used_storage?: SortOrder
   }
 
-  export type User_settingsListRelationFilter = {
-    every?: user_settingsWhereInput
-    some?: user_settingsWhereInput
-    none?: user_settingsWhereInput
-  }
-
-  export type user_settingsOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type user_accountsCountOrderByAggregateInput = {
     id?: SortOrder
     organization_id?: SortOrder
@@ -24995,6 +23755,9 @@ export namespace Prisma {
     created_at?: SortOrder
     updated_at?: SortOrder
     settings_data?: SortOrder
+    preferred_language?: SortOrder
+    notification_settings?: SortOrder
+    ui_settings?: SortOrder
   }
 
   export type settingsAvgOrderByAggregateInput = {
@@ -25011,6 +23774,7 @@ export namespace Prisma {
     user_account_id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    preferred_language?: SortOrder
   }
 
   export type settingsMinOrderByAggregateInput = {
@@ -25021,47 +23785,12 @@ export namespace Prisma {
     user_account_id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    preferred_language?: SortOrder
   }
 
   export type settingsSumOrderByAggregateInput = {
     id?: SortOrder
     business_account_id?: SortOrder
-    user_account_id?: SortOrder
-  }
-
-  export type user_settingsCountOrderByAggregateInput = {
-    id?: SortOrder
-    user_account_id?: SortOrder
-    preferred_language?: SortOrder
-    notification_settings?: SortOrder
-    ui_settings?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-  }
-
-  export type user_settingsAvgOrderByAggregateInput = {
-    id?: SortOrder
-    user_account_id?: SortOrder
-  }
-
-  export type user_settingsMaxOrderByAggregateInput = {
-    id?: SortOrder
-    user_account_id?: SortOrder
-    preferred_language?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-  }
-
-  export type user_settingsMinOrderByAggregateInput = {
-    id?: SortOrder
-    user_account_id?: SortOrder
-    preferred_language?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-  }
-
-  export type user_settingsSumOrderByAggregateInput = {
-    id?: SortOrder
     user_account_id?: SortOrder
   }
 
@@ -26310,13 +25039,6 @@ export namespace Prisma {
     connect?: tenantsWhereUniqueInput
   }
 
-  export type user_settingsCreateNestedManyWithoutUser_accountsInput = {
-    create?: XOR<user_settingsCreateWithoutUser_accountsInput, user_settingsUncheckedCreateWithoutUser_accountsInput> | user_settingsCreateWithoutUser_accountsInput[] | user_settingsUncheckedCreateWithoutUser_accountsInput[]
-    connectOrCreate?: user_settingsCreateOrConnectWithoutUser_accountsInput | user_settingsCreateOrConnectWithoutUser_accountsInput[]
-    createMany?: user_settingsCreateManyUser_accountsInputEnvelope
-    connect?: user_settingsWhereUniqueInput | user_settingsWhereUniqueInput[]
-  }
-
   export type settingsCreateNestedManyWithoutUser_accountsInput = {
     create?: XOR<settingsCreateWithoutUser_accountsInput, settingsUncheckedCreateWithoutUser_accountsInput> | settingsCreateWithoutUser_accountsInput[] | settingsUncheckedCreateWithoutUser_accountsInput[]
     connectOrCreate?: settingsCreateOrConnectWithoutUser_accountsInput | settingsCreateOrConnectWithoutUser_accountsInput[]
@@ -26350,13 +25072,6 @@ export namespace Prisma {
     connectOrCreate?: org_api_keysCreateOrConnectWithoutUserInput | org_api_keysCreateOrConnectWithoutUserInput[]
     createMany?: org_api_keysCreateManyUserInputEnvelope
     connect?: org_api_keysWhereUniqueInput | org_api_keysWhereUniqueInput[]
-  }
-
-  export type user_settingsUncheckedCreateNestedManyWithoutUser_accountsInput = {
-    create?: XOR<user_settingsCreateWithoutUser_accountsInput, user_settingsUncheckedCreateWithoutUser_accountsInput> | user_settingsCreateWithoutUser_accountsInput[] | user_settingsUncheckedCreateWithoutUser_accountsInput[]
-    connectOrCreate?: user_settingsCreateOrConnectWithoutUser_accountsInput | user_settingsCreateOrConnectWithoutUser_accountsInput[]
-    createMany?: user_settingsCreateManyUser_accountsInputEnvelope
-    connect?: user_settingsWhereUniqueInput | user_settingsWhereUniqueInput[]
   }
 
   export type settingsUncheckedCreateNestedManyWithoutUser_accountsInput = {
@@ -26412,20 +25127,6 @@ export namespace Prisma {
     delete?: tenantsWhereInput | boolean
     connect?: tenantsWhereUniqueInput
     update?: XOR<XOR<tenantsUpdateToOneWithWhereWithoutUser_accountsInput, tenantsUpdateWithoutUser_accountsInput>, tenantsUncheckedUpdateWithoutUser_accountsInput>
-  }
-
-  export type user_settingsUpdateManyWithoutUser_accountsNestedInput = {
-    create?: XOR<user_settingsCreateWithoutUser_accountsInput, user_settingsUncheckedCreateWithoutUser_accountsInput> | user_settingsCreateWithoutUser_accountsInput[] | user_settingsUncheckedCreateWithoutUser_accountsInput[]
-    connectOrCreate?: user_settingsCreateOrConnectWithoutUser_accountsInput | user_settingsCreateOrConnectWithoutUser_accountsInput[]
-    upsert?: user_settingsUpsertWithWhereUniqueWithoutUser_accountsInput | user_settingsUpsertWithWhereUniqueWithoutUser_accountsInput[]
-    createMany?: user_settingsCreateManyUser_accountsInputEnvelope
-    set?: user_settingsWhereUniqueInput | user_settingsWhereUniqueInput[]
-    disconnect?: user_settingsWhereUniqueInput | user_settingsWhereUniqueInput[]
-    delete?: user_settingsWhereUniqueInput | user_settingsWhereUniqueInput[]
-    connect?: user_settingsWhereUniqueInput | user_settingsWhereUniqueInput[]
-    update?: user_settingsUpdateWithWhereUniqueWithoutUser_accountsInput | user_settingsUpdateWithWhereUniqueWithoutUser_accountsInput[]
-    updateMany?: user_settingsUpdateManyWithWhereWithoutUser_accountsInput | user_settingsUpdateManyWithWhereWithoutUser_accountsInput[]
-    deleteMany?: user_settingsScalarWhereInput | user_settingsScalarWhereInput[]
   }
 
   export type settingsUpdateManyWithoutUser_accountsNestedInput = {
@@ -26496,20 +25197,6 @@ export namespace Prisma {
     update?: org_api_keysUpdateWithWhereUniqueWithoutUserInput | org_api_keysUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: org_api_keysUpdateManyWithWhereWithoutUserInput | org_api_keysUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: org_api_keysScalarWhereInput | org_api_keysScalarWhereInput[]
-  }
-
-  export type user_settingsUncheckedUpdateManyWithoutUser_accountsNestedInput = {
-    create?: XOR<user_settingsCreateWithoutUser_accountsInput, user_settingsUncheckedCreateWithoutUser_accountsInput> | user_settingsCreateWithoutUser_accountsInput[] | user_settingsUncheckedCreateWithoutUser_accountsInput[]
-    connectOrCreate?: user_settingsCreateOrConnectWithoutUser_accountsInput | user_settingsCreateOrConnectWithoutUser_accountsInput[]
-    upsert?: user_settingsUpsertWithWhereUniqueWithoutUser_accountsInput | user_settingsUpsertWithWhereUniqueWithoutUser_accountsInput[]
-    createMany?: user_settingsCreateManyUser_accountsInputEnvelope
-    set?: user_settingsWhereUniqueInput | user_settingsWhereUniqueInput[]
-    disconnect?: user_settingsWhereUniqueInput | user_settingsWhereUniqueInput[]
-    delete?: user_settingsWhereUniqueInput | user_settingsWhereUniqueInput[]
-    connect?: user_settingsWhereUniqueInput | user_settingsWhereUniqueInput[]
-    update?: user_settingsUpdateWithWhereUniqueWithoutUser_accountsInput | user_settingsUpdateWithWhereUniqueWithoutUser_accountsInput[]
-    updateMany?: user_settingsUpdateManyWithWhereWithoutUser_accountsInput | user_settingsUpdateManyWithWhereWithoutUser_accountsInput[]
-    deleteMany?: user_settingsScalarWhereInput | user_settingsScalarWhereInput[]
   }
 
   export type settingsUncheckedUpdateManyWithoutUser_accountsNestedInput = {
@@ -26766,22 +25453,6 @@ export namespace Prisma {
     update?: XOR<XOR<user_accountsUpdateToOneWithWhereWithoutSettingsInput, user_accountsUpdateWithoutSettingsInput>, user_accountsUncheckedUpdateWithoutSettingsInput>
   }
 
-  export type user_accountsCreateNestedOneWithoutUser_settingsInput = {
-    create?: XOR<user_accountsCreateWithoutUser_settingsInput, user_accountsUncheckedCreateWithoutUser_settingsInput>
-    connectOrCreate?: user_accountsCreateOrConnectWithoutUser_settingsInput
-    connect?: user_accountsWhereUniqueInput
-  }
-
-  export type user_accountsUpdateOneWithoutUser_settingsNestedInput = {
-    create?: XOR<user_accountsCreateWithoutUser_settingsInput, user_accountsUncheckedCreateWithoutUser_settingsInput>
-    connectOrCreate?: user_accountsCreateOrConnectWithoutUser_settingsInput
-    upsert?: user_accountsUpsertWithoutUser_settingsInput
-    disconnect?: user_accountsWhereInput | boolean
-    delete?: user_accountsWhereInput | boolean
-    connect?: user_accountsWhereUniqueInput
-    update?: XOR<XOR<user_accountsUpdateToOneWithWhereWithoutUser_settingsInput, user_accountsUpdateWithoutUser_settingsInput>, user_accountsUncheckedUpdateWithoutUser_settingsInput>
-  }
-
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -26914,7 +25585,7 @@ export namespace Prisma {
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
   }
-  export type NestedJsonNullableFilter<$PrismaModel = never> =
+  export type NestedJsonNullableFilter<$PrismaModel = never> = 
     | PatchUndefined<
         Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
         Required<NestedJsonNullableFilterBase<$PrismaModel>>
@@ -27358,7 +26029,6 @@ export namespace Prisma {
     storage_quota?: bigint | number | null
     used_storage?: bigint | number | null
     tenant?: tenantsCreateNestedOneWithoutUser_accountsInput
-    user_settings?: user_settingsCreateNestedManyWithoutUser_accountsInput
     settings?: settingsCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersCreateNestedManyWithoutUser_accountInput
@@ -27385,7 +26055,6 @@ export namespace Prisma {
     last_access?: Date | string | null
     storage_quota?: bigint | number | null
     used_storage?: bigint | number | null
-    user_settings?: user_settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     settings?: settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesUncheckedCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersUncheckedCreateNestedManyWithoutUser_accountInput
@@ -27924,7 +26593,6 @@ export namespace Prisma {
     storage_quota?: bigint | number | null
     used_storage?: bigint | number | null
     organization?: organizationsCreateNestedOneWithoutUser_accountsInput
-    user_settings?: user_settingsCreateNestedManyWithoutUser_accountsInput
     settings?: settingsCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersCreateNestedManyWithoutUser_accountInput
@@ -27951,7 +26619,6 @@ export namespace Prisma {
     last_access?: Date | string | null
     storage_quota?: bigint | number | null
     used_storage?: bigint | number | null
-    user_settings?: user_settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     settings?: settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesUncheckedCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersUncheckedCreateNestedManyWithoutUser_accountInput
@@ -27975,6 +26642,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
     business_accounts?: business_accountsCreateNestedOneWithoutSettingsInput
     user_accounts?: user_accountsCreateNestedOneWithoutSettingsInput
   }
@@ -27987,6 +26657,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type settingsCreateOrConnectWithoutTenantInput = {
@@ -28282,6 +26955,9 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"settings"> | Date | string
     updated_at?: DateTimeFilter<"settings"> | Date | string
     settings_data?: JsonNullableFilter<"settings">
+    preferred_language?: StringNullableFilter<"settings"> | string | null
+    notification_settings?: JsonNullableFilter<"settings">
+    ui_settings?: JsonNullableFilter<"settings">
   }
 
   export type teamsUpsertWithWhereUniqueWithoutTenantInput = {
@@ -28606,7 +27282,6 @@ export namespace Prisma {
     used_storage?: bigint | number | null
     organization?: organizationsCreateNestedOneWithoutUser_accountsInput
     tenant?: tenantsCreateNestedOneWithoutUser_accountsInput
-    user_settings?: user_settingsCreateNestedManyWithoutUser_accountsInput
     settings?: settingsCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersCreateNestedManyWithoutUser_accountInput
@@ -28633,7 +27308,6 @@ export namespace Prisma {
     last_access?: Date | string | null
     storage_quota?: bigint | number | null
     used_storage?: bigint | number | null
-    user_settings?: user_settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     settings?: settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesUncheckedCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersUncheckedCreateNestedManyWithoutUser_accountInput
@@ -28749,7 +27423,6 @@ export namespace Prisma {
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     organization?: organizationsUpdateOneWithoutUser_accountsNestedInput
     tenant?: tenantsUpdateOneWithoutUser_accountsNestedInput
-    user_settings?: user_settingsUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUpdateManyWithoutUser_accountNestedInput
@@ -28776,7 +27449,6 @@ export namespace Prisma {
     last_access?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    user_settings?: user_settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUncheckedUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUncheckedUpdateManyWithoutUser_accountNestedInput
@@ -29631,7 +28303,6 @@ export namespace Prisma {
     used_storage?: bigint | number | null
     organization?: organizationsCreateNestedOneWithoutUser_accountsInput
     tenant?: tenantsCreateNestedOneWithoutUser_accountsInput
-    user_settings?: user_settingsCreateNestedManyWithoutUser_accountsInput
     settings?: settingsCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesCreateNestedManyWithoutUser_accountInput
     audit_logs?: audit_logsCreateNestedManyWithoutUser_accountInput
@@ -29658,7 +28329,6 @@ export namespace Prisma {
     last_access?: Date | string | null
     storage_quota?: bigint | number | null
     used_storage?: bigint | number | null
-    user_settings?: user_settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     settings?: settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesUncheckedCreateNestedManyWithoutUser_accountInput
     audit_logs?: audit_logsUncheckedCreateNestedManyWithoutUser_accountInput
@@ -29799,7 +28469,6 @@ export namespace Prisma {
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     organization?: organizationsUpdateOneWithoutUser_accountsNestedInput
     tenant?: tenantsUpdateOneWithoutUser_accountsNestedInput
-    user_settings?: user_settingsUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUpdateManyWithoutUser_accountNestedInput
     audit_logs?: audit_logsUpdateManyWithoutUser_accountNestedInput
@@ -29826,7 +28495,6 @@ export namespace Prisma {
     last_access?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    user_settings?: user_settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUncheckedUpdateManyWithoutUser_accountNestedInput
     audit_logs?: audit_logsUncheckedUpdateManyWithoutUser_accountNestedInput
@@ -30014,6 +28682,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
     tenant?: tenantsCreateNestedOneWithoutSettingsInput
     user_accounts?: user_accountsCreateNestedOneWithoutSettingsInput
   }
@@ -30026,6 +28697,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type settingsCreateOrConnectWithoutBusiness_accountsInput = {
@@ -30466,40 +29140,15 @@ export namespace Prisma {
     create: XOR<tenantsCreateWithoutUser_accountsInput, tenantsUncheckedCreateWithoutUser_accountsInput>
   }
 
-  export type user_settingsCreateWithoutUser_accountsInput = {
-    id?: bigint | number
-    preferred_language?: string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type user_settingsUncheckedCreateWithoutUser_accountsInput = {
-    id?: bigint | number
-    preferred_language?: string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type user_settingsCreateOrConnectWithoutUser_accountsInput = {
-    where: user_settingsWhereUniqueInput
-    create: XOR<user_settingsCreateWithoutUser_accountsInput, user_settingsUncheckedCreateWithoutUser_accountsInput>
-  }
-
-  export type user_settingsCreateManyUser_accountsInputEnvelope = {
-    data: user_settingsCreateManyUser_accountsInput | user_settingsCreateManyUser_accountsInput[]
-    skipDuplicates?: boolean
-  }
-
   export type settingsCreateWithoutUser_accountsInput = {
     id?: bigint | number
     organization_id?: string | null
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
     tenant?: tenantsCreateNestedOneWithoutSettingsInput
     business_accounts?: business_accountsCreateNestedOneWithoutSettingsInput
   }
@@ -30512,6 +29161,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type settingsCreateOrConnectWithoutUser_accountsInput = {
@@ -30834,35 +29486,6 @@ export namespace Prisma {
     tenant_usage_logs?: tenant_usage_logsUncheckedUpdateManyWithoutTenantNestedInput
   }
 
-  export type user_settingsUpsertWithWhereUniqueWithoutUser_accountsInput = {
-    where: user_settingsWhereUniqueInput
-    update: XOR<user_settingsUpdateWithoutUser_accountsInput, user_settingsUncheckedUpdateWithoutUser_accountsInput>
-    create: XOR<user_settingsCreateWithoutUser_accountsInput, user_settingsUncheckedCreateWithoutUser_accountsInput>
-  }
-
-  export type user_settingsUpdateWithWhereUniqueWithoutUser_accountsInput = {
-    where: user_settingsWhereUniqueInput
-    data: XOR<user_settingsUpdateWithoutUser_accountsInput, user_settingsUncheckedUpdateWithoutUser_accountsInput>
-  }
-
-  export type user_settingsUpdateManyWithWhereWithoutUser_accountsInput = {
-    where: user_settingsScalarWhereInput
-    data: XOR<user_settingsUpdateManyMutationInput, user_settingsUncheckedUpdateManyWithoutUser_accountsInput>
-  }
-
-  export type user_settingsScalarWhereInput = {
-    AND?: user_settingsScalarWhereInput | user_settingsScalarWhereInput[]
-    OR?: user_settingsScalarWhereInput[]
-    NOT?: user_settingsScalarWhereInput | user_settingsScalarWhereInput[]
-    id?: BigIntFilter<"user_settings"> | bigint | number
-    user_account_id?: BigIntNullableFilter<"user_settings"> | bigint | number | null
-    preferred_language?: StringNullableFilter<"user_settings"> | string | null
-    notification_settings?: JsonNullableFilter<"user_settings">
-    ui_settings?: JsonNullableFilter<"user_settings">
-    created_at?: DateTimeFilter<"user_settings"> | Date | string
-    updated_at?: DateTimeFilter<"user_settings"> | Date | string
-  }
-
   export type settingsUpsertWithWhereUniqueWithoutUser_accountsInput = {
     where: settingsWhereUniqueInput
     update: XOR<settingsUpdateWithoutUser_accountsInput, settingsUncheckedUpdateWithoutUser_accountsInput>
@@ -30963,7 +29586,6 @@ export namespace Prisma {
     used_storage?: bigint | number | null
     organization?: organizationsCreateNestedOneWithoutUser_accountsInput
     tenant?: tenantsCreateNestedOneWithoutUser_accountsInput
-    user_settings?: user_settingsCreateNestedManyWithoutUser_accountsInput
     settings?: settingsCreateNestedManyWithoutUser_accountsInput
     team_memberships?: team_membersCreateNestedManyWithoutUser_accountInput
     audit_logs?: audit_logsCreateNestedManyWithoutUser_accountInput
@@ -30990,7 +29612,6 @@ export namespace Prisma {
     last_access?: Date | string | null
     storage_quota?: bigint | number | null
     used_storage?: bigint | number | null
-    user_settings?: user_settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     settings?: settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     team_memberships?: team_membersUncheckedCreateNestedManyWithoutUser_accountInput
     audit_logs?: audit_logsUncheckedCreateNestedManyWithoutUser_accountInput
@@ -31125,7 +29746,6 @@ export namespace Prisma {
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     organization?: organizationsUpdateOneWithoutUser_accountsNestedInput
     tenant?: tenantsUpdateOneWithoutUser_accountsNestedInput
-    user_settings?: user_settingsUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUpdateManyWithoutUser_accountsNestedInput
     team_memberships?: team_membersUpdateManyWithoutUser_accountNestedInput
     audit_logs?: audit_logsUpdateManyWithoutUser_accountNestedInput
@@ -31152,7 +29772,6 @@ export namespace Prisma {
     last_access?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    user_settings?: user_settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     team_memberships?: team_membersUncheckedUpdateManyWithoutUser_accountNestedInput
     audit_logs?: audit_logsUncheckedUpdateManyWithoutUser_accountNestedInput
@@ -31397,7 +30016,6 @@ export namespace Prisma {
     used_storage?: bigint | number | null
     organization?: organizationsCreateNestedOneWithoutUser_accountsInput
     tenant?: tenantsCreateNestedOneWithoutUser_accountsInput
-    user_settings?: user_settingsCreateNestedManyWithoutUser_accountsInput
     settings?: settingsCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersCreateNestedManyWithoutUser_accountInput
@@ -31424,7 +30042,6 @@ export namespace Prisma {
     last_access?: Date | string | null
     storage_quota?: bigint | number | null
     used_storage?: bigint | number | null
-    user_settings?: user_settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     settings?: settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesUncheckedCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersUncheckedCreateNestedManyWithoutUser_accountInput
@@ -31685,7 +30302,6 @@ export namespace Prisma {
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     organization?: organizationsUpdateOneWithoutUser_accountsNestedInput
     tenant?: tenantsUpdateOneWithoutUser_accountsNestedInput
-    user_settings?: user_settingsUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUpdateManyWithoutUser_accountNestedInput
@@ -31712,7 +30328,6 @@ export namespace Prisma {
     last_access?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    user_settings?: user_settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUncheckedUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUncheckedUpdateManyWithoutUser_accountNestedInput
@@ -31945,7 +30560,6 @@ export namespace Prisma {
     used_storage?: bigint | number | null
     organization?: organizationsCreateNestedOneWithoutUser_accountsInput
     tenant?: tenantsCreateNestedOneWithoutUser_accountsInput
-    user_settings?: user_settingsCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersCreateNestedManyWithoutUser_accountInput
     audit_logs?: audit_logsCreateNestedManyWithoutUser_accountInput
@@ -31972,7 +30586,6 @@ export namespace Prisma {
     last_access?: Date | string | null
     storage_quota?: bigint | number | null
     used_storage?: bigint | number | null
-    user_settings?: user_settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesUncheckedCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersUncheckedCreateNestedManyWithoutUser_accountInput
     audit_logs?: audit_logsUncheckedCreateNestedManyWithoutUser_accountInput
@@ -32129,7 +30742,6 @@ export namespace Prisma {
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     organization?: organizationsUpdateOneWithoutUser_accountsNestedInput
     tenant?: tenantsUpdateOneWithoutUser_accountsNestedInput
-    user_settings?: user_settingsUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUpdateManyWithoutUser_accountNestedInput
     audit_logs?: audit_logsUpdateManyWithoutUser_accountNestedInput
@@ -32156,131 +30768,6 @@ export namespace Prisma {
     last_access?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    user_settings?: user_settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
-    addresses?: addressesUncheckedUpdateManyWithoutUser_accountNestedInput
-    team_memberships?: team_membersUncheckedUpdateManyWithoutUser_accountNestedInput
-    audit_logs?: audit_logsUncheckedUpdateManyWithoutUser_accountNestedInput
-    org_api_keys?: org_api_keysUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type user_accountsCreateWithoutUser_settingsInput = {
-    id?: bigint | number
-    email?: string | null
-    firstname?: string | null
-    lastname?: string | null
-    auth0_user_id?: string | null
-    is_active?: boolean
-    created_at?: Date | string
-    updated_at?: Date | string
-    status?: string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    base_directory?: string | null
-    bucket_location?: string | null
-    bucket_name?: string | null
-    region?: string | null
-    last_access?: Date | string | null
-    storage_quota?: bigint | number | null
-    used_storage?: bigint | number | null
-    organization?: organizationsCreateNestedOneWithoutUser_accountsInput
-    tenant?: tenantsCreateNestedOneWithoutUser_accountsInput
-    settings?: settingsCreateNestedManyWithoutUser_accountsInput
-    addresses?: addressesCreateNestedManyWithoutUser_accountInput
-    team_memberships?: team_membersCreateNestedManyWithoutUser_accountInput
-    audit_logs?: audit_logsCreateNestedManyWithoutUser_accountInput
-    org_api_keys?: org_api_keysCreateNestedManyWithoutUserInput
-  }
-
-  export type user_accountsUncheckedCreateWithoutUser_settingsInput = {
-    id?: bigint | number
-    organization_id?: string | null
-    tenant_id?: string | null
-    email?: string | null
-    firstname?: string | null
-    lastname?: string | null
-    auth0_user_id?: string | null
-    is_active?: boolean
-    created_at?: Date | string
-    updated_at?: Date | string
-    status?: string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    base_directory?: string | null
-    bucket_location?: string | null
-    bucket_name?: string | null
-    region?: string | null
-    last_access?: Date | string | null
-    storage_quota?: bigint | number | null
-    used_storage?: bigint | number | null
-    settings?: settingsUncheckedCreateNestedManyWithoutUser_accountsInput
-    addresses?: addressesUncheckedCreateNestedManyWithoutUser_accountInput
-    team_memberships?: team_membersUncheckedCreateNestedManyWithoutUser_accountInput
-    audit_logs?: audit_logsUncheckedCreateNestedManyWithoutUser_accountInput
-    org_api_keys?: org_api_keysUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type user_accountsCreateOrConnectWithoutUser_settingsInput = {
-    where: user_accountsWhereUniqueInput
-    create: XOR<user_accountsCreateWithoutUser_settingsInput, user_accountsUncheckedCreateWithoutUser_settingsInput>
-  }
-
-  export type user_accountsUpsertWithoutUser_settingsInput = {
-    update: XOR<user_accountsUpdateWithoutUser_settingsInput, user_accountsUncheckedUpdateWithoutUser_settingsInput>
-    create: XOR<user_accountsCreateWithoutUser_settingsInput, user_accountsUncheckedCreateWithoutUser_settingsInput>
-    where?: user_accountsWhereInput
-  }
-
-  export type user_accountsUpdateToOneWithWhereWithoutUser_settingsInput = {
-    where?: user_accountsWhereInput
-    data: XOR<user_accountsUpdateWithoutUser_settingsInput, user_accountsUncheckedUpdateWithoutUser_settingsInput>
-  }
-
-  export type user_accountsUpdateWithoutUser_settingsInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    firstname?: NullableStringFieldUpdateOperationsInput | string | null
-    lastname?: NullableStringFieldUpdateOperationsInput | string | null
-    auth0_user_id?: NullableStringFieldUpdateOperationsInput | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: NullableStringFieldUpdateOperationsInput | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    base_directory?: NullableStringFieldUpdateOperationsInput | string | null
-    bucket_location?: NullableStringFieldUpdateOperationsInput | string | null
-    bucket_name?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    last_access?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    organization?: organizationsUpdateOneWithoutUser_accountsNestedInput
-    tenant?: tenantsUpdateOneWithoutUser_accountsNestedInput
-    settings?: settingsUpdateManyWithoutUser_accountsNestedInput
-    addresses?: addressesUpdateManyWithoutUser_accountNestedInput
-    team_memberships?: team_membersUpdateManyWithoutUser_accountNestedInput
-    audit_logs?: audit_logsUpdateManyWithoutUser_accountNestedInput
-    org_api_keys?: org_api_keysUpdateManyWithoutUserNestedInput
-  }
-
-  export type user_accountsUncheckedUpdateWithoutUser_settingsInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
-    organization_id?: NullableStringFieldUpdateOperationsInput | string | null
-    tenant_id?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    firstname?: NullableStringFieldUpdateOperationsInput | string | null
-    lastname?: NullableStringFieldUpdateOperationsInput | string | null
-    auth0_user_id?: NullableStringFieldUpdateOperationsInput | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: NullableStringFieldUpdateOperationsInput | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    base_directory?: NullableStringFieldUpdateOperationsInput | string | null
-    bucket_location?: NullableStringFieldUpdateOperationsInput | string | null
-    bucket_name?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    last_access?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    settings?: settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUncheckedUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUncheckedUpdateManyWithoutUser_accountNestedInput
     audit_logs?: audit_logsUncheckedUpdateManyWithoutUser_accountNestedInput
@@ -32705,7 +31192,6 @@ export namespace Prisma {
     storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     tenant?: tenantsUpdateOneWithoutUser_accountsNestedInput
-    user_settings?: user_settingsUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUpdateManyWithoutUser_accountNestedInput
@@ -32732,7 +31218,6 @@ export namespace Prisma {
     last_access?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    user_settings?: user_settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUncheckedUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUncheckedUpdateManyWithoutUser_accountNestedInput
@@ -32903,6 +31388,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type teamsCreateManyTenantInput = {
@@ -33046,7 +31534,6 @@ export namespace Prisma {
     storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     organization?: organizationsUpdateOneWithoutUser_accountsNestedInput
-    user_settings?: user_settingsUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUpdateManyWithoutUser_accountNestedInput
@@ -33073,7 +31560,6 @@ export namespace Prisma {
     last_access?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    user_settings?: user_settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUncheckedUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUncheckedUpdateManyWithoutUser_accountNestedInput
@@ -33108,6 +31594,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
     business_accounts?: business_accountsUpdateOneWithoutSettingsNestedInput
     user_accounts?: user_accountsUpdateOneWithoutSettingsNestedInput
   }
@@ -33120,6 +31609,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type settingsUncheckedUpdateManyWithoutTenantInput = {
@@ -33130,6 +31622,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type teamsUpdateWithoutTenantInput = {
@@ -33487,6 +31982,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type addressesCreateManyBusiness_accountInput = {
@@ -33541,6 +32039,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
     tenant?: tenantsUpdateOneWithoutSettingsNestedInput
     user_accounts?: user_accountsUpdateOneWithoutSettingsNestedInput
   }
@@ -33553,6 +32054,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type settingsUncheckedUpdateManyWithoutBusiness_accountsInput = {
@@ -33563,6 +32067,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type addressesUpdateWithoutBusiness_accountInput = {
@@ -33705,15 +32212,6 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type user_settingsCreateManyUser_accountsInput = {
-    id?: bigint | number
-    preferred_language?: string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
   export type settingsCreateManyUser_accountsInput = {
     id?: bigint | number
     organization_id?: string | null
@@ -33722,6 +32220,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type addressesCreateManyUser_accountInput = {
@@ -33795,39 +32296,15 @@ export namespace Prisma {
     is_active?: boolean
   }
 
-  export type user_settingsUpdateWithoutUser_accountsInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
-    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type user_settingsUncheckedUpdateWithoutUser_accountsInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
-    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type user_settingsUncheckedUpdateManyWithoutUser_accountsInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
-    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type settingsUpdateWithoutUser_accountsInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     organization_id?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
     tenant?: tenantsUpdateOneWithoutSettingsNestedInput
     business_accounts?: business_accountsUpdateOneWithoutSettingsNestedInput
   }
@@ -33840,6 +32317,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type settingsUncheckedUpdateManyWithoutUser_accountsInput = {
@@ -33850,6 +32330,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type addressesUpdateWithoutUser_accountInput = {
@@ -34148,10 +32631,6 @@ export namespace Prisma {
      * @deprecated Use settingsDefaultArgs instead
      */
     export type settingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = settingsDefaultArgs<ExtArgs>
-    /**
-     * @deprecated Use user_settingsDefaultArgs instead
-     */
-    export type user_settingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = user_settingsDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany
