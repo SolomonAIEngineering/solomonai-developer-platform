@@ -174,7 +174,7 @@ export class QueryMiddleware {
     {
       model: Prisma.ModelName.addresses,
       operations: ["findMany", "findUnique", "create", "update", "delete"],
-      roles: ["admin", "user_manager", "team_manager"],
+      roles: [UserRole.ADMIN, UserRole.USER_MANAGER, UserRole.TEAM_MANAGER],
       filters: (context) => ({
         user_account: {
           organization_id: context.organizationId,
@@ -185,7 +185,7 @@ export class QueryMiddleware {
     {
       model: Prisma.ModelName.audit_logs,
       operations: ["findMany", "findUnique", "create", "update", "delete"],
-      roles: ["admin", "user_manager", "team_manager"],
+      roles: [UserRole.ADMIN, UserRole.USER_MANAGER, UserRole.TEAM_MANAGER],
       filters: (context) => ({
         user_account: {
           organization_id: context.organizationId,
@@ -196,7 +196,7 @@ export class QueryMiddleware {
     {
       model: Prisma.ModelName.settings,
       operations: ["findMany", "findUnique", "create", "update", "delete"],
-      roles: ["admin", "user_manager", "team_manager"],
+      roles: [UserRole.ADMIN, UserRole.USER_MANAGER, UserRole.TEAM_MANAGER],
       filters: (context) => ({
         user_account: {
           organization_id: context.organizationId,
