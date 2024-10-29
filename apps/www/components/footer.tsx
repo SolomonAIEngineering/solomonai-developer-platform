@@ -6,23 +6,23 @@ import { Button } from "./ui/button";
 
 export default function Footer() {
   return (
-    <footer className="mx-auto mt-48 w-full max-w-screen-xl px-4 sm:px-6">
-      <div className="grid grid-cols-2 gap-x-2 gap-y-8 pb-12 sm:grid-cols-4 sm:gap-6 xl:grid-cols-6">
+    <footer className="w-full max-w-screen-xl px-4 mx-auto mt-48 sm:px-6">
+      <div className="grid grid-cols-2 pb-12 gap-x-2 gap-y-8 sm:grid-cols-4 sm:gap-6 xl:grid-cols-6">
         {/* Logo and tagline */}
-        <div className="col-span-full mb-2 sm:mb-8 xl:col-span-2 xl:mb-0">
-          <Link className="-ml-1 inline-block dark:invert" href="/">
+        <div className="mb-2 col-span-full sm:mb-8 xl:col-span-2 xl:mb-0">
+          <Link className="inline-block -ml-1 dark:invert" href="/">
             <PearDarkLogo />
           </Link>
           <p className="mt-5 text-sm leading-[1.75] text-neutral-500 dark:text-neutral-400">
             The Financial workspace for cyclical businesses
           </p>
-          <p
+          {/* <p
             className="mb-4 text-xs font-bold text-gray-500 sm:text-xs"
             data-aos="fade-up"
             data-aos-delay="200"
           >
             Solomon AI is built on the innovations of Midday
-          </p>
+          </p> */}
         </div>
 
         {/* Sections with links */}
@@ -63,7 +63,7 @@ export default function Footer() {
 
       <div className="flex flex-col items-center justify-between gap-2.5 border-t py-3.5 text-neutral-500 dark:text-neutral-400 sm:flex-row-reverse">
         {/* Social media links */}
-        <div className="-mr-2 flex items-center gap-1">
+        <div className="flex items-center gap-1 -mr-2">
           {socialMediaLinks.map(({ icon: Icon, link }) => (
             <Button
               key={link}
@@ -72,7 +72,7 @@ export default function Footer() {
               className="rounded-full"
             >
               <Link href={link} target="_blank" rel="noopener noreferrer">
-                <Icon className="h-5 w-5" />
+                <Icon className="w-5 h-5" />
               </Link>
             </Button>
           ))}
