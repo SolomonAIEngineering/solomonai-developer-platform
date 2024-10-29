@@ -1,10 +1,10 @@
 /** Enum representing required and optional request headers */
 enum HeaderKey {
-  ORG_ID = "x-org-id",
-  USER_ID = "x-user-id",
-  USER_ROLES = "x-user-roles",
-  TENANT_ID = "x-tenant-id",
-  API_KEY = "x-api-key",
+  ORG_ID = "X-Org-ID",
+  USER_ID = "X-User-ID",
+  USER_ROLES = "X-User-Roles",
+  TENANT_ID = "X-Tenant-ID",
+  API_KEY = "X-API-Key",
 }
 
 /** Type representing required and optional headers in the request */
