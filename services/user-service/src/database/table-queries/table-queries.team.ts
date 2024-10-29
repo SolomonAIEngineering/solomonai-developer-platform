@@ -1,5 +1,8 @@
 import { PrismaClient, Prisma } from "../generated/postgresql";
-import { QueryMiddleware, QueryMiddlewareFactory } from "../middleware/query.middleware";
+import {
+  QueryMiddleware,
+  QueryMiddlewareFactory,
+} from "../middleware/query.middleware";
 import { QueryOptions, RequestContext } from "../middleware/types";
 
 type TeamWithRelations = Prisma.teamsGetPayload<{
@@ -12,7 +15,7 @@ type TeamWithRelations = Prisma.teamsGetPayload<{
   };
 }>;
 
-type TeamType = 'department' | 'project' | 'workgroup';
+type TeamType = "department" | "project" | "workgroup";
 
 export class TeamQueries {
   private middleware: QueryMiddleware;
@@ -45,7 +48,7 @@ export class TeamQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.teams,
-      'create',
+      "create",
       {
         data: {
           organization_id: data.organization_id,
@@ -55,41 +58,45 @@ export class TeamQueries {
           team_type: data.team_type,
           metadata: data.metadata,
           created_by: this.middleware.getContext().userId,
-          team_members: data.initial_members ? {
-            create: data.initial_members.map(member => ({
-              ...member,
-              invited_by: this.middleware.getContext().userId,
-              status: 'active'
-            }))
-          } : undefined
+          team_members: data.initial_members
+            ? {
+                create: data.initial_members.map((member) => ({
+                  ...member,
+                  invited_by: this.middleware.getContext().userId,
+                  status: "active",
+                })),
+              }
+            : undefined,
         },
         include: {
           team_members: true,
           organization: true,
-          tenant: true
-        }
-      }
+          tenant: true,
+        },
+      },
     );
   }
 
   /**
    * Get teams with flexible filtering
    */
-  async getTeams(options?: QueryOptions & {
-    organizationId?: string;
-    tenantId?: string;
-    teamTypes?: TeamType[];
-    searchTerm?: string;
-    isActive?: boolean;
-    createdBy?: string;
-    createdAfter?: Date;
-    createdBefore?: Date;
-    minMembers?: number;
-    maxMembers?: number;
-    includeMembers?: boolean;
-    includeAddresses?: boolean;
-    includeAuditLogs?: boolean;
-  }) {
+  async getTeams(
+    options?: QueryOptions & {
+      organizationId?: string;
+      tenantId?: string;
+      teamTypes?: TeamType[];
+      searchTerm?: string;
+      isActive?: boolean;
+      createdBy?: string;
+      createdAfter?: Date;
+      createdBefore?: Date;
+      minMembers?: number;
+      maxMembers?: number;
+      includeMembers?: boolean;
+      includeAddresses?: boolean;
+      includeAuditLogs?: boolean;
+    },
+  ) {
     const {
       organizationId,
       tenantId,
@@ -123,12 +130,12 @@ export class TeamQueries {
 
     if (searchTerm) {
       whereClause.OR = [
-        { name: { contains: searchTerm, mode: 'insensitive' } },
-        { description: { contains: searchTerm, mode: 'insensitive' } }
+        { name: { contains: searchTerm, mode: "insensitive" } },
+        { description: { contains: searchTerm, mode: "insensitive" } },
       ];
     }
 
-    if (typeof isActive === 'boolean') {
+    if (typeof isActive === "boolean") {
       whereClause.is_active = isActive;
     }
 
@@ -147,16 +154,16 @@ export class TeamQueries {
         _count: {
           AND: [
             minMembers !== undefined ? { gte: minMembers } : {},
-            maxMembers !== undefined ? { lte: maxMembers } : {}
-          ]
-        }
+            maxMembers !== undefined ? { lte: maxMembers } : {},
+          ],
+        },
       };
     }
 
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.teams,
-      'findMany',
+      "findMany",
       {
         where: whereClause,
         include: {
@@ -164,10 +171,10 @@ export class TeamQueries {
           addresses: includeAddresses,
           audit_logs: includeAuditLogs,
           organization: true,
-          tenant: true
-        }
+          tenant: true,
+        },
       },
-      queryOptions
+      queryOptions,
     );
   }
 
@@ -180,7 +187,7 @@ export class TeamQueries {
       includeMembers?: boolean;
       includeAddresses?: boolean;
       includeAuditLogs?: boolean;
-    }
+    },
   ): Promise<TeamWithRelations | null> {
     const {
       includeMembers,
@@ -192,7 +199,7 @@ export class TeamQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.teams,
-      'findUnique',
+      "findUnique",
       {
         where: { id },
         include: {
@@ -200,10 +207,10 @@ export class TeamQueries {
           addresses: includeAddresses,
           audit_logs: includeAuditLogs,
           organization: true,
-          tenant: true
-        }
+          tenant: true,
+        },
       },
-      queryOptions
+      queryOptions,
     );
   }
 
@@ -218,10 +225,10 @@ export class TeamQueries {
       team_type?: TeamType;
       metadata?: Record<string, any>;
       is_active?: boolean;
-    }
+    },
   ) {
     const team = await this.getTeamById(id);
-    if (!team) throw new Error('Team not found');
+    if (!team) throw new Error("Team not found");
 
     // Validate team name if being updated
     if (data.name && data.name !== team.name) {
@@ -231,19 +238,19 @@ export class TeamQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.teams,
-      'update',
+      "update",
       {
         where: { id },
         data: {
           ...data,
-          updated_at: new Date()
+          updated_at: new Date(),
         },
         include: {
           team_members: true,
           organization: true,
-          tenant: true
-        }
-      }
+          tenant: true,
+        },
+      },
     );
   }
 
@@ -254,7 +261,7 @@ export class TeamQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.teams,
-      'update',
+      "update",
       {
         where: { id },
         data: {
@@ -262,11 +269,11 @@ export class TeamQueries {
           team_members: {
             updateMany: {
               where: { team_id: id },
-              data: { status: 'inactive' }
-            }
-          }
-        }
-      }
+              data: { status: "inactive" },
+            },
+          },
+        },
+      },
     );
   }
 
@@ -277,15 +284,15 @@ export class TeamQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.teams,
-      'delete',
+      "delete",
       {
         where: { id },
         include: {
           team_members: true,
           addresses: true,
-          audit_logs: true
-        }
-      }
+          audit_logs: true,
+        },
+      },
     );
   }
 
@@ -298,40 +305,37 @@ export class TeamQueries {
       user_account_id?: bigint;
       business_account_id?: bigint;
       role: string;
-    }>
+    }>,
   ) {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.team_members,
-      'createMany',
+      "createMany",
       {
-        data: members.map(member => ({
+        data: members.map((member) => ({
           team_id: teamId,
           ...member,
           invited_by: this.middleware.getContext().userId,
-          status: 'active'
-        }))
-      }
+          status: "active",
+        })),
+      },
     );
   }
 
   /**
    * Remove members from team
    */
-  async removeTeamMembers(
-    teamId: bigint,
-    memberIds: bigint[]
-  ) {
+  async removeTeamMembers(teamId: bigint, memberIds: bigint[]) {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.team_members,
-      'deleteMany',
+      "deleteMany",
       {
         where: {
           team_id: teamId,
-          id: { in: memberIds }
-        }
-      }
+          id: { in: memberIds },
+        },
+      },
     );
   }
 
@@ -343,23 +347,23 @@ export class TeamQueries {
     updates: Array<{
       member_id: bigint;
       new_role: string;
-    }>
+    }>,
   ) {
-    const updatePromises = updates.map(update =>
+    const updatePromises = updates.map((update) =>
       this.middleware.enforceQueryRules(
         this.prisma,
         Prisma.ModelName.team_members,
-        'update',
+        "update",
         {
           where: {
             id: update.member_id,
-            team_id: teamId
+            team_id: teamId,
           },
           data: {
-            role: update.new_role
-          }
-        }
-      )
+            role: update.new_role,
+          },
+        },
+      ),
     );
 
     return await Promise.all(updatePromises);
@@ -373,39 +377,39 @@ export class TeamQueries {
     options?: {
       activeOnly?: boolean;
       byRole?: boolean;
-    }
+    },
   ) {
     const { activeOnly = true, byRole = false } = options || {};
 
     const whereClause: any = {
-      team_id: teamId
+      team_id: teamId,
     };
 
     if (activeOnly) {
-      whereClause.status = 'active';
+      whereClause.status = "active";
     }
 
     if (byRole) {
       return await this.middleware.enforceQueryRules(
         this.prisma,
         Prisma.ModelName.team_members,
-        'groupBy',
+        "groupBy",
         {
-          by: ['role'],
+          by: ["role"],
           where: whereClause,
           _count: true,
-          orderBy: undefined
-        }
+          orderBy: undefined,
+        },
       );
     }
 
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.team_members,
-      'count',
+      "count",
       {
-        where: whereClause
-      }
+        where: whereClause,
+      },
     );
   }
 
@@ -418,7 +422,7 @@ export class TeamQueries {
     options?: {
       keepMembers?: boolean;
       keepAddresses?: boolean;
-    }
+    },
   ) {
     const { keepMembers = false, keepAddresses = false } = options || {};
 
@@ -433,14 +437,14 @@ export class TeamQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.teams,
-      'update',
+      "update",
       {
         where: { id },
         data: {
           tenant_id: newTenantId,
-          updated_at: new Date()
-        }
-      }
+          updated_at: new Date(),
+        },
+      },
     );
   }
 
@@ -454,12 +458,12 @@ export class TeamQueries {
       mergeMembers?: boolean;
       mergeAddresses?: boolean;
       deleteSource?: boolean;
-    }
+    },
   ) {
     const {
       mergeMembers = true,
       mergeAddresses = true,
-      deleteSource = true
+      deleteSource = true,
     } = options || {};
 
     // Start a transaction
@@ -468,7 +472,7 @@ export class TeamQueries {
         // Transfer members
         await tx.team_members.updateMany({
           where: { team_id: sourceTeamId },
-          data: { team_id: targetTeamId }
+          data: { team_id: targetTeamId },
         });
       }
 
@@ -476,14 +480,14 @@ export class TeamQueries {
         // Transfer addresses
         await tx.addresses.updateMany({
           where: { team_id: sourceTeamId },
-          data: { team_id: targetTeamId }
+          data: { team_id: targetTeamId },
         });
       }
 
       if (deleteSource) {
         // Delete source team
         await tx.teams.delete({
-          where: { id: sourceTeamId }
+          where: { id: sourceTeamId },
         });
       }
 
@@ -491,8 +495,8 @@ export class TeamQueries {
         where: { id: targetTeamId },
         include: {
           team_members: true,
-          addresses: true
-        }
+          addresses: true,
+        },
       });
     });
   }
@@ -507,14 +511,14 @@ export class TeamQueries {
       cloneMembers?: boolean;
       cloneAddresses?: boolean;
       cloneMetadata?: boolean;
-    }
+    },
   ) {
     const sourceTeam = await this.getTeamById(sourceTeamId, {
       includeMembers: true,
-      includeAddresses: true
+      includeAddresses: true,
     });
 
-    if (!sourceTeam) throw new Error('Source team not found');
+    if (!sourceTeam) throw new Error("Source team not found");
 
     // Validate new team name
     await this.validateTeamName(sourceTeam.organization_id, newTeamName);
@@ -526,25 +530,25 @@ export class TeamQueries {
       description: sourceTeam.description,
       team_type: sourceTeam.team_type,
       metadata: options?.cloneMetadata ? sourceTeam.metadata : undefined,
-      created_by: this.middleware.getContext().userId
+      created_by: this.middleware.getContext().userId,
     };
 
     if (options?.cloneMembers) {
       cloneData.team_members = {
-        create: sourceTeam.team_members.map(member => ({
+        create: sourceTeam.team_members.map((member) => ({
           user_account_id: member.user_account_id,
           business_account_id: member.business_account_id,
           role: member.role,
           invited_by: this.middleware.getContext().userId,
-          status: 'active'
-        }))
+          status: "active",
+        })),
       };
     }
 
     if (options?.cloneAddresses) {
       cloneData.addresses = {
-        create: sourceTeam.addresses.map(address => ({
-          addressable_type: 'team',
+        create: sourceTeam.addresses.map((address) => ({
+          addressable_type: "team",
           address_line1: address.address_line1,
           address_line2: address.address_line2,
           city: address.city,
@@ -555,27 +559,27 @@ export class TeamQueries {
           longitude: address.longitude,
           is_primary: address.is_primary,
           address_type: address.address_type,
-          metadata: address.metadata
-        }))
+          metadata: address.metadata,
+        })),
       };
     }
 
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.teams,
-      'create',
+      "create",
       {
         data: cloneData,
         include: {
           team_members: true,
-          addresses: true
-        }
-      }
+          addresses: true,
+        },
+      },
     );
   }
   /**
-    * Get team statistics
-    */
+   * Get team statistics
+   */
   async getTeamStatistics(
     teamId: bigint,
     options?: {
@@ -585,25 +589,25 @@ export class TeamQueries {
         start: Date;
         end: Date;
       };
-    }
+    },
   ) {
     const team = await this.getTeamById(teamId, {
       includeMembers: true,
-      includeAuditLogs: true
+      includeAuditLogs: true,
     });
 
-    if (!team) throw new Error('Team not found');
+    if (!team) throw new Error("Team not found");
 
     const memberStats = await this.calculateMemberStats(
       teamId,
       options?.includeInactive,
-      options?.includeDeletedMembers
+      options?.includeDeletedMembers,
     );
 
     const activityStats = await this.calculateActivityStats(
       teamId,
       options?.timeRange?.start,
-      options?.timeRange?.end
+      options?.timeRange?.end,
     );
 
     return {
@@ -612,11 +616,13 @@ export class TeamQueries {
         name: team.name,
         type: team.team_type,
         created_at: team.created_at,
-        age_days: Math.floor((Date.now() - team.created_at.getTime()) / (1000 * 60 * 60 * 24))
+        age_days: Math.floor(
+          (Date.now() - team.created_at.getTime()) / (1000 * 60 * 60 * 24),
+        ),
       },
       member_stats: memberStats,
       activity_stats: activityStats,
-      metadata: team.metadata
+      metadata: team.metadata,
     };
   }
 
@@ -626,14 +632,14 @@ export class TeamQueries {
   private async calculateMemberStats(
     teamId: bigint,
     includeInactive?: boolean,
-    includeDeleted?: boolean
+    includeDeleted?: boolean,
   ) {
     const whereClause: any = {
-      team_id: teamId
+      team_id: teamId,
     };
 
     if (!includeInactive) {
-      whereClause.status = 'active';
+      whereClause.status = "active";
     }
 
     if (!includeDeleted) {
@@ -643,25 +649,25 @@ export class TeamQueries {
     const members = await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.team_members,
-      'findMany',
+      "findMany",
       {
         where: whereClause,
         include: {
           user_account: true,
-          business_account: true
-        }
-      }
+          business_account: true,
+        },
+      },
     );
 
     return {
       total_members: members.length,
-      active_members: members.filter(m => m.status === 'active').length,
+      active_members: members.filter((m) => m.status === "active").length,
       by_role: this.groupMembersByRole(members),
       by_type: {
-        user_accounts: members.filter(m => m.user_account_id).length,
-        business_accounts: members.filter(m => m.business_account_id).length
+        user_accounts: members.filter((m) => m.user_account_id).length,
+        business_accounts: members.filter((m) => m.business_account_id).length,
       },
-      joining_trend: this.calculateJoiningTrend(members)
+      joining_trend: this.calculateJoiningTrend(members),
     };
   }
 
@@ -671,10 +677,10 @@ export class TeamQueries {
   private async calculateActivityStats(
     teamId: bigint,
     startDate?: Date,
-    endDate?: Date
+    endDate?: Date,
   ) {
     let whereClause: any = {
-      team_id: teamId
+      team_id: teamId,
     };
 
     if (startDate || endDate) {
@@ -686,17 +692,17 @@ export class TeamQueries {
     const logs = await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.audit_logs,
-      'findMany',
+      "findMany",
       {
-        where: whereClause
-      }
+        where: whereClause,
+      },
     );
 
     return {
       total_activities: logs.length,
       by_type: this.groupActivitiesByType(logs),
       recent_activities: this.getRecentActivities(logs),
-      activity_trend: this.calculateActivityTrend(logs)
+      activity_trend: this.calculateActivityTrend(logs),
     };
   }
 
@@ -714,11 +720,14 @@ export class TeamQueries {
    * Calculate joining trend
    */
   private calculateJoiningTrend(members: any[]) {
-    const monthlyJoins = members.reduce((acc: Record<string, number>, member) => {
-      const monthYear = member.joined_at.toISOString().slice(0, 7);
-      acc[monthYear] = (acc[monthYear] || 0) + 1;
-      return acc;
-    }, {});
+    const monthlyJoins = members.reduce(
+      (acc: Record<string, number>, member) => {
+        const monthYear = member.joined_at.toISOString().slice(0, 7);
+        acc[monthYear] = (acc[monthYear] || 0) + 1;
+        return acc;
+      },
+      {},
+    );
 
     return Object.entries(monthlyJoins)
       .map(([month, count]) => ({ month, count }))
@@ -742,11 +751,11 @@ export class TeamQueries {
     return logs
       .sort((a, b) => b.created_at.getTime() - a.created_at.getTime())
       .slice(0, limit)
-      .map(log => ({
+      .map((log) => ({
         timestamp: log.created_at,
         event_type: log.event_type,
         actor: log.actor_id,
-        details: log.change_summary
+        details: log.change_summary,
       }));
   }
 
@@ -770,19 +779,19 @@ export class TeamQueries {
    */
   async getTeamOverlap(teamId: bigint) {
     const team = await this.getTeamById(teamId, {
-      includeMembers: true
+      includeMembers: true,
     });
 
-    if (!team) throw new Error('Team not found');
+    if (!team) throw new Error("Team not found");
 
-    const memberIds = team.team_members.map(member =>
-      member.user_account_id || member.business_account_id
-    ).filter(Boolean);
+    const memberIds = team.team_members
+      .map((member) => member.user_account_id || member.business_account_id)
+      .filter(Boolean);
 
     const overlappingTeams = await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.teams,
-      'findMany',
+      "findMany",
       {
         where: {
           id: { not: teamId },
@@ -791,28 +800,31 @@ export class TeamQueries {
             some: {
               OR: [
                 { user_account_id: { in: memberIds as bigint[] } },
-                { business_account_id: { in: memberIds as bigint[] } }
-              ]
-            }
-          }
+                { business_account_id: { in: memberIds as bigint[] } },
+              ],
+            },
+          },
         },
         include: {
-          team_members: true
-        }
-      }
+          team_members: true,
+        },
+      },
     );
 
     return overlappingTeams.map((otherTeam: any) => {
       const sharedMembers = otherTeam.team_members.filter((member: any) =>
-        memberIds.includes(member.user_account_id || member.business_account_id)
+        memberIds.includes(
+          member.user_account_id || member.business_account_id,
+        ),
       );
 
       return {
         team_id: otherTeam.id,
         team_name: otherTeam.name,
         shared_member_count: sharedMembers.length,
-        overlap_percentage: (sharedMembers.length / team.team_members.length) * 100,
-        shared_members: sharedMembers
+        overlap_percentage:
+          (sharedMembers.length / team.team_members.length) * 100,
+        shared_members: sharedMembers,
       };
     });
   }
@@ -825,12 +837,12 @@ export class TeamQueries {
     options?: {
       includeInactive?: boolean;
       includeMemberCounts?: boolean;
-    }
+    },
   ) {
     const teams = await this.getTeams({
       organizationId,
       isActive: options?.includeInactive ? undefined : true,
-      includeMembers: options?.includeMemberCounts
+      includeMembers: options?.includeMemberCounts,
     });
 
     const hierarchy = this.buildHierarchyTree(teams);
@@ -841,20 +853,24 @@ export class TeamQueries {
    * Build hierarchy tree
    */
   private buildHierarchyTree(teams: any[]) {
-    const departments = teams.filter(team => team.team_type === 'department');
+    const departments = teams.filter((team) => team.team_type === "department");
 
-    return departments.map(department => ({
+    return departments.map((department) => ({
       ...department,
-      projects: teams.filter(team =>
-        team.team_type === 'project' &&
-        team.metadata?.department_id === department.id
-      ).map(project => ({
-        ...project,
-        workgroups: teams.filter(team =>
-          team.team_type === 'workgroup' &&
-          team.metadata?.project_id === project.id
+      projects: teams
+        .filter(
+          (team) =>
+            team.team_type === "project" &&
+            team.metadata?.department_id === department.id,
         )
-      }))
+        .map((project) => ({
+          ...project,
+          workgroups: teams.filter(
+            (team) =>
+              team.team_type === "workgroup" &&
+              team.metadata?.project_id === project.id,
+          ),
+        })),
     }));
   }
 
@@ -866,7 +882,7 @@ export class TeamQueries {
       department: {
         id: department.id,
         name: department.name,
-        member_count: department.team_members?.length || 0
+        member_count: department.team_members?.length || 0,
       },
       projects: department.projects.map((project: any) => ({
         id: project.id,
@@ -875,11 +891,11 @@ export class TeamQueries {
         workgroups: project.workgroups.map((workgroup: any) => ({
           id: workgroup.id,
           name: workgroup.name,
-          member_count: workgroup.team_members?.length || 0
-        }))
+          member_count: workgroup.team_members?.length || 0,
+        })),
       })),
       total_members: this.calculateTotalMembers(department),
-      depth: this.calculateHierarchyDepth(department)
+      depth: this.calculateHierarchyDepth(department),
     }));
   }
 
@@ -925,17 +941,19 @@ export class TeamQueries {
     const existing = await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.teams,
-      'findFirst',
+      "findFirst",
       {
         where: {
           organization_id: organizationId,
-          name
-        }
-      }
+          name,
+        },
+      },
     );
 
     if (existing) {
-      throw new Error(`Team name "${name}" already exists in this organization`);
+      throw new Error(
+        `Team name "${name}" already exists in this organization`,
+      );
     }
   }
 
@@ -946,10 +964,10 @@ export class TeamQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.team_members,
-      'deleteMany',
+      "deleteMany",
       {
-        where: { team_id: teamId }
-      }
+        where: { team_id: teamId },
+      },
     );
   }
 
@@ -960,10 +978,10 @@ export class TeamQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.addresses,
-      'deleteMany',
+      "deleteMany",
       {
-        where: { team_id: teamId }
-      }
+        where: { team_id: teamId },
+      },
     );
   }
 }

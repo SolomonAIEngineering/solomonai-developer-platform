@@ -195,9 +195,21 @@ export class OrganizationQueries {
   /**
    * Check if organization exists by various identifiers
    */
-  async checkOrganizationExists(identifier: { id?: string; email?: string, name?: string, display_name?: string }) {
-    if (!identifier.id && !identifier.email && !identifier.name && !identifier.display_name) {
-      throw new Error("Either id, email, name, or display_name must be provided");
+  async checkOrganizationExists(identifier: {
+    id?: string;
+    email?: string;
+    name?: string;
+    display_name?: string;
+  }) {
+    if (
+      !identifier.id &&
+      !identifier.email &&
+      !identifier.name &&
+      !identifier.display_name
+    ) {
+      throw new Error(
+        "Either id, email, name, or display_name must be provided",
+      );
     }
 
     let whereClause: any = {};
@@ -205,7 +217,8 @@ export class OrganizationQueries {
     if (identifier.id) whereClause.id = identifier.id;
     if (identifier.email) whereClause.email = identifier.email;
     if (identifier.name) whereClause.name = identifier.name;
-    if (identifier.display_name) whereClause.display_name = identifier.display_name;
+    if (identifier.display_name)
+      whereClause.display_name = identifier.display_name;
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.organizations,
@@ -858,8 +871,8 @@ export class OrganizationQueries {
       Prisma.ModelName.organizations,
       "delete",
       {
-        where: { id }
-      }
+        where: { id },
+      },
     );
   }
 }

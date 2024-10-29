@@ -1,5 +1,8 @@
 import { PrismaClient, Prisma } from "../generated/postgresql";
-import { QueryMiddleware, QueryMiddlewareFactory } from "../middleware/query.middleware";
+import {
+  QueryMiddleware,
+  QueryMiddlewareFactory,
+} from "../middleware/query.middleware";
 import { QueryOptions, RequestContext } from "../middleware/types";
 
 type TenantWithRelations = Prisma.tenantsGetPayload<{
@@ -45,45 +48,47 @@ export class TenantQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.tenants,
-      'create',
+      "create",
       {
         data: {
           id: tenantId,
           ...data,
-          status: 'active',
-          used_storage: BigInt(0)
+          status: "active",
+          used_storage: BigInt(0),
         },
         include: {
-          organization: true
-        }
-      }
+          organization: true,
+        },
+      },
     );
   }
 
   /**
    * Retrieve tenants with flexible filtering and search
    */
-  async getTenants(options?: QueryOptions & {
-    organizationId?: string;
-    searchTerm?: string;
-    status?: ('active' | 'suspended' | 'deleted')[];
-    externalId?: string;
-    customDomain?: string;
-    email?: string;
-    name?: string;
-    minCreatedDate?: Date;
-    maxCreatedDate?: Date;
-    includeBusinessAccounts?: boolean;
-    includeUserAccounts?: boolean;
-    includeSettings?: boolean;
-    includeTeams?: boolean;
-    includeApiKeys?: boolean;
-    includeUsageLogs?: boolean;
-    storageQuotaMin?: bigint;
-    storageQuotaMax?: bigint;
-    usedStorageMin?: bigint;
-    usedStorageMax?: bigint;
-  }) {
+  async getTenants(
+    options?: QueryOptions & {
+      organizationId?: string;
+      searchTerm?: string;
+      status?: ("active" | "suspended" | "deleted")[];
+      externalId?: string;
+      customDomain?: string;
+      email?: string;
+      name?: string;
+      minCreatedDate?: Date;
+      maxCreatedDate?: Date;
+      includeBusinessAccounts?: boolean;
+      includeUserAccounts?: boolean;
+      includeSettings?: boolean;
+      includeTeams?: boolean;
+      includeApiKeys?: boolean;
+      includeUsageLogs?: boolean;
+      storageQuotaMin?: bigint;
+      storageQuotaMax?: bigint;
+      usedStorageMin?: bigint;
+      usedStorageMax?: bigint;
+    },
+  ) {
     const {
       organizationId,
       searchTerm,
@@ -115,9 +120,9 @@ export class TenantQueries {
 
     if (searchTerm) {
       whereClause.OR = [
-        { name: { contains: searchTerm, mode: 'insensitive' } },
-        { email: { contains: searchTerm, mode: 'insensitive' } },
-        { custom_domain: { contains: searchTerm, mode: 'insensitive' } }
+        { name: { contains: searchTerm, mode: "insensitive" } },
+        { email: { contains: searchTerm, mode: "insensitive" } },
+        { custom_domain: { contains: searchTerm, mode: "insensitive" } },
       ];
     }
 
@@ -162,7 +167,7 @@ export class TenantQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.tenants,
-      'findMany',
+      "findMany",
       {
         where: whereClause,
         include: {
@@ -172,10 +177,10 @@ export class TenantQueries {
           settings: includeSettings,
           teams: includeTeams,
           tenant_api_keys: includeApiKeys,
-          tenant_usage_logs: includeUsageLogs
-        }
+          tenant_usage_logs: includeUsageLogs,
+        },
       },
-      queryOptions
+      queryOptions,
     );
   }
 
@@ -191,7 +196,7 @@ export class TenantQueries {
       includeTeams?: boolean;
       includeApiKeys?: boolean;
       includeUsageLogs?: boolean;
-    }
+    },
   ): Promise<TenantWithRelations | null> {
     const {
       includeBusinessAccounts,
@@ -206,7 +211,7 @@ export class TenantQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.tenants,
-      'findUnique',
+      "findUnique",
       {
         where: { id },
         include: {
@@ -216,10 +221,10 @@ export class TenantQueries {
           settings: includeSettings,
           teams: includeTeams,
           tenant_api_keys: includeApiKeys,
-          tenant_usage_logs: includeUsageLogs
-        }
+          tenant_usage_logs: includeUsageLogs,
+        },
       },
-      queryOptions
+      queryOptions,
     );
   }
 
@@ -237,23 +242,25 @@ export class TenantQueries {
     let whereClause: any = {};
 
     if (identifier.id) whereClause.id = identifier.id;
-    if (identifier.external_id) whereClause.external_id = identifier.external_id;
-    if (identifier.custom_domain) whereClause.custom_domain = identifier.custom_domain;
+    if (identifier.external_id)
+      whereClause.external_id = identifier.external_id;
+    if (identifier.custom_domain)
+      whereClause.custom_domain = identifier.custom_domain;
     if (identifier.email) whereClause.email = identifier.email;
     if (identifier.name && identifier.organization_id) {
       whereClause.AND = [
         { name: identifier.name },
-        { organization_id: identifier.organization_id }
+        { organization_id: identifier.organization_id },
       ];
     }
 
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.tenants,
-      'findFirst',
+      "findFirst",
       {
-        where: whereClause
-      }
+        where: whereClause,
+      },
     );
   }
 
@@ -268,16 +275,16 @@ export class TenantQueries {
       email?: string;
       metadata?: Record<string, any>;
       storage_quota?: bigint;
-    }
+    },
   ) {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.tenants,
-      'update',
+      "update",
       {
         where: { id },
-        data
-      }
+        data,
+      },
     );
   }
 
@@ -286,19 +293,19 @@ export class TenantQueries {
    */
   async updateTenantStatus(
     id: string,
-    status: 'active' | 'suspended' | 'deleted'
+    status: "active" | "suspended" | "deleted",
   ) {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.tenants,
-      'update',
+      "update",
       {
         where: { id },
         data: {
           status,
-          updated_at: new Date()
-        }
-      }
+          updated_at: new Date(),
+        },
+      },
     );
   }
 
@@ -307,21 +314,21 @@ export class TenantQueries {
    */
   async bulkUpdateTenantStatus(
     ids: string[],
-    status: 'active' | 'suspended' | 'deleted'
+    status: "active" | "suspended" | "deleted",
   ) {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.tenants,
-      'updateMany',
+      "updateMany",
       {
         where: {
-          id: { in: ids }
+          id: { in: ids },
         },
         data: {
           status,
-          updated_at: new Date()
-        }
-      }
+          updated_at: new Date(),
+        },
+      },
     );
   }
 
@@ -332,15 +339,15 @@ export class TenantQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.tenants,
-      'update',
+      "update",
       {
         where: { id },
         data: {
           used_storage: {
-            increment: bytesChanged
-          }
-        }
-      }
+            increment: bytesChanged,
+          },
+        },
+      },
     );
   }
 
@@ -351,20 +358,20 @@ export class TenantQueries {
     const usageLogs = await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.tenant_usage_logs,
-      'findMany',
+      "findMany",
       {
         where: {
           tenant_id: id,
-          event_type: 'storage',
+          event_type: "storage",
           timestamp: {
             gte: startDate,
-            lte: endDate
-          }
+            lte: endDate,
+          },
         },
         orderBy: {
-          timestamp: 'asc'
-        }
-      }
+          timestamp: "asc",
+        },
+      },
     );
 
     return this.aggregateDailyUsage(usageLogs);
@@ -375,26 +382,27 @@ export class TenantQueries {
    */
   async getTenantsNearStorageLimit(
     organizationId: string,
-    thresholdPercentage: number = 90
+    thresholdPercentage: number = 90,
   ) {
     const tenants = await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.tenants,
-      'findMany',
+      "findMany",
       {
         where: {
           organization_id: organizationId,
-          status: 'active',
+          status: "active",
           storage_quota: {
-            not: null
-          }
-        }
-      }
+            not: null,
+          },
+        },
+      },
     );
 
-    return tenants.filter(tenant => {
+    return tenants.filter((tenant) => {
       if (!tenant.storage_quota) return false;
-      const usagePercentage = (Number(tenant.used_storage) / Number(tenant.storage_quota)) * 100;
+      const usagePercentage =
+        (Number(tenant.used_storage) / Number(tenant.storage_quota)) * 100;
       return usagePercentage >= thresholdPercentage;
     });
   }
@@ -408,7 +416,7 @@ export class TenantQueries {
     options?: {
       keepSettings?: boolean;
       keepApiKeys?: boolean;
-    }
+    },
   ) {
     const { keepSettings = false, keepApiKeys = false } = options || {};
 
@@ -417,10 +425,10 @@ export class TenantQueries {
       await this.middleware.enforceQueryRules(
         this.prisma,
         Prisma.ModelName.settings,
-        'deleteMany',
+        "deleteMany",
         {
-          where: { tenant_id: id }
-        }
+          where: { tenant_id: id },
+        },
       );
     }
 
@@ -428,56 +436,53 @@ export class TenantQueries {
       await this.middleware.enforceQueryRules(
         this.prisma,
         Prisma.ModelName.tenant_api_keys,
-        'deleteMany',
+        "deleteMany",
         {
-          where: { tenant_id: id }
-        }
+          where: { tenant_id: id },
+        },
       );
     }
 
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.tenants,
-      'update',
+      "update",
       {
         where: { id },
         data: {
           organization_id: newOrganizationId,
-          updated_at: new Date()
-        }
-      }
+          updated_at: new Date(),
+        },
+      },
     );
   }
 
   /**
    * Clone tenant settings
    */
-  async cloneTenantSettings(
-    sourceTenantId: string,
-    targetTenantId: string
-  ) {
+  async cloneTenantSettings(sourceTenantId: string, targetTenantId: string) {
     const sourceSettings = await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.settings,
-      'findMany',
+      "findMany",
       {
-        where: { tenant_id: sourceTenantId }
-      }
+        where: { tenant_id: sourceTenantId },
+      },
     );
 
     // Create new settings for target tenant
-    const settingsPromises = sourceSettings.map(setting =>
+    const settingsPromises = sourceSettings.map((setting) =>
       this.middleware.enforceQueryRules(
         this.prisma,
         Prisma.ModelName.settings,
-        'create',
+        "create",
         {
           data: {
             tenant_id: targetTenantId,
-            settings_data: setting.settings_data as Prisma.InputJsonValue
-          }
-        }
-      )
+            settings_data: setting.settings_data as Prisma.InputJsonValue,
+          },
+        },
+      ),
     );
 
     return await Promise.all(settingsPromises);
@@ -490,17 +495,21 @@ export class TenantQueries {
     const tenant = await this.getTenantById(id, {
       includeUsageLogs: true,
       includeUserAccounts: true,
-      includeBusinessAccounts: true
+      includeBusinessAccounts: true,
     });
 
-    if (!tenant) throw new Error('Tenant not found');
+    if (!tenant) throw new Error("Tenant not found");
 
     const storageUtilization = tenant.storage_quota
       ? (Number(tenant.used_storage) / Number(tenant.storage_quota)) * 100
       : 0;
 
-    const activeUserCount = tenant.user_accounts.filter(u => u.is_active).length;
-    const activeBusinessCount = tenant.business_accounts.filter(b => b.is_active).length;
+    const activeUserCount = tenant.user_accounts.filter(
+      (u) => u.is_active,
+    ).length;
+    const activeBusinessCount = tenant.business_accounts.filter(
+      (b) => b.is_active,
+    ).length;
 
     return {
       id: tenant.id,
@@ -508,35 +517,30 @@ export class TenantQueries {
       storageUtilization,
       activeUserCount,
       activeBusinessCount,
-      isHealthy:
-        tenant.status === 'active' &&
-        storageUtilization < 90
+      isHealthy: tenant.status === "active" && storageUtilization < 90,
     };
   }
 
   /**
    * Get inactive tenants
    */
-  async getInactiveTenants(
-    organizationId: string,
-    inactiveDays: number
-  ) {
+  async getInactiveTenants(organizationId: string, inactiveDays: number) {
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - inactiveDays);
 
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.tenants,
-      'findMany',
+      "findMany",
       {
         where: {
           organization_id: organizationId,
-          status: 'active',
+          status: "active",
           updated_at: {
-            lt: cutoffDate
-          }
-        }
-      }
+            lt: cutoffDate,
+          },
+        },
+      },
     );
   }
 
@@ -548,10 +552,10 @@ export class TenantQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.tenants,
-      'delete',
+      "delete",
       {
-        where: { id }
-      }
+        where: { id },
+      },
     );
   }
 
@@ -565,12 +569,13 @@ export class TenantQueries {
       endDate?: Date;
       eventTypes?: string[];
       limit?: number;
-    }
+    },
   ) {
-    const { startDate, endDate, eventTypes, limit, ...queryOptions } = options || {};
+    const { startDate, endDate, eventTypes, limit, ...queryOptions } =
+      options || {};
 
     let whereClause: any = {
-      tenant_id: id
+      tenant_id: id,
     };
 
     if (startDate || endDate) {
@@ -586,15 +591,15 @@ export class TenantQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.audit_logs,
-      'findMany',
+      "findMany",
       {
         where: whereClause,
         orderBy: {
-          created_at: 'desc'
+          created_at: "desc",
         },
-        take: limit
+        take: limit,
       },
-      queryOptions
+      queryOptions,
     );
   }
 
@@ -603,23 +608,23 @@ export class TenantQueries {
    */
   async getTenantActivityMetrics(
     id: string,
-    timeframe: 'daily' | 'weekly' | 'monthly',
+    timeframe: "daily" | "weekly" | "monthly",
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   ) {
     const logs = await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.tenant_usage_logs,
-      'findMany',
+      "findMany",
       {
         where: {
           tenant_id: id,
           timestamp: {
             gte: startDate,
-            lte: endDate
-          }
-        }
-      }
+            lte: endDate,
+          },
+        },
+      },
     );
 
     return this.aggregateActivityMetrics(logs, timeframe);
@@ -631,26 +636,28 @@ export class TenantQueries {
   async updateTenantCustomDomain(
     id: string,
     customDomain: string | null,
-    validate: boolean = true
+    validate: boolean = true,
   ) {
     if (customDomain && validate) {
-      const existing = await this.checkTenantExists({ custom_domain: customDomain });
+      const existing = await this.checkTenantExists({
+        custom_domain: customDomain,
+      });
       if (existing && existing.id !== id) {
-        throw new Error('Custom domain already in use');
+        throw new Error("Custom domain already in use");
       }
     }
 
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.tenants,
-      'update',
+      "update",
       {
         where: { id },
         data: {
           custom_domain: customDomain,
-          updated_at: new Date()
-        }
-      }
+          updated_at: new Date(),
+        },
+      },
     );
   }
 
@@ -663,16 +670,16 @@ export class TenantQueries {
     options?: {
       merge?: boolean;
       override?: string[];
-    }
+    },
   ) {
     const tenant = await this.getTenantById(id);
-    if (!tenant) throw new Error('Tenant not found');
+    if (!tenant) throw new Error("Tenant not found");
 
     let updatedMetadata: Record<string, any>;
     if (options?.merge) {
       updatedMetadata = {
-        ...tenant.metadata as Record<string, any>,
-        ...metadata
+        ...(tenant.metadata as Record<string, any>),
+        ...metadata,
       };
     } else {
       updatedMetadata = metadata;
@@ -697,29 +704,30 @@ export class TenantQueries {
     const tenant = await this.getTenantById(id, {
       includeUserAccounts: true,
       includeBusinessAccounts: true,
-      includeTeams: true
+      includeTeams: true,
     });
 
-    if (!tenant) throw new Error('Tenant not found');
+    if (!tenant) throw new Error("Tenant not found");
 
     return {
       storage: {
         total: Number(tenant.storage_quota || 0),
         used: Number(tenant.used_storage),
-        available: Number(tenant.storage_quota || 0) - Number(tenant.used_storage)
+        available:
+          Number(tenant.storage_quota || 0) - Number(tenant.used_storage),
       },
       users: {
         total: tenant.user_accounts.length,
-        active: tenant.user_accounts.filter(u => u.is_active).length
+        active: tenant.user_accounts.filter((u) => u.is_active).length,
       },
       businesses: {
         total: tenant.business_accounts.length,
-        active: tenant.business_accounts.filter(b => b.is_active).length
+        active: tenant.business_accounts.filter((b) => b.is_active).length,
       },
       teams: {
         total: tenant.teams.length,
-        active: tenant.teams.filter(t => t.is_active).length
-      }
+        active: tenant.teams.filter((t) => t.is_active).length,
+      },
     };
   }
 
@@ -728,8 +736,8 @@ export class TenantQueries {
    */
   async getTenantsByUsagePattern(
     organizationId: string,
-    pattern: 'high' | 'medium' | 'low',
-    timeframe: number // days
+    pattern: "high" | "medium" | "low",
+    timeframe: number, // days
   ) {
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - timeframe);
@@ -737,27 +745,30 @@ export class TenantQueries {
     const tenants = await this.getTenants({
       organizationId,
       includeUsageLogs: true,
-      status: ['active']
+      status: ["active"],
     });
 
     const usageThresholds = {
       high: 0.8, // 80%
       medium: 0.4, // 40%
-      low: 0.2 // 20%
+      low: 0.2, // 20%
     };
 
-    return tenants.filter(tenant => {
+    return tenants.filter((tenant) => {
       const totalQuota = Number(tenant.storage_quota || 0);
       if (totalQuota === 0) return false;
 
       const usageRatio = Number(tenant.used_storage) / totalQuota;
 
       switch (pattern) {
-        case 'high':
+        case "high":
           return usageRatio >= usageThresholds.high;
-        case 'medium':
-          return usageRatio >= usageThresholds.medium && usageRatio < usageThresholds.high;
-        case 'low':
+        case "medium":
+          return (
+            usageRatio >= usageThresholds.medium &&
+            usageRatio < usageThresholds.high
+          );
+        case "low":
           return usageRatio < usageThresholds.low;
       }
     });
@@ -775,14 +786,14 @@ export class TenantQueries {
       includeTeams?: boolean;
       includeSettings?: boolean;
       deleteSource?: boolean;
-    }
+    },
   ) {
     const {
       includeUsers = true,
       includeBusinesses = true,
       includeTeams = true,
       includeSettings = true,
-      deleteSource = false
+      deleteSource = false,
     } = options;
 
     // Start a transaction
@@ -790,21 +801,21 @@ export class TenantQueries {
       if (includeUsers) {
         await tx.user_accounts.updateMany({
           where: { tenant_id: sourceId },
-          data: { tenant_id: targetId }
+          data: { tenant_id: targetId },
         });
       }
 
       if (includeBusinesses) {
         await tx.business_accounts.updateMany({
           where: { tenant_id: sourceId },
-          data: { tenant_id: targetId }
+          data: { tenant_id: targetId },
         });
       }
 
       if (includeTeams) {
         await tx.teams.updateMany({
           where: { tenant_id: sourceId },
-          data: { tenant_id: targetId }
+          data: { tenant_id: targetId },
         });
       }
 
@@ -815,7 +826,7 @@ export class TenantQueries {
       if (deleteSource) {
         await tx.tenants.update({
           where: { id: sourceId },
-          data: { status: 'deleted' }
+          data: { status: "deleted" },
         });
       }
 
@@ -825,8 +836,8 @@ export class TenantQueries {
           user_accounts: true,
           business_accounts: true,
           teams: true,
-          settings: true
-        }
+          settings: true,
+        },
       });
     });
   }
@@ -840,69 +851,78 @@ export class TenantQueries {
     options?: {
       validateOrganizationLimits?: boolean;
       forceUpdate?: boolean;
-    }
+    },
   ) {
-    const { validateOrganizationLimits = true, forceUpdate = false } = options || {};
+    const { validateOrganizationLimits = true, forceUpdate = false } =
+      options || {};
 
     const tenant = await this.getTenantById(id, {
-      includeUserAccounts: true
+      includeUserAccounts: true,
     });
 
-    if (!tenant) throw new Error('Tenant not found');
+    if (!tenant) throw new Error("Tenant not found");
 
     // Validate that new quota isn't less than current usage
     if (!forceUpdate && newQuota < tenant.used_storage) {
-      throw new Error('New quota cannot be less than current usage');
+      throw new Error("New quota cannot be less than current usage");
     }
 
     if (validateOrganizationLimits) {
       const org = await this.middleware.enforceQueryRules(
         this.prisma,
         Prisma.ModelName.organizations,
-        'findUnique',
+        "findUnique",
         {
-          where: { id: tenant.organization_id }
-        }
+          where: { id: tenant.organization_id },
+        },
       );
 
-      if (!org) throw new Error('Organization not found');
+      if (!org) throw new Error("Organization not found");
 
       // Check if new quota would exceed organization's total quota
-      const otherTenantsQuota = await this.getTotalTenantQuota(tenant.organization_id, id);
+      const otherTenantsQuota = await this.getTotalTenantQuota(
+        tenant.organization_id,
+        id,
+      );
       const totalQuota = otherTenantsQuota + Number(newQuota);
 
       if (totalQuota > Number(org.storage_quota)) {
-        throw new Error('New quota would exceed organization storage limit');
+        throw new Error("New quota would exceed organization storage limit");
       }
     }
 
     return await this.updateTenant(id, {
-      storage_quota: newQuota
+      storage_quota: newQuota,
     });
   }
 
   /**
    * Get total tenant quota for an organization (excluding specified tenant)
    */
-  private async getTotalTenantQuota(organizationId: string, excludeTenantId?: string): Promise<number> {
+  private async getTotalTenantQuota(
+    organizationId: string,
+    excludeTenantId?: string,
+  ): Promise<number> {
     const tenants = await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.tenants,
-      'findMany',
+      "findMany",
       {
         where: {
           organization_id: organizationId,
           id: excludeTenantId ? { not: excludeTenantId } : undefined,
-          status: 'active'
+          status: "active",
         },
         select: {
-          storage_quota: true
-        }
-      }
+          storage_quota: true,
+        },
+      },
     );
 
-    return tenants.reduce((total, tenant) =>
-      total + Number(tenant.storage_quota || 0), 0);
+    return tenants.reduce(
+      (total, tenant) => total + Number(tenant.storage_quota || 0),
+      0,
+    );
   }
 
   /**
@@ -910,23 +930,23 @@ export class TenantQueries {
    */
   private aggregateActivityMetrics(
     logs: any[],
-    timeframe: 'daily' | 'weekly' | 'monthly'
+    timeframe: "daily" | "weekly" | "monthly",
   ) {
     const metrics = new Map<string, number>();
 
-    logs.forEach(log => {
+    logs.forEach((log) => {
       let key: string;
       const date = new Date(log.timestamp);
 
       switch (timeframe) {
-        case 'daily':
-          key = date.toISOString().split('T')[0];
+        case "daily":
+          key = date.toISOString().split("T")[0];
           break;
-        case 'weekly':
+        case "weekly":
           key = this.getWeekKey(date);
           break;
-        case 'monthly':
-          key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+        case "monthly":
+          key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
           break;
       }
 
@@ -937,7 +957,7 @@ export class TenantQueries {
     return Array.from(metrics.entries())
       .map(([period, value]) => ({
         period,
-        value
+        value,
       }))
       .sort((a, b) => a.period.localeCompare(b.period));
   }
@@ -948,9 +968,12 @@ export class TenantQueries {
   private getWeekKey(date: Date): string {
     const startOfYear = new Date(date.getFullYear(), 0, 1);
     const weekNumber = Math.ceil(
-      ((date.getTime() - startOfYear.getTime()) / 86400000 + startOfYear.getDay() + 1) / 7
+      ((date.getTime() - startOfYear.getTime()) / 86400000 +
+        startOfYear.getDay() +
+        1) /
+        7,
     );
-    return `${date.getFullYear()}-W${String(weekNumber).padStart(2, '0')}`;
+    return `${date.getFullYear()}-W${String(weekNumber).padStart(2, "0")}`;
   }
 
   /**
@@ -959,15 +982,15 @@ export class TenantQueries {
   private aggregateDailyUsage(usageLogs: any[]) {
     const dailyUsage = new Map<string, number>();
 
-    usageLogs.forEach(log => {
-      const date = log.timestamp.toISOString().split('T')[0];
+    usageLogs.forEach((log) => {
+      const date = log.timestamp.toISOString().split("T")[0];
       const currentUsage = dailyUsage.get(date) || 0;
       dailyUsage.set(date, currentUsage + Number(log.quantity));
     });
 
     return Array.from(dailyUsage.entries()).map(([date, usage]) => ({
       date,
-      usage
+      usage,
     }));
   }
 }

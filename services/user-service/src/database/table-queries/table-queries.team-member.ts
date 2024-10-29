@@ -1,9 +1,12 @@
 import { PrismaClient, Prisma } from "../generated/postgresql";
-import { QueryMiddleware, QueryMiddlewareFactory } from "../middleware/query.middleware";
+import {
+  QueryMiddleware,
+  QueryMiddlewareFactory,
+} from "../middleware/query.middleware";
 import { QueryOptions, RequestContext } from "../middleware/types";
 
-type TeamMemberRole = 'admin' | 'member' | 'guest';
-type TeamMemberStatus = 'active' | 'invited' | 'suspended';
+type TeamMemberRole = "admin" | "member" | "guest";
+type TeamMemberStatus = "active" | "invited" | "suspended";
 
 type TeamMemberWithRelations = Prisma.team_membersGetPayload<{
   include: {
@@ -34,32 +37,34 @@ export class TeamMemberQueries {
   }) {
     // Validate that either user_account_id or business_account_id is provided
     if (!data.user_account_id && !data.business_account_id) {
-      throw new Error('Either user_account_id or business_account_id must be provided');
+      throw new Error(
+        "Either user_account_id or business_account_id must be provided",
+      );
     }
 
     // Check for existing membership
     await this.validateUniqueMembership(
       data.team_id,
       data.user_account_id,
-      data.business_account_id
+      data.business_account_id,
     );
 
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.team_members,
-      'create',
+      "create",
       {
         data: {
           ...data,
           invited_by: this.middleware.getContext().userId,
-          status: 'invited',
+          status: "invited",
         },
         include: {
           team: true,
           user_account: true,
-          business_account: true
-        }
-      }
+          business_account: true,
+        },
+      },
     );
   }
 
@@ -73,7 +78,7 @@ export class TeamMemberQueries {
       business_account_id?: bigint;
       role: TeamMemberRole;
       metadata?: Record<string, any>;
-    }>
+    }>,
   ) {
     const createdMembers = await this.prisma.$transaction(async (tx) => {
       const results = [];
@@ -84,32 +89,32 @@ export class TeamMemberQueries {
           await this.validateUniqueMembership(
             teamId,
             member.user_account_id,
-            member.business_account_id
+            member.business_account_id,
           );
 
           const created = await this.middleware.enforceQueryRules(
             tx as unknown as PrismaClient,
             Prisma.ModelName.team_members,
-            'create',
+            "create",
             {
               data: {
                 team_id: teamId,
                 ...member,
                 invited_by: this.middleware.getContext().userId,
-                status: 'invited'
-              }
-            }
+                status: "invited",
+              },
+            },
           );
 
           results.push({
             success: true,
-            member: created
+            member: created,
           });
         } catch (error) {
           results.push({
             success: false,
             error: error instanceof Error ? error.message : String(error),
-            member: member
+            member: member,
           });
         }
       }
@@ -123,17 +128,19 @@ export class TeamMemberQueries {
   /**
    * Get team members with flexible filtering
    */
-  async getTeamMembers(options?: QueryOptions & {
-    teamId?: bigint;
-    roles?: TeamMemberRole[];
-    status?: TeamMemberStatus[];
-    invitedBy?: string;
-    joinedAfter?: Date;
-    joinedBefore?: Date;
-    includeTeam?: boolean;
-    includeAccounts?: boolean;
-    searchTerm?: string;
-  }) {
+  async getTeamMembers(
+    options?: QueryOptions & {
+      teamId?: bigint;
+      roles?: TeamMemberRole[];
+      status?: TeamMemberStatus[];
+      invitedBy?: string;
+      joinedAfter?: Date;
+      joinedBefore?: Date;
+      includeTeam?: boolean;
+      includeAccounts?: boolean;
+      searchTerm?: string;
+    },
+  ) {
     const {
       teamId,
       roles,
@@ -176,36 +183,36 @@ export class TeamMemberQueries {
         {
           user_account: {
             OR: [
-              { email: { contains: searchTerm, mode: 'insensitive' } },
-              { firstname: { contains: searchTerm, mode: 'insensitive' } },
-              { lastname: { contains: searchTerm, mode: 'insensitive' } }
-            ]
-          }
+              { email: { contains: searchTerm, mode: "insensitive" } },
+              { firstname: { contains: searchTerm, mode: "insensitive" } },
+              { lastname: { contains: searchTerm, mode: "insensitive" } },
+            ],
+          },
         },
         {
           business_account: {
             OR: [
-              { company_name: { contains: searchTerm, mode: 'insensitive' } },
-              { email: { contains: searchTerm, mode: 'insensitive' } }
-            ]
-          }
-        }
+              { company_name: { contains: searchTerm, mode: "insensitive" } },
+              { email: { contains: searchTerm, mode: "insensitive" } },
+            ],
+          },
+        },
       ];
     }
 
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.team_members,
-      'findMany',
+      "findMany",
       {
         where: whereClause,
         include: {
           team: includeTeam,
           user_account: includeAccounts,
-          business_account: includeAccounts
-        }
+          business_account: includeAccounts,
+        },
       },
-      queryOptions
+      queryOptions,
     );
   }
 
@@ -217,23 +224,23 @@ export class TeamMemberQueries {
     options?: QueryOptions & {
       includeTeam?: boolean;
       includeAccounts?: boolean;
-    }
+    },
   ): Promise<TeamMemberWithRelations | null> {
     const { includeTeam, includeAccounts, ...queryOptions } = options || {};
 
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.team_members,
-      'findUnique',
+      "findUnique",
       {
         where: { id },
         include: {
           team: includeTeam,
           user_account: includeAccounts,
-          business_account: includeAccounts
-        }
+          business_account: includeAccounts,
+        },
       },
-      queryOptions
+      queryOptions,
     );
   }
 
@@ -246,21 +253,21 @@ export class TeamMemberQueries {
       role?: TeamMemberRole;
       status?: TeamMemberStatus;
       metadata?: Record<string, any>;
-    }
+    },
   ) {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.team_members,
-      'update',
+      "update",
       {
         where: { id },
         data,
         include: {
           team: true,
           user_account: true,
-          business_account: true
-        }
-      }
+          business_account: true,
+        },
+      },
     );
   }
 
@@ -270,51 +277,50 @@ export class TeamMemberQueries {
   async updateMemberStatus(
     id: bigint,
     status: TeamMemberStatus,
-    reason?: string
+    reason?: string,
   ) {
     const updateData: any = {
       status,
-      metadata: reason ? {
-        status_change_reason: reason,
-        status_changed_at: new Date()
-      } : undefined
+      metadata: reason
+        ? {
+            status_change_reason: reason,
+            status_changed_at: new Date(),
+          }
+        : undefined,
     };
 
-    if (status === 'active') {
+    if (status === "active") {
       updateData.joined_at = new Date();
     }
 
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.team_members,
-      'update',
+      "update",
       {
         where: { id },
-        data: updateData
-      }
+        data: updateData,
+      },
     );
   }
 
   /**
    * Bulk update member status
    */
-  async bulkUpdateMemberStatus(
-    memberIds: bigint[],
-    status: TeamMemberStatus
-  ) {
+  async bulkUpdateMemberStatus(memberIds: bigint[], status: TeamMemberStatus) {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.team_members,
-      'updateMany',
+      "updateMany",
       {
         where: {
-          id: { in: memberIds }
+          id: { in: memberIds },
         },
         data: {
           status,
-          joined_at: status === 'active' ? new Date() : undefined
-        }
-      }
+          joined_at: status === "active" ? new Date() : undefined,
+        },
+      },
     );
   }
 
@@ -325,10 +331,10 @@ export class TeamMemberQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.team_members,
-      'delete',
+      "delete",
       {
-        where: { id }
-      }
+        where: { id },
+      },
     );
   }
 
@@ -339,12 +345,12 @@ export class TeamMemberQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.team_members,
-      'deleteMany',
+      "deleteMany",
       {
         where: {
-          id: { in: memberIds }
-        }
-      }
+          id: { in: memberIds },
+        },
+      },
     );
   }
 
@@ -353,7 +359,7 @@ export class TeamMemberQueries {
    */
   async getMemberRolesAcrossTeams(
     accountId: bigint,
-    isBusinessAccount: boolean = false
+    isBusinessAccount: boolean = false,
   ) {
     const whereClause = isBusinessAccount
       ? { business_account_id: accountId }
@@ -362,13 +368,13 @@ export class TeamMemberQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.team_members,
-      'findMany',
+      "findMany",
       {
         where: whereClause,
         include: {
-          team: true
-        }
-      }
+          team: true,
+        },
+      },
     );
   }
 
@@ -381,18 +387,18 @@ export class TeamMemberQueries {
     options?: {
       keepRole?: boolean;
       keepMetadata?: boolean;
-    }
+    },
   ) {
     const { keepRole = false, keepMetadata = false } = options || {};
 
     const sourceMember = await this.getTeamMemberById(sourceId);
-    if (!sourceMember) throw new Error('Source member not found');
+    if (!sourceMember) throw new Error("Source member not found");
 
     // Validate unique membership in target team
     await this.validateUniqueMembership(
       targetTeamId,
       sourceMember.user_account_id || undefined,
-      sourceMember.business_account_id || undefined
+      sourceMember.business_account_id || undefined,
     );
 
     // Create new membership
@@ -400,8 +406,10 @@ export class TeamMemberQueries {
       team_id: targetTeamId,
       user_account_id: sourceMember.user_account_id || undefined,
       business_account_id: sourceMember.business_account_id || undefined,
-      role: keepRole ? sourceMember.role as TeamMemberRole : 'member',
-      metadata: keepMetadata ? sourceMember.metadata as Record<string, any> : undefined
+      role: keepRole ? (sourceMember.role as TeamMemberRole) : "member",
+      metadata: keepMetadata
+        ? (sourceMember.metadata as Record<string, any>)
+        : undefined,
     });
 
     // Remove old membership
@@ -419,14 +427,14 @@ export class TeamMemberQueries {
       startDate?: Date;
       endDate?: Date;
       limit?: number;
-    }
+    },
   ) {
     const member = await this.getTeamMemberById(id);
-    if (!member) throw new Error('Member not found');
+    if (!member) throw new Error("Member not found");
 
     let whereClause: any = {
-      entity_type: 'team_member',
-      entity_id: id
+      entity_type: "team_member",
+      entity_id: id,
     };
 
     if (options?.startDate || options?.endDate) {
@@ -438,32 +446,35 @@ export class TeamMemberQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.audit_logs,
-      'findMany',
+      "findMany",
       {
         where: whereClause,
         orderBy: {
-          created_at: 'desc'
+          created_at: "desc",
         },
-        take: options?.limit
-      }
+        take: options?.limit,
+      },
     );
   }
 
   /**
    * Get member invitations
    */
-  async getMemberInvitations(
-    options?: {
-      teamId?: bigint;
-      status?: TeamMemberStatus[];
-      olderThan?: Date;
-      includeTeam?: boolean;
-    }
-  ) {
-    const { teamId, status = ['invited'], olderThan, includeTeam } = options || {};
+  async getMemberInvitations(options?: {
+    teamId?: bigint;
+    status?: TeamMemberStatus[];
+    olderThan?: Date;
+    includeTeam?: boolean;
+  }) {
+    const {
+      teamId,
+      status = ["invited"],
+      olderThan,
+      includeTeam,
+    } = options || {};
 
     let whereClause: any = {
-      status: { in: status }
+      status: { in: status },
     };
 
     if (teamId) {
@@ -472,22 +483,22 @@ export class TeamMemberQueries {
 
     if (olderThan) {
       whereClause.joined_at = {
-        lt: olderThan
+        lt: olderThan,
       };
     }
 
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.team_members,
-      'findMany',
+      "findMany",
       {
         where: whereClause,
         include: {
           team: includeTeam,
           user_account: true,
-          business_account: true
-        }
-      }
+          business_account: true,
+        },
+      },
     );
   }
 
@@ -497,22 +508,21 @@ export class TeamMemberQueries {
   async processInvitationResponse(
     id: bigint,
     accept: boolean,
-    responderId: string
+    responderId: string,
   ) {
     const member = await this.getTeamMemberById(id);
-    if (!member) throw new Error('Member not found');
+    if (!member) throw new Error("Member not found");
 
-    if (member.status !== 'invited') {
-      throw new Error('Invitation is no longer pending');
+    if (member.status !== "invited") {
+      throw new Error("Invitation is no longer pending");
     }
 
     if (accept) {
-      return await this.updateMemberStatus(id, 'active');
+      return await this.updateMemberStatus(id, "active");
     } else {
       return await this.removeTeamMember(id);
     }
   }
-
 
   /**
    * Validate that the member doesn't already exist in the team
@@ -520,33 +530,35 @@ export class TeamMemberQueries {
   private async validateUniqueMembership(
     teamId: bigint,
     userAccountId?: bigint,
-    businessAccountId?: bigint
+    businessAccountId?: bigint,
   ): Promise<void> {
     if (!userAccountId && !businessAccountId) {
-      throw new Error('Either user_account_id or business_account_id must be provided');
+      throw new Error(
+        "Either user_account_id or business_account_id must be provided",
+      );
     }
 
     const existingMember = await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.team_members,
-      'findFirst',
+      "findFirst",
       {
         where: {
           team_id: teamId,
           OR: [
             userAccountId ? { user_account_id: userAccountId } : {},
-            businessAccountId ? { business_account_id: businessAccountId } : {}
+            businessAccountId ? { business_account_id: businessAccountId } : {},
           ],
           status: {
-            in: ['active', 'invited'] // Check both active and invited members
-          }
-        }
-      }
+            in: ["active", "invited"], // Check both active and invited members
+          },
+        },
+      },
     );
 
     if (existingMember) {
       throw new Error(
-        `Member already exists in team with status: ${existingMember.status}`
+        `Member already exists in team with status: ${existingMember.status}`,
       );
     }
   }
