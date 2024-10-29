@@ -28,7 +28,8 @@ type ValidOperations =
   | "updateMany"
   | "deleteMany"
   | "findFirst"
-  | "createMany";
+  | "createMany"
+  | "groupBy";
 
 /**
  * Utility type to extract the argument types for a given model and operation.
