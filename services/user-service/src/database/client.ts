@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from "./generated/postgresql";
+import { Prisma, PrismaClient } from "@/database/generated/postgresql/edge";
 import { QueryOptions, RequestContext } from "./types";
 
 /**

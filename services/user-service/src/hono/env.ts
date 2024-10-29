@@ -1,6 +1,7 @@
 import { Analytics } from "@/analytics";
 import { ServiceCache } from "@/cache";
-import { QueryMiddleware } from "@/database/middleware/query.middleware";
+import { QueryMiddleware } from "@/database/client";
+import { PrismaClient } from "@/database/generated/postgresql";
 import { APIKeyRepository } from "@/db-repository/api-key-repository";
 import { UserRepository } from "@/db-repository/user-repository";
 import { DrizzleDB } from "@/db/client";
@@ -24,7 +25,8 @@ export type ServiceContext = {
   /** Analytics service for tracking user behavior and application usage. */
   analytics: Analytics;
   /** Database client for interacting with the application's data. */
-  queryClient: QueryMiddleware;
+  dbQueryMiddleware: QueryMiddleware;
+  prismaRef: PrismaClient
   // TODO: add analytics client to pass api usage
   // TODO: add audit log client to log user actions and store in a nosql db
   // TODO: add usage limit client to check if user has exceeded their usage limits

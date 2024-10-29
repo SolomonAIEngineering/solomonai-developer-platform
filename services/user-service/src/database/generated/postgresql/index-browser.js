@@ -158,7 +158,9 @@ exports.Prisma.TenantsScalarFieldEnum = {
   used_storage: 'used_storage',
   metadata: 'metadata',
   custom_domain: 'custom_domain',
-  email: 'email'
+  email: 'email',
+  is_soft_deleted: 'is_soft_deleted',
+  is_active: 'is_active'
 };
 
 exports.Prisma.Org_membersScalarFieldEnum = {
@@ -188,6 +190,7 @@ exports.Prisma.Org_api_keysScalarFieldEnum = {
   allowed_ips: 'allowed_ips',
   allowed_domains: 'allowed_domains',
   usage_count: 'usage_count',
+  max_usage_count: 'max_usage_count',
   last_used_ip: 'last_used_ip',
   environment: 'environment',
   revoked: 'revoked',

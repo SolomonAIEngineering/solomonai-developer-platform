@@ -150,6 +150,8 @@ model tenants {
   metadata        Json?    @db.JsonB
   custom_domain   String?  @db.VarChar(255)
   email           String?  @db.VarChar(255) /// Primary contact email
+  is_soft_deleted Boolean  @default(false) // Indicates if tenant is soft-deleted
+  is_active      Boolean  @default(true) // Indicates if tenant is active
 
   // Relations
   organization      organizations       @relation(fields: [organization_id], references: [id], onDelete: Cascade)
@@ -239,6 +241,7 @@ model org_api_keys {
   allowed_ips     String[]          @default([]) // Whitelisted IP addresses
   allowed_domains String[]          @default([]) // Whitelisted domains
   usage_count     Int               @default(0) // Number of times the key has been used
+  max_usage_count       Int          @default(0) // Maximum usage limit
   last_used_ip    String?           @db.VarChar(255) // IP address from which the key was last used
   environment     APIKeyEnvironment @default(development) // Environment where the key is valid
   revoked         Boolean           @default(false) // Indicates if the key has been revoked

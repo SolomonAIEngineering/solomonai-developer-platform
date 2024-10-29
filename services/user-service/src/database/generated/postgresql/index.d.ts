@@ -3929,6 +3929,8 @@ export namespace Prisma {
     used_storage: bigint | null
     custom_domain: string | null
     email: string | null
+    is_soft_deleted: boolean | null
+    is_active: boolean | null
   }
 
   export type TenantsMaxAggregateOutputType = {
@@ -3943,6 +3945,8 @@ export namespace Prisma {
     used_storage: bigint | null
     custom_domain: string | null
     email: string | null
+    is_soft_deleted: boolean | null
+    is_active: boolean | null
   }
 
   export type TenantsCountAggregateOutputType = {
@@ -3958,6 +3962,8 @@ export namespace Prisma {
     metadata: number
     custom_domain: number
     email: number
+    is_soft_deleted: number
+    is_active: number
     _all: number
   }
 
@@ -3984,6 +3990,8 @@ export namespace Prisma {
     used_storage?: true
     custom_domain?: true
     email?: true
+    is_soft_deleted?: true
+    is_active?: true
   }
 
   export type TenantsMaxAggregateInputType = {
@@ -3998,6 +4006,8 @@ export namespace Prisma {
     used_storage?: true
     custom_domain?: true
     email?: true
+    is_soft_deleted?: true
+    is_active?: true
   }
 
   export type TenantsCountAggregateInputType = {
@@ -4013,6 +4023,8 @@ export namespace Prisma {
     metadata?: true
     custom_domain?: true
     email?: true
+    is_soft_deleted?: true
+    is_active?: true
     _all?: true
   }
 
@@ -4115,6 +4127,8 @@ export namespace Prisma {
     metadata: JsonValue | null
     custom_domain: string | null
     email: string | null
+    is_soft_deleted: boolean
+    is_active: boolean
     _count: TenantsCountAggregateOutputType | null
     _avg: TenantsAvgAggregateOutputType | null
     _sum: TenantsSumAggregateOutputType | null
@@ -4149,6 +4163,8 @@ export namespace Prisma {
     metadata?: boolean
     custom_domain?: boolean
     email?: boolean
+    is_soft_deleted?: boolean
+    is_active?: boolean
     organization?: boolean | organizationsDefaultArgs<ExtArgs>
     business_accounts?: boolean | tenants$business_accountsArgs<ExtArgs>
     user_accounts?: boolean | tenants$user_accountsArgs<ExtArgs>
@@ -4173,6 +4189,8 @@ export namespace Prisma {
     metadata?: boolean
     custom_domain?: boolean
     email?: boolean
+    is_soft_deleted?: boolean
+    is_active?: boolean
     organization?: boolean | organizationsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tenants"]>
 
@@ -4189,6 +4207,8 @@ export namespace Prisma {
     metadata?: boolean
     custom_domain?: boolean
     email?: boolean
+    is_soft_deleted?: boolean
+    is_active?: boolean
   }
 
   export type tenantsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4234,6 +4254,8 @@ export namespace Prisma {
        * Primary contact email
        */
       email: string | null
+      is_soft_deleted: boolean
+      is_active: boolean
     }, ExtArgs["result"]["tenants"]>
     composites: {}
   }
@@ -4647,6 +4669,8 @@ export namespace Prisma {
     readonly metadata: FieldRef<"tenants", 'Json'>
     readonly custom_domain: FieldRef<"tenants", 'String'>
     readonly email: FieldRef<"tenants", 'String'>
+    readonly is_soft_deleted: FieldRef<"tenants", 'Boolean'>
+    readonly is_active: FieldRef<"tenants", 'Boolean'>
   }
     
 
@@ -6171,6 +6195,7 @@ export namespace Prisma {
     user_id: number | null
     rate_limit: number | null
     usage_count: number | null
+    max_usage_count: number | null
   }
 
   export type Org_api_keysSumAggregateOutputType = {
@@ -6178,6 +6203,7 @@ export namespace Prisma {
     user_id: bigint | null
     rate_limit: number | null
     usage_count: number | null
+    max_usage_count: number | null
   }
 
   export type Org_api_keysMinAggregateOutputType = {
@@ -6190,6 +6216,7 @@ export namespace Prisma {
     key_hash: string | null
     rate_limit: number | null
     usage_count: number | null
+    max_usage_count: number | null
     last_used_ip: string | null
     environment: $Enums.APIKeyEnvironment | null
     revoked: boolean | null
@@ -6213,6 +6240,7 @@ export namespace Prisma {
     key_hash: string | null
     rate_limit: number | null
     usage_count: number | null
+    max_usage_count: number | null
     last_used_ip: string | null
     environment: $Enums.APIKeyEnvironment | null
     revoked: boolean | null
@@ -6239,6 +6267,7 @@ export namespace Prisma {
     allowed_ips: number
     allowed_domains: number
     usage_count: number
+    max_usage_count: number
     last_used_ip: number
     environment: number
     revoked: number
@@ -6259,6 +6288,7 @@ export namespace Prisma {
     user_id?: true
     rate_limit?: true
     usage_count?: true
+    max_usage_count?: true
   }
 
   export type Org_api_keysSumAggregateInputType = {
@@ -6266,6 +6296,7 @@ export namespace Prisma {
     user_id?: true
     rate_limit?: true
     usage_count?: true
+    max_usage_count?: true
   }
 
   export type Org_api_keysMinAggregateInputType = {
@@ -6278,6 +6309,7 @@ export namespace Prisma {
     key_hash?: true
     rate_limit?: true
     usage_count?: true
+    max_usage_count?: true
     last_used_ip?: true
     environment?: true
     revoked?: true
@@ -6301,6 +6333,7 @@ export namespace Prisma {
     key_hash?: true
     rate_limit?: true
     usage_count?: true
+    max_usage_count?: true
     last_used_ip?: true
     environment?: true
     revoked?: true
@@ -6327,6 +6360,7 @@ export namespace Prisma {
     allowed_ips?: true
     allowed_domains?: true
     usage_count?: true
+    max_usage_count?: true
     last_used_ip?: true
     environment?: true
     revoked?: true
@@ -6440,6 +6474,7 @@ export namespace Prisma {
     allowed_ips: string[]
     allowed_domains: string[]
     usage_count: number
+    max_usage_count: number
     last_used_ip: string | null
     environment: $Enums.APIKeyEnvironment
     revoked: boolean
@@ -6485,6 +6520,7 @@ export namespace Prisma {
     allowed_ips?: boolean
     allowed_domains?: boolean
     usage_count?: boolean
+    max_usage_count?: boolean
     last_used_ip?: boolean
     environment?: boolean
     revoked?: boolean
@@ -6513,6 +6549,7 @@ export namespace Prisma {
     allowed_ips?: boolean
     allowed_domains?: boolean
     usage_count?: boolean
+    max_usage_count?: boolean
     last_used_ip?: boolean
     environment?: boolean
     revoked?: boolean
@@ -6541,6 +6578,7 @@ export namespace Prisma {
     allowed_ips?: boolean
     allowed_domains?: boolean
     usage_count?: boolean
+    max_usage_count?: boolean
     last_used_ip?: boolean
     environment?: boolean
     revoked?: boolean
@@ -6582,6 +6620,7 @@ export namespace Prisma {
       allowed_ips: string[]
       allowed_domains: string[]
       usage_count: number
+      max_usage_count: number
       last_used_ip: string | null
       environment: $Enums.APIKeyEnvironment
       revoked: boolean
@@ -7000,6 +7039,7 @@ export namespace Prisma {
     readonly allowed_ips: FieldRef<"org_api_keys", 'String[]'>
     readonly allowed_domains: FieldRef<"org_api_keys", 'String[]'>
     readonly usage_count: FieldRef<"org_api_keys", 'Int'>
+    readonly max_usage_count: FieldRef<"org_api_keys", 'Int'>
     readonly last_used_ip: FieldRef<"org_api_keys", 'String'>
     readonly environment: FieldRef<"org_api_keys", 'APIKeyEnvironment'>
     readonly revoked: FieldRef<"org_api_keys", 'Boolean'>
@@ -18786,7 +18826,9 @@ export namespace Prisma {
     used_storage: 'used_storage',
     metadata: 'metadata',
     custom_domain: 'custom_domain',
-    email: 'email'
+    email: 'email',
+    is_soft_deleted: 'is_soft_deleted',
+    is_active: 'is_active'
   };
 
   export type TenantsScalarFieldEnum = (typeof TenantsScalarFieldEnum)[keyof typeof TenantsScalarFieldEnum]
@@ -18822,6 +18864,7 @@ export namespace Prisma {
     allowed_ips: 'allowed_ips',
     allowed_domains: 'allowed_domains',
     usage_count: 'usage_count',
+    max_usage_count: 'max_usage_count',
     last_used_ip: 'last_used_ip',
     environment: 'environment',
     revoked: 'revoked',
@@ -19360,6 +19403,8 @@ export namespace Prisma {
     metadata?: JsonNullableFilter<"tenants">
     custom_domain?: StringNullableFilter<"tenants"> | string | null
     email?: StringNullableFilter<"tenants"> | string | null
+    is_soft_deleted?: BoolFilter<"tenants"> | boolean
+    is_active?: BoolFilter<"tenants"> | boolean
     organization?: XOR<OrganizationsRelationFilter, organizationsWhereInput>
     business_accounts?: Business_accountsListRelationFilter
     user_accounts?: User_accountsListRelationFilter
@@ -19383,6 +19428,8 @@ export namespace Prisma {
     metadata?: SortOrderInput | SortOrder
     custom_domain?: SortOrderInput | SortOrder
     email?: SortOrderInput | SortOrder
+    is_soft_deleted?: SortOrder
+    is_active?: SortOrder
     organization?: organizationsOrderByWithRelationInput
     business_accounts?: business_accountsOrderByRelationAggregateInput
     user_accounts?: user_accountsOrderByRelationAggregateInput
@@ -19409,6 +19456,8 @@ export namespace Prisma {
     metadata?: JsonNullableFilter<"tenants">
     custom_domain?: StringNullableFilter<"tenants"> | string | null
     email?: StringNullableFilter<"tenants"> | string | null
+    is_soft_deleted?: BoolFilter<"tenants"> | boolean
+    is_active?: BoolFilter<"tenants"> | boolean
     organization?: XOR<OrganizationsRelationFilter, organizationsWhereInput>
     business_accounts?: Business_accountsListRelationFilter
     user_accounts?: User_accountsListRelationFilter
@@ -19432,6 +19481,8 @@ export namespace Prisma {
     metadata?: SortOrderInput | SortOrder
     custom_domain?: SortOrderInput | SortOrder
     email?: SortOrderInput | SortOrder
+    is_soft_deleted?: SortOrder
+    is_active?: SortOrder
     _count?: tenantsCountOrderByAggregateInput
     _avg?: tenantsAvgOrderByAggregateInput
     _max?: tenantsMaxOrderByAggregateInput
@@ -19455,6 +19506,8 @@ export namespace Prisma {
     metadata?: JsonNullableWithAggregatesFilter<"tenants">
     custom_domain?: StringNullableWithAggregatesFilter<"tenants"> | string | null
     email?: StringNullableWithAggregatesFilter<"tenants"> | string | null
+    is_soft_deleted?: BoolWithAggregatesFilter<"tenants"> | boolean
+    is_active?: BoolWithAggregatesFilter<"tenants"> | boolean
   }
 
   export type org_membersWhereInput = {
@@ -19561,6 +19614,7 @@ export namespace Prisma {
     allowed_ips?: StringNullableListFilter<"org_api_keys">
     allowed_domains?: StringNullableListFilter<"org_api_keys">
     usage_count?: IntFilter<"org_api_keys"> | number
+    max_usage_count?: IntFilter<"org_api_keys"> | number
     last_used_ip?: StringNullableFilter<"org_api_keys"> | string | null
     environment?: EnumAPIKeyEnvironmentFilter<"org_api_keys"> | $Enums.APIKeyEnvironment
     revoked?: BoolFilter<"org_api_keys"> | boolean
@@ -19589,6 +19643,7 @@ export namespace Prisma {
     allowed_ips?: SortOrder
     allowed_domains?: SortOrder
     usage_count?: SortOrder
+    max_usage_count?: SortOrder
     last_used_ip?: SortOrderInput | SortOrder
     environment?: SortOrder
     revoked?: SortOrder
@@ -19620,6 +19675,7 @@ export namespace Prisma {
     allowed_ips?: StringNullableListFilter<"org_api_keys">
     allowed_domains?: StringNullableListFilter<"org_api_keys">
     usage_count?: IntFilter<"org_api_keys"> | number
+    max_usage_count?: IntFilter<"org_api_keys"> | number
     last_used_ip?: StringNullableFilter<"org_api_keys"> | string | null
     environment?: EnumAPIKeyEnvironmentFilter<"org_api_keys"> | $Enums.APIKeyEnvironment
     revoked?: BoolFilter<"org_api_keys"> | boolean
@@ -19648,6 +19704,7 @@ export namespace Prisma {
     allowed_ips?: SortOrder
     allowed_domains?: SortOrder
     usage_count?: SortOrder
+    max_usage_count?: SortOrder
     last_used_ip?: SortOrderInput | SortOrder
     environment?: SortOrder
     revoked?: SortOrder
@@ -19682,6 +19739,7 @@ export namespace Prisma {
     allowed_ips?: StringNullableListFilter<"org_api_keys">
     allowed_domains?: StringNullableListFilter<"org_api_keys">
     usage_count?: IntWithAggregatesFilter<"org_api_keys"> | number
+    max_usage_count?: IntWithAggregatesFilter<"org_api_keys"> | number
     last_used_ip?: StringNullableWithAggregatesFilter<"org_api_keys"> | string | null
     environment?: EnumAPIKeyEnvironmentWithAggregatesFilter<"org_api_keys"> | $Enums.APIKeyEnvironment
     revoked?: BoolWithAggregatesFilter<"org_api_keys"> | boolean
@@ -20940,6 +20998,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     organization: organizationsCreateNestedOneWithoutTenantsInput
     business_accounts?: business_accountsCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsCreateNestedManyWithoutTenantInput
@@ -20963,6 +21023,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     business_accounts?: business_accountsUncheckedCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsUncheckedCreateNestedManyWithoutTenantInput
     settings?: settingsUncheckedCreateNestedManyWithoutTenantInput
@@ -20984,6 +21046,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     organization?: organizationsUpdateOneRequiredWithoutTenantsNestedInput
     business_accounts?: business_accountsUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUpdateManyWithoutTenantNestedInput
@@ -21007,6 +21071,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     business_accounts?: business_accountsUncheckedUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUncheckedUpdateManyWithoutTenantNestedInput
     settings?: settingsUncheckedUpdateManyWithoutTenantNestedInput
@@ -21029,6 +21095,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
   }
 
   export type tenantsUpdateManyMutationInput = {
@@ -21043,6 +21111,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type tenantsUncheckedUpdateManyInput = {
@@ -21058,6 +21128,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type org_membersCreateInput = {
@@ -21168,6 +21240,7 @@ export namespace Prisma {
     allowed_ips?: org_api_keysCreateallowed_ipsInput | string[]
     allowed_domains?: org_api_keysCreateallowed_domainsInput | string[]
     usage_count?: number
+    max_usage_count?: number
     last_used_ip?: string | null
     environment?: $Enums.APIKeyEnvironment
     revoked?: boolean
@@ -21196,6 +21269,7 @@ export namespace Prisma {
     allowed_ips?: org_api_keysCreateallowed_ipsInput | string[]
     allowed_domains?: org_api_keysCreateallowed_domainsInput | string[]
     usage_count?: number
+    max_usage_count?: number
     last_used_ip?: string | null
     environment?: $Enums.APIKeyEnvironment
     revoked?: boolean
@@ -21220,6 +21294,7 @@ export namespace Prisma {
     allowed_ips?: org_api_keysUpdateallowed_ipsInput | string[]
     allowed_domains?: org_api_keysUpdateallowed_domainsInput | string[]
     usage_count?: IntFieldUpdateOperationsInput | number
+    max_usage_count?: IntFieldUpdateOperationsInput | number
     last_used_ip?: NullableStringFieldUpdateOperationsInput | string | null
     environment?: EnumAPIKeyEnvironmentFieldUpdateOperationsInput | $Enums.APIKeyEnvironment
     revoked?: BoolFieldUpdateOperationsInput | boolean
@@ -21248,6 +21323,7 @@ export namespace Prisma {
     allowed_ips?: org_api_keysUpdateallowed_ipsInput | string[]
     allowed_domains?: org_api_keysUpdateallowed_domainsInput | string[]
     usage_count?: IntFieldUpdateOperationsInput | number
+    max_usage_count?: IntFieldUpdateOperationsInput | number
     last_used_ip?: NullableStringFieldUpdateOperationsInput | string | null
     environment?: EnumAPIKeyEnvironmentFieldUpdateOperationsInput | $Enums.APIKeyEnvironment
     revoked?: BoolFieldUpdateOperationsInput | boolean
@@ -21274,6 +21350,7 @@ export namespace Prisma {
     allowed_ips?: org_api_keysCreateallowed_ipsInput | string[]
     allowed_domains?: org_api_keysCreateallowed_domainsInput | string[]
     usage_count?: number
+    max_usage_count?: number
     last_used_ip?: string | null
     environment?: $Enums.APIKeyEnvironment
     revoked?: boolean
@@ -21298,6 +21375,7 @@ export namespace Prisma {
     allowed_ips?: org_api_keysUpdateallowed_ipsInput | string[]
     allowed_domains?: org_api_keysUpdateallowed_domainsInput | string[]
     usage_count?: IntFieldUpdateOperationsInput | number
+    max_usage_count?: IntFieldUpdateOperationsInput | number
     last_used_ip?: NullableStringFieldUpdateOperationsInput | string | null
     environment?: EnumAPIKeyEnvironmentFieldUpdateOperationsInput | $Enums.APIKeyEnvironment
     revoked?: BoolFieldUpdateOperationsInput | boolean
@@ -21324,6 +21402,7 @@ export namespace Prisma {
     allowed_ips?: org_api_keysUpdateallowed_ipsInput | string[]
     allowed_domains?: org_api_keysUpdateallowed_domainsInput | string[]
     usage_count?: IntFieldUpdateOperationsInput | number
+    max_usage_count?: IntFieldUpdateOperationsInput | number
     last_used_ip?: NullableStringFieldUpdateOperationsInput | string | null
     environment?: EnumAPIKeyEnvironmentFieldUpdateOperationsInput | $Enums.APIKeyEnvironment
     revoked?: BoolFieldUpdateOperationsInput | boolean
@@ -22898,6 +22977,8 @@ export namespace Prisma {
     metadata?: SortOrder
     custom_domain?: SortOrder
     email?: SortOrder
+    is_soft_deleted?: SortOrder
+    is_active?: SortOrder
   }
 
   export type tenantsAvgOrderByAggregateInput = {
@@ -22917,6 +22998,8 @@ export namespace Prisma {
     used_storage?: SortOrder
     custom_domain?: SortOrder
     email?: SortOrder
+    is_soft_deleted?: SortOrder
+    is_active?: SortOrder
   }
 
   export type tenantsMinOrderByAggregateInput = {
@@ -22931,6 +23014,8 @@ export namespace Prisma {
     used_storage?: SortOrder
     custom_domain?: SortOrder
     email?: SortOrder
+    is_soft_deleted?: SortOrder
+    is_active?: SortOrder
   }
 
   export type tenantsSumOrderByAggregateInput = {
@@ -23076,6 +23161,7 @@ export namespace Prisma {
     allowed_ips?: SortOrder
     allowed_domains?: SortOrder
     usage_count?: SortOrder
+    max_usage_count?: SortOrder
     last_used_ip?: SortOrder
     environment?: SortOrder
     revoked?: SortOrder
@@ -23094,6 +23180,7 @@ export namespace Prisma {
     user_id?: SortOrder
     rate_limit?: SortOrder
     usage_count?: SortOrder
+    max_usage_count?: SortOrder
   }
 
   export type org_api_keysMaxOrderByAggregateInput = {
@@ -23106,6 +23193,7 @@ export namespace Prisma {
     key_hash?: SortOrder
     rate_limit?: SortOrder
     usage_count?: SortOrder
+    max_usage_count?: SortOrder
     last_used_ip?: SortOrder
     environment?: SortOrder
     revoked?: SortOrder
@@ -23129,6 +23217,7 @@ export namespace Prisma {
     key_hash?: SortOrder
     rate_limit?: SortOrder
     usage_count?: SortOrder
+    max_usage_count?: SortOrder
     last_used_ip?: SortOrder
     environment?: SortOrder
     revoked?: SortOrder
@@ -23147,6 +23236,7 @@ export namespace Prisma {
     user_id?: SortOrder
     rate_limit?: SortOrder
     usage_count?: SortOrder
+    max_usage_count?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -25818,6 +25908,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     business_accounts?: business_accountsCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsCreateNestedManyWithoutTenantInput
     settings?: settingsCreateNestedManyWithoutTenantInput
@@ -25839,6 +25931,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     business_accounts?: business_accountsUncheckedCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsUncheckedCreateNestedManyWithoutTenantInput
     settings?: settingsUncheckedCreateNestedManyWithoutTenantInput
@@ -25905,6 +25999,7 @@ export namespace Prisma {
     allowed_ips?: org_api_keysCreateallowed_ipsInput | string[]
     allowed_domains?: org_api_keysCreateallowed_domainsInput | string[]
     usage_count?: number
+    max_usage_count?: number
     last_used_ip?: string | null
     environment?: $Enums.APIKeyEnvironment
     revoked?: boolean
@@ -25931,6 +26026,7 @@ export namespace Prisma {
     allowed_ips?: org_api_keysCreateallowed_ipsInput | string[]
     allowed_domains?: org_api_keysCreateallowed_domainsInput | string[]
     usage_count?: number
+    max_usage_count?: number
     last_used_ip?: string | null
     environment?: $Enums.APIKeyEnvironment
     revoked?: boolean
@@ -26220,6 +26316,8 @@ export namespace Prisma {
     metadata?: JsonNullableFilter<"tenants">
     custom_domain?: StringNullableFilter<"tenants"> | string | null
     email?: StringNullableFilter<"tenants"> | string | null
+    is_soft_deleted?: BoolFilter<"tenants"> | boolean
+    is_active?: BoolFilter<"tenants"> | boolean
   }
 
   export type org_membersUpsertWithWhereUniqueWithoutOrganizationInput = {
@@ -26287,6 +26385,7 @@ export namespace Prisma {
     allowed_ips?: StringNullableListFilter<"org_api_keys">
     allowed_domains?: StringNullableListFilter<"org_api_keys">
     usage_count?: IntFilter<"org_api_keys"> | number
+    max_usage_count?: IntFilter<"org_api_keys"> | number
     last_used_ip?: StringNullableFilter<"org_api_keys"> | string | null
     environment?: EnumAPIKeyEnvironmentFilter<"org_api_keys"> | $Enums.APIKeyEnvironment
     revoked?: BoolFilter<"org_api_keys"> | boolean
@@ -27499,6 +27598,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     organization: organizationsCreateNestedOneWithoutTenantsInput
     business_accounts?: business_accountsCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsCreateNestedManyWithoutTenantInput
@@ -27521,6 +27622,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     business_accounts?: business_accountsUncheckedCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsUncheckedCreateNestedManyWithoutTenantInput
     settings?: settingsUncheckedCreateNestedManyWithoutTenantInput
@@ -27557,6 +27660,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     organization?: organizationsUpdateOneRequiredWithoutTenantsNestedInput
     business_accounts?: business_accountsUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUpdateManyWithoutTenantNestedInput
@@ -27579,6 +27684,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     business_accounts?: business_accountsUncheckedUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUncheckedUpdateManyWithoutTenantNestedInput
     settings?: settingsUncheckedUpdateManyWithoutTenantNestedInput
@@ -27739,6 +27846,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     organization: organizationsCreateNestedOneWithoutTenantsInput
     business_accounts?: business_accountsCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsCreateNestedManyWithoutTenantInput
@@ -27761,6 +27870,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     business_accounts?: business_accountsUncheckedCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsUncheckedCreateNestedManyWithoutTenantInput
     settings?: settingsUncheckedCreateNestedManyWithoutTenantInput
@@ -27797,6 +27908,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     organization?: organizationsUpdateOneRequiredWithoutTenantsNestedInput
     business_accounts?: business_accountsUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUpdateManyWithoutTenantNestedInput
@@ -27819,6 +27932,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     business_accounts?: business_accountsUncheckedUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUncheckedUpdateManyWithoutTenantNestedInput
     settings?: settingsUncheckedUpdateManyWithoutTenantNestedInput
@@ -27906,6 +28021,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     organization: organizationsCreateNestedOneWithoutTenantsInput
     business_accounts?: business_accountsCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsCreateNestedManyWithoutTenantInput
@@ -27928,6 +28045,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     business_accounts?: business_accountsUncheckedCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsUncheckedCreateNestedManyWithoutTenantInput
     settings?: settingsUncheckedCreateNestedManyWithoutTenantInput
@@ -28163,6 +28282,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     organization?: organizationsUpdateOneRequiredWithoutTenantsNestedInput
     business_accounts?: business_accountsUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUpdateManyWithoutTenantNestedInput
@@ -28185,6 +28306,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     business_accounts?: business_accountsUncheckedUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUncheckedUpdateManyWithoutTenantNestedInput
     settings?: settingsUncheckedUpdateManyWithoutTenantNestedInput
@@ -28676,6 +28799,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     organization: organizationsCreateNestedOneWithoutTenantsInput
     user_accounts?: user_accountsCreateNestedManyWithoutTenantInput
     settings?: settingsCreateNestedManyWithoutTenantInput
@@ -28698,6 +28823,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     user_accounts?: user_accountsUncheckedCreateNestedManyWithoutTenantInput
     settings?: settingsUncheckedCreateNestedManyWithoutTenantInput
     teams?: teamsUncheckedCreateNestedManyWithoutTenantInput
@@ -28969,6 +29096,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     organization?: organizationsUpdateOneRequiredWithoutTenantsNestedInput
     user_accounts?: user_accountsUpdateManyWithoutTenantNestedInput
     settings?: settingsUpdateManyWithoutTenantNestedInput
@@ -28991,6 +29120,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     user_accounts?: user_accountsUncheckedUpdateManyWithoutTenantNestedInput
     settings?: settingsUncheckedUpdateManyWithoutTenantNestedInput
     teams?: teamsUncheckedUpdateManyWithoutTenantNestedInput
@@ -29142,6 +29273,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     organization: organizationsCreateNestedOneWithoutTenantsInput
     business_accounts?: business_accountsCreateNestedManyWithoutTenantInput
     settings?: settingsCreateNestedManyWithoutTenantInput
@@ -29164,6 +29297,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     business_accounts?: business_accountsUncheckedCreateNestedManyWithoutTenantInput
     settings?: settingsUncheckedCreateNestedManyWithoutTenantInput
     teams?: teamsUncheckedCreateNestedManyWithoutTenantInput
@@ -29350,6 +29485,7 @@ export namespace Prisma {
     allowed_ips?: org_api_keysCreateallowed_ipsInput | string[]
     allowed_domains?: org_api_keysCreateallowed_domainsInput | string[]
     usage_count?: number
+    max_usage_count?: number
     last_used_ip?: string | null
     environment?: $Enums.APIKeyEnvironment
     revoked?: boolean
@@ -29376,6 +29512,7 @@ export namespace Prisma {
     allowed_ips?: org_api_keysCreateallowed_ipsInput | string[]
     allowed_domains?: org_api_keysCreateallowed_domainsInput | string[]
     usage_count?: number
+    max_usage_count?: number
     last_used_ip?: string | null
     environment?: $Enums.APIKeyEnvironment
     revoked?: boolean
@@ -29495,6 +29632,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     organization?: organizationsUpdateOneRequiredWithoutTenantsNestedInput
     business_accounts?: business_accountsUpdateManyWithoutTenantNestedInput
     settings?: settingsUpdateManyWithoutTenantNestedInput
@@ -29517,6 +29656,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     business_accounts?: business_accountsUncheckedUpdateManyWithoutTenantNestedInput
     settings?: settingsUncheckedUpdateManyWithoutTenantNestedInput
     teams?: teamsUncheckedUpdateManyWithoutTenantNestedInput
@@ -30000,6 +30141,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     organization: organizationsCreateNestedOneWithoutTenantsInput
     business_accounts?: business_accountsCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsCreateNestedManyWithoutTenantInput
@@ -30022,6 +30165,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     business_accounts?: business_accountsUncheckedCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsUncheckedCreateNestedManyWithoutTenantInput
     settings?: settingsUncheckedCreateNestedManyWithoutTenantInput
@@ -30280,6 +30425,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     organization?: organizationsUpdateOneRequiredWithoutTenantsNestedInput
     business_accounts?: business_accountsUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUpdateManyWithoutTenantNestedInput
@@ -30302,6 +30449,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     business_accounts?: business_accountsUncheckedUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUncheckedUpdateManyWithoutTenantNestedInput
     settings?: settingsUncheckedUpdateManyWithoutTenantNestedInput
@@ -30489,6 +30638,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     organization: organizationsCreateNestedOneWithoutTenantsInput
     business_accounts?: business_accountsCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsCreateNestedManyWithoutTenantInput
@@ -30511,6 +30662,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     business_accounts?: business_accountsUncheckedCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsUncheckedCreateNestedManyWithoutTenantInput
     teams?: teamsUncheckedCreateNestedManyWithoutTenantInput
@@ -30659,6 +30812,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     organization?: organizationsUpdateOneRequiredWithoutTenantsNestedInput
     business_accounts?: business_accountsUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUpdateManyWithoutTenantNestedInput
@@ -30681,6 +30836,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     business_accounts?: business_accountsUncheckedUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUncheckedUpdateManyWithoutTenantNestedInput
     teams?: teamsUncheckedUpdateManyWithoutTenantNestedInput
@@ -30825,6 +30982,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
   }
 
   export type org_membersCreateManyOrganizationInput = {
@@ -30852,6 +31011,7 @@ export namespace Prisma {
     allowed_ips?: org_api_keysCreateallowed_ipsInput | string[]
     allowed_domains?: org_api_keysCreateallowed_domainsInput | string[]
     usage_count?: number
+    max_usage_count?: number
     last_used_ip?: string | null
     environment?: $Enums.APIKeyEnvironment
     revoked?: boolean
@@ -30956,6 +31116,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     business_accounts?: business_accountsUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUpdateManyWithoutTenantNestedInput
     settings?: settingsUpdateManyWithoutTenantNestedInput
@@ -30977,6 +31139,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     business_accounts?: business_accountsUncheckedUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUncheckedUpdateManyWithoutTenantNestedInput
     settings?: settingsUncheckedUpdateManyWithoutTenantNestedInput
@@ -30998,6 +31162,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type org_membersUpdateWithoutOrganizationInput = {
@@ -31050,6 +31216,7 @@ export namespace Prisma {
     allowed_ips?: org_api_keysUpdateallowed_ipsInput | string[]
     allowed_domains?: org_api_keysUpdateallowed_domainsInput | string[]
     usage_count?: IntFieldUpdateOperationsInput | number
+    max_usage_count?: IntFieldUpdateOperationsInput | number
     last_used_ip?: NullableStringFieldUpdateOperationsInput | string | null
     environment?: EnumAPIKeyEnvironmentFieldUpdateOperationsInput | $Enums.APIKeyEnvironment
     revoked?: BoolFieldUpdateOperationsInput | boolean
@@ -31076,6 +31243,7 @@ export namespace Prisma {
     allowed_ips?: org_api_keysUpdateallowed_ipsInput | string[]
     allowed_domains?: org_api_keysUpdateallowed_domainsInput | string[]
     usage_count?: IntFieldUpdateOperationsInput | number
+    max_usage_count?: IntFieldUpdateOperationsInput | number
     last_used_ip?: NullableStringFieldUpdateOperationsInput | string | null
     environment?: EnumAPIKeyEnvironmentFieldUpdateOperationsInput | $Enums.APIKeyEnvironment
     revoked?: BoolFieldUpdateOperationsInput | boolean
@@ -31101,6 +31269,7 @@ export namespace Prisma {
     allowed_ips?: org_api_keysUpdateallowed_ipsInput | string[]
     allowed_domains?: org_api_keysUpdateallowed_domainsInput | string[]
     usage_count?: IntFieldUpdateOperationsInput | number
+    max_usage_count?: IntFieldUpdateOperationsInput | number
     last_used_ip?: NullableStringFieldUpdateOperationsInput | string | null
     environment?: EnumAPIKeyEnvironmentFieldUpdateOperationsInput | $Enums.APIKeyEnvironment
     revoked?: BoolFieldUpdateOperationsInput | boolean
@@ -32331,6 +32500,7 @@ export namespace Prisma {
     allowed_ips?: org_api_keysCreateallowed_ipsInput | string[]
     allowed_domains?: org_api_keysCreateallowed_domainsInput | string[]
     usage_count?: number
+    max_usage_count?: number
     last_used_ip?: string | null
     environment?: $Enums.APIKeyEnvironment
     revoked?: boolean
@@ -32537,6 +32707,7 @@ export namespace Prisma {
     allowed_ips?: org_api_keysUpdateallowed_ipsInput | string[]
     allowed_domains?: org_api_keysUpdateallowed_domainsInput | string[]
     usage_count?: IntFieldUpdateOperationsInput | number
+    max_usage_count?: IntFieldUpdateOperationsInput | number
     last_used_ip?: NullableStringFieldUpdateOperationsInput | string | null
     environment?: EnumAPIKeyEnvironmentFieldUpdateOperationsInput | $Enums.APIKeyEnvironment
     revoked?: BoolFieldUpdateOperationsInput | boolean
@@ -32563,6 +32734,7 @@ export namespace Prisma {
     allowed_ips?: org_api_keysUpdateallowed_ipsInput | string[]
     allowed_domains?: org_api_keysUpdateallowed_domainsInput | string[]
     usage_count?: IntFieldUpdateOperationsInput | number
+    max_usage_count?: IntFieldUpdateOperationsInput | number
     last_used_ip?: NullableStringFieldUpdateOperationsInput | string | null
     environment?: EnumAPIKeyEnvironmentFieldUpdateOperationsInput | $Enums.APIKeyEnvironment
     revoked?: BoolFieldUpdateOperationsInput | boolean
@@ -32588,6 +32760,7 @@ export namespace Prisma {
     allowed_ips?: org_api_keysUpdateallowed_ipsInput | string[]
     allowed_domains?: org_api_keysUpdateallowed_domainsInput | string[]
     usage_count?: IntFieldUpdateOperationsInput | number
+    max_usage_count?: IntFieldUpdateOperationsInput | number
     last_used_ip?: NullableStringFieldUpdateOperationsInput | string | null
     environment?: EnumAPIKeyEnvironmentFieldUpdateOperationsInput | $Enums.APIKeyEnvironment
     revoked?: BoolFieldUpdateOperationsInput | boolean

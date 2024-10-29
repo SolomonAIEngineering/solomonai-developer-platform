@@ -1,11 +1,11 @@
+import { PrismaPg } from '@prisma/adapter-pg';
+import { PrismaClient } from '@prisma/client/extension';
+import { Pool } from 'pg';
 import { Env, zEnv } from "./env";
 import { newApp } from "./hono/app";
 import { UserActionMessageBody } from "./message";
 import { ConsoleLogger } from "./metric/logger";
 import { setupRoutes } from "./routes";
-import { Pool } from "pg";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "@prisma/client";
 
 const app = newApp();
 setupRoutes(app);
