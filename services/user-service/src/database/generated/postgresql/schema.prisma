@@ -219,23 +219,46 @@ model org_members {
 ///   }
 /// });
 /// ```
+// Define an enum for APIKeyEnvironment to restrict the possible values
+enum APIKeyEnvironment {
+  development
+  staging
+  production
+}
+
 model org_api_keys {
-  id              BigInt    @id @default(autoincrement())
-  organization_id String    @db.VarChar(100)
-  key_name        String    @db.VarChar(255)
-  key_prefix      String    @unique @db.VarChar(32)
-  key_hash        String    @db.VarChar(255) // Hashed API key
+  id              BigInt            @id @default(autoincrement())
+  organization_id String            @db.VarChar(100)
+  user_id         BigInt? // Foreign key to `user_accounts.id`
+  key_name        String            @db.VarChar(255)
+  description     String?           @db.Text
+  key_id          String            @unique(map: "org_api_keys_key_id_unique") @db.VarChar(255) // Unique key identifier
+  key_hash        String            @db.VarChar(255) // Hashed API key for security
   scopes          String[] // Array of permitted operations
-  expires_at      DateTime? @db.Timestamptz(6)
-  created_at      DateTime  @default(now()) @db.Timestamptz(6)
-  created_by      String    @db.VarChar(100)
-  last_used       DateTime? @db.Timestamptz(6)
-  is_active       Boolean   @default(true)
+  rate_limit      Int               @default(1000) // Default rate limit
+  allowed_ips     String[]          @default([]) // Whitelisted IP addresses
+  allowed_domains String[]          @default([]) // Whitelisted domains
+  usage_count     Int               @default(0) // Number of times the key has been used
+  last_used_ip    String?           @db.VarChar(255) // IP address from which the key was last used
+  environment     APIKeyEnvironment @default(development) // Environment where the key is valid
+  revoked         Boolean           @default(false) // Indicates if the key has been revoked
+  revoked_at      DateTime?         @db.Timestamptz(6) // Timestamp when the key was revoked
+  revoked_reason  String?           @db.Text // Reason for revocation
+  expires_at      DateTime?         @db.Timestamptz(6) // Expiration date of the key
+  created_at      DateTime          @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime          @updatedAt @db.Timestamptz(6)
+  created_by      String            @db.VarChar(100)
+  last_used       DateTime?         @db.Timestamptz(6)
+  is_active       Boolean           @default(true) // Indicates if the key is active
 
-  organization organizations @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+  // relations
+  organization organizations  @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+  user         user_accounts? @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
+  @@unique([key_id]) // Ensures that `key_id` is unique across all records
+  // indexes and constraints
   @@index([organization_id])
-  @@index([key_prefix])
+  @@index([key_id])
 }
 
 /// API keys for tenant-specific operations
@@ -260,6 +283,7 @@ model tenant_api_keys {
   key_name   String    @db.VarChar(255)
   key_prefix String    @unique @db.VarChar(32)
   key_hash   String    @db.VarChar(255)
+  key_id     String    @unique(map: "tenant_api_keys_key_id_unique") @db.VarChar(255) // Unique key identifier
   scopes     String[]
   expires_at DateTime? @db.Timestamptz(6)
   created_at DateTime  @default(now()) @db.Timestamptz(6)
@@ -524,6 +548,7 @@ model user_accounts {
   addresses        addresses[]
   team_memberships team_members[]
   audit_logs       audit_logs[]
+  org_api_keys     org_api_keys[]
 
   @@index([organization_id])
   @@index([tenant_id])

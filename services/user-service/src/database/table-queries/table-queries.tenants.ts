@@ -264,7 +264,6 @@ export class TenantQueries {
     id: string,
     data: {
       name?: string;
-      external_id?: string;
       custom_domain?: string;
       email?: string;
       metadata?: Record<string, any>;
