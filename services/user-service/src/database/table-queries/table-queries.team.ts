@@ -112,7 +112,7 @@ export class TeamQueries {
       ...queryOptions
     } = options || {};
 
-    let whereClause: any = {};
+    let whereClause: Prisma.teamsWhereInput = {};
 
     if (organizationId) {
       whereClause.organization_id = organizationId;
@@ -145,17 +145,6 @@ export class TeamQueries {
       whereClause.created_at = {};
       if (createdAfter) whereClause.created_at.gte = createdAfter;
       if (createdBefore) whereClause.created_at.lte = createdBefore;
-    }
-
-    if (minMembers !== undefined || maxMembers !== undefined) {
-      whereClause.team_members = {
-        _count: {
-          AND: [
-            minMembers !== undefined ? { gte: minMembers } : {},
-            maxMembers !== undefined ? { lte: maxMembers } : {},
-          ],
-        },
-      };
     }
 
     return await this.middleware.enforceQueryRules(
@@ -379,7 +368,7 @@ export class TeamQueries {
   ) {
     const { activeOnly = true, byRole = false } = options || {};
 
-    const whereClause: any = {
+    const whereClause: Prisma.team_membersWhereInput = {
       team_id: teamId,
     };
 
@@ -632,7 +621,7 @@ export class TeamQueries {
     includeInactive?: boolean,
     includeDeleted?: boolean,
   ) {
-    const whereClause: any = {
+    const whereClause: Prisma.team_membersWhereInput = {
       team_id: teamId,
     };
 
@@ -677,8 +666,10 @@ export class TeamQueries {
     startDate?: Date,
     endDate?: Date,
   ) {
-    let whereClause: any = {
-      team_id: teamId,
+    let whereClause: Prisma.audit_logsWhereInput = {
+      team: {
+        id: teamId,
+      },
     };
 
     if (startDate || endDate) {

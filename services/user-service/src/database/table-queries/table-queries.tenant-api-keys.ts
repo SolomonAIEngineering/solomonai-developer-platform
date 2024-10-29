@@ -93,7 +93,7 @@ export class TenantAPIKeyQueries {
           key_id: apiKey.key,
           scopes: finalScopes,
           expires_at: data.expires_at,
-          created_by: this.middleware.getContext().userId,
+          created_by: this.middleware.getContext().userId ?? "",
         },
       },
     );
@@ -137,7 +137,7 @@ export class TenantAPIKeyQueries {
       ...queryOptions
     } = options || {};
 
-    let whereClause: any = {};
+    let whereClause: Prisma.tenant_api_keysWhereInput = {};
 
     if (tenantId) {
       whereClause.tenant_id = tenantId;
@@ -355,7 +355,7 @@ export class TenantAPIKeyQueries {
 
     if (!key) throw new Error("API key not found");
 
-    let whereClause: any = {
+    let whereClause: Prisma.audit_logsWhereInput = {
       entity_id: key.id,
       entity_type: "tenant_api_key",
     };

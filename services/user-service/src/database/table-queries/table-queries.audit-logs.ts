@@ -1,8 +1,5 @@
 import { PrismaClient, Prisma } from "../generated/postgresql";
-import {
-  QueryMiddleware,
-  QueryMiddlewareFactory,
-} from "../client";
+import { QueryMiddleware, QueryMiddlewareFactory } from "../client";
 import { QueryOptions, RequestContext } from "../types";
 
 type ActorType = "user" | "business" | "system";

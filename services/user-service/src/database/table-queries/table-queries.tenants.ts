@@ -110,7 +110,7 @@ export class TenantQueries {
       ...queryOptions
     } = options || {};
 
-    let whereClause: any = {};
+    let whereClause: Prisma.tenantsWhereInput = {};
 
     if (organizationId) {
       whereClause.organization_id = organizationId;
@@ -237,7 +237,7 @@ export class TenantQueries {
     name?: string;
     organization_id?: string;
   }) {
-    let whereClause: any = {};
+    let whereClause: Prisma.tenantsWhereInput = {};
 
     if (identifier.id) whereClause.id = identifier.id;
     if (identifier.external_id)
@@ -572,7 +572,7 @@ export class TenantQueries {
     const { startDate, endDate, eventTypes, limit, ...queryOptions } =
       options || {};
 
-    let whereClause: any = {
+    let whereClause: Prisma.audit_logsWhereInput = {
       tenant_id: id,
     };
 

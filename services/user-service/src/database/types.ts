@@ -5,7 +5,7 @@
  */
 export interface RequestContext {
   organizationId: string;
-  tenantId?: string;
+  tenantId: string;
   userId: string;
   roles: string[];
   ip?: string;

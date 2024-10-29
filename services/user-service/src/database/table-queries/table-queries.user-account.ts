@@ -3,7 +3,6 @@ import { PrismaClient, Prisma } from "../generated/postgresql";
 import { RequestContext } from "../types";
 import { QueryOptions } from "../types";
 
-
 type UserAccountStatus = "active" | "inactive" | "suspended";
 
 type UserAccountWithRelations = Prisma.user_accountsGetPayload<{

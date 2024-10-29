@@ -256,6 +256,7 @@ exports.Prisma.Team_membersScalarFieldEnum = {
   invited_by: "invited_by",
   status: "status",
   metadata: "metadata",
+  deleted_at: "deleted_at",
 };
 
 exports.Prisma.Business_accountsScalarFieldEnum = {

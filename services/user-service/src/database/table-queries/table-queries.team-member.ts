@@ -152,7 +152,7 @@ export class TeamMemberQueries {
       ...queryOptions
     } = options || {};
 
-    let whereClause: any = {};
+    let whereClause: Prisma.team_membersWhereInput = {};
 
     if (teamId) {
       whereClause.team_id = teamId;
@@ -430,7 +430,7 @@ export class TeamMemberQueries {
     const member = await this.getTeamMemberById(id);
     if (!member) throw new Error("Member not found");
 
-    let whereClause: any = {
+    let whereClause: Prisma.audit_logsWhereInput = {
       entity_type: "team_member",
       entity_id: id,
     };
@@ -471,7 +471,7 @@ export class TeamMemberQueries {
       includeTeam,
     } = options || {};
 
-    let whereClause: any = {
+    let whereClause: Prisma.team_membersWhereInput = {
       status: { in: status },
     };
 

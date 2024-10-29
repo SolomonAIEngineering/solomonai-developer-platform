@@ -2,7 +2,6 @@ import { QueryMiddleware, QueryMiddlewareFactory } from "../client";
 import { PrismaClient, Prisma } from "../generated/postgresql";
 import { QueryOptions, RequestContext } from "../types";
 
-
 type OrganizationWithRelations = Prisma.organizationsGetPayload<{
   include: {
     org_members: true;
@@ -113,7 +112,7 @@ export class OrganizationQueries {
       ...queryOptions
     } = options || {};
 
-    let whereClause: any = {};
+    let whereClause: Prisma.organizationsWhereInput = {};
 
     if (searchTerm) {
       whereClause.OR = [
@@ -210,7 +209,7 @@ export class OrganizationQueries {
       );
     }
 
-    let whereClause: any = {};
+    let whereClause: Prisma.organizationsWhereInput = {};
 
     if (identifier.id) whereClause.id = identifier.id;
     if (identifier.email) whereClause.email = identifier.email;
@@ -220,7 +219,7 @@ export class OrganizationQueries {
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.organizations,
-      "findUnique",
+      "findFirst",
       {
         where: whereClause,
       },
@@ -613,11 +612,13 @@ export class OrganizationQueries {
     );
 
     // Then filter in memory for those over the threshold
-    return organizations.filter((org: { used_storage: any; storage_quota: any; }) => {
-      const usedPercentage =
-        (Number(org.used_storage) / Number(org.storage_quota)) * 100;
-      return usedPercentage >= thresholdPercentage;
-    });
+    return organizations.filter(
+      (org: { used_storage: bigint; storage_quota: bigint }) => {
+        const usedPercentage =
+          (Number(org.used_storage) / Number(org.storage_quota)) * 100;
+        return usedPercentage >= thresholdPercentage;
+      },
+    );
   }
 
   /**
@@ -831,7 +832,7 @@ export class OrganizationQueries {
     const archiveData = {
       organization_data: org,
       archived_at: new Date(),
-      archived_by: this.middleware.getContext().tenantId,
+      archived_by: this.middleware.getContext().userId,
     };
 
     // Store archive data (implementation depends on your archive storage solution)

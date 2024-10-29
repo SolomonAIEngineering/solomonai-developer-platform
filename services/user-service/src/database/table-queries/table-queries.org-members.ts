@@ -2,7 +2,6 @@ import { QueryMiddleware, QueryMiddlewareFactory } from "../client";
 import { PrismaClient, Prisma } from "../generated/postgresql";
 import { QueryOptions, RequestContext } from "../types";
 
-
 type OrgMemberWithRelations = Prisma.org_membersGetPayload<{
   include: {
     organization: true;
@@ -208,7 +207,7 @@ export class OrgMemberQueries {
       ...queryOptions
     } = options || {};
 
-    let whereClause: any = {};
+    let whereClause: Prisma.org_membersWhereInput = {};
 
     if (organizationId) {
       whereClause.organization_id = organizationId;
@@ -522,9 +521,12 @@ export class OrgMemberQueries {
       member.user_id,
       member.email,
     );
-
-    const updateData: any = {
-      organization_id: newOrganizationId,
+    const updateData: Prisma.org_membersUpdateInput = {
+      organization: {
+        connect: {
+          id: newOrganizationId,
+        },
+      },
       status: "active",
     };
 
@@ -993,8 +995,7 @@ export class OrgMemberQueries {
   ) {
     const member = await this.getMemberById(memberId);
     if (!member) throw new Error("Member not found");
-
-    let whereClause: any = {
+    let whereClause: Prisma.audit_logsWhereInput = {
       actor_id: member.user_id,
       event_type: "login",
     };

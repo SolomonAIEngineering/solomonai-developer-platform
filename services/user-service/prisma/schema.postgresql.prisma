@@ -440,6 +440,7 @@ model team_members {
   team             teams              @relation(fields: [team_id], references: [id])
   user_account     user_accounts?     @relation(fields: [user_account_id], references: [id])
   business_account business_accounts? @relation(fields: [business_account_id], references: [id])
+  deleted_at       DateTime?          @db.Timestamptz(6)
 
   @@unique([team_id, user_account_id])
   @@unique([team_id, business_account_id])

@@ -3,10 +3,7 @@ import {
   Prisma,
   APIKeyEnvironment,
 } from "../generated/postgresql";
-import {
-  QueryMiddleware,
-  QueryMiddlewareFactory,
-} from "../client";
+import { QueryMiddleware, QueryMiddlewareFactory } from "../client";
 import * as crypto from "crypto";
 import { QueryOptions, RequestContext } from "../types";
 type APIKeyWithRelations = Prisma.org_api_keysGetPayload<{
@@ -19,7 +16,7 @@ type APIKeyWithRelations = Prisma.org_api_keysGetPayload<{
 /**
  * API Key management and query implementation
  */
-export class APIKeyQueries {
+export class OrganizationAPIKeyQueries {
   private middleware: QueryMiddleware;
   private prisma: PrismaClient;
 
@@ -56,7 +53,7 @@ export class APIKeyQueries {
           ...data,
           key_id: keyId,
           key_hash: keyHash,
-          created_by: this.middleware.getContext().userId,
+          created_by: this.middleware.getContext().tenantId,
         },
       },
     );
@@ -105,7 +102,7 @@ export class APIKeyQueries {
       ...queryOptions
     } = options || {};
 
-    let whereClause: any = {};
+    let whereClause: Prisma.org_api_keysWhereInput = {};
 
     if (organizationId) {
       whereClause.organization_id = organizationId;

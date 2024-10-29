@@ -133,7 +133,7 @@ export class UsageLoggingQueries {
     const { startDate, endDate, eventTypes, groupBy, includeDetails } =
       options || {};
 
-    let whereClause: any = {
+    let whereClause: Prisma.org_usage_logsWhereInput = {
       organization_id: organizationId,
     };
 
@@ -178,7 +178,7 @@ export class UsageLoggingQueries {
     const { startDate, endDate, eventTypes, groupBy, includeDetails } =
       options || {};
 
-    let whereClause: any = {
+    let whereClause: Prisma.tenant_usage_logsWhereInput = {
       tenant_id: tenantId,
     };
 

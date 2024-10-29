@@ -11561,6 +11561,7 @@ export namespace Prisma {
     joined_at: Date | null
     invited_by: string | null
     status: string | null
+    deleted_at: Date | null
   }
 
   export type Team_membersMaxAggregateOutputType = {
@@ -11572,6 +11573,7 @@ export namespace Prisma {
     joined_at: Date | null
     invited_by: string | null
     status: string | null
+    deleted_at: Date | null
   }
 
   export type Team_membersCountAggregateOutputType = {
@@ -11584,6 +11586,7 @@ export namespace Prisma {
     invited_by: number
     status: number
     metadata: number
+    deleted_at: number
     _all: number
   }
 
@@ -11611,6 +11614,7 @@ export namespace Prisma {
     joined_at?: true
     invited_by?: true
     status?: true
+    deleted_at?: true
   }
 
   export type Team_membersMaxAggregateInputType = {
@@ -11622,6 +11626,7 @@ export namespace Prisma {
     joined_at?: true
     invited_by?: true
     status?: true
+    deleted_at?: true
   }
 
   export type Team_membersCountAggregateInputType = {
@@ -11634,6 +11639,7 @@ export namespace Prisma {
     invited_by?: true
     status?: true
     metadata?: true
+    deleted_at?: true
     _all?: true
   }
 
@@ -11733,6 +11739,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata: JsonValue | null
+    deleted_at: Date | null
     _count: Team_membersCountAggregateOutputType | null
     _avg: Team_membersAvgAggregateOutputType | null
     _sum: Team_membersSumAggregateOutputType | null
@@ -11764,6 +11771,7 @@ export namespace Prisma {
     invited_by?: boolean
     status?: boolean
     metadata?: boolean
+    deleted_at?: boolean
     team?: boolean | teamsDefaultArgs<ExtArgs>
     user_account?: boolean | team_members$user_accountArgs<ExtArgs>
     business_account?: boolean | team_members$business_accountArgs<ExtArgs>
@@ -11779,6 +11787,7 @@ export namespace Prisma {
     invited_by?: boolean
     status?: boolean
     metadata?: boolean
+    deleted_at?: boolean
     team?: boolean | teamsDefaultArgs<ExtArgs>
     user_account?: boolean | team_members$user_accountArgs<ExtArgs>
     business_account?: boolean | team_members$business_accountArgs<ExtArgs>
@@ -11794,6 +11803,7 @@ export namespace Prisma {
     invited_by?: boolean
     status?: boolean
     metadata?: boolean
+    deleted_at?: boolean
   }
 
   export type team_membersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11836,6 +11846,7 @@ export namespace Prisma {
        * Member-specific metadata
        */
       metadata: Prisma.JsonValue | null
+      deleted_at: Date | null
     }, ExtArgs["result"]["team_members"]>
     composites: {}
   }
@@ -12241,6 +12252,7 @@ export namespace Prisma {
     readonly invited_by: FieldRef<"team_members", 'String'>
     readonly status: FieldRef<"team_members", 'String'>
     readonly metadata: FieldRef<"team_members", 'Json'>
+    readonly deleted_at: FieldRef<"team_members", 'DateTime'>
   }
     
 
@@ -18896,7 +18908,8 @@ export namespace Prisma {
     joined_at: 'joined_at',
     invited_by: 'invited_by',
     status: 'status',
-    metadata: 'metadata'
+    metadata: 'metadata',
+    deleted_at: 'deleted_at'
   };
 
   export type Team_membersScalarFieldEnum = (typeof Team_membersScalarFieldEnum)[keyof typeof Team_membersScalarFieldEnum]
@@ -20021,6 +20034,7 @@ export namespace Prisma {
     invited_by?: StringFilter<"team_members"> | string
     status?: StringFilter<"team_members"> | string
     metadata?: JsonNullableFilter<"team_members">
+    deleted_at?: DateTimeNullableFilter<"team_members"> | Date | string | null
     team?: XOR<TeamsRelationFilter, teamsWhereInput>
     user_account?: XOR<User_accountsNullableRelationFilter, user_accountsWhereInput> | null
     business_account?: XOR<Business_accountsNullableRelationFilter, business_accountsWhereInput> | null
@@ -20036,6 +20050,7 @@ export namespace Prisma {
     invited_by?: SortOrder
     status?: SortOrder
     metadata?: SortOrderInput | SortOrder
+    deleted_at?: SortOrderInput | SortOrder
     team?: teamsOrderByWithRelationInput
     user_account?: user_accountsOrderByWithRelationInput
     business_account?: business_accountsOrderByWithRelationInput
@@ -20056,6 +20071,7 @@ export namespace Prisma {
     invited_by?: StringFilter<"team_members"> | string
     status?: StringFilter<"team_members"> | string
     metadata?: JsonNullableFilter<"team_members">
+    deleted_at?: DateTimeNullableFilter<"team_members"> | Date | string | null
     team?: XOR<TeamsRelationFilter, teamsWhereInput>
     user_account?: XOR<User_accountsNullableRelationFilter, user_accountsWhereInput> | null
     business_account?: XOR<Business_accountsNullableRelationFilter, business_accountsWhereInput> | null
@@ -20071,6 +20087,7 @@ export namespace Prisma {
     invited_by?: SortOrder
     status?: SortOrder
     metadata?: SortOrderInput | SortOrder
+    deleted_at?: SortOrderInput | SortOrder
     _count?: team_membersCountOrderByAggregateInput
     _avg?: team_membersAvgOrderByAggregateInput
     _max?: team_membersMaxOrderByAggregateInput
@@ -20091,6 +20108,7 @@ export namespace Prisma {
     invited_by?: StringWithAggregatesFilter<"team_members"> | string
     status?: StringWithAggregatesFilter<"team_members"> | string
     metadata?: JsonNullableWithAggregatesFilter<"team_members">
+    deleted_at?: DateTimeNullableWithAggregatesFilter<"team_members"> | Date | string | null
   }
 
   export type business_accountsWhereInput = {
@@ -21676,6 +21694,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
     team: teamsCreateNestedOneWithoutTeam_membersInput
     user_account?: user_accountsCreateNestedOneWithoutTeam_membershipsInput
     business_account?: business_accountsCreateNestedOneWithoutTeam_membershipsInput
@@ -21691,6 +21710,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
   }
 
   export type team_membersUpdateInput = {
@@ -21700,6 +21720,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     team?: teamsUpdateOneRequiredWithoutTeam_membersNestedInput
     user_account?: user_accountsUpdateOneWithoutTeam_membershipsNestedInput
     business_account?: business_accountsUpdateOneWithoutTeam_membershipsNestedInput
@@ -21715,6 +21736,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type team_membersCreateManyInput = {
@@ -21727,6 +21749,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
   }
 
   export type team_membersUpdateManyMutationInput = {
@@ -21736,6 +21759,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type team_membersUncheckedUpdateManyInput = {
@@ -21748,6 +21772,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type business_accountsCreateInput = {
@@ -23390,6 +23415,7 @@ export namespace Prisma {
     invited_by?: SortOrder
     status?: SortOrder
     metadata?: SortOrder
+    deleted_at?: SortOrder
   }
 
   export type team_membersAvgOrderByAggregateInput = {
@@ -23408,6 +23434,7 @@ export namespace Prisma {
     joined_at?: SortOrder
     invited_by?: SortOrder
     status?: SortOrder
+    deleted_at?: SortOrder
   }
 
   export type team_membersMinOrderByAggregateInput = {
@@ -23419,6 +23446,7 @@ export namespace Prisma {
     joined_at?: SortOrder
     invited_by?: SortOrder
     status?: SortOrder
+    deleted_at?: SortOrder
   }
 
   export type team_membersSumOrderByAggregateInput = {
@@ -27920,6 +27948,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
     user_account?: user_accountsCreateNestedOneWithoutTeam_membershipsInput
     business_account?: business_accountsCreateNestedOneWithoutTeam_membershipsInput
   }
@@ -27933,6 +27962,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
   }
 
   export type team_membersCreateOrConnectWithoutTeamInput = {
@@ -28192,6 +28222,7 @@ export namespace Prisma {
     invited_by?: StringFilter<"team_members"> | string
     status?: StringFilter<"team_members"> | string
     metadata?: JsonNullableFilter<"team_members">
+    deleted_at?: DateTimeNullableFilter<"team_members"> | Date | string | null
   }
 
   export type addressesUpsertWithWhereUniqueWithoutTeamInput = {
@@ -28773,6 +28804,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
     team: teamsCreateNestedOneWithoutTeam_membersInput
     user_account?: user_accountsCreateNestedOneWithoutTeam_membershipsInput
   }
@@ -28786,6 +28818,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
   }
 
   export type team_membersCreateOrConnectWithoutBusiness_accountInput = {
@@ -29237,6 +29270,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
     team: teamsCreateNestedOneWithoutTeam_membersInput
     business_account?: business_accountsCreateNestedOneWithoutTeam_membershipsInput
   }
@@ -29250,6 +29284,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
   }
 
   export type team_membersCreateOrConnectWithoutUser_accountInput = {
@@ -31801,6 +31836,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
   }
 
   export type addressesCreateManyTeamInput = {
@@ -31845,6 +31881,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user_account?: user_accountsUpdateOneWithoutTeam_membershipsNestedInput
     business_account?: business_accountsUpdateOneWithoutTeam_membershipsNestedInput
   }
@@ -31858,6 +31895,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type team_membersUncheckedUpdateManyWithoutTeamInput = {
@@ -31869,6 +31907,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type addressesUpdateWithoutTeamInput = {
@@ -32020,6 +32059,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
   }
 
   export type audit_logsCreateManyBusiness_accountInput = {
@@ -32143,6 +32183,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     team?: teamsUpdateOneRequiredWithoutTeam_membersNestedInput
     user_account?: user_accountsUpdateOneWithoutTeam_membershipsNestedInput
   }
@@ -32156,6 +32197,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type team_membersUncheckedUpdateManyWithoutBusiness_accountInput = {
@@ -32167,6 +32209,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type audit_logsUpdateWithoutBusiness_accountInput = {
@@ -32258,6 +32301,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
   }
 
   export type audit_logsCreateManyUser_accountInput = {
@@ -32406,6 +32450,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     team?: teamsUpdateOneRequiredWithoutTeam_membersNestedInput
     business_account?: business_accountsUpdateOneWithoutTeam_membershipsNestedInput
   }
@@ -32419,6 +32464,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type team_membersUncheckedUpdateManyWithoutUser_accountInput = {
@@ -32430,6 +32476,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type audit_logsUpdateWithoutUser_accountInput = {

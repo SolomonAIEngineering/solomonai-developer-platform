@@ -1,6 +1,6 @@
-import { QueryMiddleware } from "@/database/middleware/query.middleware";
 import { Context, Next } from "hono";
 import { HTTPException } from "hono/http-exception";
+import { QueryMiddleware } from "../database/client";
 /**
  * Combined authentication middleware for Hono applications.
  * Handles API key validation, organization verification, and user authentication.
