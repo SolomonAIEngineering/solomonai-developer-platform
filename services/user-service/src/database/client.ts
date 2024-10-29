@@ -41,13 +41,6 @@ const ROLE_PERMISSIONS = {
 type PrismaModels = Prisma.ModelName;
 
 /**
- * Retrieve all valid operations for a specific model from the Prisma Client.
- * This helps in defining what operations are available for each model.
- */
-type ModelOperations<T extends PrismaModels> =
-  keyof PrismaClient[Uncapitalize<T>];
-
-/**
  * Define the list of valid operations that can be performed on the models.
  * These operations correspond to the common CRUD operations in Prisma.
  */

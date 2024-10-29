@@ -1,6 +1,5 @@
-import { PrismaClient, Prisma } from "../generated/postgresql";
-import { QueryMiddleware } from "../client";
-import { QueryMiddlewareFactory } from "../client";
+import { QueryMiddleware, QueryMiddlewareFactory } from "../client";
+import { Prisma, PrismaClient } from "../generated/postgresql";
 import { QueryOptions, RequestContext } from "../types";
 
 type AddressType = "billing" | "shipping" | "office";

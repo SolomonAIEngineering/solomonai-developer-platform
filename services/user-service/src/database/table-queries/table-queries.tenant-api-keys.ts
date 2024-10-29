@@ -1,5 +1,5 @@
 import { newKey } from "@internal/keys/src/util";
-import { PrismaClient, Prisma } from "../generated/postgresql";
+import { Prisma, PrismaClient } from "@/database/generated/postgresql/edge";
 import { QueryMiddleware, QueryMiddlewareFactory } from "../client";
 import { QueryOptions, RequestContext } from "../types";
 import * as crypto from "crypto";

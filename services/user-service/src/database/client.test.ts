@@ -1,11 +1,11 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { Prisma } from "./generated/postgresql";
-import { RequestContext } from "./types";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "@prisma/client/extension";
 import { env } from "cloudflare:test";
 import { Pool } from "pg";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "@prisma/client";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { QueryMiddleware } from "./client";
+import { Prisma } from "./generated/postgresql";
+import { RequestContext } from "./types";
 
 describe("QueryMiddleware", () => {
   let prisma: PrismaClient;
