@@ -12,7 +12,7 @@ import { metrics } from "@/middleware/metrics";
 import { rateLimit } from "@/middleware/ratelimit";
 import {
   AuthenticationRequiredRoutes,
-  CachedRoutes
+  CachedRoutes,
 } from "@/route-definitions/routes";
 import { swaggerUI } from "@hono/swagger-ui";
 import { OpenAPIHono } from "@hono/zod-openapi";

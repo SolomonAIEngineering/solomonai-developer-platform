@@ -14,11 +14,11 @@ const CONFIG = {
     MAX_RETRIES: 3,
   },
   ERROR_TYPES: {
-    TENANT_DISABLED: 'TENANT_DISABLED',
-    API_KEY_EXPIRED: 'API_KEY_EXPIRED',
-    ORG_INACTIVE: 'ORG_INACTIVE',
-    INSUFFICIENT_PERMISSIONS: 'INSUFFICIENT_PERMISSIONS',
-  }
+    TENANT_DISABLED: "TENANT_DISABLED",
+    API_KEY_EXPIRED: "API_KEY_EXPIRED",
+    ORG_INACTIVE: "ORG_INACTIVE",
+    INSUFFICIENT_PERMISSIONS: "INSUFFICIENT_PERMISSIONS",
+  },
 } as const;
 
 // Enhanced type definitions
@@ -26,7 +26,7 @@ interface CachedAuthContext {
   apiKey: Prisma.org_api_keysGetPayload<{
     include: {
       organization: boolean;
-    }
+    };
   }>;
   organization: Prisma.organizationsGetPayload<{}>;
   tenant: Prisma.tenantsGetPayload<{}>;
@@ -53,7 +53,10 @@ export class ValidationService {
   /**
    * Comprehensive validation of API key and related entities
    */
-  private async validateApiKey(apiKey: string, orgId: string): Promise<CachedAuthContext['apiKey']> {
+  private async validateApiKey(
+    apiKey: string,
+    orgId: string,
+  ): Promise<CachedAuthContext["apiKey"]> {
     const apiKeyRecord = await this.dbClient.org_api_keys.findFirst({
       where: {
         key_id: apiKey,
@@ -64,21 +67,24 @@ export class ValidationService {
         },
       },
       include: {
-        organization: true
+        organization: true,
       },
     });
 
     if (!apiKeyRecord) {
-      throw this.createError('API_KEY_EXPIRED', 'Invalid or expired API key');
+      throw this.createError("API_KEY_EXPIRED", "Invalid or expired API key");
     }
 
     if (apiKeyRecord.expires_at && apiKeyRecord.expires_at < new Date()) {
-      throw this.createError('API_KEY_EXPIRED', 'API key has expired');
+      throw this.createError("API_KEY_EXPIRED", "API key has expired");
     }
 
     // Check for key usage limits if defined
-    if (apiKeyRecord.max_usage_count > 0 && apiKeyRecord.usage_count >= apiKeyRecord.max_usage_count) {
-      throw this.createError('API_KEY_EXPIRED', 'API key usage limit exceeded');
+    if (
+      apiKeyRecord.max_usage_count > 0 &&
+      apiKeyRecord.usage_count >= apiKeyRecord.max_usage_count
+    ) {
+      throw this.createError("API_KEY_EXPIRED", "API key usage limit exceeded");
     }
 
     return {
@@ -90,7 +96,10 @@ export class ValidationService {
   /**
    * Validate tenant and its relationship with organization
    */
-  private async validateTenant(tenantId: string, orgId: string): Promise<CachedAuthContext['tenant']> {
+  private async validateTenant(
+    tenantId: string,
+    orgId: string,
+  ): Promise<CachedAuthContext["tenant"]> {
     const tenant = await this.dbClient.tenants.findFirst({
       where: {
         id: tenantId,
@@ -99,11 +108,11 @@ export class ValidationService {
     });
 
     if (!tenant) {
-      throw this.createError('TENANT_DISABLED', 'Invalid tenant');
+      throw this.createError("TENANT_DISABLED", "Invalid tenant");
     }
 
     if (tenant.is_soft_deleted || !tenant.is_active) {
-      throw this.createError('TENANT_DISABLED', 'Tenant is disabled');
+      throw this.createError("TENANT_DISABLED", "Tenant is disabled");
     }
 
     return tenant;
@@ -112,7 +121,9 @@ export class ValidationService {
   /**
    * Validate organization status and settings
    */
-  private async validateOrganization(orgId: string): Promise<CachedAuthContext['organization']> {
+  private async validateOrganization(
+    orgId: string,
+  ): Promise<CachedAuthContext["organization"]> {
     const organization = await this.dbClient.organizations.findFirst({
       where: {
         id: orgId,
@@ -121,13 +132,12 @@ export class ValidationService {
     });
 
     if (!organization) {
-      throw this.createError('ORG_INACTIVE', 'Invalid organization');
+      throw this.createError("ORG_INACTIVE", "Invalid organization");
     }
 
     if (!organization.is_active) {
-      throw this.createError('ORG_INACTIVE', 'Organization is inactive');
+      throw this.createError("ORG_INACTIVE", "Organization is inactive");
     }
-
 
     return organization;
   }
@@ -135,13 +145,16 @@ export class ValidationService {
   /**
    * Create structured validation error
    */
-  private createError(type: keyof typeof CONFIG.ERROR_TYPES, message: string, details?: Record<string, any>): ValidationError {
+  private createError(
+    type: keyof typeof CONFIG.ERROR_TYPES,
+    message: string,
+    details?: Record<string, any>,
+  ): ValidationError {
     const error = new Error(message) as ValidationError;
     error.type = type;
     error.details = details;
     return error;
   }
-
 
   /**
    * Main validation middleware
@@ -202,7 +215,6 @@ export class ValidationService {
       // Set context and continue
       this.setContext(c, authContext);
       await next();
-
     } catch (error) {
       if (error instanceof HTTPException) {
         throw error;
@@ -250,7 +262,9 @@ export class ValidationService {
 }
 
 // Export middleware factory
-export const createValidationMiddlewareFactory = (serviceContext: ServiceContext) => {
+export const createValidationMiddlewareFactory = (
+  serviceContext: ServiceContext,
+) => {
   const validationService = new ValidationService(serviceContext);
   return validationService.middleware;
 };

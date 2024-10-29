@@ -15,24 +15,24 @@ export enum UserRole {
  */
 const ROLE_PERMISSIONS = {
   [UserRole.ADMIN]: [
-    'manage_users',
-    'manage_teams',
-    'manage_settings',
-    'manage_api_keys',
-    'view_audit_logs',
-    'manage_storage',
-    'manage_organizations',
+    "manage_users",
+    "manage_teams",
+    "manage_settings",
+    "manage_api_keys",
+    "view_audit_logs",
+    "manage_storage",
+    "manage_organizations",
   ],
   [UserRole.USER_MANAGER]: [
-    'manage_users',
-    'view_audit_logs',
-    'manage_settings',
+    "manage_users",
+    "view_audit_logs",
+    "manage_settings",
   ],
   [UserRole.TEAM_MANAGER]: [
-    'manage_teams',
-    'view_team_audit_logs',
-    'manage_team_settings',
-  ]
+    "manage_teams",
+    "view_team_audit_logs",
+    "manage_team_settings",
+  ],
 };
 /**
  * Retrieve all model names from the Prisma Client.

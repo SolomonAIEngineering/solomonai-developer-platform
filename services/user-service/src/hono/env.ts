@@ -26,7 +26,7 @@ export type ServiceContext = {
   analytics: Analytics;
   /** Database client for interacting with the application's data. */
   dbQueryMiddleware: QueryMiddleware;
-  prismaRef: PrismaClient
+  prismaRef: PrismaClient;
   // TODO: add analytics client to pass api usage
   // TODO: add audit log client to log user actions and store in a nosql db
   // TODO: add usage limit client to check if user has exceeded their usage limits
