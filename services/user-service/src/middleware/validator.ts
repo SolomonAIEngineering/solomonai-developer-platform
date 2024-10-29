@@ -1,11 +1,6 @@
-import { DatabaseClient as PostgresDatabaseClient } from "@/database/client";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "@prisma/client";
-import { Context, MiddlewareHandler, Next } from "hono";
-import { createMiddleware } from "hono/factory";
+import { QueryMiddleware } from "@/database/middleware/query.middleware";
+import { Context, Next } from "hono";
 import { HTTPException } from "hono/http-exception";
-import { Pool } from "pg";
-import postgres from "postgres";
 /**
  * Combined authentication middleware for Hono applications.
  * Handles API key validation, organization verification, and user authentication.
@@ -42,7 +37,7 @@ import postgres from "postgres";
  * @sets context.user - Validated user record
  */
 export const authenticate = async (c: Context, next: Next) => {
-  const dbClient = c.get("ctx").DatabaseClient as PostgresDatabaseClient;
+  const dbClient = c.get("ctx").queryClient as QueryMiddleware;
 
   // 1. API Key Validation
   const apiKey = c.req.header("x-api-key");
@@ -51,7 +46,7 @@ export const authenticate = async (c: Context, next: Next) => {
   }
 
   const keyPrefix = apiKey.split("_")[0];
-  const apiKeyRecord = await dbClient.postgres.org_api_keys.findFirst({
+  const apiKeyRecord = await dbClient.org_api_keys.findFirst({
     where: {
       key_prefix: keyPrefix,
       is_active: true,

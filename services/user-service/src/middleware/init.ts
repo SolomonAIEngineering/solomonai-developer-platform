@@ -1,6 +1,5 @@
 import { Analytics, newId } from "@/analytics";
 import { ServiceCache } from "@/cache";
-import { DatabaseClient as PostgresDatabaseClient } from "@/database/client";
 import { APIKeyRepository } from "@/db-repository/api-key-repository";
 import { UserRepository } from "@/db-repository/user-repository";
 import { DatabaseClient } from "@/db/client";
@@ -9,6 +8,9 @@ import { ConsoleLogger } from "@/metric/logger";
 import { formatPlatformPrefix } from "@/utils/formatters";
 import type { MiddlewareHandler } from "hono";
 import type { HonoEnv, Repository } from "../hono/env";
+import { QueryMiddlewareFactory } from "@/database/client";
+import { RequestContext } from "@/database/middleware/types";
+import { HTTPException } from "hono/http-exception";
 
 /**
  * workerId and coldStartAt are used to track the lifetime of the worker
@@ -90,6 +92,25 @@ export function init(): MiddlewareHandler<HonoEnv> {
       user: new UserRepository(db),
     };
 
+    const orgId = c.req.header("x-org-id");
+    if (!orgId) {
+      throw new HTTPException(401, { message: "Organization ID required" });
+    }
+
+    const tenantId = c.req.header("x-tenant-id");
+    if (!tenantId) {
+      throw new HTTPException(401, { message: "Tenant ID required" });
+    }
+
+    const ctx: RequestContext = {
+      organizationId: orgId,
+      tenantId: tenantId,
+      roles: [],
+    }
+
+
+    const dbClient = QueryMiddlewareFactory.create(ctx, c.env.DATABASE_CLIENT);
+
     /**
      * The context object containing initialized services.
      * @property {ReturnType<typeof initDB>} db - The database connection.
@@ -97,6 +118,7 @@ export function init(): MiddlewareHandler<HonoEnv> {
      * @property {ServiceCache} cache - The cache service instance.
      * @property {LogdrainMetrics} metrics - The metrics service instance.
      * @property {Analytics} analytics - The analytics service instance.
+     * @property {QueryMiddleware} queryClient - The database client instance.
      */
     c.set("ctx", {
       db: db,
@@ -104,7 +126,7 @@ export function init(): MiddlewareHandler<HonoEnv> {
       cache: cache,
       metrics: metricsClient,
       analytics: analyticsClient,
-      databaseClient: c.env.DATABASE_CLIENT.postgres, // NOTE: this should be initialized as the logic is present in the fetch function
+      queryClient: dbClient, // NOTE: this should be initialized as the logic is present in the fetch function
     });
 
     c.set("repo", dataRepository);
