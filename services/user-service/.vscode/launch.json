@@ -1,16 +1,18 @@
 {
-  "version": "0.2.0",
   "configurations": [
     {
+      "name": "Debug Vitest",
       "type": "node",
-      "request": "launch",
-      "name": "Debug Current Test File",
+      "request": "attach",
+      "port": 9229,
+      "cwd": "${workspaceFolder}",
+      "timeout": 30000, // Adjust as needed for longer tests
+      "skipFiles": ["<node_internals>/**"],
       "autoAttachChildProcesses": true,
-      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
-      "program": "${workspaceRoot}/node_modules/vitest/vitest.mjs",
-      "args": ["run", "${relativeFile}"],
-      "smartStep": true,
-      "console": "integratedTerminal"
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ]
     }
   ]
 }
