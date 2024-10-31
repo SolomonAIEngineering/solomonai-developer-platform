@@ -53,7 +53,7 @@ export class OrganizationAPIKeyQueries {
           ...data,
           key_id: keyId,
           key_hash: keyHash,
-          created_by: this.middleware.getContext().tenantId,
+          created_by: this.middleware.getContext().userId,
         },
       },
     );
