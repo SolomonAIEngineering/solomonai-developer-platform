@@ -1,10 +1,10 @@
-import {
-  PrismaClient,
-  Prisma,
-  APIKeyEnvironment,
-} from "../generated/postgresql";
-import { QueryMiddleware, QueryMiddlewareFactory } from "../client";
 import * as crypto from "crypto";
+import { QueryMiddleware, QueryMiddlewareFactory } from "../client";
+import {
+  APIKeyEnvironment,
+  Prisma,
+  PrismaClient,
+} from "../generated/postgresql";
 import { QueryOptions, RequestContext } from "../types";
 type APIKeyWithRelations = Prisma.org_api_keysGetPayload<{
   include: {

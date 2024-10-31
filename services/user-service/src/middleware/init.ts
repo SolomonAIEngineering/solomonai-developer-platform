@@ -1,17 +1,16 @@
 import { Analytics, newId } from "@/analytics";
 import { ServiceCache } from "@/cache";
+import { QueryMiddlewareFactory } from "@/database/client";
+import { RequestContext } from "@/database/types";
 import { APIKeyRepository } from "@/db-repository/api-key-repository";
 import { UserRepository } from "@/db-repository/user-repository";
 import { DatabaseClient } from "@/db/client";
+import { HeaderKey, RequestHeaders } from "@/header-utils";
 import { LogdrainMetrics } from "@/metric/logdrain";
 import { ConsoleLogger } from "@/metric/logger";
 import { formatPlatformPrefix } from "@/utils/formatters";
 import type { MiddlewareHandler } from "hono";
-import { QueryMiddlewareFactory } from "@/database/client";
 import { HTTPException } from "hono/http-exception";
-import { RequestContext } from "@/database/types";
-import { HeaderKey, RequestHeaders } from "@/header-utils";
-
 
 let isolateId: string | undefined;
 let isolateCreatedAt: number | undefined;
@@ -29,7 +28,9 @@ export function init(): MiddlewareHandler {
     if (!isolateCreatedAt) isolateCreatedAt = Date.now();
 
     const requestId = newId("request");
-    const platformPrefix = formatPlatformPrefix(c.env.PLATFORM_PREFIX ?? "solomonai_platform");
+    const platformPrefix = formatPlatformPrefix(
+      c.env.PLATFORM_PREFIX ?? "solomonai_platform",
+    );
     const requestIdKey = `${platformPrefix}-Request-Id`;
 
     // Set request-specific context
@@ -48,9 +49,18 @@ export function init(): MiddlewareHandler {
     });
 
     const db = new DatabaseClient(c.env.DB).getDb();
-    const cache = new ServiceCache(c.env.KV as KVNamespace<any>, c.env.PLATFORM_PREFIX);
-    const analyticsClient = new Analytics({ requestId, environment: c.env.ENVIRONMENT });
-    const metricsClient = new LogdrainMetrics({ requestId, environment: c.env.ENVIRONMENT });
+    const cache = new ServiceCache(
+      c.env.KV as KVNamespace<any>,
+      c.env.PLATFORM_PREFIX,
+    );
+    const analyticsClient = new Analytics({
+      requestId,
+      environment: c.env.ENVIRONMENT,
+    });
+    const metricsClient = new LogdrainMetrics({
+      requestId,
+      environment: c.env.ENVIRONMENT,
+    });
 
     const dataRepository = {
       apiKey: new APIKeyRepository(db),
@@ -60,13 +70,16 @@ export function init(): MiddlewareHandler {
     // Validate and extract required headers
     const headers = c.req.header as unknown as RequestHeaders;
     const orgId = headers[HeaderKey.ORG_ID];
-    if (!orgId) throw new HTTPException(401, { message: "Organization ID required" });
+    if (!orgId)
+      throw new HTTPException(401, { message: "Organization ID required" });
 
     const userId = headers[HeaderKey.USER_ID];
     if (!userId) throw new HTTPException(401, { message: "User ID required" });
 
     // Extract optional and role-based headers
-    const roles = (headers[HeaderKey.USER_ROLES] ?? "").split(",").map(role => role.trim());
+    const roles = (headers[HeaderKey.USER_ROLES] ?? "")
+      .split(",")
+      .map((role) => role.trim());
     const tenantId = headers[HeaderKey.TENANT_ID];
     const apiKey = headers[HeaderKey.API_KEY];
 
@@ -82,7 +95,14 @@ export function init(): MiddlewareHandler {
     const dbClient = QueryMiddlewareFactory.create(ctx, c.env.DATABASE_CLIENT);
 
     // Set context and repositories for further use
-    c.set("ctx", { db, logger, cache, metrics: metricsClient, analytics: analyticsClient, queryClient: dbClient });
+    c.set("ctx", {
+      db,
+      logger,
+      cache,
+      metrics: metricsClient,
+      analytics: analyticsClient,
+      queryClient: dbClient,
+    });
     c.set("repo", dataRepository);
 
     await next();

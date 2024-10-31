@@ -1,10 +1,10 @@
+import { HeaderKey, RequestHeaders } from "@/header-utils";
 import { Context, Next } from "hono";
 import { HTTPException } from "hono/http-exception";
 import constants from "../constants/constant";
 import { APIKeyRepository } from "../db-repository/api-key-repository";
 import { UserRepository } from "../db-repository/user-repository";
 import { User } from "../db/schema";
-import { HeaderKey, RequestHeaders } from "@/header-utils";
 
 /**
  * Authentication middleware

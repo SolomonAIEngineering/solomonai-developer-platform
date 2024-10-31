@@ -1,11 +1,11 @@
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "@prisma/client/extension";
+import { Pool } from "pg";
 import { Env, zEnv } from "./env";
 import { newApp } from "./hono/app";
 import { UserActionMessageBody } from "./message";
 import { ConsoleLogger } from "./metric/logger";
 import { setupRoutes } from "./routes";
-import { Pool } from "pg";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "@prisma/client";
 
 const app = newApp();
 setupRoutes(app);
@@ -57,22 +57,26 @@ const handler = {
           message: "Some environment variables are missing or are invalid",
           errors: parsedEnv.error,
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
     try {
-      parsedEnv.data.DATABASE_CLIENT = createPrismaClient(parsedEnv.data.HYPERDRIVE.connectionString);
+      parsedEnv.data.DATABASE_CLIENT = createPrismaClient(
+        parsedEnv.data.HYPERDRIVE.connectionString,
+      );
       return await app.fetch(req, parsedEnv.data, executionCtx);
     } catch (error) {
-      createLogger(env).fatal(`DATABASE_CONNECTION_ERROR: ${error instanceof Error ? error.message : "Unknown error"}`);
+      createLogger(env).fatal(
+        `DATABASE_CONNECTION_ERROR: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
       return Response.json(
         {
           code: "DATABASE_CONNECTION_ERROR",
           message: "Failed to connect to the database",
           errors: error,
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
   },
@@ -87,7 +91,7 @@ const handler = {
   queue: async (
     batch: MessageBatch<UserActionMessageBody>,
     env: Env,
-    _executionContext: ExecutionContext
+    _executionContext: ExecutionContext,
   ) => {
     const logger = createLogger(env, "queue");
     const parsedEnv = zEnv.safeParse(env);
@@ -98,7 +102,9 @@ const handler = {
     }
 
     try {
-      parsedEnv.data.DATABASE_CLIENT = createPrismaClient(parsedEnv.data.HYPERDRIVE.connectionString);
+      parsedEnv.data.DATABASE_CLIENT = createPrismaClient(
+        parsedEnv.data.HYPERDRIVE.connectionString,
+      );
       for (const message of batch.messages) {
         switch (batch.queue) {
           case "key-migrations-development":
@@ -115,7 +121,9 @@ const handler = {
           case "key-migrations-canary-dlq":
           case "key-migrations-production-dlq":
             // Process the message for dead-letter queues (DLQs).
-            logger.info("Processed message from DLQ", { message: message.body });
+            logger.info("Processed message from DLQ", {
+              message: message.body,
+            });
             break;
 
           default:
