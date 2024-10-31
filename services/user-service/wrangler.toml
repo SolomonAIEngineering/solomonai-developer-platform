@@ -1,6 +1,5 @@
 compatibility_date = "2024-09-23"
 compatibility_flags = [ "nodejs_compat" ]
-
 workers_dev = false
 logpush = true
 
@@ -10,7 +9,7 @@ logpush = true
 route = { pattern = "user-service.solomon-ai-platform.com/*", zone_name = "solomon-ai-platform.com" }
 
 kv_namespaces = [
-  { binding = "KV", id = "019720a586c448c2a88a58773da08fd8" }
+  { binding = "KV", id = "ebe4fa426a2c460185efbabc4d938e64" }
 ]
 
 # the hyperdrive binding is used to access the hyperdrive service
@@ -33,7 +32,7 @@ name = "user-service-staging"
 route = { pattern = "user-service-staging.solomon-ai-platform.com/*", zone_name = "solomon-ai-platform.com" }
 
 kv_namespaces = [
-  { binding = "KV", id = "6745cb3ad41e4d35a45bf67bb515c08b" }
+  { binding = "KV", id = "7d39d035c7034acb8148e59a64e5dfa4" }
 ]
 
 [env.staging.observability]

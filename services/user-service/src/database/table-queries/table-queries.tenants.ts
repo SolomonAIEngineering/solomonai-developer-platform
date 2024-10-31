@@ -1,5 +1,5 @@
 import { QueryMiddleware } from "../client";
-import { Prisma, PrismaClient } from "@/database/generated/postgresql/edge";
+import { Prisma, PrismaClient } from "@/database/generated/postgresql";
 import { QueryMiddlewareFactory } from "../client";
 import { QueryOptions, RequestContext } from "../types";
 

@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from "@/database/generated/postgresql/edge";
+import { Prisma, PrismaClient } from "@/database/generated/postgresql";
 import { QueryOptions, RequestContext } from "./types";
 
 /**
@@ -697,15 +697,18 @@ export interface ExtendedRequestContext extends RequestContext {
  */
 export class QueryMiddlewareFactory {
   /**
-   * Creates a new instance of `QueryMiddleware` after validating the context.
+   * Creates a new instance of `QueryMiddleware` after optionally validating the context.
    * @param context - The request context.
+   * @param prisma - The Prisma client instance.
+   * @param skipValidation - If `true`, skips validation of the context.
    * @returns A new `QueryMiddleware` instance.
    */
   static create(
     context: RequestContext | ExtendedRequestContext,
     prisma: PrismaClient,
+    skipValidation = false,
   ): QueryMiddleware {
-    this.validateContext(context);
+    if (!skipValidation) this.validateContext(context);
     return new QueryMiddleware(context, prisma);
   }
 

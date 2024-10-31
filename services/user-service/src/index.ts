@@ -1,5 +1,9 @@
+/**
+ * Description
+ * @returns {any}
+ */
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "@prisma/client/extension";
+import { PrismaClient } from "@/database/generated/postgresql";
 import { Pool } from "pg";
 import { Env, zEnv } from "./env";
 import { newApp } from "./hono/app";
@@ -48,7 +52,6 @@ const handler = {
    * @returns A `Response` object indicating success or failure.
    */
   fetch: async (req: Request, env: Env, executionCtx: ExecutionContext) => {
-    console.log("this is the env", env);
     const parsedEnv = zEnv.safeParse(env);
     if (!parsedEnv.success) {
       createLogger(env).fatal(`BAD_ENVIRONMENT: ${parsedEnv.error.message}`);
@@ -63,9 +66,12 @@ const handler = {
     }
 
     try {
+      // createPrismaClient(parsedEnv.data.HYPERDRIVE.connectionString)` is initializing a new Prisma client
+      // and assigning it to the `DATABASE_CLIENT` property of the `parsedEnv.data` object.
       parsedEnv.data.DATABASE_CLIENT = createPrismaClient(
         parsedEnv.data.HYPERDRIVE.connectionString,
       );
+
       return await app.fetch(req, parsedEnv.data, executionCtx);
     } catch (error) {
       createLogger(env).fatal(
@@ -74,7 +80,7 @@ const handler = {
       return Response.json(
         {
           code: "DATABASE_CONNECTION_ERROR",
-          message: "Failed to connect to the database",
+          message: `Failed to connect to the database: ${error instanceof Error ? error.message : "Unknown error"}`,
           errors: error,
         },
         { status: 500 },

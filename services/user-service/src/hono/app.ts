@@ -19,7 +19,7 @@ import { prettyJSON } from "hono/pretty-json";
 import { secureHeaders } from "hono/secure-headers";
 import { timing } from "hono/timing";
 import type { HonoEnv } from "./env";
-
+import { serviceConfig } from "@/version";
 /**
  * Creates and configures a new OpenAPIHono application.
  *
@@ -125,8 +125,8 @@ function setupSwagger(app: OpenAPIHono<HonoEnv>) {
     openapi: "3.1.0",
     info: {
       version: "1.0.0",
-      title: "Solomon AI Financial Service API",
-      description: "API for Solomon AI Financial Service",
+      title: "Solomon AI User Service API",
+      description: "API for Solomon AI User Service",
       termsOfService: "https://solomon-ai.app/terms",
       contact: {
         name: "Solomon AI",
@@ -140,7 +140,7 @@ function setupSwagger(app: OpenAPIHono<HonoEnv>) {
     },
     servers: [
       {
-        url: "https://engine.solomon-ai-platform.com",
+        url: "https://user-service.solomon-ai-platform.com",
         description: "Production Environment",
         variables: {
           region: {
@@ -150,7 +150,7 @@ function setupSwagger(app: OpenAPIHono<HonoEnv>) {
         },
       },
       {
-        url: "https://engine-staging.solomon-ai-platform.com",
+        url: "https://user-service-staging.solomon-ai-platform.com",
         description: "Staging Environment",
       },
       {
@@ -171,17 +171,21 @@ function setupSwagger(app: OpenAPIHono<HonoEnv>) {
     },
     "x-solomon-ai": {
       postman: {
-        name: "Solomon AI Financial API",
-        description: "Postman collection for Solomon AI Financial Service API",
+        name: "Solomon AI User Service API",
+        description: "Postman collection for Solomon AI User Service API",
       },
       sdks: {
         typescript: {
           githubRepo: "solomon-ai/typescript-sdk",
-          version: "1.0.0",
+          version: serviceConfig.version,
         },
         python: {
           githubRepo: "solomon-ai/python-sdk",
-          version: "1.0.0",
+          version: serviceConfig.version,
+        },
+        go: {
+          githubRepo: "solomon-ai/go-sdk",
+          version: serviceConfig.version,
         },
       },
     },

@@ -1,6 +1,6 @@
 import { QueryMiddlewareFactory } from "../client";
 import { QueryMiddleware } from "../client";
-import { Prisma, PrismaClient } from "@/database/generated/postgresql/edge";
+import { Prisma, PrismaClient } from "@/database/generated/postgresql";
 import { QueryOptions, RequestContext } from "../types";
 
 type TeamMemberRole = "admin" | "member" | "guest";

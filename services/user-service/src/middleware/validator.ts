@@ -1,5 +1,5 @@
 import { ServiceCache } from "@/cache";
-import { Prisma, PrismaClient } from "@/database/generated/postgresql/edge";
+import { Prisma, PrismaClient } from "@/database/generated/postgresql";
 import { HeaderKey, RequestHeaders } from "@/header-utils";
 import { ServiceContext } from "@/hono/env";
 import { Context, Next } from "hono";
