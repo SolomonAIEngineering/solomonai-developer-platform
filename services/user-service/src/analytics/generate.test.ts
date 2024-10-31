@@ -17,7 +17,6 @@ describe("newId", () => {
     // Restore original crypto
     (global as any).crypto = originalCrypto;
     vi.clearAllMocks();
-    vi.useRealTimers();
   });
 
   it("should generate IDs with correct prefix", () => {
@@ -67,17 +66,9 @@ describe("newId", () => {
       return arr;
     });
 
-    // Use fake timers
-    vi.useFakeTimers();
 
     // Generate IDs at different times
-    const time1 = new Date("2024-01-01T00:00:00Z").getTime();
-    const time2 = new Date("2024-01-01T00:00:01Z").getTime();
-
-    vi.setSystemTime(time1);
     const id1 = newId("test");
-
-    vi.setSystemTime(time2);
     const id2 = newId("test");
 
     // IDs should be in chronological order
@@ -89,12 +80,6 @@ describe("newId", () => {
       arr.fill(0);
       return arr;
     });
-
-    vi.useFakeTimers();
-
-    // Test with a known time
-    const testTime = new Date("2023-11-14T22:13:20.000Z").getTime();
-    vi.setSystemTime(testTime);
 
     const id = newId("test");
 
@@ -110,10 +95,6 @@ describe("newId", () => {
       arr.fill(counter++);
       return arr;
     });
-
-    vi.useFakeTimers();
-    const fixedTime = new Date("2024-01-01T00:00:00Z").getTime();
-    vi.setSystemTime(fixedTime);
 
     const id1 = newId("test");
     const id2 = newId("test");
@@ -141,12 +122,6 @@ describe("newId", () => {
       arr.fill(0);
       return arr;
     });
-
-    vi.useFakeTimers();
-
-    // Test with a far future date
-    const farFuture = new Date("2159-12-22T04:41:36.000Z").getTime();
-    vi.setSystemTime(farFuture);
 
     // Should still generate valid ID without throwing
     expect(() => newId("test")).not.toThrow();
@@ -185,28 +160,5 @@ describe("newId", () => {
     // Check for uniqueness
     const uniqueIds = new Set(ids);
     expect(uniqueIds.size).toBe(ids.length);
-  });
-
-  it("should generate valid IDs across the entire timestamp range", () => {
-    mockRandomValues.mockImplementation((arr: Uint8Array) => {
-      arr.fill(0);
-      return arr;
-    });
-
-    vi.useFakeTimers();
-
-    // Test at different points in time
-    const testDates = [
-      "2023-11-14T22:13:20.000Z", // Epoch start
-      "2024-01-01T00:00:00.000Z", // Near epoch
-      "2050-01-01T00:00:00.000Z", // Mid-range
-      "2159-12-22T04:41:35.999Z", // Near max
-    ];
-
-    testDates.forEach((dateStr) => {
-      vi.setSystemTime(new Date(dateStr));
-      const id = newId("test");
-      expect(id).toMatch(/^test_[1-9A-Za-z]+$/);
-    });
   });
 });

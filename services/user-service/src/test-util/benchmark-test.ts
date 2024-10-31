@@ -4,6 +4,7 @@ import type { z } from "zod";
 import { benchmarkTestEnv } from "./env";
 import { Harness } from "./harness";
 import { type StepRequest, type StepResponse, step } from "./request";
+import { QueryMiddleware } from "@/database/client";
 
 /**
  * BenchmarkHarness is an extension of the `Harness` class that provides additional functionality
@@ -27,7 +28,7 @@ export class BenchmarkHarness extends Harness {
    *
    * @param {TaskContext<HonoEnv>} t - The test execution context provided by Vitest. This contains information about the current test.
    */
-  private constructor(t: TaskContext, db: D1Database) {
+  private constructor(t: TaskContext, db: QueryMiddleware) {
     super(t, db);
     this.env = benchmarkTestEnv.parse(env);
   }
@@ -39,7 +40,7 @@ export class BenchmarkHarness extends Harness {
    * @param {TaskContext<HonoEnv>} t - The test execution context provided by Vitest.
    * @returns {Promise<BenchmarkHarness>} - A promise that resolves to an instance of `BenchmarkHarness` after initialization.
    */
-  static async init(t: TaskContext, db: D1Database): Promise<BenchmarkHarness> {
+  static async init(t: TaskContext, db: QueryMiddleware): Promise<BenchmarkHarness> {
     const h = new BenchmarkHarness(t, db);
     await h.seed();
     return h;

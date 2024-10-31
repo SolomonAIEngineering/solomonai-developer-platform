@@ -1,6 +1,7 @@
 import { Context, Next } from "hono";
 import { HTTPException } from "hono/http-exception";
 import constants from "../constants/constant";
+import { HeaderKey, RequestHeaders } from "@/header-utils";
 
 interface RateLimitConfig {
   limit: number;
@@ -56,8 +57,11 @@ export const rateLimit = (_config: RateLimitConfig = DEFAULT_RATE_LIMIT) => {
         return next();
       }
 
-      const apiKey = c.req.header("X-API-Key");
-      const userId = c.req.header("X-User-Id");
+      const headers = c.req.header as unknown as RequestHeaders;
+
+      const apiKey = headers[HeaderKey.API_KEY];
+      const userIdStr = headers[HeaderKey.USER_ID];
+      const userId = userIdStr ? parseInt(userIdStr, 10) : null;
 
       if (!apiKey || !userId) {
         return next();

@@ -57,7 +57,10 @@ export default defineWorkersProject(async () => {
       ],
       reporters: ["html", "verbose"],
       outputFile: "./.vitest/index.html",
-      include: ["./**/*.test.ts", "./**/*.test.tsx"],
+      include: [
+        "./src/**/*.test.ts",
+        "./test/**/*.test.ts",
+      ],
       alias: {
         "@/": new URL("./src/", import.meta.url).pathname,
       },
@@ -76,7 +79,7 @@ export default defineWorkersProject(async () => {
           isolatedStorage: false,
           wrangler: {
             configPath: "./wrangler.toml",
-            environment: "local",
+            environment: "development",
           },
           miniflare: {
             /**

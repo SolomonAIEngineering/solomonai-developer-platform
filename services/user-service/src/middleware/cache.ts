@@ -1,6 +1,6 @@
 import type { Context, Next } from "hono";
 import { cache } from "hono/cache";
-
+import type { HonoEnv } from "@/hono/env";
 /**
  * Caching middleware
  *
@@ -9,7 +9,7 @@ import { cache } from "hono/cache";
  * @param {Next} next - The next middleware function
  * @returns {Response | Promise<void>} The cached response or void if passing to next middleware
  */
-export const cacheMiddleware = (c: Context, next: Next) => {
+export const cacheMiddleware = (c: Context<HonoEnv>, next: Next) => {
   return cache({
     cacheName: "engine-cache",
     cacheControl: "max-age=3600",

@@ -1,13 +1,7 @@
-compatibility_date = "2024-01-01"
+compatibility_date = "2024-09-23"
 compatibility_flags = [ "nodejs_compat" ]
-
 workers_dev = false
 logpush = true
-tail_consumers = [
-  {service = "user-service-tail-consumer"},
-  {service = "user-service-staging-tail-consumer"},
-  {service = "user-service-tail"}
-]
 
 [env.production]
 name = "user-service"
@@ -15,41 +9,17 @@ logpush = true
 route = { pattern = "user-service.solomon-ai-platform.com/*", zone_name = "solomon-ai-platform.com" }
 
 kv_namespaces = [
-  { binding = "KV", id = "019720a586c448c2a88a58773da08fd8" }
-]
-
-mtls_certificates = [
-  { binding = "TELLER_CERT", certificate_id = "c82877a0-409e-4589-a935-ca220531651f" }
-]
-
-r2_buckets = [
-  { binding = "STORAGE", bucket_name = "storage-production", preview_bucket_name = "" },
-  { binding = "BANK_STATEMENTS", bucket_name = "bank-statements-production", preview_bucket_name = "" }
+  { binding = "KV", id = "ebe4fa426a2c460185efbabc4d938e64" }
 ]
 
 # the hyperdrive binding is used to access the hyperdrive service
 [[env.production.hyperdrive]]
 binding = "HYPERDRIVE"
-id = "f3747350db484edeb97c9514ce418da7"
-
-[env.production.queues]
-producers = [
-  { queue = "user-actions-production", binding = "USER_ACTIONS" },
-]
-
-consumers = [
-  { queue = "user-actions-production", max_batch_size = 10, max_retries = 10, dead_letter_queue = "user-actions-production-dlq" },
-  { queue = "user-actions-production-dlq", max_batch_size = 10, max_retries = 10 },
-]
+id = "35ce83a30dc04eeaa671c4135774ed7f"
 
 [env.production.observability]
 enabled = true
 head_sampling_rate = 0.01 # 10% of requests are logged
-
-[[env.production.d1_databases]]
-binding = "DB" # i.e. available in your Worker on env.DB
-database_name = "user-service-production-db"
-database_id = "7e9430cd-517d-4139-bb27-1be427d3474a"
 
 [[env.production.unsafe.bindings]]
 name = "RATE_LIMITER"
@@ -62,36 +32,12 @@ name = "user-service-staging"
 route = { pattern = "user-service-staging.solomon-ai-platform.com/*", zone_name = "solomon-ai-platform.com" }
 
 kv_namespaces = [
-  { binding = "KV", id = "6745cb3ad41e4d35a45bf67bb515c08b" }
-]
-
-mtls_certificates = [
-  { binding = "TELLER_CERT", certificate_id = "c82877a0-409e-4589-a935-ca220531651f" }
-]
-
-r2_buckets = [
-  { binding = "STORAGE", bucket_name = "storage-staging", preview_bucket_name = "" },
-  { binding = "BANK_STATEMENTS", bucket_name = "bank-statements-staging", preview_bucket_name = "" }
+  { binding = "KV", id = "7d39d035c7034acb8148e59a64e5dfa4" }
 ]
 
 [env.staging.observability]
 enabled = true
 head_sampling_rate = 0.05 # 10% of requests are logged
-
-[[env.staging.d1_databases]]
-binding = "DB" # i.e. available in your Worker on env.DB
-database_name = "user-service-staging-database"
-database_id = "d011debb-4697-4f62-ae29-1582d9086bc4"
-
-[env.staging.queues]
-producers = [
-  { queue = "user-actions-staging", binding = "USER_ACTIONS" },
-]
-
-consumers = [
-  { queue = "user-actions-staging", max_batch_size = 10, max_retries = 10, dead_letter_queue = "user-actions-staging-dlq" },
-  { queue = "user-actions-staging-dlq", max_batch_size = 10, max_retries = 10 },
-]
 
 [[env.staging.unsafe.bindings]]
 name = "RATE_LIMITER"
@@ -99,21 +45,11 @@ type = "ratelimit"
 namespace_id = "1002"
 simple = { limit = 50000, period = 60 }
 
-[[env.staging.tail_consumers]]
-service = "user-service-staging-tail"
-
 [[env.staging.hyperdrive]]
 binding = "HYPERDRIVE"
-id = "234d768ebd73498885fe06c0e7621d74" # TODO: need to create a new postgres db for staging as name is way too long
+id = "35ce83a30dc04eeaa671c4135774ed7f"
 
-# local
-[[env.local.d1_databases]]
-binding = "DB" # i.e. available in your Worker on env.DB
-database_name = "user-service-db"
-# database_id = "50694d1f-d468-4807-a60f-3e3c9287781e"
-database_id = "00000000-0000-0000-0000-000000000000" #real value
-
-[[env.local.hyperdrive]]
+[[env.development.hyperdrive]]
 binding = "HYPERDRIVE"
 id = "c020574a-5623-407b-be0c-cd192bab9545"
 localConnectionString = "postgresql://postgres:postgres@localhost:5432/social_service"

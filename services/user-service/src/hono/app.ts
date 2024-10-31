@@ -1,6 +1,5 @@
 import { handleError, handleZodError } from "@/errors";
 import {
-  authMiddleware,
   cacheMiddleware,
   cors,
   errorHandlerMiddleware,
@@ -11,19 +10,16 @@ import { init } from "@/middleware/init";
 import { metrics } from "@/middleware/metrics";
 import { rateLimit } from "@/middleware/ratelimit";
 import {
-  AuthenticationRequiredRoutes,
-  CachedRoutes,
-  Routes,
+  CachedRoutes
 } from "@/route-definitions/routes";
 import { swaggerUI } from "@hono/swagger-ui";
 import { OpenAPIHono } from "@hono/zod-openapi";
 import type { Context as GenericContext } from "hono";
 import { prettyJSON } from "hono/pretty-json";
-import { requestId } from "hono/request-id";
 import { secureHeaders } from "hono/secure-headers";
 import { timing } from "hono/timing";
 import type { HonoEnv } from "./env";
-
+import { serviceConfig } from "@/version";
 /**
  * Creates and configures a new OpenAPIHono application.
  *
@@ -33,10 +29,9 @@ import type { HonoEnv } from "./env";
  * @returns {OpenAPIHono<HonoEnv>} A configured OpenAPIHono application instance.
  */
 export function newApp(): OpenAPIHono<HonoEnv> {
-  const app = new OpenAPIHono<HonoEnv>({ defaultHook: handleZodError });
+  const app = new OpenAPIHono<HonoEnv>({ defaultHook: handleZodError as any });
 
   setupMiddleware(app);
-  setupAuthentication(app);
   setupCaching(app);
   setupSwagger(app);
   setupOpenAPIRegistry(app);
@@ -65,19 +60,18 @@ export function newApp(): OpenAPIHono<HonoEnv> {
  * @param {OpenAPIHono<HonoEnv>} app - The OpenAPIHono application instance.
  */
 function setupMiddleware(app: OpenAPIHono<HonoEnv>) {
-  app.use("*", init());
-  app.use("*", cors());
-  app.use(prettyJSON());
-  app.onError(handleError);
-  app.use("*", setLocationAndUserAgent);
-  app.use("*", requestId());
-  app.use("*", loggingMiddleware);
-  app.use("*", errorHandlerMiddleware);
-  app.use("*", jsonFormattingMiddleware);
-  app.use("*", rateLimit());
-  app.use("*", metrics());
-  app.use("*", secureHeaders());
-  app.use("*", timing());
+  app.use("*", init() as any);
+  app.use("*", cors() as any);
+  app.use(prettyJSON() as any);
+  app.onError(handleError as any);
+  app.use("*", setLocationAndUserAgent as any);
+  app.use("*", loggingMiddleware as any);
+  app.use("*", errorHandlerMiddleware as any);
+  app.use("*", jsonFormattingMiddleware as any);
+  app.use("*", rateLimit() as any);
+  app.use("*", metrics() as any);
+  app.use("*", secureHeaders() as any);
+  app.use("*", timing() as any);
 }
 
 /**
@@ -114,19 +108,9 @@ function setLocationAndUserAgent(
  * @param {OpenAPIHono<HonoEnv>} app - The OpenAPIHono application instance.
  */
 function setupCaching(app: OpenAPIHono<HonoEnv>) {
-  CachedRoutes.forEach((route) => app.get(route.path, cacheMiddleware));
+  CachedRoutes.forEach((route) => app.get(route.path, cacheMiddleware as any));
 }
 
-/**
- * Set up authentication middleware for the application's specific routes.
- *
- * @param {OpenAPIHono<HonoEnv>} app - The OpenAPIHono application instance.
- */
-function setupAuthentication(app: OpenAPIHono<HonoEnv>) {
-  AuthenticationRequiredRoutes.forEach((route) => {
-    app.use(route.path, authMiddleware);
-  });
-}
 
 /**
  * Sets up Swagger UI and OpenAPI documentation for the application.
@@ -141,8 +125,8 @@ function setupSwagger(app: OpenAPIHono<HonoEnv>) {
     openapi: "3.1.0",
     info: {
       version: "1.0.0",
-      title: "Solomon AI Financial Service API",
-      description: "API for Solomon AI Financial Service",
+      title: "Solomon AI User Service API",
+      description: "API for Solomon AI User Service",
       termsOfService: "https://solomon-ai.app/terms",
       contact: {
         name: "Solomon AI",
@@ -156,7 +140,7 @@ function setupSwagger(app: OpenAPIHono<HonoEnv>) {
     },
     servers: [
       {
-        url: "https://engine.solomon-ai-platform.com",
+        url: "https://user-service.solomon-ai-platform.com",
         description: "Production Environment",
         variables: {
           region: {
@@ -166,7 +150,7 @@ function setupSwagger(app: OpenAPIHono<HonoEnv>) {
         },
       },
       {
-        url: "https://engine-staging.solomon-ai-platform.com",
+        url: "https://user-service-staging.solomon-ai-platform.com",
         description: "Staging Environment",
       },
       {
@@ -187,17 +171,21 @@ function setupSwagger(app: OpenAPIHono<HonoEnv>) {
     },
     "x-solomon-ai": {
       postman: {
-        name: "Solomon AI Financial API",
-        description: "Postman collection for Solomon AI Financial Service API",
+        name: "Solomon AI User Service API",
+        description: "Postman collection for Solomon AI User Service API",
       },
       sdks: {
         typescript: {
           githubRepo: "solomon-ai/typescript-sdk",
-          version: "1.0.0",
+          version: serviceConfig.version,
         },
         python: {
           githubRepo: "solomon-ai/python-sdk",
-          version: "1.0.0",
+          version: serviceConfig.version,
+        },
+        go: {
+          githubRepo: "solomon-ai/go-sdk",
+          version: serviceConfig.version,
         },
       },
     },
@@ -212,7 +200,7 @@ function setupSwagger(app: OpenAPIHono<HonoEnv>) {
     "/",
     swaggerUI({
       url: "/openapi",
-    }),
+    }) as any,
   );
 
   // Mount API documentation at additional endpoints

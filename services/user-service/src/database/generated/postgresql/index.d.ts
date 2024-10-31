@@ -81,22 +81,7 @@ export type tenants = $Result.DefaultSelection<Prisma.$tenantsPayload>
 export type org_members = $Result.DefaultSelection<Prisma.$org_membersPayload>
 /**
  * Model org_api_keys
- * API keys for organization-level access
- * Used for managing tenants, viewing usage, and organization-wide operations
  * 
- * Example:
- * ```typescript
- * // Create new API key
- * const apiKey = await prisma.org_api_keys.create({
- * data: {
- * organization_id: 'org_123',
- * key_name: 'Tenant Management API',
- * key_prefix: 'org_key_123',
- * key_hash: hashedApiKey,
- * scopes: ['manage_tenants', 'read_usage']
- * }
- * });
- * ```
  */
 export type org_api_keys = $Result.DefaultSelection<Prisma.$org_api_keysPayload>
 /**
@@ -300,31 +285,24 @@ export type audit_logs = $Result.DefaultSelection<Prisma.$audit_logsPayload>
  * ```
  */
 export type settings = $Result.DefaultSelection<Prisma.$settingsPayload>
+
 /**
- * Model user_settings
- * User-specific settings and preferences
- * 
- * Usage:
- * ```typescript
- * // Create user settings
- * const userSettings = await prisma.user_settings.create({
- * data: {
- * user_account_id: user.id,
- * preferred_language: 'en',
- * notification_settings: {
- * email: true,
- * push: false,
- * frequency: 'daily'
- * },
- * ui_settings: {
- * theme: 'dark',
- * compact_view: true
- * }
- * }
- * });
- * ```
+ * Enums
  */
-export type user_settings = $Result.DefaultSelection<Prisma.$user_settingsPayload>
+export namespace $Enums {
+  export const APIKeyEnvironment: {
+  development: 'development',
+  staging: 'staging',
+  production: 'production'
+};
+
+export type APIKeyEnvironment = (typeof APIKeyEnvironment)[keyof typeof APIKeyEnvironment]
+
+}
+
+export type APIKeyEnvironment = $Enums.APIKeyEnvironment
+
+export const APIKeyEnvironment: typeof $Enums.APIKeyEnvironment
 
 /**
  * ##  Prisma Client ʲˢ
@@ -588,16 +566,6 @@ export class PrismaClient<
     * ```
     */
   get settings(): Prisma.settingsDelegate<ExtArgs>;
-
-  /**
-   * `prisma.user_settings`: Exposes CRUD operations for the **user_settings** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more User_settings
-    * const user_settings = await prisma.user_settings.findMany()
-    * ```
-    */
-  get user_settings(): Prisma.user_settingsDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -1052,8 +1020,7 @@ export namespace Prisma {
     user_accounts: 'user_accounts',
     addresses: 'addresses',
     audit_logs: 'audit_logs',
-    settings: 'settings',
-    user_settings: 'user_settings'
+    settings: 'settings'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1069,7 +1036,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "organizations" | "tenants" | "org_members" | "org_api_keys" | "tenant_api_keys" | "org_usage_logs" | "tenant_usage_logs" | "teams" | "team_members" | "business_accounts" | "user_accounts" | "addresses" | "audit_logs" | "settings" | "user_settings"
+      modelProps: "organizations" | "tenants" | "org_members" | "org_api_keys" | "tenant_api_keys" | "org_usage_logs" | "tenant_usage_logs" | "teams" | "team_members" | "business_accounts" | "user_accounts" | "addresses" | "audit_logs" | "settings"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2053,76 +2020,6 @@ export namespace Prisma {
           }
         }
       }
-      user_settings: {
-        payload: Prisma.$user_settingsPayload<ExtArgs>
-        fields: Prisma.user_settingsFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.user_settingsFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$user_settingsPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.user_settingsFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$user_settingsPayload>
-          }
-          findFirst: {
-            args: Prisma.user_settingsFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$user_settingsPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.user_settingsFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$user_settingsPayload>
-          }
-          findMany: {
-            args: Prisma.user_settingsFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$user_settingsPayload>[]
-          }
-          create: {
-            args: Prisma.user_settingsCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$user_settingsPayload>
-          }
-          createMany: {
-            args: Prisma.user_settingsCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.user_settingsCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$user_settingsPayload>[]
-          }
-          delete: {
-            args: Prisma.user_settingsDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$user_settingsPayload>
-          }
-          update: {
-            args: Prisma.user_settingsUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$user_settingsPayload>
-          }
-          deleteMany: {
-            args: Prisma.user_settingsDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.user_settingsUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.user_settingsUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$user_settingsPayload>
-          }
-          aggregate: {
-            args: Prisma.User_settingsAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateUser_settings>
-          }
-          groupBy: {
-            args: Prisma.user_settingsGroupByArgs<ExtArgs>
-            result: $Utils.Optional<User_settingsGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.user_settingsCountArgs<ExtArgs>
-            result: $Utils.Optional<User_settingsCountAggregateOutputType> | number
-          }
-        }
-      }
     }
   } & {
     other: {
@@ -2190,6 +2087,10 @@ export namespace Prisma {
       timeout?: number
       isolationLevel?: Prisma.TransactionIsolationLevel
     }
+    /**
+     * Instance of a Driver Adapter, e.g., like one provided by `@prisma/adapter-planetscale`
+     */
+    adapter?: runtime.DriverAdapter | null
   }
 
 
@@ -2570,19 +2471,19 @@ export namespace Prisma {
    */
 
   export type User_accountsCountOutputType = {
-    user_settings: number
     settings: number
     addresses: number
     team_memberships: number
     audit_logs: number
+    org_api_keys: number
   }
 
   export type User_accountsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user_settings?: boolean | User_accountsCountOutputTypeCountUser_settingsArgs
     settings?: boolean | User_accountsCountOutputTypeCountSettingsArgs
     addresses?: boolean | User_accountsCountOutputTypeCountAddressesArgs
     team_memberships?: boolean | User_accountsCountOutputTypeCountTeam_membershipsArgs
     audit_logs?: boolean | User_accountsCountOutputTypeCountAudit_logsArgs
+    org_api_keys?: boolean | User_accountsCountOutputTypeCountOrg_api_keysArgs
   }
 
   // Custom InputTypes
@@ -2594,13 +2495,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the User_accountsCountOutputType
      */
     select?: User_accountsCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * User_accountsCountOutputType without action
-   */
-  export type User_accountsCountOutputTypeCountUser_settingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: user_settingsWhereInput
   }
 
   /**
@@ -2629,6 +2523,13 @@ export namespace Prisma {
    */
   export type User_accountsCountOutputTypeCountAudit_logsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: audit_logsWhereInput
+  }
+
+  /**
+   * User_accountsCountOutputType without action
+   */
+  export type User_accountsCountOutputTypeCountOrg_api_keysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: org_api_keysWhereInput
   }
 
 
@@ -4028,6 +3929,8 @@ export namespace Prisma {
     used_storage: bigint | null
     custom_domain: string | null
     email: string | null
+    is_soft_deleted: boolean | null
+    is_active: boolean | null
   }
 
   export type TenantsMaxAggregateOutputType = {
@@ -4042,6 +3945,8 @@ export namespace Prisma {
     used_storage: bigint | null
     custom_domain: string | null
     email: string | null
+    is_soft_deleted: boolean | null
+    is_active: boolean | null
   }
 
   export type TenantsCountAggregateOutputType = {
@@ -4057,6 +3962,8 @@ export namespace Prisma {
     metadata: number
     custom_domain: number
     email: number
+    is_soft_deleted: number
+    is_active: number
     _all: number
   }
 
@@ -4083,6 +3990,8 @@ export namespace Prisma {
     used_storage?: true
     custom_domain?: true
     email?: true
+    is_soft_deleted?: true
+    is_active?: true
   }
 
   export type TenantsMaxAggregateInputType = {
@@ -4097,6 +4006,8 @@ export namespace Prisma {
     used_storage?: true
     custom_domain?: true
     email?: true
+    is_soft_deleted?: true
+    is_active?: true
   }
 
   export type TenantsCountAggregateInputType = {
@@ -4112,6 +4023,8 @@ export namespace Prisma {
     metadata?: true
     custom_domain?: true
     email?: true
+    is_soft_deleted?: true
+    is_active?: true
     _all?: true
   }
 
@@ -4214,6 +4127,8 @@ export namespace Prisma {
     metadata: JsonValue | null
     custom_domain: string | null
     email: string | null
+    is_soft_deleted: boolean
+    is_active: boolean
     _count: TenantsCountAggregateOutputType | null
     _avg: TenantsAvgAggregateOutputType | null
     _sum: TenantsSumAggregateOutputType | null
@@ -4248,6 +4163,8 @@ export namespace Prisma {
     metadata?: boolean
     custom_domain?: boolean
     email?: boolean
+    is_soft_deleted?: boolean
+    is_active?: boolean
     organization?: boolean | organizationsDefaultArgs<ExtArgs>
     business_accounts?: boolean | tenants$business_accountsArgs<ExtArgs>
     user_accounts?: boolean | tenants$user_accountsArgs<ExtArgs>
@@ -4272,6 +4189,8 @@ export namespace Prisma {
     metadata?: boolean
     custom_domain?: boolean
     email?: boolean
+    is_soft_deleted?: boolean
+    is_active?: boolean
     organization?: boolean | organizationsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tenants"]>
 
@@ -4288,6 +4207,8 @@ export namespace Prisma {
     metadata?: boolean
     custom_domain?: boolean
     email?: boolean
+    is_soft_deleted?: boolean
+    is_active?: boolean
   }
 
   export type tenantsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4333,6 +4254,8 @@ export namespace Prisma {
        * Primary contact email
        */
       email: string | null
+      is_soft_deleted: boolean
+      is_active: boolean
     }, ExtArgs["result"]["tenants"]>
     composites: {}
   }
@@ -4746,6 +4669,8 @@ export namespace Prisma {
     readonly metadata: FieldRef<"tenants", 'Json'>
     readonly custom_domain: FieldRef<"tenants", 'String'>
     readonly email: FieldRef<"tenants", 'String'>
+    readonly is_soft_deleted: FieldRef<"tenants", 'Boolean'>
+    readonly is_active: FieldRef<"tenants", 'Boolean'>
   }
     
 
@@ -6267,20 +6192,39 @@ export namespace Prisma {
 
   export type Org_api_keysAvgAggregateOutputType = {
     id: number | null
+    user_id: number | null
+    rate_limit: number | null
+    usage_count: number | null
+    max_usage_count: number | null
   }
 
   export type Org_api_keysSumAggregateOutputType = {
     id: bigint | null
+    user_id: bigint | null
+    rate_limit: number | null
+    usage_count: number | null
+    max_usage_count: number | null
   }
 
   export type Org_api_keysMinAggregateOutputType = {
     id: bigint | null
     organization_id: string | null
+    user_id: bigint | null
     key_name: string | null
-    key_prefix: string | null
+    description: string | null
+    key_id: string | null
     key_hash: string | null
+    rate_limit: number | null
+    usage_count: number | null
+    max_usage_count: number | null
+    last_used_ip: string | null
+    environment: $Enums.APIKeyEnvironment | null
+    revoked: boolean | null
+    revoked_at: Date | null
+    revoked_reason: string | null
     expires_at: Date | null
     created_at: Date | null
+    updated_at: Date | null
     created_by: string | null
     last_used: Date | null
     is_active: boolean | null
@@ -6289,11 +6233,22 @@ export namespace Prisma {
   export type Org_api_keysMaxAggregateOutputType = {
     id: bigint | null
     organization_id: string | null
+    user_id: bigint | null
     key_name: string | null
-    key_prefix: string | null
+    description: string | null
+    key_id: string | null
     key_hash: string | null
+    rate_limit: number | null
+    usage_count: number | null
+    max_usage_count: number | null
+    last_used_ip: string | null
+    environment: $Enums.APIKeyEnvironment | null
+    revoked: boolean | null
+    revoked_at: Date | null
+    revoked_reason: string | null
     expires_at: Date | null
     created_at: Date | null
+    updated_at: Date | null
     created_by: string | null
     last_used: Date | null
     is_active: boolean | null
@@ -6302,12 +6257,25 @@ export namespace Prisma {
   export type Org_api_keysCountAggregateOutputType = {
     id: number
     organization_id: number
+    user_id: number
     key_name: number
-    key_prefix: number
+    description: number
+    key_id: number
     key_hash: number
     scopes: number
+    rate_limit: number
+    allowed_ips: number
+    allowed_domains: number
+    usage_count: number
+    max_usage_count: number
+    last_used_ip: number
+    environment: number
+    revoked: number
+    revoked_at: number
+    revoked_reason: number
     expires_at: number
     created_at: number
+    updated_at: number
     created_by: number
     last_used: number
     is_active: number
@@ -6317,20 +6285,39 @@ export namespace Prisma {
 
   export type Org_api_keysAvgAggregateInputType = {
     id?: true
+    user_id?: true
+    rate_limit?: true
+    usage_count?: true
+    max_usage_count?: true
   }
 
   export type Org_api_keysSumAggregateInputType = {
     id?: true
+    user_id?: true
+    rate_limit?: true
+    usage_count?: true
+    max_usage_count?: true
   }
 
   export type Org_api_keysMinAggregateInputType = {
     id?: true
     organization_id?: true
+    user_id?: true
     key_name?: true
-    key_prefix?: true
+    description?: true
+    key_id?: true
     key_hash?: true
+    rate_limit?: true
+    usage_count?: true
+    max_usage_count?: true
+    last_used_ip?: true
+    environment?: true
+    revoked?: true
+    revoked_at?: true
+    revoked_reason?: true
     expires_at?: true
     created_at?: true
+    updated_at?: true
     created_by?: true
     last_used?: true
     is_active?: true
@@ -6339,11 +6326,22 @@ export namespace Prisma {
   export type Org_api_keysMaxAggregateInputType = {
     id?: true
     organization_id?: true
+    user_id?: true
     key_name?: true
-    key_prefix?: true
+    description?: true
+    key_id?: true
     key_hash?: true
+    rate_limit?: true
+    usage_count?: true
+    max_usage_count?: true
+    last_used_ip?: true
+    environment?: true
+    revoked?: true
+    revoked_at?: true
+    revoked_reason?: true
     expires_at?: true
     created_at?: true
+    updated_at?: true
     created_by?: true
     last_used?: true
     is_active?: true
@@ -6352,12 +6350,25 @@ export namespace Prisma {
   export type Org_api_keysCountAggregateInputType = {
     id?: true
     organization_id?: true
+    user_id?: true
     key_name?: true
-    key_prefix?: true
+    description?: true
+    key_id?: true
     key_hash?: true
     scopes?: true
+    rate_limit?: true
+    allowed_ips?: true
+    allowed_domains?: true
+    usage_count?: true
+    max_usage_count?: true
+    last_used_ip?: true
+    environment?: true
+    revoked?: true
+    revoked_at?: true
+    revoked_reason?: true
     expires_at?: true
     created_at?: true
+    updated_at?: true
     created_by?: true
     last_used?: true
     is_active?: true
@@ -6453,12 +6464,25 @@ export namespace Prisma {
   export type Org_api_keysGroupByOutputType = {
     id: bigint
     organization_id: string
+    user_id: bigint | null
     key_name: string
-    key_prefix: string
+    description: string | null
+    key_id: string
     key_hash: string
     scopes: string[]
+    rate_limit: number
+    allowed_ips: string[]
+    allowed_domains: string[]
+    usage_count: number
+    max_usage_count: number
+    last_used_ip: string | null
+    environment: $Enums.APIKeyEnvironment
+    revoked: boolean
+    revoked_at: Date | null
+    revoked_reason: string | null
     expires_at: Date | null
     created_at: Date
+    updated_at: Date
     created_by: string
     last_used: Date | null
     is_active: boolean
@@ -6486,42 +6510,83 @@ export namespace Prisma {
   export type org_api_keysSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     organization_id?: boolean
+    user_id?: boolean
     key_name?: boolean
-    key_prefix?: boolean
+    description?: boolean
+    key_id?: boolean
     key_hash?: boolean
     scopes?: boolean
+    rate_limit?: boolean
+    allowed_ips?: boolean
+    allowed_domains?: boolean
+    usage_count?: boolean
+    max_usage_count?: boolean
+    last_used_ip?: boolean
+    environment?: boolean
+    revoked?: boolean
+    revoked_at?: boolean
+    revoked_reason?: boolean
     expires_at?: boolean
     created_at?: boolean
+    updated_at?: boolean
     created_by?: boolean
     last_used?: boolean
     is_active?: boolean
     organization?: boolean | organizationsDefaultArgs<ExtArgs>
+    user?: boolean | org_api_keys$userArgs<ExtArgs>
   }, ExtArgs["result"]["org_api_keys"]>
 
   export type org_api_keysSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     organization_id?: boolean
+    user_id?: boolean
     key_name?: boolean
-    key_prefix?: boolean
+    description?: boolean
+    key_id?: boolean
     key_hash?: boolean
     scopes?: boolean
+    rate_limit?: boolean
+    allowed_ips?: boolean
+    allowed_domains?: boolean
+    usage_count?: boolean
+    max_usage_count?: boolean
+    last_used_ip?: boolean
+    environment?: boolean
+    revoked?: boolean
+    revoked_at?: boolean
+    revoked_reason?: boolean
     expires_at?: boolean
     created_at?: boolean
+    updated_at?: boolean
     created_by?: boolean
     last_used?: boolean
     is_active?: boolean
     organization?: boolean | organizationsDefaultArgs<ExtArgs>
+    user?: boolean | org_api_keys$userArgs<ExtArgs>
   }, ExtArgs["result"]["org_api_keys"]>
 
   export type org_api_keysSelectScalar = {
     id?: boolean
     organization_id?: boolean
+    user_id?: boolean
     key_name?: boolean
-    key_prefix?: boolean
+    description?: boolean
+    key_id?: boolean
     key_hash?: boolean
     scopes?: boolean
+    rate_limit?: boolean
+    allowed_ips?: boolean
+    allowed_domains?: boolean
+    usage_count?: boolean
+    max_usage_count?: boolean
+    last_used_ip?: boolean
+    environment?: boolean
+    revoked?: boolean
+    revoked_at?: boolean
+    revoked_reason?: boolean
     expires_at?: boolean
     created_at?: boolean
+    updated_at?: boolean
     created_by?: boolean
     last_used?: boolean
     is_active?: boolean
@@ -6529,25 +6594,41 @@ export namespace Prisma {
 
   export type org_api_keysInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organization?: boolean | organizationsDefaultArgs<ExtArgs>
+    user?: boolean | org_api_keys$userArgs<ExtArgs>
   }
   export type org_api_keysIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organization?: boolean | organizationsDefaultArgs<ExtArgs>
+    user?: boolean | org_api_keys$userArgs<ExtArgs>
   }
 
   export type $org_api_keysPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "org_api_keys"
     objects: {
       organization: Prisma.$organizationsPayload<ExtArgs>
+      user: Prisma.$user_accountsPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: bigint
       organization_id: string
+      user_id: bigint | null
       key_name: string
-      key_prefix: string
+      description: string | null
+      key_id: string
       key_hash: string
       scopes: string[]
+      rate_limit: number
+      allowed_ips: string[]
+      allowed_domains: string[]
+      usage_count: number
+      max_usage_count: number
+      last_used_ip: string | null
+      environment: $Enums.APIKeyEnvironment
+      revoked: boolean
+      revoked_at: Date | null
+      revoked_reason: string | null
       expires_at: Date | null
       created_at: Date
+      updated_at: Date
       created_by: string
       last_used: Date | null
       is_active: boolean
@@ -6916,6 +6997,7 @@ export namespace Prisma {
   export interface Prisma__org_api_keysClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     organization<T extends organizationsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, organizationsDefaultArgs<ExtArgs>>): Prisma__organizationsClient<$Result.GetResult<Prisma.$organizationsPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    user<T extends org_api_keys$userArgs<ExtArgs> = {}>(args?: Subset<T, org_api_keys$userArgs<ExtArgs>>): Prisma__user_accountsClient<$Result.GetResult<Prisma.$user_accountsPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6947,12 +7029,25 @@ export namespace Prisma {
   interface org_api_keysFieldRefs {
     readonly id: FieldRef<"org_api_keys", 'BigInt'>
     readonly organization_id: FieldRef<"org_api_keys", 'String'>
+    readonly user_id: FieldRef<"org_api_keys", 'BigInt'>
     readonly key_name: FieldRef<"org_api_keys", 'String'>
-    readonly key_prefix: FieldRef<"org_api_keys", 'String'>
+    readonly description: FieldRef<"org_api_keys", 'String'>
+    readonly key_id: FieldRef<"org_api_keys", 'String'>
     readonly key_hash: FieldRef<"org_api_keys", 'String'>
     readonly scopes: FieldRef<"org_api_keys", 'String[]'>
+    readonly rate_limit: FieldRef<"org_api_keys", 'Int'>
+    readonly allowed_ips: FieldRef<"org_api_keys", 'String[]'>
+    readonly allowed_domains: FieldRef<"org_api_keys", 'String[]'>
+    readonly usage_count: FieldRef<"org_api_keys", 'Int'>
+    readonly max_usage_count: FieldRef<"org_api_keys", 'Int'>
+    readonly last_used_ip: FieldRef<"org_api_keys", 'String'>
+    readonly environment: FieldRef<"org_api_keys", 'APIKeyEnvironment'>
+    readonly revoked: FieldRef<"org_api_keys", 'Boolean'>
+    readonly revoked_at: FieldRef<"org_api_keys", 'DateTime'>
+    readonly revoked_reason: FieldRef<"org_api_keys", 'String'>
     readonly expires_at: FieldRef<"org_api_keys", 'DateTime'>
     readonly created_at: FieldRef<"org_api_keys", 'DateTime'>
+    readonly updated_at: FieldRef<"org_api_keys", 'DateTime'>
     readonly created_by: FieldRef<"org_api_keys", 'String'>
     readonly last_used: FieldRef<"org_api_keys", 'DateTime'>
     readonly is_active: FieldRef<"org_api_keys", 'Boolean'>
@@ -7274,6 +7369,21 @@ export namespace Prisma {
   }
 
   /**
+   * org_api_keys.user
+   */
+  export type org_api_keys$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user_accounts
+     */
+    select?: user_accountsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: user_accountsInclude<ExtArgs> | null
+    where?: user_accountsWhereInput
+  }
+
+  /**
    * org_api_keys without action
    */
   export type org_api_keysDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7314,6 +7424,7 @@ export namespace Prisma {
     key_name: string | null
     key_prefix: string | null
     key_hash: string | null
+    key_id: string | null
     expires_at: Date | null
     created_at: Date | null
     created_by: string | null
@@ -7327,6 +7438,7 @@ export namespace Prisma {
     key_name: string | null
     key_prefix: string | null
     key_hash: string | null
+    key_id: string | null
     expires_at: Date | null
     created_at: Date | null
     created_by: string | null
@@ -7340,6 +7452,7 @@ export namespace Prisma {
     key_name: number
     key_prefix: number
     key_hash: number
+    key_id: number
     scopes: number
     expires_at: number
     created_at: number
@@ -7364,6 +7477,7 @@ export namespace Prisma {
     key_name?: true
     key_prefix?: true
     key_hash?: true
+    key_id?: true
     expires_at?: true
     created_at?: true
     created_by?: true
@@ -7377,6 +7491,7 @@ export namespace Prisma {
     key_name?: true
     key_prefix?: true
     key_hash?: true
+    key_id?: true
     expires_at?: true
     created_at?: true
     created_by?: true
@@ -7390,6 +7505,7 @@ export namespace Prisma {
     key_name?: true
     key_prefix?: true
     key_hash?: true
+    key_id?: true
     scopes?: true
     expires_at?: true
     created_at?: true
@@ -7491,6 +7607,7 @@ export namespace Prisma {
     key_name: string
     key_prefix: string
     key_hash: string
+    key_id: string
     scopes: string[]
     expires_at: Date | null
     created_at: Date
@@ -7524,6 +7641,7 @@ export namespace Prisma {
     key_name?: boolean
     key_prefix?: boolean
     key_hash?: boolean
+    key_id?: boolean
     scopes?: boolean
     expires_at?: boolean
     created_at?: boolean
@@ -7539,6 +7657,7 @@ export namespace Prisma {
     key_name?: boolean
     key_prefix?: boolean
     key_hash?: boolean
+    key_id?: boolean
     scopes?: boolean
     expires_at?: boolean
     created_at?: boolean
@@ -7554,6 +7673,7 @@ export namespace Prisma {
     key_name?: boolean
     key_prefix?: boolean
     key_hash?: boolean
+    key_id?: boolean
     scopes?: boolean
     expires_at?: boolean
     created_at?: boolean
@@ -7580,6 +7700,7 @@ export namespace Prisma {
       key_name: string
       key_prefix: string
       key_hash: string
+      key_id: string
       scopes: string[]
       expires_at: Date | null
       created_at: Date
@@ -7985,6 +8106,7 @@ export namespace Prisma {
     readonly key_name: FieldRef<"tenant_api_keys", 'String'>
     readonly key_prefix: FieldRef<"tenant_api_keys", 'String'>
     readonly key_hash: FieldRef<"tenant_api_keys", 'String'>
+    readonly key_id: FieldRef<"tenant_api_keys", 'String'>
     readonly scopes: FieldRef<"tenant_api_keys", 'String[]'>
     readonly expires_at: FieldRef<"tenant_api_keys", 'DateTime'>
     readonly created_at: FieldRef<"tenant_api_keys", 'DateTime'>
@@ -11479,6 +11601,7 @@ export namespace Prisma {
     joined_at: Date | null
     invited_by: string | null
     status: string | null
+    deleted_at: Date | null
   }
 
   export type Team_membersMaxAggregateOutputType = {
@@ -11490,6 +11613,7 @@ export namespace Prisma {
     joined_at: Date | null
     invited_by: string | null
     status: string | null
+    deleted_at: Date | null
   }
 
   export type Team_membersCountAggregateOutputType = {
@@ -11502,6 +11626,7 @@ export namespace Prisma {
     invited_by: number
     status: number
     metadata: number
+    deleted_at: number
     _all: number
   }
 
@@ -11529,6 +11654,7 @@ export namespace Prisma {
     joined_at?: true
     invited_by?: true
     status?: true
+    deleted_at?: true
   }
 
   export type Team_membersMaxAggregateInputType = {
@@ -11540,6 +11666,7 @@ export namespace Prisma {
     joined_at?: true
     invited_by?: true
     status?: true
+    deleted_at?: true
   }
 
   export type Team_membersCountAggregateInputType = {
@@ -11552,6 +11679,7 @@ export namespace Prisma {
     invited_by?: true
     status?: true
     metadata?: true
+    deleted_at?: true
     _all?: true
   }
 
@@ -11651,6 +11779,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata: JsonValue | null
+    deleted_at: Date | null
     _count: Team_membersCountAggregateOutputType | null
     _avg: Team_membersAvgAggregateOutputType | null
     _sum: Team_membersSumAggregateOutputType | null
@@ -11682,6 +11811,7 @@ export namespace Prisma {
     invited_by?: boolean
     status?: boolean
     metadata?: boolean
+    deleted_at?: boolean
     team?: boolean | teamsDefaultArgs<ExtArgs>
     user_account?: boolean | team_members$user_accountArgs<ExtArgs>
     business_account?: boolean | team_members$business_accountArgs<ExtArgs>
@@ -11697,6 +11827,7 @@ export namespace Prisma {
     invited_by?: boolean
     status?: boolean
     metadata?: boolean
+    deleted_at?: boolean
     team?: boolean | teamsDefaultArgs<ExtArgs>
     user_account?: boolean | team_members$user_accountArgs<ExtArgs>
     business_account?: boolean | team_members$business_accountArgs<ExtArgs>
@@ -11712,6 +11843,7 @@ export namespace Prisma {
     invited_by?: boolean
     status?: boolean
     metadata?: boolean
+    deleted_at?: boolean
   }
 
   export type team_membersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11754,6 +11886,7 @@ export namespace Prisma {
        * Member-specific metadata
        */
       metadata: Prisma.JsonValue | null
+      deleted_at: Date | null
     }, ExtArgs["result"]["team_members"]>
     composites: {}
   }
@@ -12159,6 +12292,7 @@ export namespace Prisma {
     readonly invited_by: FieldRef<"team_members", 'String'>
     readonly status: FieldRef<"team_members", 'String'>
     readonly metadata: FieldRef<"team_members", 'Json'>
+    readonly deleted_at: FieldRef<"team_members", 'DateTime'>
   }
     
 
@@ -14134,11 +14268,11 @@ export namespace Prisma {
     used_storage?: boolean
     organization?: boolean | user_accounts$organizationArgs<ExtArgs>
     tenant?: boolean | user_accounts$tenantArgs<ExtArgs>
-    user_settings?: boolean | user_accounts$user_settingsArgs<ExtArgs>
     settings?: boolean | user_accounts$settingsArgs<ExtArgs>
     addresses?: boolean | user_accounts$addressesArgs<ExtArgs>
     team_memberships?: boolean | user_accounts$team_membershipsArgs<ExtArgs>
     audit_logs?: boolean | user_accounts$audit_logsArgs<ExtArgs>
+    org_api_keys?: boolean | user_accounts$org_api_keysArgs<ExtArgs>
     _count?: boolean | User_accountsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user_accounts"]>
 
@@ -14191,11 +14325,11 @@ export namespace Prisma {
   export type user_accountsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organization?: boolean | user_accounts$organizationArgs<ExtArgs>
     tenant?: boolean | user_accounts$tenantArgs<ExtArgs>
-    user_settings?: boolean | user_accounts$user_settingsArgs<ExtArgs>
     settings?: boolean | user_accounts$settingsArgs<ExtArgs>
     addresses?: boolean | user_accounts$addressesArgs<ExtArgs>
     team_memberships?: boolean | user_accounts$team_membershipsArgs<ExtArgs>
     audit_logs?: boolean | user_accounts$audit_logsArgs<ExtArgs>
+    org_api_keys?: boolean | user_accounts$org_api_keysArgs<ExtArgs>
     _count?: boolean | User_accountsCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type user_accountsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -14208,11 +14342,11 @@ export namespace Prisma {
     objects: {
       organization: Prisma.$organizationsPayload<ExtArgs> | null
       tenant: Prisma.$tenantsPayload<ExtArgs> | null
-      user_settings: Prisma.$user_settingsPayload<ExtArgs>[]
       settings: Prisma.$settingsPayload<ExtArgs>[]
       addresses: Prisma.$addressesPayload<ExtArgs>[]
       team_memberships: Prisma.$team_membersPayload<ExtArgs>[]
       audit_logs: Prisma.$audit_logsPayload<ExtArgs>[]
+      org_api_keys: Prisma.$org_api_keysPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: bigint
@@ -14630,11 +14764,11 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     organization<T extends user_accounts$organizationArgs<ExtArgs> = {}>(args?: Subset<T, user_accounts$organizationArgs<ExtArgs>>): Prisma__organizationsClient<$Result.GetResult<Prisma.$organizationsPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     tenant<T extends user_accounts$tenantArgs<ExtArgs> = {}>(args?: Subset<T, user_accounts$tenantArgs<ExtArgs>>): Prisma__tenantsClient<$Result.GetResult<Prisma.$tenantsPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
-    user_settings<T extends user_accounts$user_settingsArgs<ExtArgs> = {}>(args?: Subset<T, user_accounts$user_settingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "findMany"> | Null>
     settings<T extends user_accounts$settingsArgs<ExtArgs> = {}>(args?: Subset<T, user_accounts$settingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$settingsPayload<ExtArgs>, T, "findMany"> | Null>
     addresses<T extends user_accounts$addressesArgs<ExtArgs> = {}>(args?: Subset<T, user_accounts$addressesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$addressesPayload<ExtArgs>, T, "findMany"> | Null>
     team_memberships<T extends user_accounts$team_membershipsArgs<ExtArgs> = {}>(args?: Subset<T, user_accounts$team_membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$team_membersPayload<ExtArgs>, T, "findMany"> | Null>
     audit_logs<T extends user_accounts$audit_logsArgs<ExtArgs> = {}>(args?: Subset<T, user_accounts$audit_logsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$audit_logsPayload<ExtArgs>, T, "findMany"> | Null>
+    org_api_keys<T extends user_accounts$org_api_keysArgs<ExtArgs> = {}>(args?: Subset<T, user_accounts$org_api_keysArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$org_api_keysPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15031,26 +15165,6 @@ export namespace Prisma {
   }
 
   /**
-   * user_accounts.user_settings
-   */
-  export type user_accounts$user_settingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
-    where?: user_settingsWhereInput
-    orderBy?: user_settingsOrderByWithRelationInput | user_settingsOrderByWithRelationInput[]
-    cursor?: user_settingsWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: User_settingsScalarFieldEnum | User_settingsScalarFieldEnum[]
-  }
-
-  /**
    * user_accounts.settings
    */
   export type user_accounts$settingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -15128,6 +15242,26 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: Audit_logsScalarFieldEnum | Audit_logsScalarFieldEnum[]
+  }
+
+  /**
+   * user_accounts.org_api_keys
+   */
+  export type user_accounts$org_api_keysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the org_api_keys
+     */
+    select?: org_api_keysSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: org_api_keysInclude<ExtArgs> | null
+    where?: org_api_keysWhereInput
+    orderBy?: org_api_keysOrderByWithRelationInput | org_api_keysOrderByWithRelationInput[]
+    cursor?: org_api_keysWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Org_api_keysScalarFieldEnum | Org_api_keysScalarFieldEnum[]
   }
 
   /**
@@ -17567,6 +17701,7 @@ export namespace Prisma {
     user_account_id: bigint | null
     created_at: Date | null
     updated_at: Date | null
+    preferred_language: string | null
   }
 
   export type SettingsMaxAggregateOutputType = {
@@ -17577,6 +17712,7 @@ export namespace Prisma {
     user_account_id: bigint | null
     created_at: Date | null
     updated_at: Date | null
+    preferred_language: string | null
   }
 
   export type SettingsCountAggregateOutputType = {
@@ -17588,6 +17724,9 @@ export namespace Prisma {
     created_at: number
     updated_at: number
     settings_data: number
+    preferred_language: number
+    notification_settings: number
+    ui_settings: number
     _all: number
   }
 
@@ -17612,6 +17751,7 @@ export namespace Prisma {
     user_account_id?: true
     created_at?: true
     updated_at?: true
+    preferred_language?: true
   }
 
   export type SettingsMaxAggregateInputType = {
@@ -17622,6 +17762,7 @@ export namespace Prisma {
     user_account_id?: true
     created_at?: true
     updated_at?: true
+    preferred_language?: true
   }
 
   export type SettingsCountAggregateInputType = {
@@ -17633,6 +17774,9 @@ export namespace Prisma {
     created_at?: true
     updated_at?: true
     settings_data?: true
+    preferred_language?: true
+    notification_settings?: true
+    ui_settings?: true
     _all?: true
   }
 
@@ -17731,6 +17875,9 @@ export namespace Prisma {
     created_at: Date
     updated_at: Date
     settings_data: JsonValue | null
+    preferred_language: string | null
+    notification_settings: JsonValue | null
+    ui_settings: JsonValue | null
     _count: SettingsCountAggregateOutputType | null
     _avg: SettingsAvgAggregateOutputType | null
     _sum: SettingsSumAggregateOutputType | null
@@ -17761,6 +17908,9 @@ export namespace Prisma {
     created_at?: boolean
     updated_at?: boolean
     settings_data?: boolean
+    preferred_language?: boolean
+    notification_settings?: boolean
+    ui_settings?: boolean
     tenant?: boolean | settings$tenantArgs<ExtArgs>
     business_accounts?: boolean | settings$business_accountsArgs<ExtArgs>
     user_accounts?: boolean | settings$user_accountsArgs<ExtArgs>
@@ -17775,6 +17925,9 @@ export namespace Prisma {
     created_at?: boolean
     updated_at?: boolean
     settings_data?: boolean
+    preferred_language?: boolean
+    notification_settings?: boolean
+    ui_settings?: boolean
     tenant?: boolean | settings$tenantArgs<ExtArgs>
     business_accounts?: boolean | settings$business_accountsArgs<ExtArgs>
     user_accounts?: boolean | settings$user_accountsArgs<ExtArgs>
@@ -17789,6 +17942,9 @@ export namespace Prisma {
     created_at?: boolean
     updated_at?: boolean
     settings_data?: boolean
+    preferred_language?: boolean
+    notification_settings?: boolean
+    ui_settings?: boolean
   }
 
   export type settingsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -17821,6 +17977,18 @@ export namespace Prisma {
        * Flexible settings storage
        */
       settings_data: Prisma.JsonValue | null
+      /**
+       * ISO language code
+       */
+      preferred_language: string | null
+      /**
+       * Notification preferences
+       */
+      notification_settings: Prisma.JsonValue | null
+      /**
+       * UI/UX preferences
+       */
+      ui_settings: Prisma.JsonValue | null
     }, ExtArgs["result"]["settings"]>
     composites: {}
   }
@@ -18225,6 +18393,9 @@ export namespace Prisma {
     readonly created_at: FieldRef<"settings", 'DateTime'>
     readonly updated_at: FieldRef<"settings", 'DateTime'>
     readonly settings_data: FieldRef<"settings", 'Json'>
+    readonly preferred_language: FieldRef<"settings", 'String'>
+    readonly notification_settings: FieldRef<"settings", 'Json'>
+    readonly ui_settings: FieldRef<"settings", 'Json'>
   }
     
 
@@ -18603,1017 +18774,6 @@ export namespace Prisma {
 
 
   /**
-   * Model user_settings
-   */
-
-  export type AggregateUser_settings = {
-    _count: User_settingsCountAggregateOutputType | null
-    _avg: User_settingsAvgAggregateOutputType | null
-    _sum: User_settingsSumAggregateOutputType | null
-    _min: User_settingsMinAggregateOutputType | null
-    _max: User_settingsMaxAggregateOutputType | null
-  }
-
-  export type User_settingsAvgAggregateOutputType = {
-    id: number | null
-    user_account_id: number | null
-  }
-
-  export type User_settingsSumAggregateOutputType = {
-    id: bigint | null
-    user_account_id: bigint | null
-  }
-
-  export type User_settingsMinAggregateOutputType = {
-    id: bigint | null
-    user_account_id: bigint | null
-    preferred_language: string | null
-    created_at: Date | null
-    updated_at: Date | null
-  }
-
-  export type User_settingsMaxAggregateOutputType = {
-    id: bigint | null
-    user_account_id: bigint | null
-    preferred_language: string | null
-    created_at: Date | null
-    updated_at: Date | null
-  }
-
-  export type User_settingsCountAggregateOutputType = {
-    id: number
-    user_account_id: number
-    preferred_language: number
-    notification_settings: number
-    ui_settings: number
-    created_at: number
-    updated_at: number
-    _all: number
-  }
-
-
-  export type User_settingsAvgAggregateInputType = {
-    id?: true
-    user_account_id?: true
-  }
-
-  export type User_settingsSumAggregateInputType = {
-    id?: true
-    user_account_id?: true
-  }
-
-  export type User_settingsMinAggregateInputType = {
-    id?: true
-    user_account_id?: true
-    preferred_language?: true
-    created_at?: true
-    updated_at?: true
-  }
-
-  export type User_settingsMaxAggregateInputType = {
-    id?: true
-    user_account_id?: true
-    preferred_language?: true
-    created_at?: true
-    updated_at?: true
-  }
-
-  export type User_settingsCountAggregateInputType = {
-    id?: true
-    user_account_id?: true
-    preferred_language?: true
-    notification_settings?: true
-    ui_settings?: true
-    created_at?: true
-    updated_at?: true
-    _all?: true
-  }
-
-  export type User_settingsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which user_settings to aggregate.
-     */
-    where?: user_settingsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of user_settings to fetch.
-     */
-    orderBy?: user_settingsOrderByWithRelationInput | user_settingsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: user_settingsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` user_settings from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` user_settings.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned user_settings
-    **/
-    _count?: true | User_settingsCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: User_settingsAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: User_settingsSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: User_settingsMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: User_settingsMaxAggregateInputType
-  }
-
-  export type GetUser_settingsAggregateType<T extends User_settingsAggregateArgs> = {
-        [P in keyof T & keyof AggregateUser_settings]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateUser_settings[P]>
-      : GetScalarType<T[P], AggregateUser_settings[P]>
-  }
-
-
-
-
-  export type user_settingsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: user_settingsWhereInput
-    orderBy?: user_settingsOrderByWithAggregationInput | user_settingsOrderByWithAggregationInput[]
-    by: User_settingsScalarFieldEnum[] | User_settingsScalarFieldEnum
-    having?: user_settingsScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: User_settingsCountAggregateInputType | true
-    _avg?: User_settingsAvgAggregateInputType
-    _sum?: User_settingsSumAggregateInputType
-    _min?: User_settingsMinAggregateInputType
-    _max?: User_settingsMaxAggregateInputType
-  }
-
-  export type User_settingsGroupByOutputType = {
-    id: bigint
-    user_account_id: bigint | null
-    preferred_language: string | null
-    notification_settings: JsonValue | null
-    ui_settings: JsonValue | null
-    created_at: Date
-    updated_at: Date
-    _count: User_settingsCountAggregateOutputType | null
-    _avg: User_settingsAvgAggregateOutputType | null
-    _sum: User_settingsSumAggregateOutputType | null
-    _min: User_settingsMinAggregateOutputType | null
-    _max: User_settingsMaxAggregateOutputType | null
-  }
-
-  type GetUser_settingsGroupByPayload<T extends user_settingsGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<User_settingsGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof User_settingsGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], User_settingsGroupByOutputType[P]>
-            : GetScalarType<T[P], User_settingsGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type user_settingsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    user_account_id?: boolean
-    preferred_language?: boolean
-    notification_settings?: boolean
-    ui_settings?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-    user_accounts?: boolean | user_settings$user_accountsArgs<ExtArgs>
-  }, ExtArgs["result"]["user_settings"]>
-
-  export type user_settingsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    user_account_id?: boolean
-    preferred_language?: boolean
-    notification_settings?: boolean
-    ui_settings?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-    user_accounts?: boolean | user_settings$user_accountsArgs<ExtArgs>
-  }, ExtArgs["result"]["user_settings"]>
-
-  export type user_settingsSelectScalar = {
-    id?: boolean
-    user_account_id?: boolean
-    preferred_language?: boolean
-    notification_settings?: boolean
-    ui_settings?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-  }
-
-  export type user_settingsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user_accounts?: boolean | user_settings$user_accountsArgs<ExtArgs>
-  }
-  export type user_settingsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user_accounts?: boolean | user_settings$user_accountsArgs<ExtArgs>
-  }
-
-  export type $user_settingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "user_settings"
-    objects: {
-      user_accounts: Prisma.$user_accountsPayload<ExtArgs> | null
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: bigint
-      user_account_id: bigint | null
-      /**
-       * ISO language code
-       */
-      preferred_language: string | null
-      /**
-       * Notification preferences
-       */
-      notification_settings: Prisma.JsonValue | null
-      /**
-       * UI/UX preferences
-       */
-      ui_settings: Prisma.JsonValue | null
-      created_at: Date
-      updated_at: Date
-    }, ExtArgs["result"]["user_settings"]>
-    composites: {}
-  }
-
-  type user_settingsGetPayload<S extends boolean | null | undefined | user_settingsDefaultArgs> = $Result.GetResult<Prisma.$user_settingsPayload, S>
-
-  type user_settingsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
-    Omit<user_settingsFindManyArgs, 'select' | 'include' | 'distinct'> & {
-      select?: User_settingsCountAggregateInputType | true
-    }
-
-  export interface user_settingsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['user_settings'], meta: { name: 'user_settings' } }
-    /**
-     * Find zero or one User_settings that matches the filter.
-     * @param {user_settingsFindUniqueArgs} args - Arguments to find a User_settings
-     * @example
-     * // Get one User_settings
-     * const user_settings = await prisma.user_settings.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends user_settingsFindUniqueArgs>(args: SelectSubset<T, user_settingsFindUniqueArgs<ExtArgs>>): Prisma__user_settingsClient<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
-
-    /**
-     * Find one User_settings that matches the filter or throw an error with `error.code='P2025'` 
-     * if no matches were found.
-     * @param {user_settingsFindUniqueOrThrowArgs} args - Arguments to find a User_settings
-     * @example
-     * // Get one User_settings
-     * const user_settings = await prisma.user_settings.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends user_settingsFindUniqueOrThrowArgs>(args: SelectSubset<T, user_settingsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__user_settingsClient<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
-
-    /**
-     * Find the first User_settings that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {user_settingsFindFirstArgs} args - Arguments to find a User_settings
-     * @example
-     * // Get one User_settings
-     * const user_settings = await prisma.user_settings.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends user_settingsFindFirstArgs>(args?: SelectSubset<T, user_settingsFindFirstArgs<ExtArgs>>): Prisma__user_settingsClient<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
-
-    /**
-     * Find the first User_settings that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {user_settingsFindFirstOrThrowArgs} args - Arguments to find a User_settings
-     * @example
-     * // Get one User_settings
-     * const user_settings = await prisma.user_settings.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends user_settingsFindFirstOrThrowArgs>(args?: SelectSubset<T, user_settingsFindFirstOrThrowArgs<ExtArgs>>): Prisma__user_settingsClient<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
-
-    /**
-     * Find zero or more User_settings that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {user_settingsFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all User_settings
-     * const user_settings = await prisma.user_settings.findMany()
-     * 
-     * // Get first 10 User_settings
-     * const user_settings = await prisma.user_settings.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const user_settingsWithIdOnly = await prisma.user_settings.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends user_settingsFindManyArgs>(args?: SelectSubset<T, user_settingsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "findMany">>
-
-    /**
-     * Create a User_settings.
-     * @param {user_settingsCreateArgs} args - Arguments to create a User_settings.
-     * @example
-     * // Create one User_settings
-     * const User_settings = await prisma.user_settings.create({
-     *   data: {
-     *     // ... data to create a User_settings
-     *   }
-     * })
-     * 
-     */
-    create<T extends user_settingsCreateArgs>(args: SelectSubset<T, user_settingsCreateArgs<ExtArgs>>): Prisma__user_settingsClient<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "create">, never, ExtArgs>
-
-    /**
-     * Create many User_settings.
-     * @param {user_settingsCreateManyArgs} args - Arguments to create many User_settings.
-     * @example
-     * // Create many User_settings
-     * const user_settings = await prisma.user_settings.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends user_settingsCreateManyArgs>(args?: SelectSubset<T, user_settingsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many User_settings and returns the data saved in the database.
-     * @param {user_settingsCreateManyAndReturnArgs} args - Arguments to create many User_settings.
-     * @example
-     * // Create many User_settings
-     * const user_settings = await prisma.user_settings.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many User_settings and only return the `id`
-     * const user_settingsWithIdOnly = await prisma.user_settings.createManyAndReturn({ 
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends user_settingsCreateManyAndReturnArgs>(args?: SelectSubset<T, user_settingsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "createManyAndReturn">>
-
-    /**
-     * Delete a User_settings.
-     * @param {user_settingsDeleteArgs} args - Arguments to delete one User_settings.
-     * @example
-     * // Delete one User_settings
-     * const User_settings = await prisma.user_settings.delete({
-     *   where: {
-     *     // ... filter to delete one User_settings
-     *   }
-     * })
-     * 
-     */
-    delete<T extends user_settingsDeleteArgs>(args: SelectSubset<T, user_settingsDeleteArgs<ExtArgs>>): Prisma__user_settingsClient<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "delete">, never, ExtArgs>
-
-    /**
-     * Update one User_settings.
-     * @param {user_settingsUpdateArgs} args - Arguments to update one User_settings.
-     * @example
-     * // Update one User_settings
-     * const user_settings = await prisma.user_settings.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends user_settingsUpdateArgs>(args: SelectSubset<T, user_settingsUpdateArgs<ExtArgs>>): Prisma__user_settingsClient<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "update">, never, ExtArgs>
-
-    /**
-     * Delete zero or more User_settings.
-     * @param {user_settingsDeleteManyArgs} args - Arguments to filter User_settings to delete.
-     * @example
-     * // Delete a few User_settings
-     * const { count } = await prisma.user_settings.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends user_settingsDeleteManyArgs>(args?: SelectSubset<T, user_settingsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more User_settings.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {user_settingsUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many User_settings
-     * const user_settings = await prisma.user_settings.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends user_settingsUpdateManyArgs>(args: SelectSubset<T, user_settingsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one User_settings.
-     * @param {user_settingsUpsertArgs} args - Arguments to update or create a User_settings.
-     * @example
-     * // Update or create a User_settings
-     * const user_settings = await prisma.user_settings.upsert({
-     *   create: {
-     *     // ... data to create a User_settings
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the User_settings we want to update
-     *   }
-     * })
-     */
-    upsert<T extends user_settingsUpsertArgs>(args: SelectSubset<T, user_settingsUpsertArgs<ExtArgs>>): Prisma__user_settingsClient<$Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
-
-
-    /**
-     * Count the number of User_settings.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {user_settingsCountArgs} args - Arguments to filter User_settings to count.
-     * @example
-     * // Count the number of User_settings
-     * const count = await prisma.user_settings.count({
-     *   where: {
-     *     // ... the filter for the User_settings we want to count
-     *   }
-     * })
-    **/
-    count<T extends user_settingsCountArgs>(
-      args?: Subset<T, user_settingsCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], User_settingsCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a User_settings.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {User_settingsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends User_settingsAggregateArgs>(args: Subset<T, User_settingsAggregateArgs>): Prisma.PrismaPromise<GetUser_settingsAggregateType<T>>
-
-    /**
-     * Group by User_settings.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {user_settingsGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends user_settingsGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: user_settingsGroupByArgs['orderBy'] }
-        : { orderBy?: user_settingsGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, user_settingsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUser_settingsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the user_settings model
-   */
-  readonly fields: user_settingsFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for user_settings.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__user_settingsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    user_accounts<T extends user_settings$user_accountsArgs<ExtArgs> = {}>(args?: Subset<T, user_settings$user_accountsArgs<ExtArgs>>): Prisma__user_accountsClient<$Result.GetResult<Prisma.$user_accountsPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the user_settings model
-   */ 
-  interface user_settingsFieldRefs {
-    readonly id: FieldRef<"user_settings", 'BigInt'>
-    readonly user_account_id: FieldRef<"user_settings", 'BigInt'>
-    readonly preferred_language: FieldRef<"user_settings", 'String'>
-    readonly notification_settings: FieldRef<"user_settings", 'Json'>
-    readonly ui_settings: FieldRef<"user_settings", 'Json'>
-    readonly created_at: FieldRef<"user_settings", 'DateTime'>
-    readonly updated_at: FieldRef<"user_settings", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * user_settings findUnique
-   */
-  export type user_settingsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
-    /**
-     * Filter, which user_settings to fetch.
-     */
-    where: user_settingsWhereUniqueInput
-  }
-
-  /**
-   * user_settings findUniqueOrThrow
-   */
-  export type user_settingsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
-    /**
-     * Filter, which user_settings to fetch.
-     */
-    where: user_settingsWhereUniqueInput
-  }
-
-  /**
-   * user_settings findFirst
-   */
-  export type user_settingsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
-    /**
-     * Filter, which user_settings to fetch.
-     */
-    where?: user_settingsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of user_settings to fetch.
-     */
-    orderBy?: user_settingsOrderByWithRelationInput | user_settingsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for user_settings.
-     */
-    cursor?: user_settingsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` user_settings from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` user_settings.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of user_settings.
-     */
-    distinct?: User_settingsScalarFieldEnum | User_settingsScalarFieldEnum[]
-  }
-
-  /**
-   * user_settings findFirstOrThrow
-   */
-  export type user_settingsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
-    /**
-     * Filter, which user_settings to fetch.
-     */
-    where?: user_settingsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of user_settings to fetch.
-     */
-    orderBy?: user_settingsOrderByWithRelationInput | user_settingsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for user_settings.
-     */
-    cursor?: user_settingsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` user_settings from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` user_settings.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of user_settings.
-     */
-    distinct?: User_settingsScalarFieldEnum | User_settingsScalarFieldEnum[]
-  }
-
-  /**
-   * user_settings findMany
-   */
-  export type user_settingsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
-    /**
-     * Filter, which user_settings to fetch.
-     */
-    where?: user_settingsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of user_settings to fetch.
-     */
-    orderBy?: user_settingsOrderByWithRelationInput | user_settingsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing user_settings.
-     */
-    cursor?: user_settingsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` user_settings from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` user_settings.
-     */
-    skip?: number
-    distinct?: User_settingsScalarFieldEnum | User_settingsScalarFieldEnum[]
-  }
-
-  /**
-   * user_settings create
-   */
-  export type user_settingsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
-    /**
-     * The data needed to create a user_settings.
-     */
-    data: XOR<user_settingsCreateInput, user_settingsUncheckedCreateInput>
-  }
-
-  /**
-   * user_settings createMany
-   */
-  export type user_settingsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many user_settings.
-     */
-    data: user_settingsCreateManyInput | user_settingsCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * user_settings createManyAndReturn
-   */
-  export type user_settingsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * The data used to create many user_settings.
-     */
-    data: user_settingsCreateManyInput | user_settingsCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * user_settings update
-   */
-  export type user_settingsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
-    /**
-     * The data needed to update a user_settings.
-     */
-    data: XOR<user_settingsUpdateInput, user_settingsUncheckedUpdateInput>
-    /**
-     * Choose, which user_settings to update.
-     */
-    where: user_settingsWhereUniqueInput
-  }
-
-  /**
-   * user_settings updateMany
-   */
-  export type user_settingsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update user_settings.
-     */
-    data: XOR<user_settingsUpdateManyMutationInput, user_settingsUncheckedUpdateManyInput>
-    /**
-     * Filter which user_settings to update
-     */
-    where?: user_settingsWhereInput
-  }
-
-  /**
-   * user_settings upsert
-   */
-  export type user_settingsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
-    /**
-     * The filter to search for the user_settings to update in case it exists.
-     */
-    where: user_settingsWhereUniqueInput
-    /**
-     * In case the user_settings found by the `where` argument doesn't exist, create a new user_settings with this data.
-     */
-    create: XOR<user_settingsCreateInput, user_settingsUncheckedCreateInput>
-    /**
-     * In case the user_settings was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<user_settingsUpdateInput, user_settingsUncheckedUpdateInput>
-  }
-
-  /**
-   * user_settings delete
-   */
-  export type user_settingsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
-    /**
-     * Filter which user_settings to delete.
-     */
-    where: user_settingsWhereUniqueInput
-  }
-
-  /**
-   * user_settings deleteMany
-   */
-  export type user_settingsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which user_settings to delete
-     */
-    where?: user_settingsWhereInput
-  }
-
-  /**
-   * user_settings.user_accounts
-   */
-  export type user_settings$user_accountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_accounts
-     */
-    select?: user_accountsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_accountsInclude<ExtArgs> | null
-    where?: user_accountsWhereInput
-  }
-
-  /**
-   * user_settings without action
-   */
-  export type user_settingsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_settings
-     */
-    select?: user_settingsSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_settingsInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Enums
    */
 
@@ -19666,7 +18826,9 @@ export namespace Prisma {
     used_storage: 'used_storage',
     metadata: 'metadata',
     custom_domain: 'custom_domain',
-    email: 'email'
+    email: 'email',
+    is_soft_deleted: 'is_soft_deleted',
+    is_active: 'is_active'
   };
 
   export type TenantsScalarFieldEnum = (typeof TenantsScalarFieldEnum)[keyof typeof TenantsScalarFieldEnum]
@@ -19692,12 +18854,25 @@ export namespace Prisma {
   export const Org_api_keysScalarFieldEnum: {
     id: 'id',
     organization_id: 'organization_id',
+    user_id: 'user_id',
     key_name: 'key_name',
-    key_prefix: 'key_prefix',
+    description: 'description',
+    key_id: 'key_id',
     key_hash: 'key_hash',
     scopes: 'scopes',
+    rate_limit: 'rate_limit',
+    allowed_ips: 'allowed_ips',
+    allowed_domains: 'allowed_domains',
+    usage_count: 'usage_count',
+    max_usage_count: 'max_usage_count',
+    last_used_ip: 'last_used_ip',
+    environment: 'environment',
+    revoked: 'revoked',
+    revoked_at: 'revoked_at',
+    revoked_reason: 'revoked_reason',
     expires_at: 'expires_at',
     created_at: 'created_at',
+    updated_at: 'updated_at',
     created_by: 'created_by',
     last_used: 'last_used',
     is_active: 'is_active'
@@ -19712,6 +18887,7 @@ export namespace Prisma {
     key_name: 'key_name',
     key_prefix: 'key_prefix',
     key_hash: 'key_hash',
+    key_id: 'key_id',
     scopes: 'scopes',
     expires_at: 'expires_at',
     created_at: 'created_at',
@@ -19775,7 +18951,8 @@ export namespace Prisma {
     joined_at: 'joined_at',
     invited_by: 'invited_by',
     status: 'status',
-    metadata: 'metadata'
+    metadata: 'metadata',
+    deleted_at: 'deleted_at'
   };
 
   export type Team_membersScalarFieldEnum = (typeof Team_membersScalarFieldEnum)[keyof typeof Team_membersScalarFieldEnum]
@@ -19882,23 +19059,13 @@ export namespace Prisma {
     user_account_id: 'user_account_id',
     created_at: 'created_at',
     updated_at: 'updated_at',
-    settings_data: 'settings_data'
+    settings_data: 'settings_data',
+    preferred_language: 'preferred_language',
+    notification_settings: 'notification_settings',
+    ui_settings: 'ui_settings'
   };
 
   export type SettingsScalarFieldEnum = (typeof SettingsScalarFieldEnum)[keyof typeof SettingsScalarFieldEnum]
-
-
-  export const User_settingsScalarFieldEnum: {
-    id: 'id',
-    user_account_id: 'user_account_id',
-    preferred_language: 'preferred_language',
-    notification_settings: 'notification_settings',
-    ui_settings: 'ui_settings',
-    created_at: 'created_at',
-    updated_at: 'updated_at'
-  };
-
-  export type User_settingsScalarFieldEnum = (typeof User_settingsScalarFieldEnum)[keyof typeof User_settingsScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -20014,6 +19181,20 @@ export namespace Prisma {
    * Reference to a field of type 'BigInt[]'
    */
   export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'APIKeyEnvironment'
+   */
+  export type EnumAPIKeyEnvironmentFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'APIKeyEnvironment'>
+    
+
+
+  /**
+   * Reference to a field of type 'APIKeyEnvironment[]'
+   */
+  export type ListEnumAPIKeyEnvironmentFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'APIKeyEnvironment[]'>
     
 
 
@@ -20222,6 +19403,8 @@ export namespace Prisma {
     metadata?: JsonNullableFilter<"tenants">
     custom_domain?: StringNullableFilter<"tenants"> | string | null
     email?: StringNullableFilter<"tenants"> | string | null
+    is_soft_deleted?: BoolFilter<"tenants"> | boolean
+    is_active?: BoolFilter<"tenants"> | boolean
     organization?: XOR<OrganizationsRelationFilter, organizationsWhereInput>
     business_accounts?: Business_accountsListRelationFilter
     user_accounts?: User_accountsListRelationFilter
@@ -20245,6 +19428,8 @@ export namespace Prisma {
     metadata?: SortOrderInput | SortOrder
     custom_domain?: SortOrderInput | SortOrder
     email?: SortOrderInput | SortOrder
+    is_soft_deleted?: SortOrder
+    is_active?: SortOrder
     organization?: organizationsOrderByWithRelationInput
     business_accounts?: business_accountsOrderByRelationAggregateInput
     user_accounts?: user_accountsOrderByRelationAggregateInput
@@ -20271,6 +19456,8 @@ export namespace Prisma {
     metadata?: JsonNullableFilter<"tenants">
     custom_domain?: StringNullableFilter<"tenants"> | string | null
     email?: StringNullableFilter<"tenants"> | string | null
+    is_soft_deleted?: BoolFilter<"tenants"> | boolean
+    is_active?: BoolFilter<"tenants"> | boolean
     organization?: XOR<OrganizationsRelationFilter, organizationsWhereInput>
     business_accounts?: Business_accountsListRelationFilter
     user_accounts?: User_accountsListRelationFilter
@@ -20294,6 +19481,8 @@ export namespace Prisma {
     metadata?: SortOrderInput | SortOrder
     custom_domain?: SortOrderInput | SortOrder
     email?: SortOrderInput | SortOrder
+    is_soft_deleted?: SortOrder
+    is_active?: SortOrder
     _count?: tenantsCountOrderByAggregateInput
     _avg?: tenantsAvgOrderByAggregateInput
     _max?: tenantsMaxOrderByAggregateInput
@@ -20317,6 +19506,8 @@ export namespace Prisma {
     metadata?: JsonNullableWithAggregatesFilter<"tenants">
     custom_domain?: StringNullableWithAggregatesFilter<"tenants"> | string | null
     email?: StringNullableWithAggregatesFilter<"tenants"> | string | null
+    is_soft_deleted?: BoolWithAggregatesFilter<"tenants"> | boolean
+    is_active?: BoolWithAggregatesFilter<"tenants"> | boolean
   }
 
   export type org_membersWhereInput = {
@@ -20413,60 +19604,115 @@ export namespace Prisma {
     NOT?: org_api_keysWhereInput | org_api_keysWhereInput[]
     id?: BigIntFilter<"org_api_keys"> | bigint | number
     organization_id?: StringFilter<"org_api_keys"> | string
+    user_id?: BigIntNullableFilter<"org_api_keys"> | bigint | number | null
     key_name?: StringFilter<"org_api_keys"> | string
-    key_prefix?: StringFilter<"org_api_keys"> | string
+    description?: StringNullableFilter<"org_api_keys"> | string | null
+    key_id?: StringFilter<"org_api_keys"> | string
     key_hash?: StringFilter<"org_api_keys"> | string
     scopes?: StringNullableListFilter<"org_api_keys">
+    rate_limit?: IntFilter<"org_api_keys"> | number
+    allowed_ips?: StringNullableListFilter<"org_api_keys">
+    allowed_domains?: StringNullableListFilter<"org_api_keys">
+    usage_count?: IntFilter<"org_api_keys"> | number
+    max_usage_count?: IntFilter<"org_api_keys"> | number
+    last_used_ip?: StringNullableFilter<"org_api_keys"> | string | null
+    environment?: EnumAPIKeyEnvironmentFilter<"org_api_keys"> | $Enums.APIKeyEnvironment
+    revoked?: BoolFilter<"org_api_keys"> | boolean
+    revoked_at?: DateTimeNullableFilter<"org_api_keys"> | Date | string | null
+    revoked_reason?: StringNullableFilter<"org_api_keys"> | string | null
     expires_at?: DateTimeNullableFilter<"org_api_keys"> | Date | string | null
     created_at?: DateTimeFilter<"org_api_keys"> | Date | string
+    updated_at?: DateTimeFilter<"org_api_keys"> | Date | string
     created_by?: StringFilter<"org_api_keys"> | string
     last_used?: DateTimeNullableFilter<"org_api_keys"> | Date | string | null
     is_active?: BoolFilter<"org_api_keys"> | boolean
     organization?: XOR<OrganizationsRelationFilter, organizationsWhereInput>
+    user?: XOR<User_accountsNullableRelationFilter, user_accountsWhereInput> | null
   }
 
   export type org_api_keysOrderByWithRelationInput = {
     id?: SortOrder
     organization_id?: SortOrder
+    user_id?: SortOrderInput | SortOrder
     key_name?: SortOrder
-    key_prefix?: SortOrder
+    description?: SortOrderInput | SortOrder
+    key_id?: SortOrder
     key_hash?: SortOrder
     scopes?: SortOrder
+    rate_limit?: SortOrder
+    allowed_ips?: SortOrder
+    allowed_domains?: SortOrder
+    usage_count?: SortOrder
+    max_usage_count?: SortOrder
+    last_used_ip?: SortOrderInput | SortOrder
+    environment?: SortOrder
+    revoked?: SortOrder
+    revoked_at?: SortOrderInput | SortOrder
+    revoked_reason?: SortOrderInput | SortOrder
     expires_at?: SortOrderInput | SortOrder
     created_at?: SortOrder
+    updated_at?: SortOrder
     created_by?: SortOrder
     last_used?: SortOrderInput | SortOrder
     is_active?: SortOrder
     organization?: organizationsOrderByWithRelationInput
+    user?: user_accountsOrderByWithRelationInput
   }
 
   export type org_api_keysWhereUniqueInput = Prisma.AtLeast<{
     id?: bigint | number
-    key_prefix?: string
+    key_id?: string
     AND?: org_api_keysWhereInput | org_api_keysWhereInput[]
     OR?: org_api_keysWhereInput[]
     NOT?: org_api_keysWhereInput | org_api_keysWhereInput[]
     organization_id?: StringFilter<"org_api_keys"> | string
+    user_id?: BigIntNullableFilter<"org_api_keys"> | bigint | number | null
     key_name?: StringFilter<"org_api_keys"> | string
+    description?: StringNullableFilter<"org_api_keys"> | string | null
     key_hash?: StringFilter<"org_api_keys"> | string
     scopes?: StringNullableListFilter<"org_api_keys">
+    rate_limit?: IntFilter<"org_api_keys"> | number
+    allowed_ips?: StringNullableListFilter<"org_api_keys">
+    allowed_domains?: StringNullableListFilter<"org_api_keys">
+    usage_count?: IntFilter<"org_api_keys"> | number
+    max_usage_count?: IntFilter<"org_api_keys"> | number
+    last_used_ip?: StringNullableFilter<"org_api_keys"> | string | null
+    environment?: EnumAPIKeyEnvironmentFilter<"org_api_keys"> | $Enums.APIKeyEnvironment
+    revoked?: BoolFilter<"org_api_keys"> | boolean
+    revoked_at?: DateTimeNullableFilter<"org_api_keys"> | Date | string | null
+    revoked_reason?: StringNullableFilter<"org_api_keys"> | string | null
     expires_at?: DateTimeNullableFilter<"org_api_keys"> | Date | string | null
     created_at?: DateTimeFilter<"org_api_keys"> | Date | string
+    updated_at?: DateTimeFilter<"org_api_keys"> | Date | string
     created_by?: StringFilter<"org_api_keys"> | string
     last_used?: DateTimeNullableFilter<"org_api_keys"> | Date | string | null
     is_active?: BoolFilter<"org_api_keys"> | boolean
     organization?: XOR<OrganizationsRelationFilter, organizationsWhereInput>
-  }, "id" | "key_prefix">
+    user?: XOR<User_accountsNullableRelationFilter, user_accountsWhereInput> | null
+  }, "id" | "key_id" | "key_id">
 
   export type org_api_keysOrderByWithAggregationInput = {
     id?: SortOrder
     organization_id?: SortOrder
+    user_id?: SortOrderInput | SortOrder
     key_name?: SortOrder
-    key_prefix?: SortOrder
+    description?: SortOrderInput | SortOrder
+    key_id?: SortOrder
     key_hash?: SortOrder
     scopes?: SortOrder
+    rate_limit?: SortOrder
+    allowed_ips?: SortOrder
+    allowed_domains?: SortOrder
+    usage_count?: SortOrder
+    max_usage_count?: SortOrder
+    last_used_ip?: SortOrderInput | SortOrder
+    environment?: SortOrder
+    revoked?: SortOrder
+    revoked_at?: SortOrderInput | SortOrder
+    revoked_reason?: SortOrderInput | SortOrder
     expires_at?: SortOrderInput | SortOrder
     created_at?: SortOrder
+    updated_at?: SortOrder
     created_by?: SortOrder
     last_used?: SortOrderInput | SortOrder
     is_active?: SortOrder
@@ -20483,12 +19729,25 @@ export namespace Prisma {
     NOT?: org_api_keysScalarWhereWithAggregatesInput | org_api_keysScalarWhereWithAggregatesInput[]
     id?: BigIntWithAggregatesFilter<"org_api_keys"> | bigint | number
     organization_id?: StringWithAggregatesFilter<"org_api_keys"> | string
+    user_id?: BigIntNullableWithAggregatesFilter<"org_api_keys"> | bigint | number | null
     key_name?: StringWithAggregatesFilter<"org_api_keys"> | string
-    key_prefix?: StringWithAggregatesFilter<"org_api_keys"> | string
+    description?: StringNullableWithAggregatesFilter<"org_api_keys"> | string | null
+    key_id?: StringWithAggregatesFilter<"org_api_keys"> | string
     key_hash?: StringWithAggregatesFilter<"org_api_keys"> | string
     scopes?: StringNullableListFilter<"org_api_keys">
+    rate_limit?: IntWithAggregatesFilter<"org_api_keys"> | number
+    allowed_ips?: StringNullableListFilter<"org_api_keys">
+    allowed_domains?: StringNullableListFilter<"org_api_keys">
+    usage_count?: IntWithAggregatesFilter<"org_api_keys"> | number
+    max_usage_count?: IntWithAggregatesFilter<"org_api_keys"> | number
+    last_used_ip?: StringNullableWithAggregatesFilter<"org_api_keys"> | string | null
+    environment?: EnumAPIKeyEnvironmentWithAggregatesFilter<"org_api_keys"> | $Enums.APIKeyEnvironment
+    revoked?: BoolWithAggregatesFilter<"org_api_keys"> | boolean
+    revoked_at?: DateTimeNullableWithAggregatesFilter<"org_api_keys"> | Date | string | null
+    revoked_reason?: StringNullableWithAggregatesFilter<"org_api_keys"> | string | null
     expires_at?: DateTimeNullableWithAggregatesFilter<"org_api_keys"> | Date | string | null
     created_at?: DateTimeWithAggregatesFilter<"org_api_keys"> | Date | string
+    updated_at?: DateTimeWithAggregatesFilter<"org_api_keys"> | Date | string
     created_by?: StringWithAggregatesFilter<"org_api_keys"> | string
     last_used?: DateTimeNullableWithAggregatesFilter<"org_api_keys"> | Date | string | null
     is_active?: BoolWithAggregatesFilter<"org_api_keys"> | boolean
@@ -20503,6 +19762,7 @@ export namespace Prisma {
     key_name?: StringFilter<"tenant_api_keys"> | string
     key_prefix?: StringFilter<"tenant_api_keys"> | string
     key_hash?: StringFilter<"tenant_api_keys"> | string
+    key_id?: StringFilter<"tenant_api_keys"> | string
     scopes?: StringNullableListFilter<"tenant_api_keys">
     expires_at?: DateTimeNullableFilter<"tenant_api_keys"> | Date | string | null
     created_at?: DateTimeFilter<"tenant_api_keys"> | Date | string
@@ -20518,6 +19778,7 @@ export namespace Prisma {
     key_name?: SortOrder
     key_prefix?: SortOrder
     key_hash?: SortOrder
+    key_id?: SortOrder
     scopes?: SortOrder
     expires_at?: SortOrderInput | SortOrder
     created_at?: SortOrder
@@ -20530,6 +19791,7 @@ export namespace Prisma {
   export type tenant_api_keysWhereUniqueInput = Prisma.AtLeast<{
     id?: bigint | number
     key_prefix?: string
+    key_id?: string
     AND?: tenant_api_keysWhereInput | tenant_api_keysWhereInput[]
     OR?: tenant_api_keysWhereInput[]
     NOT?: tenant_api_keysWhereInput | tenant_api_keysWhereInput[]
@@ -20543,7 +19805,7 @@ export namespace Prisma {
     last_used?: DateTimeNullableFilter<"tenant_api_keys"> | Date | string | null
     is_active?: BoolFilter<"tenant_api_keys"> | boolean
     tenant?: XOR<TenantsRelationFilter, tenantsWhereInput>
-  }, "id" | "key_prefix">
+  }, "id" | "key_prefix" | "key_id">
 
   export type tenant_api_keysOrderByWithAggregationInput = {
     id?: SortOrder
@@ -20551,6 +19813,7 @@ export namespace Prisma {
     key_name?: SortOrder
     key_prefix?: SortOrder
     key_hash?: SortOrder
+    key_id?: SortOrder
     scopes?: SortOrder
     expires_at?: SortOrderInput | SortOrder
     created_at?: SortOrder
@@ -20573,6 +19836,7 @@ export namespace Prisma {
     key_name?: StringWithAggregatesFilter<"tenant_api_keys"> | string
     key_prefix?: StringWithAggregatesFilter<"tenant_api_keys"> | string
     key_hash?: StringWithAggregatesFilter<"tenant_api_keys"> | string
+    key_id?: StringWithAggregatesFilter<"tenant_api_keys"> | string
     scopes?: StringNullableListFilter<"tenant_api_keys">
     expires_at?: DateTimeNullableWithAggregatesFilter<"tenant_api_keys"> | Date | string | null
     created_at?: DateTimeWithAggregatesFilter<"tenant_api_keys"> | Date | string
@@ -20828,6 +20092,7 @@ export namespace Prisma {
     invited_by?: StringFilter<"team_members"> | string
     status?: StringFilter<"team_members"> | string
     metadata?: JsonNullableFilter<"team_members">
+    deleted_at?: DateTimeNullableFilter<"team_members"> | Date | string | null
     team?: XOR<TeamsRelationFilter, teamsWhereInput>
     user_account?: XOR<User_accountsNullableRelationFilter, user_accountsWhereInput> | null
     business_account?: XOR<Business_accountsNullableRelationFilter, business_accountsWhereInput> | null
@@ -20843,6 +20108,7 @@ export namespace Prisma {
     invited_by?: SortOrder
     status?: SortOrder
     metadata?: SortOrderInput | SortOrder
+    deleted_at?: SortOrderInput | SortOrder
     team?: teamsOrderByWithRelationInput
     user_account?: user_accountsOrderByWithRelationInput
     business_account?: business_accountsOrderByWithRelationInput
@@ -20863,6 +20129,7 @@ export namespace Prisma {
     invited_by?: StringFilter<"team_members"> | string
     status?: StringFilter<"team_members"> | string
     metadata?: JsonNullableFilter<"team_members">
+    deleted_at?: DateTimeNullableFilter<"team_members"> | Date | string | null
     team?: XOR<TeamsRelationFilter, teamsWhereInput>
     user_account?: XOR<User_accountsNullableRelationFilter, user_accountsWhereInput> | null
     business_account?: XOR<Business_accountsNullableRelationFilter, business_accountsWhereInput> | null
@@ -20878,6 +20145,7 @@ export namespace Prisma {
     invited_by?: SortOrder
     status?: SortOrder
     metadata?: SortOrderInput | SortOrder
+    deleted_at?: SortOrderInput | SortOrder
     _count?: team_membersCountOrderByAggregateInput
     _avg?: team_membersAvgOrderByAggregateInput
     _max?: team_membersMaxOrderByAggregateInput
@@ -20898,6 +20166,7 @@ export namespace Prisma {
     invited_by?: StringWithAggregatesFilter<"team_members"> | string
     status?: StringWithAggregatesFilter<"team_members"> | string
     metadata?: JsonNullableWithAggregatesFilter<"team_members">
+    deleted_at?: DateTimeNullableWithAggregatesFilter<"team_members"> | Date | string | null
   }
 
   export type business_accountsWhereInput = {
@@ -21067,11 +20336,11 @@ export namespace Prisma {
     used_storage?: BigIntNullableFilter<"user_accounts"> | bigint | number | null
     organization?: XOR<OrganizationsNullableRelationFilter, organizationsWhereInput> | null
     tenant?: XOR<TenantsNullableRelationFilter, tenantsWhereInput> | null
-    user_settings?: User_settingsListRelationFilter
     settings?: SettingsListRelationFilter
     addresses?: AddressesListRelationFilter
     team_memberships?: Team_membersListRelationFilter
     audit_logs?: Audit_logsListRelationFilter
+    org_api_keys?: Org_api_keysListRelationFilter
   }
 
   export type user_accountsOrderByWithRelationInput = {
@@ -21096,11 +20365,11 @@ export namespace Prisma {
     used_storage?: SortOrderInput | SortOrder
     organization?: organizationsOrderByWithRelationInput
     tenant?: tenantsOrderByWithRelationInput
-    user_settings?: user_settingsOrderByRelationAggregateInput
     settings?: settingsOrderByRelationAggregateInput
     addresses?: addressesOrderByRelationAggregateInput
     team_memberships?: team_membersOrderByRelationAggregateInput
     audit_logs?: audit_logsOrderByRelationAggregateInput
+    org_api_keys?: org_api_keysOrderByRelationAggregateInput
   }
 
   export type user_accountsWhereUniqueInput = Prisma.AtLeast<{
@@ -21128,11 +20397,11 @@ export namespace Prisma {
     used_storage?: BigIntNullableFilter<"user_accounts"> | bigint | number | null
     organization?: XOR<OrganizationsNullableRelationFilter, organizationsWhereInput> | null
     tenant?: XOR<TenantsNullableRelationFilter, tenantsWhereInput> | null
-    user_settings?: User_settingsListRelationFilter
     settings?: SettingsListRelationFilter
     addresses?: AddressesListRelationFilter
     team_memberships?: Team_membersListRelationFilter
     audit_logs?: Audit_logsListRelationFilter
+    org_api_keys?: Org_api_keysListRelationFilter
   }, "id">
 
   export type user_accountsOrderByWithAggregationInput = {
@@ -21436,6 +20705,9 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"settings"> | Date | string
     updated_at?: DateTimeFilter<"settings"> | Date | string
     settings_data?: JsonNullableFilter<"settings">
+    preferred_language?: StringNullableFilter<"settings"> | string | null
+    notification_settings?: JsonNullableFilter<"settings">
+    ui_settings?: JsonNullableFilter<"settings">
     tenant?: XOR<TenantsNullableRelationFilter, tenantsWhereInput> | null
     business_accounts?: XOR<Business_accountsNullableRelationFilter, business_accountsWhereInput> | null
     user_accounts?: XOR<User_accountsNullableRelationFilter, user_accountsWhereInput> | null
@@ -21450,6 +20722,9 @@ export namespace Prisma {
     created_at?: SortOrder
     updated_at?: SortOrder
     settings_data?: SortOrderInput | SortOrder
+    preferred_language?: SortOrderInput | SortOrder
+    notification_settings?: SortOrderInput | SortOrder
+    ui_settings?: SortOrderInput | SortOrder
     tenant?: tenantsOrderByWithRelationInput
     business_accounts?: business_accountsOrderByWithRelationInput
     user_accounts?: user_accountsOrderByWithRelationInput
@@ -21467,6 +20742,9 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"settings"> | Date | string
     updated_at?: DateTimeFilter<"settings"> | Date | string
     settings_data?: JsonNullableFilter<"settings">
+    preferred_language?: StringNullableFilter<"settings"> | string | null
+    notification_settings?: JsonNullableFilter<"settings">
+    ui_settings?: JsonNullableFilter<"settings">
     tenant?: XOR<TenantsNullableRelationFilter, tenantsWhereInput> | null
     business_accounts?: XOR<Business_accountsNullableRelationFilter, business_accountsWhereInput> | null
     user_accounts?: XOR<User_accountsNullableRelationFilter, user_accountsWhereInput> | null
@@ -21481,6 +20759,9 @@ export namespace Prisma {
     created_at?: SortOrder
     updated_at?: SortOrder
     settings_data?: SortOrderInput | SortOrder
+    preferred_language?: SortOrderInput | SortOrder
+    notification_settings?: SortOrderInput | SortOrder
+    ui_settings?: SortOrderInput | SortOrder
     _count?: settingsCountOrderByAggregateInput
     _avg?: settingsAvgOrderByAggregateInput
     _max?: settingsMaxOrderByAggregateInput
@@ -21500,73 +20781,9 @@ export namespace Prisma {
     created_at?: DateTimeWithAggregatesFilter<"settings"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"settings"> | Date | string
     settings_data?: JsonNullableWithAggregatesFilter<"settings">
-  }
-
-  export type user_settingsWhereInput = {
-    AND?: user_settingsWhereInput | user_settingsWhereInput[]
-    OR?: user_settingsWhereInput[]
-    NOT?: user_settingsWhereInput | user_settingsWhereInput[]
-    id?: BigIntFilter<"user_settings"> | bigint | number
-    user_account_id?: BigIntNullableFilter<"user_settings"> | bigint | number | null
-    preferred_language?: StringNullableFilter<"user_settings"> | string | null
-    notification_settings?: JsonNullableFilter<"user_settings">
-    ui_settings?: JsonNullableFilter<"user_settings">
-    created_at?: DateTimeFilter<"user_settings"> | Date | string
-    updated_at?: DateTimeFilter<"user_settings"> | Date | string
-    user_accounts?: XOR<User_accountsNullableRelationFilter, user_accountsWhereInput> | null
-  }
-
-  export type user_settingsOrderByWithRelationInput = {
-    id?: SortOrder
-    user_account_id?: SortOrderInput | SortOrder
-    preferred_language?: SortOrderInput | SortOrder
-    notification_settings?: SortOrderInput | SortOrder
-    ui_settings?: SortOrderInput | SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-    user_accounts?: user_accountsOrderByWithRelationInput
-  }
-
-  export type user_settingsWhereUniqueInput = Prisma.AtLeast<{
-    id?: bigint | number
-    AND?: user_settingsWhereInput | user_settingsWhereInput[]
-    OR?: user_settingsWhereInput[]
-    NOT?: user_settingsWhereInput | user_settingsWhereInput[]
-    user_account_id?: BigIntNullableFilter<"user_settings"> | bigint | number | null
-    preferred_language?: StringNullableFilter<"user_settings"> | string | null
-    notification_settings?: JsonNullableFilter<"user_settings">
-    ui_settings?: JsonNullableFilter<"user_settings">
-    created_at?: DateTimeFilter<"user_settings"> | Date | string
-    updated_at?: DateTimeFilter<"user_settings"> | Date | string
-    user_accounts?: XOR<User_accountsNullableRelationFilter, user_accountsWhereInput> | null
-  }, "id">
-
-  export type user_settingsOrderByWithAggregationInput = {
-    id?: SortOrder
-    user_account_id?: SortOrderInput | SortOrder
-    preferred_language?: SortOrderInput | SortOrder
-    notification_settings?: SortOrderInput | SortOrder
-    ui_settings?: SortOrderInput | SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-    _count?: user_settingsCountOrderByAggregateInput
-    _avg?: user_settingsAvgOrderByAggregateInput
-    _max?: user_settingsMaxOrderByAggregateInput
-    _min?: user_settingsMinOrderByAggregateInput
-    _sum?: user_settingsSumOrderByAggregateInput
-  }
-
-  export type user_settingsScalarWhereWithAggregatesInput = {
-    AND?: user_settingsScalarWhereWithAggregatesInput | user_settingsScalarWhereWithAggregatesInput[]
-    OR?: user_settingsScalarWhereWithAggregatesInput[]
-    NOT?: user_settingsScalarWhereWithAggregatesInput | user_settingsScalarWhereWithAggregatesInput[]
-    id?: BigIntWithAggregatesFilter<"user_settings"> | bigint | number
-    user_account_id?: BigIntNullableWithAggregatesFilter<"user_settings"> | bigint | number | null
-    preferred_language?: StringNullableWithAggregatesFilter<"user_settings"> | string | null
-    notification_settings?: JsonNullableWithAggregatesFilter<"user_settings">
-    ui_settings?: JsonNullableWithAggregatesFilter<"user_settings">
-    created_at?: DateTimeWithAggregatesFilter<"user_settings"> | Date | string
-    updated_at?: DateTimeWithAggregatesFilter<"user_settings"> | Date | string
+    preferred_language?: StringNullableWithAggregatesFilter<"settings"> | string | null
+    notification_settings?: JsonNullableWithAggregatesFilter<"settings">
+    ui_settings?: JsonNullableWithAggregatesFilter<"settings">
   }
 
   export type organizationsCreateInput = {
@@ -21781,6 +20998,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     organization: organizationsCreateNestedOneWithoutTenantsInput
     business_accounts?: business_accountsCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsCreateNestedManyWithoutTenantInput
@@ -21804,6 +21023,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     business_accounts?: business_accountsUncheckedCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsUncheckedCreateNestedManyWithoutTenantInput
     settings?: settingsUncheckedCreateNestedManyWithoutTenantInput
@@ -21825,6 +21046,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     organization?: organizationsUpdateOneRequiredWithoutTenantsNestedInput
     business_accounts?: business_accountsUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUpdateManyWithoutTenantNestedInput
@@ -21848,6 +21071,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     business_accounts?: business_accountsUncheckedUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUncheckedUpdateManyWithoutTenantNestedInput
     settings?: settingsUncheckedUpdateManyWithoutTenantNestedInput
@@ -21870,6 +21095,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
   }
 
   export type tenantsUpdateManyMutationInput = {
@@ -21884,6 +21111,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type tenantsUncheckedUpdateManyInput = {
@@ -21899,6 +21128,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type org_membersCreateInput = {
@@ -22001,26 +21232,52 @@ export namespace Prisma {
   export type org_api_keysCreateInput = {
     id?: bigint | number
     key_name: string
-    key_prefix: string
+    description?: string | null
+    key_id: string
     key_hash: string
     scopes?: org_api_keysCreatescopesInput | string[]
+    rate_limit?: number
+    allowed_ips?: org_api_keysCreateallowed_ipsInput | string[]
+    allowed_domains?: org_api_keysCreateallowed_domainsInput | string[]
+    usage_count?: number
+    max_usage_count?: number
+    last_used_ip?: string | null
+    environment?: $Enums.APIKeyEnvironment
+    revoked?: boolean
+    revoked_at?: Date | string | null
+    revoked_reason?: string | null
     expires_at?: Date | string | null
     created_at?: Date | string
+    updated_at?: Date | string
     created_by: string
     last_used?: Date | string | null
     is_active?: boolean
     organization: organizationsCreateNestedOneWithoutOrg_api_keysInput
+    user?: user_accountsCreateNestedOneWithoutOrg_api_keysInput
   }
 
   export type org_api_keysUncheckedCreateInput = {
     id?: bigint | number
     organization_id: string
+    user_id?: bigint | number | null
     key_name: string
-    key_prefix: string
+    description?: string | null
+    key_id: string
     key_hash: string
     scopes?: org_api_keysCreatescopesInput | string[]
+    rate_limit?: number
+    allowed_ips?: org_api_keysCreateallowed_ipsInput | string[]
+    allowed_domains?: org_api_keysCreateallowed_domainsInput | string[]
+    usage_count?: number
+    max_usage_count?: number
+    last_used_ip?: string | null
+    environment?: $Enums.APIKeyEnvironment
+    revoked?: boolean
+    revoked_at?: Date | string | null
+    revoked_reason?: string | null
     expires_at?: Date | string | null
     created_at?: Date | string
+    updated_at?: Date | string
     created_by: string
     last_used?: Date | string | null
     is_active?: boolean
@@ -22029,26 +21286,52 @@ export namespace Prisma {
   export type org_api_keysUpdateInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     key_name?: StringFieldUpdateOperationsInput | string
-    key_prefix?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    key_id?: StringFieldUpdateOperationsInput | string
     key_hash?: StringFieldUpdateOperationsInput | string
     scopes?: org_api_keysUpdatescopesInput | string[]
+    rate_limit?: IntFieldUpdateOperationsInput | number
+    allowed_ips?: org_api_keysUpdateallowed_ipsInput | string[]
+    allowed_domains?: org_api_keysUpdateallowed_domainsInput | string[]
+    usage_count?: IntFieldUpdateOperationsInput | number
+    max_usage_count?: IntFieldUpdateOperationsInput | number
+    last_used_ip?: NullableStringFieldUpdateOperationsInput | string | null
+    environment?: EnumAPIKeyEnvironmentFieldUpdateOperationsInput | $Enums.APIKeyEnvironment
+    revoked?: BoolFieldUpdateOperationsInput | boolean
+    revoked_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revoked_reason?: NullableStringFieldUpdateOperationsInput | string | null
     expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     last_used?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     is_active?: BoolFieldUpdateOperationsInput | boolean
     organization?: organizationsUpdateOneRequiredWithoutOrg_api_keysNestedInput
+    user?: user_accountsUpdateOneWithoutOrg_api_keysNestedInput
   }
 
   export type org_api_keysUncheckedUpdateInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     organization_id?: StringFieldUpdateOperationsInput | string
+    user_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     key_name?: StringFieldUpdateOperationsInput | string
-    key_prefix?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    key_id?: StringFieldUpdateOperationsInput | string
     key_hash?: StringFieldUpdateOperationsInput | string
     scopes?: org_api_keysUpdatescopesInput | string[]
+    rate_limit?: IntFieldUpdateOperationsInput | number
+    allowed_ips?: org_api_keysUpdateallowed_ipsInput | string[]
+    allowed_domains?: org_api_keysUpdateallowed_domainsInput | string[]
+    usage_count?: IntFieldUpdateOperationsInput | number
+    max_usage_count?: IntFieldUpdateOperationsInput | number
+    last_used_ip?: NullableStringFieldUpdateOperationsInput | string | null
+    environment?: EnumAPIKeyEnvironmentFieldUpdateOperationsInput | $Enums.APIKeyEnvironment
+    revoked?: BoolFieldUpdateOperationsInput | boolean
+    revoked_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revoked_reason?: NullableStringFieldUpdateOperationsInput | string | null
     expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     last_used?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     is_active?: BoolFieldUpdateOperationsInput | boolean
@@ -22057,12 +21340,25 @@ export namespace Prisma {
   export type org_api_keysCreateManyInput = {
     id?: bigint | number
     organization_id: string
+    user_id?: bigint | number | null
     key_name: string
-    key_prefix: string
+    description?: string | null
+    key_id: string
     key_hash: string
     scopes?: org_api_keysCreatescopesInput | string[]
+    rate_limit?: number
+    allowed_ips?: org_api_keysCreateallowed_ipsInput | string[]
+    allowed_domains?: org_api_keysCreateallowed_domainsInput | string[]
+    usage_count?: number
+    max_usage_count?: number
+    last_used_ip?: string | null
+    environment?: $Enums.APIKeyEnvironment
+    revoked?: boolean
+    revoked_at?: Date | string | null
+    revoked_reason?: string | null
     expires_at?: Date | string | null
     created_at?: Date | string
+    updated_at?: Date | string
     created_by: string
     last_used?: Date | string | null
     is_active?: boolean
@@ -22071,11 +21367,23 @@ export namespace Prisma {
   export type org_api_keysUpdateManyMutationInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     key_name?: StringFieldUpdateOperationsInput | string
-    key_prefix?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    key_id?: StringFieldUpdateOperationsInput | string
     key_hash?: StringFieldUpdateOperationsInput | string
     scopes?: org_api_keysUpdatescopesInput | string[]
+    rate_limit?: IntFieldUpdateOperationsInput | number
+    allowed_ips?: org_api_keysUpdateallowed_ipsInput | string[]
+    allowed_domains?: org_api_keysUpdateallowed_domainsInput | string[]
+    usage_count?: IntFieldUpdateOperationsInput | number
+    max_usage_count?: IntFieldUpdateOperationsInput | number
+    last_used_ip?: NullableStringFieldUpdateOperationsInput | string | null
+    environment?: EnumAPIKeyEnvironmentFieldUpdateOperationsInput | $Enums.APIKeyEnvironment
+    revoked?: BoolFieldUpdateOperationsInput | boolean
+    revoked_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revoked_reason?: NullableStringFieldUpdateOperationsInput | string | null
     expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     last_used?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     is_active?: BoolFieldUpdateOperationsInput | boolean
@@ -22084,12 +21392,25 @@ export namespace Prisma {
   export type org_api_keysUncheckedUpdateManyInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     organization_id?: StringFieldUpdateOperationsInput | string
+    user_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     key_name?: StringFieldUpdateOperationsInput | string
-    key_prefix?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    key_id?: StringFieldUpdateOperationsInput | string
     key_hash?: StringFieldUpdateOperationsInput | string
     scopes?: org_api_keysUpdatescopesInput | string[]
+    rate_limit?: IntFieldUpdateOperationsInput | number
+    allowed_ips?: org_api_keysUpdateallowed_ipsInput | string[]
+    allowed_domains?: org_api_keysUpdateallowed_domainsInput | string[]
+    usage_count?: IntFieldUpdateOperationsInput | number
+    max_usage_count?: IntFieldUpdateOperationsInput | number
+    last_used_ip?: NullableStringFieldUpdateOperationsInput | string | null
+    environment?: EnumAPIKeyEnvironmentFieldUpdateOperationsInput | $Enums.APIKeyEnvironment
+    revoked?: BoolFieldUpdateOperationsInput | boolean
+    revoked_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revoked_reason?: NullableStringFieldUpdateOperationsInput | string | null
     expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     last_used?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     is_active?: BoolFieldUpdateOperationsInput | boolean
@@ -22100,6 +21421,7 @@ export namespace Prisma {
     key_name: string
     key_prefix: string
     key_hash: string
+    key_id: string
     scopes?: tenant_api_keysCreatescopesInput | string[]
     expires_at?: Date | string | null
     created_at?: Date | string
@@ -22115,6 +21437,7 @@ export namespace Prisma {
     key_name: string
     key_prefix: string
     key_hash: string
+    key_id: string
     scopes?: tenant_api_keysCreatescopesInput | string[]
     expires_at?: Date | string | null
     created_at?: Date | string
@@ -22128,6 +21451,7 @@ export namespace Prisma {
     key_name?: StringFieldUpdateOperationsInput | string
     key_prefix?: StringFieldUpdateOperationsInput | string
     key_hash?: StringFieldUpdateOperationsInput | string
+    key_id?: StringFieldUpdateOperationsInput | string
     scopes?: tenant_api_keysUpdatescopesInput | string[]
     expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22143,6 +21467,7 @@ export namespace Prisma {
     key_name?: StringFieldUpdateOperationsInput | string
     key_prefix?: StringFieldUpdateOperationsInput | string
     key_hash?: StringFieldUpdateOperationsInput | string
+    key_id?: StringFieldUpdateOperationsInput | string
     scopes?: tenant_api_keysUpdatescopesInput | string[]
     expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22157,6 +21482,7 @@ export namespace Prisma {
     key_name: string
     key_prefix: string
     key_hash: string
+    key_id: string
     scopes?: tenant_api_keysCreatescopesInput | string[]
     expires_at?: Date | string | null
     created_at?: Date | string
@@ -22170,6 +21496,7 @@ export namespace Prisma {
     key_name?: StringFieldUpdateOperationsInput | string
     key_prefix?: StringFieldUpdateOperationsInput | string
     key_hash?: StringFieldUpdateOperationsInput | string
+    key_id?: StringFieldUpdateOperationsInput | string
     scopes?: tenant_api_keysUpdatescopesInput | string[]
     expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22184,6 +21511,7 @@ export namespace Prisma {
     key_name?: StringFieldUpdateOperationsInput | string
     key_prefix?: StringFieldUpdateOperationsInput | string
     key_hash?: StringFieldUpdateOperationsInput | string
+    key_id?: StringFieldUpdateOperationsInput | string
     scopes?: tenant_api_keysUpdatescopesInput | string[]
     expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22445,6 +21773,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
     team: teamsCreateNestedOneWithoutTeam_membersInput
     user_account?: user_accountsCreateNestedOneWithoutTeam_membershipsInput
     business_account?: business_accountsCreateNestedOneWithoutTeam_membershipsInput
@@ -22460,6 +21789,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
   }
 
   export type team_membersUpdateInput = {
@@ -22469,6 +21799,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     team?: teamsUpdateOneRequiredWithoutTeam_membersNestedInput
     user_account?: user_accountsUpdateOneWithoutTeam_membershipsNestedInput
     business_account?: business_accountsUpdateOneWithoutTeam_membershipsNestedInput
@@ -22484,6 +21815,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type team_membersCreateManyInput = {
@@ -22496,6 +21828,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
   }
 
   export type team_membersUpdateManyMutationInput = {
@@ -22505,6 +21838,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type team_membersUncheckedUpdateManyInput = {
@@ -22517,6 +21851,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type business_accountsCreateInput = {
@@ -22707,11 +22042,11 @@ export namespace Prisma {
     used_storage?: bigint | number | null
     organization?: organizationsCreateNestedOneWithoutUser_accountsInput
     tenant?: tenantsCreateNestedOneWithoutUser_accountsInput
-    user_settings?: user_settingsCreateNestedManyWithoutUser_accountsInput
     settings?: settingsCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersCreateNestedManyWithoutUser_accountInput
     audit_logs?: audit_logsCreateNestedManyWithoutUser_accountInput
+    org_api_keys?: org_api_keysCreateNestedManyWithoutUserInput
   }
 
   export type user_accountsUncheckedCreateInput = {
@@ -22734,11 +22069,11 @@ export namespace Prisma {
     last_access?: Date | string | null
     storage_quota?: bigint | number | null
     used_storage?: bigint | number | null
-    user_settings?: user_settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     settings?: settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesUncheckedCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersUncheckedCreateNestedManyWithoutUser_accountInput
     audit_logs?: audit_logsUncheckedCreateNestedManyWithoutUser_accountInput
+    org_api_keys?: org_api_keysUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type user_accountsUpdateInput = {
@@ -22761,11 +22096,11 @@ export namespace Prisma {
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     organization?: organizationsUpdateOneWithoutUser_accountsNestedInput
     tenant?: tenantsUpdateOneWithoutUser_accountsNestedInput
-    user_settings?: user_settingsUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUpdateManyWithoutUser_accountNestedInput
     audit_logs?: audit_logsUpdateManyWithoutUser_accountNestedInput
+    org_api_keys?: org_api_keysUpdateManyWithoutUserNestedInput
   }
 
   export type user_accountsUncheckedUpdateInput = {
@@ -22788,11 +22123,11 @@ export namespace Prisma {
     last_access?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    user_settings?: user_settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUncheckedUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUncheckedUpdateManyWithoutUser_accountNestedInput
     audit_logs?: audit_logsUncheckedUpdateManyWithoutUser_accountNestedInput
+    org_api_keys?: org_api_keysUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type user_accountsCreateManyInput = {
@@ -23122,6 +22457,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
     tenant?: tenantsCreateNestedOneWithoutSettingsInput
     business_accounts?: business_accountsCreateNestedOneWithoutSettingsInput
     user_accounts?: user_accountsCreateNestedOneWithoutSettingsInput
@@ -23136,6 +22474,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type settingsUpdateInput = {
@@ -23144,6 +22485,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
     tenant?: tenantsUpdateOneWithoutSettingsNestedInput
     business_accounts?: business_accountsUpdateOneWithoutSettingsNestedInput
     user_accounts?: user_accountsUpdateOneWithoutSettingsNestedInput
@@ -23158,6 +22502,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type settingsCreateManyInput = {
@@ -23169,6 +22516,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type settingsUpdateManyMutationInput = {
@@ -23177,6 +22527,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type settingsUncheckedUpdateManyInput = {
@@ -23188,75 +22541,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
-  }
-
-  export type user_settingsCreateInput = {
-    id?: bigint | number
-    preferred_language?: string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: Date | string
-    updated_at?: Date | string
-    user_accounts?: user_accountsCreateNestedOneWithoutUser_settingsInput
-  }
-
-  export type user_settingsUncheckedCreateInput = {
-    id?: bigint | number
-    user_account_id?: bigint | number | null
-    preferred_language?: string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type user_settingsUpdateInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
     preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
     notification_settings?: NullableJsonNullValueInput | InputJsonValue
     ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user_accounts?: user_accountsUpdateOneWithoutUser_settingsNestedInput
-  }
-
-  export type user_settingsUncheckedUpdateInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
-    user_account_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type user_settingsCreateManyInput = {
-    id?: bigint | number
-    user_account_id?: bigint | number | null
-    preferred_language?: string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type user_settingsUpdateManyMutationInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
-    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type user_settingsUncheckedUpdateManyInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
-    user_account_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -23690,6 +22977,8 @@ export namespace Prisma {
     metadata?: SortOrder
     custom_domain?: SortOrder
     email?: SortOrder
+    is_soft_deleted?: SortOrder
+    is_active?: SortOrder
   }
 
   export type tenantsAvgOrderByAggregateInput = {
@@ -23709,6 +22998,8 @@ export namespace Prisma {
     used_storage?: SortOrder
     custom_domain?: SortOrder
     email?: SortOrder
+    is_soft_deleted?: SortOrder
+    is_active?: SortOrder
   }
 
   export type tenantsMinOrderByAggregateInput = {
@@ -23723,6 +23014,8 @@ export namespace Prisma {
     used_storage?: SortOrder
     custom_domain?: SortOrder
     email?: SortOrder
+    is_soft_deleted?: SortOrder
+    is_active?: SortOrder
   }
 
   export type tenantsSumOrderByAggregateInput = {
@@ -23832,15 +23125,51 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type EnumAPIKeyEnvironmentFilter<$PrismaModel = never> = {
+    equals?: $Enums.APIKeyEnvironment | EnumAPIKeyEnvironmentFieldRefInput<$PrismaModel>
+    in?: $Enums.APIKeyEnvironment[] | ListEnumAPIKeyEnvironmentFieldRefInput<$PrismaModel>
+    notIn?: $Enums.APIKeyEnvironment[] | ListEnumAPIKeyEnvironmentFieldRefInput<$PrismaModel>
+    not?: NestedEnumAPIKeyEnvironmentFilter<$PrismaModel> | $Enums.APIKeyEnvironment
+  }
+
+  export type User_accountsNullableRelationFilter = {
+    is?: user_accountsWhereInput | null
+    isNot?: user_accountsWhereInput | null
+  }
+
   export type org_api_keysCountOrderByAggregateInput = {
     id?: SortOrder
     organization_id?: SortOrder
+    user_id?: SortOrder
     key_name?: SortOrder
-    key_prefix?: SortOrder
+    description?: SortOrder
+    key_id?: SortOrder
     key_hash?: SortOrder
     scopes?: SortOrder
+    rate_limit?: SortOrder
+    allowed_ips?: SortOrder
+    allowed_domains?: SortOrder
+    usage_count?: SortOrder
+    max_usage_count?: SortOrder
+    last_used_ip?: SortOrder
+    environment?: SortOrder
+    revoked?: SortOrder
+    revoked_at?: SortOrder
+    revoked_reason?: SortOrder
     expires_at?: SortOrder
     created_at?: SortOrder
+    updated_at?: SortOrder
     created_by?: SortOrder
     last_used?: SortOrder
     is_active?: SortOrder
@@ -23848,16 +23177,31 @@ export namespace Prisma {
 
   export type org_api_keysAvgOrderByAggregateInput = {
     id?: SortOrder
+    user_id?: SortOrder
+    rate_limit?: SortOrder
+    usage_count?: SortOrder
+    max_usage_count?: SortOrder
   }
 
   export type org_api_keysMaxOrderByAggregateInput = {
     id?: SortOrder
     organization_id?: SortOrder
+    user_id?: SortOrder
     key_name?: SortOrder
-    key_prefix?: SortOrder
+    description?: SortOrder
+    key_id?: SortOrder
     key_hash?: SortOrder
+    rate_limit?: SortOrder
+    usage_count?: SortOrder
+    max_usage_count?: SortOrder
+    last_used_ip?: SortOrder
+    environment?: SortOrder
+    revoked?: SortOrder
+    revoked_at?: SortOrder
+    revoked_reason?: SortOrder
     expires_at?: SortOrder
     created_at?: SortOrder
+    updated_at?: SortOrder
     created_by?: SortOrder
     last_used?: SortOrder
     is_active?: SortOrder
@@ -23866,11 +23210,22 @@ export namespace Prisma {
   export type org_api_keysMinOrderByAggregateInput = {
     id?: SortOrder
     organization_id?: SortOrder
+    user_id?: SortOrder
     key_name?: SortOrder
-    key_prefix?: SortOrder
+    description?: SortOrder
+    key_id?: SortOrder
     key_hash?: SortOrder
+    rate_limit?: SortOrder
+    usage_count?: SortOrder
+    max_usage_count?: SortOrder
+    last_used_ip?: SortOrder
+    environment?: SortOrder
+    revoked?: SortOrder
+    revoked_at?: SortOrder
+    revoked_reason?: SortOrder
     expires_at?: SortOrder
     created_at?: SortOrder
+    updated_at?: SortOrder
     created_by?: SortOrder
     last_used?: SortOrder
     is_active?: SortOrder
@@ -23878,6 +23233,36 @@ export namespace Prisma {
 
   export type org_api_keysSumOrderByAggregateInput = {
     id?: SortOrder
+    user_id?: SortOrder
+    rate_limit?: SortOrder
+    usage_count?: SortOrder
+    max_usage_count?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type EnumAPIKeyEnvironmentWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.APIKeyEnvironment | EnumAPIKeyEnvironmentFieldRefInput<$PrismaModel>
+    in?: $Enums.APIKeyEnvironment[] | ListEnumAPIKeyEnvironmentFieldRefInput<$PrismaModel>
+    notIn?: $Enums.APIKeyEnvironment[] | ListEnumAPIKeyEnvironmentFieldRefInput<$PrismaModel>
+    not?: NestedEnumAPIKeyEnvironmentWithAggregatesFilter<$PrismaModel> | $Enums.APIKeyEnvironment
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAPIKeyEnvironmentFilter<$PrismaModel>
+    _max?: NestedEnumAPIKeyEnvironmentFilter<$PrismaModel>
   }
 
   export type TenantsRelationFilter = {
@@ -23891,6 +23276,7 @@ export namespace Prisma {
     key_name?: SortOrder
     key_prefix?: SortOrder
     key_hash?: SortOrder
+    key_id?: SortOrder
     scopes?: SortOrder
     expires_at?: SortOrder
     created_at?: SortOrder
@@ -23909,6 +23295,7 @@ export namespace Prisma {
     key_name?: SortOrder
     key_prefix?: SortOrder
     key_hash?: SortOrder
+    key_id?: SortOrder
     expires_at?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
@@ -23922,6 +23309,7 @@ export namespace Prisma {
     key_name?: SortOrder
     key_prefix?: SortOrder
     key_hash?: SortOrder
+    key_id?: SortOrder
     expires_at?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
@@ -24092,11 +23480,6 @@ export namespace Prisma {
     isNot?: teamsWhereInput
   }
 
-  export type User_accountsNullableRelationFilter = {
-    is?: user_accountsWhereInput | null
-    isNot?: user_accountsWhereInput | null
-  }
-
   export type Business_accountsNullableRelationFilter = {
     is?: business_accountsWhereInput | null
     isNot?: business_accountsWhereInput | null
@@ -24122,6 +23505,7 @@ export namespace Prisma {
     invited_by?: SortOrder
     status?: SortOrder
     metadata?: SortOrder
+    deleted_at?: SortOrder
   }
 
   export type team_membersAvgOrderByAggregateInput = {
@@ -24140,6 +23524,7 @@ export namespace Prisma {
     joined_at?: SortOrder
     invited_by?: SortOrder
     status?: SortOrder
+    deleted_at?: SortOrder
   }
 
   export type team_membersMinOrderByAggregateInput = {
@@ -24151,6 +23536,7 @@ export namespace Prisma {
     joined_at?: SortOrder
     invited_by?: SortOrder
     status?: SortOrder
+    deleted_at?: SortOrder
   }
 
   export type team_membersSumOrderByAggregateInput = {
@@ -24239,16 +23625,6 @@ export namespace Prisma {
     id?: SortOrder
     storage_quota?: SortOrder
     used_storage?: SortOrder
-  }
-
-  export type User_settingsListRelationFilter = {
-    every?: user_settingsWhereInput
-    some?: user_settingsWhereInput
-    none?: user_settingsWhereInput
-  }
-
-  export type user_settingsOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type user_accountsCountOrderByAggregateInput = {
@@ -24501,6 +23877,9 @@ export namespace Prisma {
     created_at?: SortOrder
     updated_at?: SortOrder
     settings_data?: SortOrder
+    preferred_language?: SortOrder
+    notification_settings?: SortOrder
+    ui_settings?: SortOrder
   }
 
   export type settingsAvgOrderByAggregateInput = {
@@ -24517,6 +23896,7 @@ export namespace Prisma {
     user_account_id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    preferred_language?: SortOrder
   }
 
   export type settingsMinOrderByAggregateInput = {
@@ -24527,47 +23907,12 @@ export namespace Prisma {
     user_account_id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    preferred_language?: SortOrder
   }
 
   export type settingsSumOrderByAggregateInput = {
     id?: SortOrder
     business_account_id?: SortOrder
-    user_account_id?: SortOrder
-  }
-
-  export type user_settingsCountOrderByAggregateInput = {
-    id?: SortOrder
-    user_account_id?: SortOrder
-    preferred_language?: SortOrder
-    notification_settings?: SortOrder
-    ui_settings?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-  }
-
-  export type user_settingsAvgOrderByAggregateInput = {
-    id?: SortOrder
-    user_account_id?: SortOrder
-  }
-
-  export type user_settingsMaxOrderByAggregateInput = {
-    id?: SortOrder
-    user_account_id?: SortOrder
-    preferred_language?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-  }
-
-  export type user_settingsMinOrderByAggregateInput = {
-    id?: SortOrder
-    user_account_id?: SortOrder
-    preferred_language?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-  }
-
-  export type user_settingsSumOrderByAggregateInput = {
-    id?: SortOrder
     user_account_id?: SortOrder
   }
 
@@ -25286,15 +24631,51 @@ export namespace Prisma {
     set: string[]
   }
 
+  export type org_api_keysCreateallowed_ipsInput = {
+    set: string[]
+  }
+
+  export type org_api_keysCreateallowed_domainsInput = {
+    set: string[]
+  }
+
   export type organizationsCreateNestedOneWithoutOrg_api_keysInput = {
     create?: XOR<organizationsCreateWithoutOrg_api_keysInput, organizationsUncheckedCreateWithoutOrg_api_keysInput>
     connectOrCreate?: organizationsCreateOrConnectWithoutOrg_api_keysInput
     connect?: organizationsWhereUniqueInput
   }
 
+  export type user_accountsCreateNestedOneWithoutOrg_api_keysInput = {
+    create?: XOR<user_accountsCreateWithoutOrg_api_keysInput, user_accountsUncheckedCreateWithoutOrg_api_keysInput>
+    connectOrCreate?: user_accountsCreateOrConnectWithoutOrg_api_keysInput
+    connect?: user_accountsWhereUniqueInput
+  }
+
   export type org_api_keysUpdatescopesInput = {
     set?: string[]
     push?: string | string[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type org_api_keysUpdateallowed_ipsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type org_api_keysUpdateallowed_domainsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type EnumAPIKeyEnvironmentFieldUpdateOperationsInput = {
+    set?: $Enums.APIKeyEnvironment
   }
 
   export type organizationsUpdateOneRequiredWithoutOrg_api_keysNestedInput = {
@@ -25303,6 +24684,16 @@ export namespace Prisma {
     upsert?: organizationsUpsertWithoutOrg_api_keysInput
     connect?: organizationsWhereUniqueInput
     update?: XOR<XOR<organizationsUpdateToOneWithWhereWithoutOrg_api_keysInput, organizationsUpdateWithoutOrg_api_keysInput>, organizationsUncheckedUpdateWithoutOrg_api_keysInput>
+  }
+
+  export type user_accountsUpdateOneWithoutOrg_api_keysNestedInput = {
+    create?: XOR<user_accountsCreateWithoutOrg_api_keysInput, user_accountsUncheckedCreateWithoutOrg_api_keysInput>
+    connectOrCreate?: user_accountsCreateOrConnectWithoutOrg_api_keysInput
+    upsert?: user_accountsUpsertWithoutOrg_api_keysInput
+    disconnect?: user_accountsWhereInput | boolean
+    delete?: user_accountsWhereInput | boolean
+    connect?: user_accountsWhereUniqueInput
+    update?: XOR<XOR<user_accountsUpdateToOneWithWhereWithoutOrg_api_keysInput, user_accountsUpdateWithoutOrg_api_keysInput>, user_accountsUncheckedUpdateWithoutOrg_api_keysInput>
   }
 
   export type tenant_api_keysCreatescopesInput = {
@@ -25770,13 +25161,6 @@ export namespace Prisma {
     connect?: tenantsWhereUniqueInput
   }
 
-  export type user_settingsCreateNestedManyWithoutUser_accountsInput = {
-    create?: XOR<user_settingsCreateWithoutUser_accountsInput, user_settingsUncheckedCreateWithoutUser_accountsInput> | user_settingsCreateWithoutUser_accountsInput[] | user_settingsUncheckedCreateWithoutUser_accountsInput[]
-    connectOrCreate?: user_settingsCreateOrConnectWithoutUser_accountsInput | user_settingsCreateOrConnectWithoutUser_accountsInput[]
-    createMany?: user_settingsCreateManyUser_accountsInputEnvelope
-    connect?: user_settingsWhereUniqueInput | user_settingsWhereUniqueInput[]
-  }
-
   export type settingsCreateNestedManyWithoutUser_accountsInput = {
     create?: XOR<settingsCreateWithoutUser_accountsInput, settingsUncheckedCreateWithoutUser_accountsInput> | settingsCreateWithoutUser_accountsInput[] | settingsUncheckedCreateWithoutUser_accountsInput[]
     connectOrCreate?: settingsCreateOrConnectWithoutUser_accountsInput | settingsCreateOrConnectWithoutUser_accountsInput[]
@@ -25805,11 +25189,11 @@ export namespace Prisma {
     connect?: audit_logsWhereUniqueInput | audit_logsWhereUniqueInput[]
   }
 
-  export type user_settingsUncheckedCreateNestedManyWithoutUser_accountsInput = {
-    create?: XOR<user_settingsCreateWithoutUser_accountsInput, user_settingsUncheckedCreateWithoutUser_accountsInput> | user_settingsCreateWithoutUser_accountsInput[] | user_settingsUncheckedCreateWithoutUser_accountsInput[]
-    connectOrCreate?: user_settingsCreateOrConnectWithoutUser_accountsInput | user_settingsCreateOrConnectWithoutUser_accountsInput[]
-    createMany?: user_settingsCreateManyUser_accountsInputEnvelope
-    connect?: user_settingsWhereUniqueInput | user_settingsWhereUniqueInput[]
+  export type org_api_keysCreateNestedManyWithoutUserInput = {
+    create?: XOR<org_api_keysCreateWithoutUserInput, org_api_keysUncheckedCreateWithoutUserInput> | org_api_keysCreateWithoutUserInput[] | org_api_keysUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: org_api_keysCreateOrConnectWithoutUserInput | org_api_keysCreateOrConnectWithoutUserInput[]
+    createMany?: org_api_keysCreateManyUserInputEnvelope
+    connect?: org_api_keysWhereUniqueInput | org_api_keysWhereUniqueInput[]
   }
 
   export type settingsUncheckedCreateNestedManyWithoutUser_accountsInput = {
@@ -25840,6 +25224,13 @@ export namespace Prisma {
     connect?: audit_logsWhereUniqueInput | audit_logsWhereUniqueInput[]
   }
 
+  export type org_api_keysUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<org_api_keysCreateWithoutUserInput, org_api_keysUncheckedCreateWithoutUserInput> | org_api_keysCreateWithoutUserInput[] | org_api_keysUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: org_api_keysCreateOrConnectWithoutUserInput | org_api_keysCreateOrConnectWithoutUserInput[]
+    createMany?: org_api_keysCreateManyUserInputEnvelope
+    connect?: org_api_keysWhereUniqueInput | org_api_keysWhereUniqueInput[]
+  }
+
   export type organizationsUpdateOneWithoutUser_accountsNestedInput = {
     create?: XOR<organizationsCreateWithoutUser_accountsInput, organizationsUncheckedCreateWithoutUser_accountsInput>
     connectOrCreate?: organizationsCreateOrConnectWithoutUser_accountsInput
@@ -25858,20 +25249,6 @@ export namespace Prisma {
     delete?: tenantsWhereInput | boolean
     connect?: tenantsWhereUniqueInput
     update?: XOR<XOR<tenantsUpdateToOneWithWhereWithoutUser_accountsInput, tenantsUpdateWithoutUser_accountsInput>, tenantsUncheckedUpdateWithoutUser_accountsInput>
-  }
-
-  export type user_settingsUpdateManyWithoutUser_accountsNestedInput = {
-    create?: XOR<user_settingsCreateWithoutUser_accountsInput, user_settingsUncheckedCreateWithoutUser_accountsInput> | user_settingsCreateWithoutUser_accountsInput[] | user_settingsUncheckedCreateWithoutUser_accountsInput[]
-    connectOrCreate?: user_settingsCreateOrConnectWithoutUser_accountsInput | user_settingsCreateOrConnectWithoutUser_accountsInput[]
-    upsert?: user_settingsUpsertWithWhereUniqueWithoutUser_accountsInput | user_settingsUpsertWithWhereUniqueWithoutUser_accountsInput[]
-    createMany?: user_settingsCreateManyUser_accountsInputEnvelope
-    set?: user_settingsWhereUniqueInput | user_settingsWhereUniqueInput[]
-    disconnect?: user_settingsWhereUniqueInput | user_settingsWhereUniqueInput[]
-    delete?: user_settingsWhereUniqueInput | user_settingsWhereUniqueInput[]
-    connect?: user_settingsWhereUniqueInput | user_settingsWhereUniqueInput[]
-    update?: user_settingsUpdateWithWhereUniqueWithoutUser_accountsInput | user_settingsUpdateWithWhereUniqueWithoutUser_accountsInput[]
-    updateMany?: user_settingsUpdateManyWithWhereWithoutUser_accountsInput | user_settingsUpdateManyWithWhereWithoutUser_accountsInput[]
-    deleteMany?: user_settingsScalarWhereInput | user_settingsScalarWhereInput[]
   }
 
   export type settingsUpdateManyWithoutUser_accountsNestedInput = {
@@ -25930,18 +25307,18 @@ export namespace Prisma {
     deleteMany?: audit_logsScalarWhereInput | audit_logsScalarWhereInput[]
   }
 
-  export type user_settingsUncheckedUpdateManyWithoutUser_accountsNestedInput = {
-    create?: XOR<user_settingsCreateWithoutUser_accountsInput, user_settingsUncheckedCreateWithoutUser_accountsInput> | user_settingsCreateWithoutUser_accountsInput[] | user_settingsUncheckedCreateWithoutUser_accountsInput[]
-    connectOrCreate?: user_settingsCreateOrConnectWithoutUser_accountsInput | user_settingsCreateOrConnectWithoutUser_accountsInput[]
-    upsert?: user_settingsUpsertWithWhereUniqueWithoutUser_accountsInput | user_settingsUpsertWithWhereUniqueWithoutUser_accountsInput[]
-    createMany?: user_settingsCreateManyUser_accountsInputEnvelope
-    set?: user_settingsWhereUniqueInput | user_settingsWhereUniqueInput[]
-    disconnect?: user_settingsWhereUniqueInput | user_settingsWhereUniqueInput[]
-    delete?: user_settingsWhereUniqueInput | user_settingsWhereUniqueInput[]
-    connect?: user_settingsWhereUniqueInput | user_settingsWhereUniqueInput[]
-    update?: user_settingsUpdateWithWhereUniqueWithoutUser_accountsInput | user_settingsUpdateWithWhereUniqueWithoutUser_accountsInput[]
-    updateMany?: user_settingsUpdateManyWithWhereWithoutUser_accountsInput | user_settingsUpdateManyWithWhereWithoutUser_accountsInput[]
-    deleteMany?: user_settingsScalarWhereInput | user_settingsScalarWhereInput[]
+  export type org_api_keysUpdateManyWithoutUserNestedInput = {
+    create?: XOR<org_api_keysCreateWithoutUserInput, org_api_keysUncheckedCreateWithoutUserInput> | org_api_keysCreateWithoutUserInput[] | org_api_keysUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: org_api_keysCreateOrConnectWithoutUserInput | org_api_keysCreateOrConnectWithoutUserInput[]
+    upsert?: org_api_keysUpsertWithWhereUniqueWithoutUserInput | org_api_keysUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: org_api_keysCreateManyUserInputEnvelope
+    set?: org_api_keysWhereUniqueInput | org_api_keysWhereUniqueInput[]
+    disconnect?: org_api_keysWhereUniqueInput | org_api_keysWhereUniqueInput[]
+    delete?: org_api_keysWhereUniqueInput | org_api_keysWhereUniqueInput[]
+    connect?: org_api_keysWhereUniqueInput | org_api_keysWhereUniqueInput[]
+    update?: org_api_keysUpdateWithWhereUniqueWithoutUserInput | org_api_keysUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: org_api_keysUpdateManyWithWhereWithoutUserInput | org_api_keysUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: org_api_keysScalarWhereInput | org_api_keysScalarWhereInput[]
   }
 
   export type settingsUncheckedUpdateManyWithoutUser_accountsNestedInput = {
@@ -25998,6 +25375,20 @@ export namespace Prisma {
     update?: audit_logsUpdateWithWhereUniqueWithoutUser_accountInput | audit_logsUpdateWithWhereUniqueWithoutUser_accountInput[]
     updateMany?: audit_logsUpdateManyWithWhereWithoutUser_accountInput | audit_logsUpdateManyWithWhereWithoutUser_accountInput[]
     deleteMany?: audit_logsScalarWhereInput | audit_logsScalarWhereInput[]
+  }
+
+  export type org_api_keysUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<org_api_keysCreateWithoutUserInput, org_api_keysUncheckedCreateWithoutUserInput> | org_api_keysCreateWithoutUserInput[] | org_api_keysUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: org_api_keysCreateOrConnectWithoutUserInput | org_api_keysCreateOrConnectWithoutUserInput[]
+    upsert?: org_api_keysUpsertWithWhereUniqueWithoutUserInput | org_api_keysUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: org_api_keysCreateManyUserInputEnvelope
+    set?: org_api_keysWhereUniqueInput | org_api_keysWhereUniqueInput[]
+    disconnect?: org_api_keysWhereUniqueInput | org_api_keysWhereUniqueInput[]
+    delete?: org_api_keysWhereUniqueInput | org_api_keysWhereUniqueInput[]
+    connect?: org_api_keysWhereUniqueInput | org_api_keysWhereUniqueInput[]
+    update?: org_api_keysUpdateWithWhereUniqueWithoutUserInput | org_api_keysUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: org_api_keysUpdateManyWithWhereWithoutUserInput | org_api_keysUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: org_api_keysScalarWhereInput | org_api_keysScalarWhereInput[]
   }
 
   export type user_accountsCreateNestedOneWithoutAddressesInput = {
@@ -26182,22 +25573,6 @@ export namespace Prisma {
     delete?: user_accountsWhereInput | boolean
     connect?: user_accountsWhereUniqueInput
     update?: XOR<XOR<user_accountsUpdateToOneWithWhereWithoutSettingsInput, user_accountsUpdateWithoutSettingsInput>, user_accountsUncheckedUpdateWithoutSettingsInput>
-  }
-
-  export type user_accountsCreateNestedOneWithoutUser_settingsInput = {
-    create?: XOR<user_accountsCreateWithoutUser_settingsInput, user_accountsUncheckedCreateWithoutUser_settingsInput>
-    connectOrCreate?: user_accountsCreateOrConnectWithoutUser_settingsInput
-    connect?: user_accountsWhereUniqueInput
-  }
-
-  export type user_accountsUpdateOneWithoutUser_settingsNestedInput = {
-    create?: XOR<user_accountsCreateWithoutUser_settingsInput, user_accountsUncheckedCreateWithoutUser_settingsInput>
-    connectOrCreate?: user_accountsCreateOrConnectWithoutUser_settingsInput
-    upsert?: user_accountsUpsertWithoutUser_settingsInput
-    disconnect?: user_accountsWhereInput | boolean
-    delete?: user_accountsWhereInput | boolean
-    connect?: user_accountsWhereUniqueInput
-    update?: XOR<XOR<user_accountsUpdateToOneWithWhereWithoutUser_settingsInput, user_accountsUpdateWithoutUser_settingsInput>, user_accountsUncheckedUpdateWithoutUser_settingsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -26461,6 +25836,39 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumAPIKeyEnvironmentFilter<$PrismaModel = never> = {
+    equals?: $Enums.APIKeyEnvironment | EnumAPIKeyEnvironmentFieldRefInput<$PrismaModel>
+    in?: $Enums.APIKeyEnvironment[] | ListEnumAPIKeyEnvironmentFieldRefInput<$PrismaModel>
+    notIn?: $Enums.APIKeyEnvironment[] | ListEnumAPIKeyEnvironmentFieldRefInput<$PrismaModel>
+    not?: NestedEnumAPIKeyEnvironmentFilter<$PrismaModel> | $Enums.APIKeyEnvironment
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAPIKeyEnvironmentWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.APIKeyEnvironment | EnumAPIKeyEnvironmentFieldRefInput<$PrismaModel>
+    in?: $Enums.APIKeyEnvironment[] | ListEnumAPIKeyEnvironmentFieldRefInput<$PrismaModel>
+    notIn?: $Enums.APIKeyEnvironment[] | ListEnumAPIKeyEnvironmentFieldRefInput<$PrismaModel>
+    not?: NestedEnumAPIKeyEnvironmentWithAggregatesFilter<$PrismaModel> | $Enums.APIKeyEnvironment
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAPIKeyEnvironmentFilter<$PrismaModel>
+    _max?: NestedEnumAPIKeyEnvironmentFilter<$PrismaModel>
+  }
+
   export type NestedDecimalNullableFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
@@ -26500,6 +25908,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     business_accounts?: business_accountsCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsCreateNestedManyWithoutTenantInput
     settings?: settingsCreateNestedManyWithoutTenantInput
@@ -26521,6 +25931,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     business_accounts?: business_accountsUncheckedCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsUncheckedCreateNestedManyWithoutTenantInput
     settings?: settingsUncheckedCreateNestedManyWithoutTenantInput
@@ -26579,24 +25991,50 @@ export namespace Prisma {
   export type org_api_keysCreateWithoutOrganizationInput = {
     id?: bigint | number
     key_name: string
-    key_prefix: string
+    description?: string | null
+    key_id: string
     key_hash: string
     scopes?: org_api_keysCreatescopesInput | string[]
+    rate_limit?: number
+    allowed_ips?: org_api_keysCreateallowed_ipsInput | string[]
+    allowed_domains?: org_api_keysCreateallowed_domainsInput | string[]
+    usage_count?: number
+    max_usage_count?: number
+    last_used_ip?: string | null
+    environment?: $Enums.APIKeyEnvironment
+    revoked?: boolean
+    revoked_at?: Date | string | null
+    revoked_reason?: string | null
     expires_at?: Date | string | null
     created_at?: Date | string
+    updated_at?: Date | string
     created_by: string
     last_used?: Date | string | null
     is_active?: boolean
+    user?: user_accountsCreateNestedOneWithoutOrg_api_keysInput
   }
 
   export type org_api_keysUncheckedCreateWithoutOrganizationInput = {
     id?: bigint | number
+    user_id?: bigint | number | null
     key_name: string
-    key_prefix: string
+    description?: string | null
+    key_id: string
     key_hash: string
     scopes?: org_api_keysCreatescopesInput | string[]
+    rate_limit?: number
+    allowed_ips?: org_api_keysCreateallowed_ipsInput | string[]
+    allowed_domains?: org_api_keysCreateallowed_domainsInput | string[]
+    usage_count?: number
+    max_usage_count?: number
+    last_used_ip?: string | null
+    environment?: $Enums.APIKeyEnvironment
+    revoked?: boolean
+    revoked_at?: Date | string | null
+    revoked_reason?: string | null
     expires_at?: Date | string | null
     created_at?: Date | string
+    updated_at?: Date | string
     created_by: string
     last_used?: Date | string | null
     is_active?: boolean
@@ -26719,11 +26157,11 @@ export namespace Prisma {
     storage_quota?: bigint | number | null
     used_storage?: bigint | number | null
     tenant?: tenantsCreateNestedOneWithoutUser_accountsInput
-    user_settings?: user_settingsCreateNestedManyWithoutUser_accountsInput
     settings?: settingsCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersCreateNestedManyWithoutUser_accountInput
     audit_logs?: audit_logsCreateNestedManyWithoutUser_accountInput
+    org_api_keys?: org_api_keysCreateNestedManyWithoutUserInput
   }
 
   export type user_accountsUncheckedCreateWithoutOrganizationInput = {
@@ -26745,11 +26183,11 @@ export namespace Prisma {
     last_access?: Date | string | null
     storage_quota?: bigint | number | null
     used_storage?: bigint | number | null
-    user_settings?: user_settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     settings?: settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesUncheckedCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersUncheckedCreateNestedManyWithoutUser_accountInput
     audit_logs?: audit_logsUncheckedCreateNestedManyWithoutUser_accountInput
+    org_api_keys?: org_api_keysUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type user_accountsCreateOrConnectWithoutOrganizationInput = {
@@ -26878,6 +26316,8 @@ export namespace Prisma {
     metadata?: JsonNullableFilter<"tenants">
     custom_domain?: StringNullableFilter<"tenants"> | string | null
     email?: StringNullableFilter<"tenants"> | string | null
+    is_soft_deleted?: BoolFilter<"tenants"> | boolean
+    is_active?: BoolFilter<"tenants"> | boolean
   }
 
   export type org_membersUpsertWithWhereUniqueWithoutOrganizationInput = {
@@ -26935,12 +26375,25 @@ export namespace Prisma {
     NOT?: org_api_keysScalarWhereInput | org_api_keysScalarWhereInput[]
     id?: BigIntFilter<"org_api_keys"> | bigint | number
     organization_id?: StringFilter<"org_api_keys"> | string
+    user_id?: BigIntNullableFilter<"org_api_keys"> | bigint | number | null
     key_name?: StringFilter<"org_api_keys"> | string
-    key_prefix?: StringFilter<"org_api_keys"> | string
+    description?: StringNullableFilter<"org_api_keys"> | string | null
+    key_id?: StringFilter<"org_api_keys"> | string
     key_hash?: StringFilter<"org_api_keys"> | string
     scopes?: StringNullableListFilter<"org_api_keys">
+    rate_limit?: IntFilter<"org_api_keys"> | number
+    allowed_ips?: StringNullableListFilter<"org_api_keys">
+    allowed_domains?: StringNullableListFilter<"org_api_keys">
+    usage_count?: IntFilter<"org_api_keys"> | number
+    max_usage_count?: IntFilter<"org_api_keys"> | number
+    last_used_ip?: StringNullableFilter<"org_api_keys"> | string | null
+    environment?: EnumAPIKeyEnvironmentFilter<"org_api_keys"> | $Enums.APIKeyEnvironment
+    revoked?: BoolFilter<"org_api_keys"> | boolean
+    revoked_at?: DateTimeNullableFilter<"org_api_keys"> | Date | string | null
+    revoked_reason?: StringNullableFilter<"org_api_keys"> | string | null
     expires_at?: DateTimeNullableFilter<"org_api_keys"> | Date | string | null
     created_at?: DateTimeFilter<"org_api_keys"> | Date | string
+    updated_at?: DateTimeFilter<"org_api_keys"> | Date | string
     created_by?: StringFilter<"org_api_keys"> | string
     last_used?: DateTimeNullableFilter<"org_api_keys"> | Date | string | null
     is_active?: BoolFilter<"org_api_keys"> | boolean
@@ -27271,11 +26724,11 @@ export namespace Prisma {
     storage_quota?: bigint | number | null
     used_storage?: bigint | number | null
     organization?: organizationsCreateNestedOneWithoutUser_accountsInput
-    user_settings?: user_settingsCreateNestedManyWithoutUser_accountsInput
     settings?: settingsCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersCreateNestedManyWithoutUser_accountInput
     audit_logs?: audit_logsCreateNestedManyWithoutUser_accountInput
+    org_api_keys?: org_api_keysCreateNestedManyWithoutUserInput
   }
 
   export type user_accountsUncheckedCreateWithoutTenantInput = {
@@ -27297,11 +26750,11 @@ export namespace Prisma {
     last_access?: Date | string | null
     storage_quota?: bigint | number | null
     used_storage?: bigint | number | null
-    user_settings?: user_settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     settings?: settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesUncheckedCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersUncheckedCreateNestedManyWithoutUser_accountInput
     audit_logs?: audit_logsUncheckedCreateNestedManyWithoutUser_accountInput
+    org_api_keys?: org_api_keysUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type user_accountsCreateOrConnectWithoutTenantInput = {
@@ -27320,6 +26773,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
     business_accounts?: business_accountsCreateNestedOneWithoutSettingsInput
     user_accounts?: user_accountsCreateNestedOneWithoutSettingsInput
   }
@@ -27332,6 +26788,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type settingsCreateOrConnectWithoutTenantInput = {
@@ -27433,6 +26892,7 @@ export namespace Prisma {
     key_name: string
     key_prefix: string
     key_hash: string
+    key_id: string
     scopes?: tenant_api_keysCreatescopesInput | string[]
     expires_at?: Date | string | null
     created_at?: Date | string
@@ -27446,6 +26906,7 @@ export namespace Prisma {
     key_name: string
     key_prefix: string
     key_hash: string
+    key_id: string
     scopes?: tenant_api_keysCreatescopesInput | string[]
     expires_at?: Date | string | null
     created_at?: Date | string
@@ -27625,6 +27086,9 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"settings"> | Date | string
     updated_at?: DateTimeFilter<"settings"> | Date | string
     settings_data?: JsonNullableFilter<"settings">
+    preferred_language?: StringNullableFilter<"settings"> | string | null
+    notification_settings?: JsonNullableFilter<"settings">
+    ui_settings?: JsonNullableFilter<"settings">
   }
 
   export type teamsUpsertWithWhereUniqueWithoutTenantInput = {
@@ -27684,6 +27148,7 @@ export namespace Prisma {
     key_name?: StringFilter<"tenant_api_keys"> | string
     key_prefix?: StringFilter<"tenant_api_keys"> | string
     key_hash?: StringFilter<"tenant_api_keys"> | string
+    key_id?: StringFilter<"tenant_api_keys"> | string
     scopes?: StringNullableListFilter<"tenant_api_keys">
     expires_at?: DateTimeNullableFilter<"tenant_api_keys"> | Date | string | null
     created_at?: DateTimeFilter<"tenant_api_keys"> | Date | string
@@ -27928,6 +27393,63 @@ export namespace Prisma {
     create: XOR<organizationsCreateWithoutOrg_api_keysInput, organizationsUncheckedCreateWithoutOrg_api_keysInput>
   }
 
+  export type user_accountsCreateWithoutOrg_api_keysInput = {
+    id?: bigint | number
+    email?: string | null
+    firstname?: string | null
+    lastname?: string | null
+    auth0_user_id?: string | null
+    is_active?: boolean
+    created_at?: Date | string
+    updated_at?: Date | string
+    status?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    base_directory?: string | null
+    bucket_location?: string | null
+    bucket_name?: string | null
+    region?: string | null
+    last_access?: Date | string | null
+    storage_quota?: bigint | number | null
+    used_storage?: bigint | number | null
+    organization?: organizationsCreateNestedOneWithoutUser_accountsInput
+    tenant?: tenantsCreateNestedOneWithoutUser_accountsInput
+    settings?: settingsCreateNestedManyWithoutUser_accountsInput
+    addresses?: addressesCreateNestedManyWithoutUser_accountInput
+    team_memberships?: team_membersCreateNestedManyWithoutUser_accountInput
+    audit_logs?: audit_logsCreateNestedManyWithoutUser_accountInput
+  }
+
+  export type user_accountsUncheckedCreateWithoutOrg_api_keysInput = {
+    id?: bigint | number
+    organization_id?: string | null
+    tenant_id?: string | null
+    email?: string | null
+    firstname?: string | null
+    lastname?: string | null
+    auth0_user_id?: string | null
+    is_active?: boolean
+    created_at?: Date | string
+    updated_at?: Date | string
+    status?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    base_directory?: string | null
+    bucket_location?: string | null
+    bucket_name?: string | null
+    region?: string | null
+    last_access?: Date | string | null
+    storage_quota?: bigint | number | null
+    used_storage?: bigint | number | null
+    settings?: settingsUncheckedCreateNestedManyWithoutUser_accountsInput
+    addresses?: addressesUncheckedCreateNestedManyWithoutUser_accountInput
+    team_memberships?: team_membersUncheckedCreateNestedManyWithoutUser_accountInput
+    audit_logs?: audit_logsUncheckedCreateNestedManyWithoutUser_accountInput
+  }
+
+  export type user_accountsCreateOrConnectWithoutOrg_api_keysInput = {
+    where: user_accountsWhereUniqueInput
+    create: XOR<user_accountsCreateWithoutOrg_api_keysInput, user_accountsUncheckedCreateWithoutOrg_api_keysInput>
+  }
+
   export type organizationsUpsertWithoutOrg_api_keysInput = {
     update: XOR<organizationsUpdateWithoutOrg_api_keysInput, organizationsUncheckedUpdateWithoutOrg_api_keysInput>
     create: XOR<organizationsCreateWithoutOrg_api_keysInput, organizationsUncheckedCreateWithoutOrg_api_keysInput>
@@ -28001,6 +27523,69 @@ export namespace Prisma {
     audit_logs?: audit_logsUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
+  export type user_accountsUpsertWithoutOrg_api_keysInput = {
+    update: XOR<user_accountsUpdateWithoutOrg_api_keysInput, user_accountsUncheckedUpdateWithoutOrg_api_keysInput>
+    create: XOR<user_accountsCreateWithoutOrg_api_keysInput, user_accountsUncheckedCreateWithoutOrg_api_keysInput>
+    where?: user_accountsWhereInput
+  }
+
+  export type user_accountsUpdateToOneWithWhereWithoutOrg_api_keysInput = {
+    where?: user_accountsWhereInput
+    data: XOR<user_accountsUpdateWithoutOrg_api_keysInput, user_accountsUncheckedUpdateWithoutOrg_api_keysInput>
+  }
+
+  export type user_accountsUpdateWithoutOrg_api_keysInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    firstname?: NullableStringFieldUpdateOperationsInput | string | null
+    lastname?: NullableStringFieldUpdateOperationsInput | string | null
+    auth0_user_id?: NullableStringFieldUpdateOperationsInput | string | null
+    is_active?: BoolFieldUpdateOperationsInput | boolean
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    base_directory?: NullableStringFieldUpdateOperationsInput | string | null
+    bucket_location?: NullableStringFieldUpdateOperationsInput | string | null
+    bucket_name?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    last_access?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    organization?: organizationsUpdateOneWithoutUser_accountsNestedInput
+    tenant?: tenantsUpdateOneWithoutUser_accountsNestedInput
+    settings?: settingsUpdateManyWithoutUser_accountsNestedInput
+    addresses?: addressesUpdateManyWithoutUser_accountNestedInput
+    team_memberships?: team_membersUpdateManyWithoutUser_accountNestedInput
+    audit_logs?: audit_logsUpdateManyWithoutUser_accountNestedInput
+  }
+
+  export type user_accountsUncheckedUpdateWithoutOrg_api_keysInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    organization_id?: NullableStringFieldUpdateOperationsInput | string | null
+    tenant_id?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    firstname?: NullableStringFieldUpdateOperationsInput | string | null
+    lastname?: NullableStringFieldUpdateOperationsInput | string | null
+    auth0_user_id?: NullableStringFieldUpdateOperationsInput | string | null
+    is_active?: BoolFieldUpdateOperationsInput | boolean
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    base_directory?: NullableStringFieldUpdateOperationsInput | string | null
+    bucket_location?: NullableStringFieldUpdateOperationsInput | string | null
+    bucket_name?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    last_access?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    settings?: settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
+    addresses?: addressesUncheckedUpdateManyWithoutUser_accountNestedInput
+    team_memberships?: team_membersUncheckedUpdateManyWithoutUser_accountNestedInput
+    audit_logs?: audit_logsUncheckedUpdateManyWithoutUser_accountNestedInput
+  }
+
   export type tenantsCreateWithoutTenant_api_keysInput = {
     id: string
     name: string
@@ -28013,6 +27598,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     organization: organizationsCreateNestedOneWithoutTenantsInput
     business_accounts?: business_accountsCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsCreateNestedManyWithoutTenantInput
@@ -28035,6 +27622,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     business_accounts?: business_accountsUncheckedCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsUncheckedCreateNestedManyWithoutTenantInput
     settings?: settingsUncheckedCreateNestedManyWithoutTenantInput
@@ -28071,6 +27660,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     organization?: organizationsUpdateOneRequiredWithoutTenantsNestedInput
     business_accounts?: business_accountsUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUpdateManyWithoutTenantNestedInput
@@ -28093,6 +27684,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     business_accounts?: business_accountsUncheckedUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUncheckedUpdateManyWithoutTenantNestedInput
     settings?: settingsUncheckedUpdateManyWithoutTenantNestedInput
@@ -28253,6 +27846,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     organization: organizationsCreateNestedOneWithoutTenantsInput
     business_accounts?: business_accountsCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsCreateNestedManyWithoutTenantInput
@@ -28275,6 +27870,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     business_accounts?: business_accountsUncheckedCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsUncheckedCreateNestedManyWithoutTenantInput
     settings?: settingsUncheckedCreateNestedManyWithoutTenantInput
@@ -28311,6 +27908,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     organization?: organizationsUpdateOneRequiredWithoutTenantsNestedInput
     business_accounts?: business_accountsUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUpdateManyWithoutTenantNestedInput
@@ -28333,6 +27932,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     business_accounts?: business_accountsUncheckedUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUncheckedUpdateManyWithoutTenantNestedInput
     settings?: settingsUncheckedUpdateManyWithoutTenantNestedInput
@@ -28420,6 +28021,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     organization: organizationsCreateNestedOneWithoutTenantsInput
     business_accounts?: business_accountsCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsCreateNestedManyWithoutTenantInput
@@ -28442,6 +28045,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     business_accounts?: business_accountsUncheckedCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsUncheckedCreateNestedManyWithoutTenantInput
     settings?: settingsUncheckedCreateNestedManyWithoutTenantInput
@@ -28462,6 +28067,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
     user_account?: user_accountsCreateNestedOneWithoutTeam_membershipsInput
     business_account?: business_accountsCreateNestedOneWithoutTeam_membershipsInput
   }
@@ -28475,6 +28081,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
   }
 
   export type team_membersCreateOrConnectWithoutTeamInput = {
@@ -28675,6 +28282,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     organization?: organizationsUpdateOneRequiredWithoutTenantsNestedInput
     business_accounts?: business_accountsUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUpdateManyWithoutTenantNestedInput
@@ -28697,6 +28306,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     business_accounts?: business_accountsUncheckedUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUncheckedUpdateManyWithoutTenantNestedInput
     settings?: settingsUncheckedUpdateManyWithoutTenantNestedInput
@@ -28734,6 +28345,7 @@ export namespace Prisma {
     invited_by?: StringFilter<"team_members"> | string
     status?: StringFilter<"team_members"> | string
     metadata?: JsonNullableFilter<"team_members">
+    deleted_at?: DateTimeNullableFilter<"team_members"> | Date | string | null
   }
 
   export type addressesUpsertWithWhereUniqueWithoutTeamInput = {
@@ -28849,10 +28461,10 @@ export namespace Prisma {
     used_storage?: bigint | number | null
     organization?: organizationsCreateNestedOneWithoutUser_accountsInput
     tenant?: tenantsCreateNestedOneWithoutUser_accountsInput
-    user_settings?: user_settingsCreateNestedManyWithoutUser_accountsInput
     settings?: settingsCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesCreateNestedManyWithoutUser_accountInput
     audit_logs?: audit_logsCreateNestedManyWithoutUser_accountInput
+    org_api_keys?: org_api_keysCreateNestedManyWithoutUserInput
   }
 
   export type user_accountsUncheckedCreateWithoutTeam_membershipsInput = {
@@ -28875,10 +28487,10 @@ export namespace Prisma {
     last_access?: Date | string | null
     storage_quota?: bigint | number | null
     used_storage?: bigint | number | null
-    user_settings?: user_settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     settings?: settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesUncheckedCreateNestedManyWithoutUser_accountInput
     audit_logs?: audit_logsUncheckedCreateNestedManyWithoutUser_accountInput
+    org_api_keys?: org_api_keysUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type user_accountsCreateOrConnectWithoutTeam_membershipsInput = {
@@ -29015,10 +28627,10 @@ export namespace Prisma {
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     organization?: organizationsUpdateOneWithoutUser_accountsNestedInput
     tenant?: tenantsUpdateOneWithoutUser_accountsNestedInput
-    user_settings?: user_settingsUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUpdateManyWithoutUser_accountNestedInput
     audit_logs?: audit_logsUpdateManyWithoutUser_accountNestedInput
+    org_api_keys?: org_api_keysUpdateManyWithoutUserNestedInput
   }
 
   export type user_accountsUncheckedUpdateWithoutTeam_membershipsInput = {
@@ -29041,10 +28653,10 @@ export namespace Prisma {
     last_access?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    user_settings?: user_settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUncheckedUpdateManyWithoutUser_accountNestedInput
     audit_logs?: audit_logsUncheckedUpdateManyWithoutUser_accountNestedInput
+    org_api_keys?: org_api_keysUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type business_accountsUpsertWithoutTeam_membershipsInput = {
@@ -29187,6 +28799,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     organization: organizationsCreateNestedOneWithoutTenantsInput
     user_accounts?: user_accountsCreateNestedManyWithoutTenantInput
     settings?: settingsCreateNestedManyWithoutTenantInput
@@ -29209,6 +28823,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     user_accounts?: user_accountsUncheckedCreateNestedManyWithoutTenantInput
     settings?: settingsUncheckedCreateNestedManyWithoutTenantInput
     teams?: teamsUncheckedCreateNestedManyWithoutTenantInput
@@ -29228,6 +28844,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
     tenant?: tenantsCreateNestedOneWithoutSettingsInput
     user_accounts?: user_accountsCreateNestedOneWithoutSettingsInput
   }
@@ -29240,6 +28859,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type settingsCreateOrConnectWithoutBusiness_accountsInput = {
@@ -29309,6 +28931,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
     team: teamsCreateNestedOneWithoutTeam_membersInput
     user_account?: user_accountsCreateNestedOneWithoutTeam_membershipsInput
   }
@@ -29322,6 +28945,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
   }
 
   export type team_membersCreateOrConnectWithoutBusiness_accountInput = {
@@ -29472,6 +29096,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     organization?: organizationsUpdateOneRequiredWithoutTenantsNestedInput
     user_accounts?: user_accountsUpdateManyWithoutTenantNestedInput
     settings?: settingsUpdateManyWithoutTenantNestedInput
@@ -29494,6 +29120,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     user_accounts?: user_accountsUncheckedUpdateManyWithoutTenantNestedInput
     settings?: settingsUncheckedUpdateManyWithoutTenantNestedInput
     teams?: teamsUncheckedUpdateManyWithoutTenantNestedInput
@@ -29645,6 +29273,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     organization: organizationsCreateNestedOneWithoutTenantsInput
     business_accounts?: business_accountsCreateNestedManyWithoutTenantInput
     settings?: settingsCreateNestedManyWithoutTenantInput
@@ -29667,6 +29297,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     business_accounts?: business_accountsUncheckedCreateNestedManyWithoutTenantInput
     settings?: settingsUncheckedCreateNestedManyWithoutTenantInput
     teams?: teamsUncheckedCreateNestedManyWithoutTenantInput
@@ -29680,40 +29312,15 @@ export namespace Prisma {
     create: XOR<tenantsCreateWithoutUser_accountsInput, tenantsUncheckedCreateWithoutUser_accountsInput>
   }
 
-  export type user_settingsCreateWithoutUser_accountsInput = {
-    id?: bigint | number
-    preferred_language?: string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type user_settingsUncheckedCreateWithoutUser_accountsInput = {
-    id?: bigint | number
-    preferred_language?: string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type user_settingsCreateOrConnectWithoutUser_accountsInput = {
-    where: user_settingsWhereUniqueInput
-    create: XOR<user_settingsCreateWithoutUser_accountsInput, user_settingsUncheckedCreateWithoutUser_accountsInput>
-  }
-
-  export type user_settingsCreateManyUser_accountsInputEnvelope = {
-    data: user_settingsCreateManyUser_accountsInput | user_settingsCreateManyUser_accountsInput[]
-    skipDuplicates?: boolean
-  }
-
   export type settingsCreateWithoutUser_accountsInput = {
     id?: bigint | number
     organization_id?: string | null
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
     tenant?: tenantsCreateNestedOneWithoutSettingsInput
     business_accounts?: business_accountsCreateNestedOneWithoutSettingsInput
   }
@@ -29726,6 +29333,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type settingsCreateOrConnectWithoutUser_accountsInput = {
@@ -29795,6 +29405,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
     team: teamsCreateNestedOneWithoutTeam_membersInput
     business_account?: business_accountsCreateNestedOneWithoutTeam_membershipsInput
   }
@@ -29808,6 +29419,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
   }
 
   export type team_membersCreateOrConnectWithoutUser_accountInput = {
@@ -29859,6 +29471,68 @@ export namespace Prisma {
 
   export type audit_logsCreateManyUser_accountInputEnvelope = {
     data: audit_logsCreateManyUser_accountInput | audit_logsCreateManyUser_accountInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type org_api_keysCreateWithoutUserInput = {
+    id?: bigint | number
+    key_name: string
+    description?: string | null
+    key_id: string
+    key_hash: string
+    scopes?: org_api_keysCreatescopesInput | string[]
+    rate_limit?: number
+    allowed_ips?: org_api_keysCreateallowed_ipsInput | string[]
+    allowed_domains?: org_api_keysCreateallowed_domainsInput | string[]
+    usage_count?: number
+    max_usage_count?: number
+    last_used_ip?: string | null
+    environment?: $Enums.APIKeyEnvironment
+    revoked?: boolean
+    revoked_at?: Date | string | null
+    revoked_reason?: string | null
+    expires_at?: Date | string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    created_by: string
+    last_used?: Date | string | null
+    is_active?: boolean
+    organization: organizationsCreateNestedOneWithoutOrg_api_keysInput
+  }
+
+  export type org_api_keysUncheckedCreateWithoutUserInput = {
+    id?: bigint | number
+    organization_id: string
+    key_name: string
+    description?: string | null
+    key_id: string
+    key_hash: string
+    scopes?: org_api_keysCreatescopesInput | string[]
+    rate_limit?: number
+    allowed_ips?: org_api_keysCreateallowed_ipsInput | string[]
+    allowed_domains?: org_api_keysCreateallowed_domainsInput | string[]
+    usage_count?: number
+    max_usage_count?: number
+    last_used_ip?: string | null
+    environment?: $Enums.APIKeyEnvironment
+    revoked?: boolean
+    revoked_at?: Date | string | null
+    revoked_reason?: string | null
+    expires_at?: Date | string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    created_by: string
+    last_used?: Date | string | null
+    is_active?: boolean
+  }
+
+  export type org_api_keysCreateOrConnectWithoutUserInput = {
+    where: org_api_keysWhereUniqueInput
+    create: XOR<org_api_keysCreateWithoutUserInput, org_api_keysUncheckedCreateWithoutUserInput>
+  }
+
+  export type org_api_keysCreateManyUserInputEnvelope = {
+    data: org_api_keysCreateManyUserInput | org_api_keysCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -29958,6 +29632,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     organization?: organizationsUpdateOneRequiredWithoutTenantsNestedInput
     business_accounts?: business_accountsUpdateManyWithoutTenantNestedInput
     settings?: settingsUpdateManyWithoutTenantNestedInput
@@ -29980,41 +29656,14 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     business_accounts?: business_accountsUncheckedUpdateManyWithoutTenantNestedInput
     settings?: settingsUncheckedUpdateManyWithoutTenantNestedInput
     teams?: teamsUncheckedUpdateManyWithoutTenantNestedInput
     audit_logs?: audit_logsUncheckedUpdateManyWithoutTenantNestedInput
     tenant_api_keys?: tenant_api_keysUncheckedUpdateManyWithoutTenantNestedInput
     tenant_usage_logs?: tenant_usage_logsUncheckedUpdateManyWithoutTenantNestedInput
-  }
-
-  export type user_settingsUpsertWithWhereUniqueWithoutUser_accountsInput = {
-    where: user_settingsWhereUniqueInput
-    update: XOR<user_settingsUpdateWithoutUser_accountsInput, user_settingsUncheckedUpdateWithoutUser_accountsInput>
-    create: XOR<user_settingsCreateWithoutUser_accountsInput, user_settingsUncheckedCreateWithoutUser_accountsInput>
-  }
-
-  export type user_settingsUpdateWithWhereUniqueWithoutUser_accountsInput = {
-    where: user_settingsWhereUniqueInput
-    data: XOR<user_settingsUpdateWithoutUser_accountsInput, user_settingsUncheckedUpdateWithoutUser_accountsInput>
-  }
-
-  export type user_settingsUpdateManyWithWhereWithoutUser_accountsInput = {
-    where: user_settingsScalarWhereInput
-    data: XOR<user_settingsUpdateManyMutationInput, user_settingsUncheckedUpdateManyWithoutUser_accountsInput>
-  }
-
-  export type user_settingsScalarWhereInput = {
-    AND?: user_settingsScalarWhereInput | user_settingsScalarWhereInput[]
-    OR?: user_settingsScalarWhereInput[]
-    NOT?: user_settingsScalarWhereInput | user_settingsScalarWhereInput[]
-    id?: BigIntFilter<"user_settings"> | bigint | number
-    user_account_id?: BigIntNullableFilter<"user_settings"> | bigint | number | null
-    preferred_language?: StringNullableFilter<"user_settings"> | string | null
-    notification_settings?: JsonNullableFilter<"user_settings">
-    ui_settings?: JsonNullableFilter<"user_settings">
-    created_at?: DateTimeFilter<"user_settings"> | Date | string
-    updated_at?: DateTimeFilter<"user_settings"> | Date | string
   }
 
   export type settingsUpsertWithWhereUniqueWithoutUser_accountsInput = {
@@ -30081,6 +29730,22 @@ export namespace Prisma {
     data: XOR<audit_logsUpdateManyMutationInput, audit_logsUncheckedUpdateManyWithoutUser_accountInput>
   }
 
+  export type org_api_keysUpsertWithWhereUniqueWithoutUserInput = {
+    where: org_api_keysWhereUniqueInput
+    update: XOR<org_api_keysUpdateWithoutUserInput, org_api_keysUncheckedUpdateWithoutUserInput>
+    create: XOR<org_api_keysCreateWithoutUserInput, org_api_keysUncheckedCreateWithoutUserInput>
+  }
+
+  export type org_api_keysUpdateWithWhereUniqueWithoutUserInput = {
+    where: org_api_keysWhereUniqueInput
+    data: XOR<org_api_keysUpdateWithoutUserInput, org_api_keysUncheckedUpdateWithoutUserInput>
+  }
+
+  export type org_api_keysUpdateManyWithWhereWithoutUserInput = {
+    where: org_api_keysScalarWhereInput
+    data: XOR<org_api_keysUpdateManyMutationInput, org_api_keysUncheckedUpdateManyWithoutUserInput>
+  }
+
   export type user_accountsCreateWithoutAddressesInput = {
     id?: bigint | number
     email?: string | null
@@ -30101,10 +29766,10 @@ export namespace Prisma {
     used_storage?: bigint | number | null
     organization?: organizationsCreateNestedOneWithoutUser_accountsInput
     tenant?: tenantsCreateNestedOneWithoutUser_accountsInput
-    user_settings?: user_settingsCreateNestedManyWithoutUser_accountsInput
     settings?: settingsCreateNestedManyWithoutUser_accountsInput
     team_memberships?: team_membersCreateNestedManyWithoutUser_accountInput
     audit_logs?: audit_logsCreateNestedManyWithoutUser_accountInput
+    org_api_keys?: org_api_keysCreateNestedManyWithoutUserInput
   }
 
   export type user_accountsUncheckedCreateWithoutAddressesInput = {
@@ -30127,10 +29792,10 @@ export namespace Prisma {
     last_access?: Date | string | null
     storage_quota?: bigint | number | null
     used_storage?: bigint | number | null
-    user_settings?: user_settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     settings?: settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     team_memberships?: team_membersUncheckedCreateNestedManyWithoutUser_accountInput
     audit_logs?: audit_logsUncheckedCreateNestedManyWithoutUser_accountInput
+    org_api_keys?: org_api_keysUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type user_accountsCreateOrConnectWithoutAddressesInput = {
@@ -30261,10 +29926,10 @@ export namespace Prisma {
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     organization?: organizationsUpdateOneWithoutUser_accountsNestedInput
     tenant?: tenantsUpdateOneWithoutUser_accountsNestedInput
-    user_settings?: user_settingsUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUpdateManyWithoutUser_accountsNestedInput
     team_memberships?: team_membersUpdateManyWithoutUser_accountNestedInput
     audit_logs?: audit_logsUpdateManyWithoutUser_accountNestedInput
+    org_api_keys?: org_api_keysUpdateManyWithoutUserNestedInput
   }
 
   export type user_accountsUncheckedUpdateWithoutAddressesInput = {
@@ -30287,10 +29952,10 @@ export namespace Prisma {
     last_access?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    user_settings?: user_settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     team_memberships?: team_membersUncheckedUpdateManyWithoutUser_accountNestedInput
     audit_logs?: audit_logsUncheckedUpdateManyWithoutUser_accountNestedInput
+    org_api_keys?: org_api_keysUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type business_accountsUpsertWithoutAddressesInput = {
@@ -30476,6 +30141,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     organization: organizationsCreateNestedOneWithoutTenantsInput
     business_accounts?: business_accountsCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsCreateNestedManyWithoutTenantInput
@@ -30498,6 +30165,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     business_accounts?: business_accountsUncheckedCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsUncheckedCreateNestedManyWithoutTenantInput
     settings?: settingsUncheckedCreateNestedManyWithoutTenantInput
@@ -30531,10 +30200,10 @@ export namespace Prisma {
     used_storage?: bigint | number | null
     organization?: organizationsCreateNestedOneWithoutUser_accountsInput
     tenant?: tenantsCreateNestedOneWithoutUser_accountsInput
-    user_settings?: user_settingsCreateNestedManyWithoutUser_accountsInput
     settings?: settingsCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersCreateNestedManyWithoutUser_accountInput
+    org_api_keys?: org_api_keysCreateNestedManyWithoutUserInput
   }
 
   export type user_accountsUncheckedCreateWithoutAudit_logsInput = {
@@ -30557,10 +30226,10 @@ export namespace Prisma {
     last_access?: Date | string | null
     storage_quota?: bigint | number | null
     used_storage?: bigint | number | null
-    user_settings?: user_settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     settings?: settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesUncheckedCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersUncheckedCreateNestedManyWithoutUser_accountInput
+    org_api_keys?: org_api_keysUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type user_accountsCreateOrConnectWithoutAudit_logsInput = {
@@ -30756,6 +30425,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     organization?: organizationsUpdateOneRequiredWithoutTenantsNestedInput
     business_accounts?: business_accountsUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUpdateManyWithoutTenantNestedInput
@@ -30778,6 +30449,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     business_accounts?: business_accountsUncheckedUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUncheckedUpdateManyWithoutTenantNestedInput
     settings?: settingsUncheckedUpdateManyWithoutTenantNestedInput
@@ -30817,10 +30490,10 @@ export namespace Prisma {
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     organization?: organizationsUpdateOneWithoutUser_accountsNestedInput
     tenant?: tenantsUpdateOneWithoutUser_accountsNestedInput
-    user_settings?: user_settingsUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUpdateManyWithoutUser_accountNestedInput
+    org_api_keys?: org_api_keysUpdateManyWithoutUserNestedInput
   }
 
   export type user_accountsUncheckedUpdateWithoutAudit_logsInput = {
@@ -30843,10 +30516,10 @@ export namespace Prisma {
     last_access?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    user_settings?: user_settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUncheckedUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUncheckedUpdateManyWithoutUser_accountNestedInput
+    org_api_keys?: org_api_keysUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type business_accountsUpsertWithoutAudit_logsInput = {
@@ -30965,6 +30638,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     organization: organizationsCreateNestedOneWithoutTenantsInput
     business_accounts?: business_accountsCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsCreateNestedManyWithoutTenantInput
@@ -30987,6 +30662,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
     business_accounts?: business_accountsUncheckedCreateNestedManyWithoutTenantInput
     user_accounts?: user_accountsUncheckedCreateNestedManyWithoutTenantInput
     teams?: teamsUncheckedCreateNestedManyWithoutTenantInput
@@ -31075,10 +30752,10 @@ export namespace Prisma {
     used_storage?: bigint | number | null
     organization?: organizationsCreateNestedOneWithoutUser_accountsInput
     tenant?: tenantsCreateNestedOneWithoutUser_accountsInput
-    user_settings?: user_settingsCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersCreateNestedManyWithoutUser_accountInput
     audit_logs?: audit_logsCreateNestedManyWithoutUser_accountInput
+    org_api_keys?: org_api_keysCreateNestedManyWithoutUserInput
   }
 
   export type user_accountsUncheckedCreateWithoutSettingsInput = {
@@ -31101,10 +30778,10 @@ export namespace Prisma {
     last_access?: Date | string | null
     storage_quota?: bigint | number | null
     used_storage?: bigint | number | null
-    user_settings?: user_settingsUncheckedCreateNestedManyWithoutUser_accountsInput
     addresses?: addressesUncheckedCreateNestedManyWithoutUser_accountInput
     team_memberships?: team_membersUncheckedCreateNestedManyWithoutUser_accountInput
     audit_logs?: audit_logsUncheckedCreateNestedManyWithoutUser_accountInput
+    org_api_keys?: org_api_keysUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type user_accountsCreateOrConnectWithoutSettingsInput = {
@@ -31135,6 +30812,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     organization?: organizationsUpdateOneRequiredWithoutTenantsNestedInput
     business_accounts?: business_accountsUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUpdateManyWithoutTenantNestedInput
@@ -31157,6 +30836,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     business_accounts?: business_accountsUncheckedUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUncheckedUpdateManyWithoutTenantNestedInput
     teams?: teamsUncheckedUpdateManyWithoutTenantNestedInput
@@ -31257,10 +30938,10 @@ export namespace Prisma {
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     organization?: organizationsUpdateOneWithoutUser_accountsNestedInput
     tenant?: tenantsUpdateOneWithoutUser_accountsNestedInput
-    user_settings?: user_settingsUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUpdateManyWithoutUser_accountNestedInput
     audit_logs?: audit_logsUpdateManyWithoutUser_accountNestedInput
+    org_api_keys?: org_api_keysUpdateManyWithoutUserNestedInput
   }
 
   export type user_accountsUncheckedUpdateWithoutSettingsInput = {
@@ -31283,130 +30964,10 @@ export namespace Prisma {
     last_access?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    user_settings?: user_settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUncheckedUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUncheckedUpdateManyWithoutUser_accountNestedInput
     audit_logs?: audit_logsUncheckedUpdateManyWithoutUser_accountNestedInput
-  }
-
-  export type user_accountsCreateWithoutUser_settingsInput = {
-    id?: bigint | number
-    email?: string | null
-    firstname?: string | null
-    lastname?: string | null
-    auth0_user_id?: string | null
-    is_active?: boolean
-    created_at?: Date | string
-    updated_at?: Date | string
-    status?: string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    base_directory?: string | null
-    bucket_location?: string | null
-    bucket_name?: string | null
-    region?: string | null
-    last_access?: Date | string | null
-    storage_quota?: bigint | number | null
-    used_storage?: bigint | number | null
-    organization?: organizationsCreateNestedOneWithoutUser_accountsInput
-    tenant?: tenantsCreateNestedOneWithoutUser_accountsInput
-    settings?: settingsCreateNestedManyWithoutUser_accountsInput
-    addresses?: addressesCreateNestedManyWithoutUser_accountInput
-    team_memberships?: team_membersCreateNestedManyWithoutUser_accountInput
-    audit_logs?: audit_logsCreateNestedManyWithoutUser_accountInput
-  }
-
-  export type user_accountsUncheckedCreateWithoutUser_settingsInput = {
-    id?: bigint | number
-    organization_id?: string | null
-    tenant_id?: string | null
-    email?: string | null
-    firstname?: string | null
-    lastname?: string | null
-    auth0_user_id?: string | null
-    is_active?: boolean
-    created_at?: Date | string
-    updated_at?: Date | string
-    status?: string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    base_directory?: string | null
-    bucket_location?: string | null
-    bucket_name?: string | null
-    region?: string | null
-    last_access?: Date | string | null
-    storage_quota?: bigint | number | null
-    used_storage?: bigint | number | null
-    settings?: settingsUncheckedCreateNestedManyWithoutUser_accountsInput
-    addresses?: addressesUncheckedCreateNestedManyWithoutUser_accountInput
-    team_memberships?: team_membersUncheckedCreateNestedManyWithoutUser_accountInput
-    audit_logs?: audit_logsUncheckedCreateNestedManyWithoutUser_accountInput
-  }
-
-  export type user_accountsCreateOrConnectWithoutUser_settingsInput = {
-    where: user_accountsWhereUniqueInput
-    create: XOR<user_accountsCreateWithoutUser_settingsInput, user_accountsUncheckedCreateWithoutUser_settingsInput>
-  }
-
-  export type user_accountsUpsertWithoutUser_settingsInput = {
-    update: XOR<user_accountsUpdateWithoutUser_settingsInput, user_accountsUncheckedUpdateWithoutUser_settingsInput>
-    create: XOR<user_accountsCreateWithoutUser_settingsInput, user_accountsUncheckedCreateWithoutUser_settingsInput>
-    where?: user_accountsWhereInput
-  }
-
-  export type user_accountsUpdateToOneWithWhereWithoutUser_settingsInput = {
-    where?: user_accountsWhereInput
-    data: XOR<user_accountsUpdateWithoutUser_settingsInput, user_accountsUncheckedUpdateWithoutUser_settingsInput>
-  }
-
-  export type user_accountsUpdateWithoutUser_settingsInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    firstname?: NullableStringFieldUpdateOperationsInput | string | null
-    lastname?: NullableStringFieldUpdateOperationsInput | string | null
-    auth0_user_id?: NullableStringFieldUpdateOperationsInput | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: NullableStringFieldUpdateOperationsInput | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    base_directory?: NullableStringFieldUpdateOperationsInput | string | null
-    bucket_location?: NullableStringFieldUpdateOperationsInput | string | null
-    bucket_name?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    last_access?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    organization?: organizationsUpdateOneWithoutUser_accountsNestedInput
-    tenant?: tenantsUpdateOneWithoutUser_accountsNestedInput
-    settings?: settingsUpdateManyWithoutUser_accountsNestedInput
-    addresses?: addressesUpdateManyWithoutUser_accountNestedInput
-    team_memberships?: team_membersUpdateManyWithoutUser_accountNestedInput
-    audit_logs?: audit_logsUpdateManyWithoutUser_accountNestedInput
-  }
-
-  export type user_accountsUncheckedUpdateWithoutUser_settingsInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
-    organization_id?: NullableStringFieldUpdateOperationsInput | string | null
-    tenant_id?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    firstname?: NullableStringFieldUpdateOperationsInput | string | null
-    lastname?: NullableStringFieldUpdateOperationsInput | string | null
-    auth0_user_id?: NullableStringFieldUpdateOperationsInput | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: NullableStringFieldUpdateOperationsInput | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    base_directory?: NullableStringFieldUpdateOperationsInput | string | null
-    bucket_location?: NullableStringFieldUpdateOperationsInput | string | null
-    bucket_name?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    last_access?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    settings?: settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
-    addresses?: addressesUncheckedUpdateManyWithoutUser_accountNestedInput
-    team_memberships?: team_membersUncheckedUpdateManyWithoutUser_accountNestedInput
-    audit_logs?: audit_logsUncheckedUpdateManyWithoutUser_accountNestedInput
+    org_api_keys?: org_api_keysUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type tenantsCreateManyOrganizationInput = {
@@ -31421,6 +30982,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: string | null
     email?: string | null
+    is_soft_deleted?: boolean
+    is_active?: boolean
   }
 
   export type org_membersCreateManyOrganizationInput = {
@@ -31438,12 +31001,25 @@ export namespace Prisma {
 
   export type org_api_keysCreateManyOrganizationInput = {
     id?: bigint | number
+    user_id?: bigint | number | null
     key_name: string
-    key_prefix: string
+    description?: string | null
+    key_id: string
     key_hash: string
     scopes?: org_api_keysCreatescopesInput | string[]
+    rate_limit?: number
+    allowed_ips?: org_api_keysCreateallowed_ipsInput | string[]
+    allowed_domains?: org_api_keysCreateallowed_domainsInput | string[]
+    usage_count?: number
+    max_usage_count?: number
+    last_used_ip?: string | null
+    environment?: $Enums.APIKeyEnvironment
+    revoked?: boolean
+    revoked_at?: Date | string | null
+    revoked_reason?: string | null
     expires_at?: Date | string | null
     created_at?: Date | string
+    updated_at?: Date | string
     created_by: string
     last_used?: Date | string | null
     is_active?: boolean
@@ -31540,6 +31116,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     business_accounts?: business_accountsUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUpdateManyWithoutTenantNestedInput
     settings?: settingsUpdateManyWithoutTenantNestedInput
@@ -31561,6 +31139,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
     business_accounts?: business_accountsUncheckedUpdateManyWithoutTenantNestedInput
     user_accounts?: user_accountsUncheckedUpdateManyWithoutTenantNestedInput
     settings?: settingsUncheckedUpdateManyWithoutTenantNestedInput
@@ -31582,6 +31162,8 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     custom_domain?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    is_soft_deleted?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type org_membersUpdateWithoutOrganizationInput = {
@@ -31626,24 +31208,50 @@ export namespace Prisma {
   export type org_api_keysUpdateWithoutOrganizationInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     key_name?: StringFieldUpdateOperationsInput | string
-    key_prefix?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    key_id?: StringFieldUpdateOperationsInput | string
     key_hash?: StringFieldUpdateOperationsInput | string
     scopes?: org_api_keysUpdatescopesInput | string[]
+    rate_limit?: IntFieldUpdateOperationsInput | number
+    allowed_ips?: org_api_keysUpdateallowed_ipsInput | string[]
+    allowed_domains?: org_api_keysUpdateallowed_domainsInput | string[]
+    usage_count?: IntFieldUpdateOperationsInput | number
+    max_usage_count?: IntFieldUpdateOperationsInput | number
+    last_used_ip?: NullableStringFieldUpdateOperationsInput | string | null
+    environment?: EnumAPIKeyEnvironmentFieldUpdateOperationsInput | $Enums.APIKeyEnvironment
+    revoked?: BoolFieldUpdateOperationsInput | boolean
+    revoked_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revoked_reason?: NullableStringFieldUpdateOperationsInput | string | null
     expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     last_used?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     is_active?: BoolFieldUpdateOperationsInput | boolean
+    user?: user_accountsUpdateOneWithoutOrg_api_keysNestedInput
   }
 
   export type org_api_keysUncheckedUpdateWithoutOrganizationInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     key_name?: StringFieldUpdateOperationsInput | string
-    key_prefix?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    key_id?: StringFieldUpdateOperationsInput | string
     key_hash?: StringFieldUpdateOperationsInput | string
     scopes?: org_api_keysUpdatescopesInput | string[]
+    rate_limit?: IntFieldUpdateOperationsInput | number
+    allowed_ips?: org_api_keysUpdateallowed_ipsInput | string[]
+    allowed_domains?: org_api_keysUpdateallowed_domainsInput | string[]
+    usage_count?: IntFieldUpdateOperationsInput | number
+    max_usage_count?: IntFieldUpdateOperationsInput | number
+    last_used_ip?: NullableStringFieldUpdateOperationsInput | string | null
+    environment?: EnumAPIKeyEnvironmentFieldUpdateOperationsInput | $Enums.APIKeyEnvironment
+    revoked?: BoolFieldUpdateOperationsInput | boolean
+    revoked_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revoked_reason?: NullableStringFieldUpdateOperationsInput | string | null
     expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     last_used?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     is_active?: BoolFieldUpdateOperationsInput | boolean
@@ -31651,12 +31259,25 @@ export namespace Prisma {
 
   export type org_api_keysUncheckedUpdateManyWithoutOrganizationInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     key_name?: StringFieldUpdateOperationsInput | string
-    key_prefix?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    key_id?: StringFieldUpdateOperationsInput | string
     key_hash?: StringFieldUpdateOperationsInput | string
     scopes?: org_api_keysUpdatescopesInput | string[]
+    rate_limit?: IntFieldUpdateOperationsInput | number
+    allowed_ips?: org_api_keysUpdateallowed_ipsInput | string[]
+    allowed_domains?: org_api_keysUpdateallowed_domainsInput | string[]
+    usage_count?: IntFieldUpdateOperationsInput | number
+    max_usage_count?: IntFieldUpdateOperationsInput | number
+    last_used_ip?: NullableStringFieldUpdateOperationsInput | string | null
+    environment?: EnumAPIKeyEnvironmentFieldUpdateOperationsInput | $Enums.APIKeyEnvironment
+    revoked?: BoolFieldUpdateOperationsInput | boolean
+    revoked_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revoked_reason?: NullableStringFieldUpdateOperationsInput | string | null
     expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     last_used?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     is_active?: BoolFieldUpdateOperationsInput | boolean
@@ -31779,11 +31400,11 @@ export namespace Prisma {
     storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     tenant?: tenantsUpdateOneWithoutUser_accountsNestedInput
-    user_settings?: user_settingsUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUpdateManyWithoutUser_accountNestedInput
     audit_logs?: audit_logsUpdateManyWithoutUser_accountNestedInput
+    org_api_keys?: org_api_keysUpdateManyWithoutUserNestedInput
   }
 
   export type user_accountsUncheckedUpdateWithoutOrganizationInput = {
@@ -31805,11 +31426,11 @@ export namespace Prisma {
     last_access?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    user_settings?: user_settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUncheckedUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUncheckedUpdateManyWithoutUser_accountNestedInput
     audit_logs?: audit_logsUncheckedUpdateManyWithoutUser_accountNestedInput
+    org_api_keys?: org_api_keysUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type user_accountsUncheckedUpdateManyWithoutOrganizationInput = {
@@ -31975,6 +31596,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type teamsCreateManyTenantInput = {
@@ -32010,6 +31634,7 @@ export namespace Prisma {
     key_name: string
     key_prefix: string
     key_hash: string
+    key_id: string
     scopes?: tenant_api_keysCreatescopesInput | string[]
     expires_at?: Date | string | null
     created_at?: Date | string
@@ -32117,11 +31742,11 @@ export namespace Prisma {
     storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     organization?: organizationsUpdateOneWithoutUser_accountsNestedInput
-    user_settings?: user_settingsUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUpdateManyWithoutUser_accountNestedInput
     audit_logs?: audit_logsUpdateManyWithoutUser_accountNestedInput
+    org_api_keys?: org_api_keysUpdateManyWithoutUserNestedInput
   }
 
   export type user_accountsUncheckedUpdateWithoutTenantInput = {
@@ -32143,11 +31768,11 @@ export namespace Prisma {
     last_access?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     storage_quota?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     used_storage?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    user_settings?: user_settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     settings?: settingsUncheckedUpdateManyWithoutUser_accountsNestedInput
     addresses?: addressesUncheckedUpdateManyWithoutUser_accountNestedInput
     team_memberships?: team_membersUncheckedUpdateManyWithoutUser_accountNestedInput
     audit_logs?: audit_logsUncheckedUpdateManyWithoutUser_accountNestedInput
+    org_api_keys?: org_api_keysUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type user_accountsUncheckedUpdateManyWithoutTenantInput = {
@@ -32177,6 +31802,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
     business_accounts?: business_accountsUpdateOneWithoutSettingsNestedInput
     user_accounts?: user_accountsUpdateOneWithoutSettingsNestedInput
   }
@@ -32189,6 +31817,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type settingsUncheckedUpdateManyWithoutTenantInput = {
@@ -32199,6 +31830,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type teamsUpdateWithoutTenantInput = {
@@ -32298,6 +31932,7 @@ export namespace Prisma {
     key_name?: StringFieldUpdateOperationsInput | string
     key_prefix?: StringFieldUpdateOperationsInput | string
     key_hash?: StringFieldUpdateOperationsInput | string
+    key_id?: StringFieldUpdateOperationsInput | string
     scopes?: tenant_api_keysUpdatescopesInput | string[]
     expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32311,6 +31946,7 @@ export namespace Prisma {
     key_name?: StringFieldUpdateOperationsInput | string
     key_prefix?: StringFieldUpdateOperationsInput | string
     key_hash?: StringFieldUpdateOperationsInput | string
+    key_id?: StringFieldUpdateOperationsInput | string
     scopes?: tenant_api_keysUpdatescopesInput | string[]
     expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32324,6 +31960,7 @@ export namespace Prisma {
     key_name?: StringFieldUpdateOperationsInput | string
     key_prefix?: StringFieldUpdateOperationsInput | string
     key_hash?: StringFieldUpdateOperationsInput | string
+    key_id?: StringFieldUpdateOperationsInput | string
     scopes?: tenant_api_keysUpdatescopesInput | string[]
     expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32368,6 +32005,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
   }
 
   export type addressesCreateManyTeamInput = {
@@ -32412,6 +32050,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user_account?: user_accountsUpdateOneWithoutTeam_membershipsNestedInput
     business_account?: business_accountsUpdateOneWithoutTeam_membershipsNestedInput
   }
@@ -32425,6 +32064,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type team_membersUncheckedUpdateManyWithoutTeamInput = {
@@ -32436,6 +32076,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type addressesUpdateWithoutTeamInput = {
@@ -32553,6 +32194,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type addressesCreateManyBusiness_accountInput = {
@@ -32584,6 +32228,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
   }
 
   export type audit_logsCreateManyBusiness_accountInput = {
@@ -32607,6 +32252,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
     tenant?: tenantsUpdateOneWithoutSettingsNestedInput
     user_accounts?: user_accountsUpdateOneWithoutSettingsNestedInput
   }
@@ -32619,6 +32267,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type settingsUncheckedUpdateManyWithoutBusiness_accountsInput = {
@@ -32629,6 +32280,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type addressesUpdateWithoutBusiness_accountInput = {
@@ -32698,6 +32352,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     team?: teamsUpdateOneRequiredWithoutTeam_membersNestedInput
     user_account?: user_accountsUpdateOneWithoutTeam_membershipsNestedInput
   }
@@ -32711,6 +32366,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type team_membersUncheckedUpdateManyWithoutBusiness_accountInput = {
@@ -32722,6 +32378,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type audit_logsUpdateWithoutBusiness_accountInput = {
@@ -32771,15 +32428,6 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type user_settingsCreateManyUser_accountsInput = {
-    id?: bigint | number
-    preferred_language?: string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
   export type settingsCreateManyUser_accountsInput = {
     id?: bigint | number
     organization_id?: string | null
@@ -32788,6 +32436,9 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type addressesCreateManyUser_accountInput = {
@@ -32819,6 +32470,7 @@ export namespace Prisma {
     invited_by: string
     status: string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: Date | string | null
   }
 
   export type audit_logsCreateManyUser_accountInput = {
@@ -32836,31 +32488,30 @@ export namespace Prisma {
     created_at?: Date | string
   }
 
-  export type user_settingsUpdateWithoutUser_accountsInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
-    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type user_settingsUncheckedUpdateWithoutUser_accountsInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
-    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type user_settingsUncheckedUpdateManyWithoutUser_accountsInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
-    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
-    notification_settings?: NullableJsonNullValueInput | InputJsonValue
-    ui_settings?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type org_api_keysCreateManyUserInput = {
+    id?: bigint | number
+    organization_id: string
+    key_name: string
+    description?: string | null
+    key_id: string
+    key_hash: string
+    scopes?: org_api_keysCreatescopesInput | string[]
+    rate_limit?: number
+    allowed_ips?: org_api_keysCreateallowed_ipsInput | string[]
+    allowed_domains?: org_api_keysCreateallowed_domainsInput | string[]
+    usage_count?: number
+    max_usage_count?: number
+    last_used_ip?: string | null
+    environment?: $Enums.APIKeyEnvironment
+    revoked?: boolean
+    revoked_at?: Date | string | null
+    revoked_reason?: string | null
+    expires_at?: Date | string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    created_by: string
+    last_used?: Date | string | null
+    is_active?: boolean
   }
 
   export type settingsUpdateWithoutUser_accountsInput = {
@@ -32869,6 +32520,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
     tenant?: tenantsUpdateOneWithoutSettingsNestedInput
     business_accounts?: business_accountsUpdateOneWithoutSettingsNestedInput
   }
@@ -32881,6 +32535,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type settingsUncheckedUpdateManyWithoutUser_accountsInput = {
@@ -32891,6 +32548,9 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     settings_data?: NullableJsonNullValueInput | InputJsonValue
+    preferred_language?: NullableStringFieldUpdateOperationsInput | string | null
+    notification_settings?: NullableJsonNullValueInput | InputJsonValue
+    ui_settings?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type addressesUpdateWithoutUser_accountInput = {
@@ -32960,6 +32620,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     team?: teamsUpdateOneRequiredWithoutTeam_membersNestedInput
     business_account?: business_accountsUpdateOneWithoutTeam_membershipsNestedInput
   }
@@ -32973,6 +32634,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type team_membersUncheckedUpdateManyWithoutUser_accountInput = {
@@ -32984,6 +32646,7 @@ export namespace Prisma {
     invited_by?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type audit_logsUpdateWithoutUser_accountInput = {
@@ -33031,6 +32694,84 @@ export namespace Prisma {
     ip_address?: NullableStringFieldUpdateOperationsInput | string | null
     user_agent?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type org_api_keysUpdateWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    key_name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    key_id?: StringFieldUpdateOperationsInput | string
+    key_hash?: StringFieldUpdateOperationsInput | string
+    scopes?: org_api_keysUpdatescopesInput | string[]
+    rate_limit?: IntFieldUpdateOperationsInput | number
+    allowed_ips?: org_api_keysUpdateallowed_ipsInput | string[]
+    allowed_domains?: org_api_keysUpdateallowed_domainsInput | string[]
+    usage_count?: IntFieldUpdateOperationsInput | number
+    max_usage_count?: IntFieldUpdateOperationsInput | number
+    last_used_ip?: NullableStringFieldUpdateOperationsInput | string | null
+    environment?: EnumAPIKeyEnvironmentFieldUpdateOperationsInput | $Enums.APIKeyEnvironment
+    revoked?: BoolFieldUpdateOperationsInput | boolean
+    revoked_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revoked_reason?: NullableStringFieldUpdateOperationsInput | string | null
+    expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    last_used?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    is_active?: BoolFieldUpdateOperationsInput | boolean
+    organization?: organizationsUpdateOneRequiredWithoutOrg_api_keysNestedInput
+  }
+
+  export type org_api_keysUncheckedUpdateWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    organization_id?: StringFieldUpdateOperationsInput | string
+    key_name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    key_id?: StringFieldUpdateOperationsInput | string
+    key_hash?: StringFieldUpdateOperationsInput | string
+    scopes?: org_api_keysUpdatescopesInput | string[]
+    rate_limit?: IntFieldUpdateOperationsInput | number
+    allowed_ips?: org_api_keysUpdateallowed_ipsInput | string[]
+    allowed_domains?: org_api_keysUpdateallowed_domainsInput | string[]
+    usage_count?: IntFieldUpdateOperationsInput | number
+    max_usage_count?: IntFieldUpdateOperationsInput | number
+    last_used_ip?: NullableStringFieldUpdateOperationsInput | string | null
+    environment?: EnumAPIKeyEnvironmentFieldUpdateOperationsInput | $Enums.APIKeyEnvironment
+    revoked?: BoolFieldUpdateOperationsInput | boolean
+    revoked_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revoked_reason?: NullableStringFieldUpdateOperationsInput | string | null
+    expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    last_used?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    is_active?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type org_api_keysUncheckedUpdateManyWithoutUserInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    organization_id?: StringFieldUpdateOperationsInput | string
+    key_name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    key_id?: StringFieldUpdateOperationsInput | string
+    key_hash?: StringFieldUpdateOperationsInput | string
+    scopes?: org_api_keysUpdatescopesInput | string[]
+    rate_limit?: IntFieldUpdateOperationsInput | number
+    allowed_ips?: org_api_keysUpdateallowed_ipsInput | string[]
+    allowed_domains?: org_api_keysUpdateallowed_domainsInput | string[]
+    usage_count?: IntFieldUpdateOperationsInput | number
+    max_usage_count?: IntFieldUpdateOperationsInput | number
+    last_used_ip?: NullableStringFieldUpdateOperationsInput | string | null
+    environment?: EnumAPIKeyEnvironmentFieldUpdateOperationsInput | $Enums.APIKeyEnvironment
+    revoked?: BoolFieldUpdateOperationsInput | boolean
+    revoked_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revoked_reason?: NullableStringFieldUpdateOperationsInput | string | null
+    expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    last_used?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    is_active?: BoolFieldUpdateOperationsInput | boolean
   }
 
 
@@ -33114,10 +32855,6 @@ export namespace Prisma {
      * @deprecated Use settingsDefaultArgs instead
      */
     export type settingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = settingsDefaultArgs<ExtArgs>
-    /**
-     * @deprecated Use user_settingsDefaultArgs instead
-     */
-    export type user_settingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = user_settingsDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

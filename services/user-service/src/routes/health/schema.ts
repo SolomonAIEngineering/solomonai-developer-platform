@@ -22,11 +22,6 @@ export const HealthCheckResponseSchema = z
  */
 export const HealthSchema = z
   .object({
-    data: z.object({
-      search: z.object({ healthy: z.boolean() }),
-      teller: HealthCheckResponseSchema,
-      gocardless: HealthCheckResponseSchema,
-      plaid: HealthCheckResponseSchema,
-    }),
+    healthy: z.boolean(),
   })
   .openapi("HealthSchema");

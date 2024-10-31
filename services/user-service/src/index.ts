@@ -1,4 +1,10 @@
-import { initializeDatabase } from "./database/client";
+/**
+ * Description
+ * @returns {any}
+ */
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "@/database/generated/postgresql";
+import { Pool } from "pg";
 import { Env, zEnv } from "./env";
 import { newApp } from "./hono/app";
 import { UserActionMessageBody } from "./message";
@@ -6,20 +12,49 @@ import { ConsoleLogger } from "./metric/logger";
 import { setupRoutes } from "./routes";
 
 const app = newApp();
-
-// Set up all the routes
 setupRoutes(app);
 
-// Define default handler
+/**
+ * Initializes and returns a Prisma client connected to a PostgreSQL database using the provided connection string.
+ * @param connectionString - The PostgreSQL connection string.
+ * @returns A new `PrismaClient` instance configured to use the `PrismaPg` adapter.
+ */
+const createPrismaClient = (connectionString: string) => {
+  const pool = new Pool({ connectionString });
+  const adapter = new PrismaPg(pool);
+  return new PrismaClient({ adapter });
+};
+
+/**
+ * Initializes and returns a new instance of `ConsoleLogger` configured with the environment and request ID.
+ * @param env - The application environment variables.
+ * @param requestId - A unique identifier for the request; defaults to an empty string.
+ * @returns A new `ConsoleLogger` instance.
+ */
+const createLogger = (env: Env, requestId = "") =>
+  new ConsoleLogger({
+    requestId,
+    environment: env.ENVIRONMENT,
+    application: "api",
+    defaultFields: { environment: env.ENVIRONMENT },
+  });
+
+/**
+ * Defines the handler for both `fetch` and `queue` operations.
+ * Handles requests to the API and manages message batch processing for different queues.
+ */
 const handler = {
+  /**
+   * Handles HTTP requests, initializing required environment variables and database connections.
+   * @param req - The incoming HTTP request object.
+   * @param env - The environment configuration, parsed and validated against `Env`.
+   * @param executionCtx - The execution context of the request.
+   * @returns A `Response` object indicating success or failure.
+   */
   fetch: async (req: Request, env: Env, executionCtx: ExecutionContext) => {
     const parsedEnv = zEnv.safeParse(env);
     if (!parsedEnv.success) {
-      new ConsoleLogger({
-        requestId: "",
-        environment: env.ENVIRONMENT,
-        application: "api",
-      }).fatal(`BAD_ENVIRONMENT: ${parsedEnv.error.message}`);
+      createLogger(env).fatal(`BAD_ENVIRONMENT: ${parsedEnv.error.message}`);
       return Response.json(
         {
           code: "BAD_ENVIRONMENT",
@@ -30,115 +65,26 @@ const handler = {
       );
     }
 
-    // Initialize and connect the DatabaseClient
-    const dbClient = initializeDatabase(parsedEnv.data);
     try {
-      await dbClient.connect();
+      // createPrismaClient(parsedEnv.data.HYPERDRIVE.connectionString)` is initializing a new Prisma client
+      // and assigning it to the `DATABASE_CLIENT` property of the `parsedEnv.data` object.
+      parsedEnv.data.DATABASE_CLIENT = createPrismaClient(
+        parsedEnv.data.HYPERDRIVE.connectionString,
+      );
 
-      // Attach dbClient to the context so that routes can access it
-      parsedEnv.data.DATABASE_CLIENT = dbClient;
-
-      // Pass the updated env with dbClient to the app
-      const response = await app.fetch(req, parsedEnv.data, executionCtx);
-      return response;
+      return await app.fetch(req, parsedEnv.data, executionCtx);
     } catch (error) {
-      new ConsoleLogger({
-        requestId: "",
-        environment: env.ENVIRONMENT,
-        application: "api",
-      }).fatal(
+      createLogger(env).fatal(
         `DATABASE_CONNECTION_ERROR: ${error instanceof Error ? error.message : "Unknown error"}`,
       );
       return Response.json(
         {
           code: "DATABASE_CONNECTION_ERROR",
-          message: "Failed to connect to the database",
+          message: `Failed to connect to the database: ${error instanceof Error ? error.message : "Unknown error"}`,
           errors: error,
         },
         { status: 500 },
       );
-    } finally {
-      // Ensure the database client is disconnected
-      await dbClient.disconnect();
-    }
-  },
-
-  queue: async (
-    batch: MessageBatch<UserActionMessageBody>,
-    env: Env,
-    _executionContext: ExecutionContext,
-  ) => {
-    const logger = new ConsoleLogger({
-      requestId: "queue",
-      environment: env.ENVIRONMENT,
-      application: "api",
-      defaultFields: { environment: env.ENVIRONMENT },
-    });
-
-    const parsedEnv = zEnv.safeParse(env);
-    if (!parsedEnv.success) {
-      logger.fatal(`BAD_ENVIRONMENT: ${parsedEnv.error.message}`);
-      // Handle error appropriately
-      return;
-    }
-
-    // Initialize and connect the DatabaseClient
-    const dbClient = initializeDatabase(parsedEnv.data);
-    try {
-      await dbClient.connect();
-
-      // Attach dbClient to the environment for use in message processing
-      parsedEnv.data.DATABASE_CLIENT = dbClient;
-
-      switch (batch.queue) {
-        case "key-migrations-development":
-        case "key-migrations-preview":
-        case "key-migrations-canary":
-        case "key-migrations-production": {
-          for (const message of batch.messages) {
-            // Example usage of dbClient in message processing
-            // const result = await migrateKey(message.body, parsedEnv.data, dbClient);
-            // if (result.err) {
-            //   const delaySeconds = 2 ** message.attempts;
-            //   logger.error("Unable to migrate key", {
-            //     message,
-            //     error: result.err.message,
-            //     delaySeconds,
-            //   });
-            //   message.retry({ delaySeconds });
-            // } else {
-            //   message.ack();
-            // }
-            logger.info("Processed message", {
-              message: message.body,
-            });
-            message.ack();
-          }
-          break;
-        }
-        case "key-migrations-development-dlq":
-        case "key-migrations-preview-dlq":
-        case "key-migrations-canary-dlq":
-        case "key-migrations-production-dlq": {
-          for (const message of batch.messages) {
-            // Example usage of dbClient in DLQ processing
-            // await storeMigrationError(message.body, parsedEnv.data, dbClient);
-            logger.info("Processed message from DLQ", {
-              message: message.body,
-            });
-          }
-          break;
-        }
-        default:
-          throw new Error(`No queue handler: ${batch.queue}`);
-      }
-    } catch (error) {
-      logger.error("Error processing queue messages:", {
-        error: error instanceof Error ? error.message : String(error),
-      });
-    } finally {
-      // Ensure the database client is disconnected
-      await dbClient.disconnect();
     }
   },
 } satisfies ExportedHandler<Env, UserActionMessageBody>;

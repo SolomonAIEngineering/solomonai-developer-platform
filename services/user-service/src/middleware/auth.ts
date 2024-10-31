@@ -1,136 +1,137 @@
-import { Context, Next } from "hono";
-import { cache } from "hono/cache";
-import { HTTPException } from "hono/http-exception";
-import { a } from "vitest/dist/suite-ynYMzeLu.js";
-import constants from "../constants/constant";
-import { APIKeyRepository } from "../db-repository/api-key-repository";
-import { UserRepository } from "../db-repository/user-repository";
-import { User } from "../db/schema";
+// import { HeaderKey, RequestHeaders } from "@/header-utils";
+// import { Context, Next } from "hono";
+// import { HTTPException } from "hono/http-exception";
+// import constants from "../constants/constant";
+// import { APIKeyRepository } from "../db-repository/api-key-repository";
+// import { UserRepository } from "../db-repository/user-repository";
+// import { User } from "../db/schema";
 
-/**
- * Authentication middleware
- *
- * @description Handles authentication for protected routes using API key and UserId
- * @param {Context} c - The Hono context object
- * @param {Next} next - The next middleware function
- * @returns {Promise<Response | void>} The response or void if passing to next middleware
- * @throws {HTTPException} Throws a 401 error if authentication fails
- */
-export const authMiddleware = async (
-  c: Context,
-  next: Next,
-): Promise<Response | void> => {
-  if (constants.PUBLIC_PATHS.includes(c.req.path)) {
-    return next();
-  }
+// /**
+//  * Authentication middleware
+//  *
+//  * @description Handles authentication for protected routes using API key and UserId
+//  * @param {Context} c - The Hono context object
+//  * @param {Next} next - The next middleware function
+//  * @returns {Promise<Response | void>} The response or void if passing to next middleware
+//  * @throws {HTTPException} Throws a 401 error if authentication fails
+//  */
+// export const authMiddleware = async (
+//   c: Context,
+//   next: Next,
+// ): Promise<Response | void> => {
+//   if (constants.PUBLIC_PATHS.includes(c.req.path)) {
+//     return next();
+//   }
 
-  const apiKey = c.req.header("X-API-Key");
-  const userIdStr = c.req.header("X-User-Id");
-  const userId = userIdStr ? parseInt(userIdStr, 10) : null;
+//   const headers = c.req.header as unknown as RequestHeaders;
 
-  if (!apiKey || !userId || isNaN(userId)) {
-    throw new HTTPException(401, {
-      message: "Missing or invalid authentication headers",
-    });
-  }
+//   const apiKey = headers[HeaderKey.API_KEY];
+//   const userIdStr = headers[HeaderKey.USER_ID];
+//   const userId = userIdStr ? parseInt(userIdStr, 10) : null;
 
-  const { db } = c.get("ctx");
-  const apiKeyRepo = new APIKeyRepository(db);
-  const userRepo = new UserRepository(db);
+//   if (!apiKey || !userId || isNaN(userId)) {
+//     throw new HTTPException(401, {
+//       message: "Missing or invalid authentication headers",
+//     });
+//   }
 
-  try {
-    // Check cache first
-    const cachedUser = await getCachedUser(c, apiKey, userId);
-    const cachedApiKey = await getCacheApiKey(c, apiKey);
+//   const { db } = c.get("ctx");
+//   const apiKeyRepo = new APIKeyRepository(db);
+//   const userRepo = new UserRepository(db);
 
-    if (cachedUser && cachedApiKey) {
-      c.set("user", cachedUser);
-      c.set("apiKey", cachedApiKey);
-      return next();
-    }
+//   try {
+//     // Check cache first
+//     const cachedUser = await getCachedUser(c, apiKey, userId);
+//     const cachedApiKey = await getCacheApiKey(c, apiKey);
 
-    // Validate API key and user
-    const [isValidApiKey, user] = await Promise.all([
-      apiKeyRepo.isValidApiKey(apiKey),
-      userRepo.getById(userId),
-    ]);
+//     if (cachedUser && cachedApiKey) {
+//       c.set("user", cachedUser);
+//       c.set("apiKey", cachedApiKey);
+//       return next();
+//     }
 
-    if (!isValidApiKey) {
-      throw new HTTPException(401, {
-        message: "Missing or invalid authentication headers",
-      });
-    }
+//     // Validate API key and user
+//     const [isValidApiKey, user] = await Promise.all([
+//       apiKeyRepo.isValidApiKey(apiKey),
+//       userRepo.getById(userId),
+//     ]);
 
-    if (!user) {
-      throw new HTTPException(401, { message: "Invalid or inactive user" });
-    }
+//     if (!isValidApiKey) {
+//       throw new HTTPException(401, {
+//         message: "Missing or invalid authentication headers",
+//       });
+//     }
 
-    // Cache the authenticated user
-    await cacheUser(c, apiKey, userId, user);
+//     if (!user) {
+//       throw new HTTPException(401, { message: "Invalid or inactive user" });
+//     }
 
-    await cacheApiKey(c, apiKey);
+//     // Cache the authenticated user
+//     await cacheUser(c, apiKey, userId, user);
 
-    // Set the authenticated user in the context
-    c.set("user", user);
+//     await cacheApiKey(c, apiKey);
 
-    // Log the successful authentication
-    c.get("ctx").logger.info(`User ${userId} authenticated successfully`);
-    return next();
-  } catch (error) {
-    handleAuthError(c, error);
-  }
-};
+//     // Set the authenticated user in the context
+//     c.set("user", user);
 
-async function getCachedUser(
-  c: Context,
-  apiKey: string,
-  userId: number,
-): Promise<User | null> {
-  const cachedUser = await c.env.KV.get(
-    getUserApiKeyCacheKeyReference(apiKey, userId),
-  );
-  return cachedUser ? JSON.parse(cachedUser) : null;
-}
+//     // Log the successful authentication
+//     c.get("ctx").logger.info(`User ${userId} authenticated successfully`);
+//     return next();
+//   } catch (error) {
+//     handleAuthError(c, error);
+//   }
+// };
 
-async function getCacheApiKey(
-  c: Context,
-  apiKey: string,
-): Promise<string | null> {
-  const cachedApiKey = await c.env.KV.get(getApiKeyCacheKeyReference(apiKey));
-  return cachedApiKey ? cachedApiKey : null;
-}
+// async function getCachedUser(
+//   c: Context,
+//   apiKey: string,
+//   userId: number,
+// ): Promise<User | null> {
+//   const cachedUser = await c.env.KV.get(
+//     getUserApiKeyCacheKeyReference(apiKey, userId),
+//   );
+//   return cachedUser ? JSON.parse(cachedUser) : null;
+// }
 
-async function cacheUser(
-  c: Context,
-  apiKey: string,
-  userId: number,
-  user: User,
-): Promise<void> {
-  await c.env.KV.put(`auth:${apiKey}:${userId}`, JSON.stringify(user), {
-    expirationTtl: constants.CACHE_TTL,
-  });
-}
+// async function getCacheApiKey(
+//   c: Context,
+//   apiKey: string,
+// ): Promise<string | null> {
+//   const cachedApiKey = await c.env.KV.get(getApiKeyCacheKeyReference(apiKey));
+//   return cachedApiKey ? cachedApiKey : null;
+// }
 
-async function cacheApiKey(c: Context, apiKey: string): Promise<void> {
-  await c.env.KV.put(getApiKeyCacheKeyReference(apiKey), apiKey.toString(), {
-    expirationTtl: constants.CACHE_TTL,
-  });
-}
+// async function cacheUser(
+//   c: Context,
+//   apiKey: string,
+//   userId: number,
+//   user: User,
+// ): Promise<void> {
+//   await c.env.KV.put(`auth:${apiKey}:${userId}`, JSON.stringify(user), {
+//     expirationTtl: constants.CACHE_TTL,
+//   });
+// }
 
-function handleAuthError(c: Context, error: unknown): never {
-  if (error instanceof HTTPException) {
-    throw error;
-  }
-  c.get("logger").error("Authentication error:", error);
-  throw new HTTPException(500, {
-    message: "Internal server error during authentication",
-  });
-}
+// async function cacheApiKey(c: Context, apiKey: string): Promise<void> {
+//   await c.env.KV.put(getApiKeyCacheKeyReference(apiKey), apiKey.toString(), {
+//     expirationTtl: constants.CACHE_TTL,
+//   });
+// }
 
-export const getUserApiKeyCacheKeyReference = (
-  apiKey: string,
-  userId: number,
-): string => `auth:${apiKey}:${userId}`;
+// function handleAuthError(c: Context, error: unknown): never {
+//   if (error instanceof HTTPException) {
+//     throw error;
+//   }
+//   c.get("logger").error("Authentication error:", error);
+//   throw new HTTPException(500, {
+//     message: "Internal server error during authentication",
+//   });
+// }
 
-export const getApiKeyCacheKeyReference = (apiKey: string): string =>
-  `auth:${apiKey}:api_keys`;
+// export const getUserApiKeyCacheKeyReference = (
+//   apiKey: string,
+//   userId: number,
+// ): string => `auth:${apiKey}:${userId}`;
+
+// export const getApiKeyCacheKeyReference = (apiKey: string): string =>
+//   `auth:${apiKey}:api_keys`;

@@ -1,3 +1,5 @@
+import { Hyperdrive } from "@cloudflare/workers-types";
+
 declare module "cloudflare:test" {
   // Controls the type of `import("cloudflare:test").env`
   interface ProvidedEnv extends Env {
@@ -8,5 +10,6 @@ declare module "cloudflare:test" {
     BANK_STATEMENTS: R2Bucket;
     RATE_LIMITER: RateLimit;
     ENGINE_BASE_URL: string;
+    HYPERDRIVE: Hyperdrive;
   }
 }

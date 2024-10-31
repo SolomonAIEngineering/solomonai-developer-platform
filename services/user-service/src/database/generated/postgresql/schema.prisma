@@ -52,7 +52,7 @@
 generator client {
   provider        = "prisma-client-js"
   output          = "../src/database/generated/postgresql"
-  previewFeatures = ["fullTextIndex", "multiSchema"]
+  previewFeatures = ["fullTextIndex", "multiSchema", "driverAdapters"]
 }
 
 datasource db {
@@ -150,6 +150,8 @@ model tenants {
   metadata        Json?    @db.JsonB
   custom_domain   String?  @db.VarChar(255)
   email           String?  @db.VarChar(255) /// Primary contact email
+  is_soft_deleted Boolean  @default(false) // Indicates if tenant is soft-deleted
+  is_active       Boolean  @default(true) // Indicates if tenant is active
 
   // Relations
   organization      organizations       @relation(fields: [organization_id], references: [id], onDelete: Cascade)
@@ -219,23 +221,47 @@ model org_members {
 ///   }
 /// });
 /// ```
+// Define an enum for APIKeyEnvironment to restrict the possible values
+enum APIKeyEnvironment {
+  development
+  staging
+  production
+}
+
 model org_api_keys {
-  id              BigInt    @id @default(autoincrement())
-  organization_id String    @db.VarChar(100)
-  key_name        String    @db.VarChar(255)
-  key_prefix      String    @unique @db.VarChar(32)
-  key_hash        String    @db.VarChar(255) // Hashed API key
+  id              BigInt            @id @default(autoincrement())
+  organization_id String            @db.VarChar(100)
+  user_id         BigInt? // Foreign key to `user_accounts.id`
+  key_name        String            @db.VarChar(255)
+  description     String?           @db.Text
+  key_id          String            @unique(map: "org_api_keys_key_id_unique") @db.VarChar(255) // Unique key identifier
+  key_hash        String            @db.VarChar(255) // Hashed API key for security
   scopes          String[] // Array of permitted operations
-  expires_at      DateTime? @db.Timestamptz(6)
-  created_at      DateTime  @default(now()) @db.Timestamptz(6)
-  created_by      String    @db.VarChar(100)
-  last_used       DateTime? @db.Timestamptz(6)
-  is_active       Boolean   @default(true)
+  rate_limit      Int               @default(1000) // Default rate limit
+  allowed_ips     String[]          @default([]) // Whitelisted IP addresses
+  allowed_domains String[]          @default([]) // Whitelisted domains
+  usage_count     Int               @default(0) // Number of times the key has been used
+  max_usage_count Int               @default(0) // Maximum usage limit
+  last_used_ip    String?           @db.VarChar(255) // IP address from which the key was last used
+  environment     APIKeyEnvironment @default(development) // Environment where the key is valid
+  revoked         Boolean           @default(false) // Indicates if the key has been revoked
+  revoked_at      DateTime?         @db.Timestamptz(6) // Timestamp when the key was revoked
+  revoked_reason  String?           @db.Text // Reason for revocation
+  expires_at      DateTime?         @db.Timestamptz(6) // Expiration date of the key
+  created_at      DateTime          @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime          @updatedAt @db.Timestamptz(6)
+  created_by      String            @db.VarChar(100)
+  last_used       DateTime?         @db.Timestamptz(6)
+  is_active       Boolean           @default(true) // Indicates if the key is active
 
-  organization organizations @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+  // relations
+  organization organizations  @relation(fields: [organization_id], references: [id], onDelete: Cascade)
+  user         user_accounts? @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
+  @@unique([key_id]) // Ensures that `key_id` is unique across all records
+  // indexes and constraints
   @@index([organization_id])
-  @@index([key_prefix])
+  @@index([key_id])
 }
 
 /// API keys for tenant-specific operations
@@ -260,6 +286,7 @@ model tenant_api_keys {
   key_name   String    @db.VarChar(255)
   key_prefix String    @unique @db.VarChar(32)
   key_hash   String    @db.VarChar(255)
+  key_id     String    @unique(map: "tenant_api_keys_key_id_unique") @db.VarChar(255) // Unique key identifier
   scopes     String[]
   expires_at DateTime? @db.Timestamptz(6)
   created_at DateTime  @default(now()) @db.Timestamptz(6)
@@ -416,6 +443,7 @@ model team_members {
   team             teams              @relation(fields: [team_id], references: [id])
   user_account     user_accounts?     @relation(fields: [user_account_id], references: [id])
   business_account business_accounts? @relation(fields: [business_account_id], references: [id])
+  deleted_at       DateTime?          @db.Timestamptz(6)
 
   @@unique([team_id, user_account_id])
   @@unique([team_id, business_account_id])
@@ -517,13 +545,13 @@ model user_accounts {
   used_storage    BigInt? /// Current storage usage in bytes
 
   // Relations
-  organization     organizations?  @relation(fields: [organization_id], references: [id], onDelete: NoAction)
-  tenant           tenants?        @relation(fields: [tenant_id], references: [id], onDelete: NoAction)
-  user_settings    user_settings[]
+  organization     organizations? @relation(fields: [organization_id], references: [id], onDelete: NoAction)
+  tenant           tenants?       @relation(fields: [tenant_id], references: [id], onDelete: NoAction)
   settings         settings[]
   addresses        addresses[]
   team_memberships team_members[]
   audit_logs       audit_logs[]
+  org_api_keys     org_api_keys[]
 
   @@index([organization_id])
   @@index([tenant_id])
@@ -637,59 +665,25 @@ model audit_logs {
 /// });
 /// ```
 model settings {
-  id                  BigInt   @id @default(autoincrement())
-  organization_id     String?
-  tenant_id           String?
-  business_account_id BigInt?
-  user_account_id     BigInt?
-  created_at          DateTime @default(now())
-  updated_at          DateTime @updatedAt
-  settings_data       Json?    @db.JsonB /// Flexible settings storage
-
+  id                    BigInt             @id @default(autoincrement())
+  organization_id       String?
+  tenant_id             String?
+  business_account_id   BigInt?
+  user_account_id       BigInt?
+  created_at            DateTime           @default(now())
+  updated_at            DateTime           @updatedAt
+  settings_data         Json?              @db.JsonB /// Flexible settings storage
+  preferred_language    String?            @db.VarChar(10) /// ISO language code
+  notification_settings Json?              @db.JsonB /// Notification preferences
+  ui_settings           Json?              @db.JsonB /// UI/UX preferences
   // Relations
-  tenant            tenants?           @relation(fields: [tenant_id], references: [id])
-  business_accounts business_accounts? @relation(fields: [business_account_id], references: [id])
-  user_accounts     user_accounts?     @relation(fields: [user_account_id], references: [id])
+  tenant                tenants?           @relation(fields: [tenant_id], references: [id])
+  business_accounts     business_accounts? @relation(fields: [business_account_id], references: [id])
+  user_accounts         user_accounts?     @relation(fields: [user_account_id], references: [id])
 
   @@index([organization_id])
   @@index([tenant_id])
   @@index([business_account_id])
-  @@index([user_account_id])
-}
-
-/// User-specific settings and preferences
-///
-/// Usage:
-/// ```typescript
-/// // Create user settings
-/// const userSettings = await prisma.user_settings.create({
-///   data: {
-///     user_account_id: user.id,
-///     preferred_language: 'en',
-///     notification_settings: {
-///       email: true,
-///       push: false,
-///       frequency: 'daily'
-///     },
-///     ui_settings: {
-///       theme: 'dark',
-///       compact_view: true
-///     }
-///   }
-/// });
-/// ```
-model user_settings {
-  id                    BigInt   @id @default(autoincrement())
-  user_account_id       BigInt?
-  preferred_language    String?  @db.VarChar(10) /// ISO language code
-  notification_settings Json?    @db.JsonB /// Notification preferences
-  ui_settings           Json?    @db.JsonB /// UI/UX preferences
-  created_at            DateTime @default(now())
-  updated_at            DateTime @updatedAt
-
-  // Relations
-  user_accounts user_accounts? @relation(fields: [user_account_id], references: [id])
-
   @@index([user_account_id])
 }
 

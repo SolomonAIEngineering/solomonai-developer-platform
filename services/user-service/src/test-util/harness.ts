@@ -1,5 +1,5 @@
+import { QueryMiddleware } from "@/database/client";
 import type { TaskContext } from "vitest";
-import { DatabaseClient, DrizzleDB } from "../../src/db/client";
 
 /**
  * The `Harness` class provides an abstract base for testing environments that require
@@ -16,7 +16,7 @@ export abstract class Harness {
    *
    * @type {DrizzleDB}
    */
-  public readonly db: DrizzleDB;
+  public readonly db: QueryMiddleware;
 
   /**
    * Constructs a new `Harness` instance, initializing the database connection using the
@@ -26,8 +26,8 @@ export abstract class Harness {
    * @param {TaskContext<HonoEnv>} t - The test execution context provided by Vitest, which includes `HonoEnv`.
    * The context provides access to environment bindings, such as the database connection, through `t.task.Bindings.DB`.
    */
-  constructor(t: TaskContext, db: D1Database) {
-    this.db = new DatabaseClient(db).getDb();
+  constructor(t: TaskContext, db: QueryMiddleware) {
+    this.db = db;
 
     // Set up an event listener to ensure teardown is called after the test is finished
     t.onTestFinished(async () => {
