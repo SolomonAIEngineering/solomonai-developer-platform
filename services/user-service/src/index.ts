@@ -81,62 +81,6 @@ const handler = {
       );
     }
   },
-
-  /**
-   * Handles message batches from different queues, processing or retrying messages as required.
-   * Configures the environment and database client before message processing.
-   * @param batch - The batch of messages to process, each containing `UserActionMessageBody`.
-   * @param env - The environment configuration, validated against `Env`.
-   * @param _executionContext - The execution context for asynchronous operations (not used directly).
-   */
-  queue: async (
-    batch: MessageBatch<UserActionMessageBody>,
-    env: Env,
-    _executionContext: ExecutionContext,
-  ) => {
-    const logger = createLogger(env, "queue");
-    const parsedEnv = zEnv.safeParse(env);
-
-    if (!parsedEnv.success) {
-      logger.fatal(`BAD_ENVIRONMENT: ${parsedEnv.error.message}`);
-      return;
-    }
-
-    try {
-      parsedEnv.data.DATABASE_CLIENT = createPrismaClient(
-        parsedEnv.data.HYPERDRIVE.connectionString,
-      );
-      for (const message of batch.messages) {
-        switch (batch.queue) {
-          case "key-migrations-development":
-          case "key-migrations-preview":
-          case "key-migrations-canary":
-          case "key-migrations-production":
-            // Process the message for key migrations queues.
-            logger.info("Processed message", { message: message.body });
-            message.ack();
-            break;
-
-          case "key-migrations-development-dlq":
-          case "key-migrations-preview-dlq":
-          case "key-migrations-canary-dlq":
-          case "key-migrations-production-dlq":
-            // Process the message for dead-letter queues (DLQs).
-            logger.info("Processed message from DLQ", {
-              message: message.body,
-            });
-            break;
-
-          default:
-            throw new Error(`No handler for queue: ${batch.queue}`);
-        }
-      }
-    } catch (error) {
-      logger.error("Error processing queue messages", {
-        error: error instanceof Error ? error.message : String(error),
-      });
-    }
-  },
 } satisfies ExportedHandler<Env, UserActionMessageBody>;
 
 export default handler;
