@@ -12,6 +12,7 @@ on:
       - "services/latency-benchmarks/**"
       - "services/gateway/**"
       - "services/financial-service/**"
+      - "services/user-service/**"
   workflow_dispatch:
 
 jobs:
@@ -25,6 +26,7 @@ jobs:
           - services/latency-benchmarks
           - services/gateway
           - services/financial-service
+          - services/user-service
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
