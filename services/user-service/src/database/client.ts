@@ -13,7 +13,7 @@ export enum UserRole {
 /**
  * Role-based permissions configuration
  */
-const ROLE_PERMISSIONS = {
+export const ROLE_PERMISSIONS = {
   [UserRole.ADMIN]: [
     "manage_users",
     "manage_teams",
@@ -104,7 +104,7 @@ interface AccessPolicy<TModel extends PrismaModels> {
  * and are properly scoped to the tenant and organization.
  */
 export class QueryMiddleware {
-  private prisma: PrismaClient;
+  protected prisma: PrismaClient;
   /**
    * A list of protected models that require special access controls.
    * Access to these models is typically restricted to admin roles.

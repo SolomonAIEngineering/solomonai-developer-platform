@@ -2,9 +2,6 @@ import { Analytics, newId } from "@/analytics";
 import { ServiceCache } from "@/cache";
 import { QueryMiddlewareFactory } from "@/database/client";
 import { RequestContext } from "@/database/types";
-import { APIKeyRepository } from "@/db-repository/api-key-repository";
-import { UserRepository } from "@/db-repository/user-repository";
-import { DatabaseClient } from "@/db/client";
 import { HeaderKey, RequestHeaders } from "@/header-utils";
 import { LogdrainMetrics } from "@/metric/logdrain";
 import { ConsoleLogger } from "@/metric/logger";
@@ -48,7 +45,6 @@ export function init(): MiddlewareHandler {
       defaultFields: { environment: c.env.ENVIRONMENT },
     });
 
-    const db = new DatabaseClient(c.env.DB).getDb();
     const cache = new ServiceCache(
       c.env.KV as KVNamespace<any>,
       c.env.PLATFORM_PREFIX,
@@ -61,11 +57,6 @@ export function init(): MiddlewareHandler {
       requestId,
       environment: c.env.ENVIRONMENT,
     });
-
-    const dataRepository = {
-      apiKey: new APIKeyRepository(db),
-      user: new UserRepository(db),
-    };
 
     // Validate and extract required headers
     const headers = c.req.header as unknown as RequestHeaders;
@@ -96,14 +87,12 @@ export function init(): MiddlewareHandler {
 
     // Set context and repositories for further use
     c.set("ctx", {
-      db,
       logger,
       cache,
       metrics: metricsClient,
       analytics: analyticsClient,
       queryClient: dbClient,
     });
-    c.set("repo", dataRepository);
 
     await next();
   };

@@ -45,7 +45,7 @@ export class ValidationService {
   private cache: ServiceCache;
   private dbClient: PrismaClient;
 
-  constructor(private serviceContext: ServiceContext) {
+  constructor(serviceContext: ServiceContext) {
     this.cache = serviceContext.cache;
     this.dbClient = serviceContext.prismaRef;
   }

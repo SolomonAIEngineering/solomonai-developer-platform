@@ -47,6 +47,9 @@ export class UserAccountQueries {
     storage_quota?: bigint;
     used_storage?: bigint;
   }) {
+    // validate unique email per organization
+    await this.validateUniqueEmail(data.email);
+
     return await this.middleware.enforceQueryRules(
       this.prisma,
       Prisma.ModelName.user_accounts,
@@ -452,7 +455,6 @@ export class UserAccountQueries {
    * Validate unique email per organization
    */
   private async validateUniqueEmail(
-    organization_id: string,
     email: string,
   ): Promise<void> {
     const existingAccount = await this.middleware.enforceQueryRules(
@@ -461,7 +463,6 @@ export class UserAccountQueries {
       "findFirst",
       {
         where: {
-          organization_id,
           email,
         },
       },

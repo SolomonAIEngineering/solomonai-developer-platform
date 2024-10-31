@@ -506,7 +506,6 @@ export class TeamMemberQueries {
   async processInvitationResponse(
     id: bigint,
     accept: boolean,
-    responderId: string,
   ) {
     const member = await this.getTeamMemberById(id);
     if (!member) throw new Error("Member not found");

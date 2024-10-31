@@ -565,7 +565,7 @@ export class BusinessAccountQueries {
   /**
    * Validate unique email per organization
    */
-  private async validateUniqueEmail(
+  public async validateUniqueEmail(
     organization_id: string,
     email: string,
   ): Promise<void> {

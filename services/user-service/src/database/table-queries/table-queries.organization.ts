@@ -828,13 +828,6 @@ export class OrganizationQueries {
 
     if (!org) throw new Error("Organization not found");
 
-    // Create archive record
-    const archiveData = {
-      organization_data: org,
-      archived_at: new Date(),
-      archived_by: this.middleware.getContext().userId,
-    };
-
     // Store archive data (implementation depends on your archive storage solution)
     // await this.archiveStorage.store(`org_${id}_archive`, archiveData);
 

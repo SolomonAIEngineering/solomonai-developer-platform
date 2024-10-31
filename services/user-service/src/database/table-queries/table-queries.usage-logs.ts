@@ -302,7 +302,7 @@ export class UsageLoggingQueries {
     );
   }
 
-  private async getEntity(
+  public async getEntity(
     entityType: "organization" | "tenant",
     entityId: string,
   ) {
@@ -706,7 +706,7 @@ export class UsageLoggingQueries {
   /**
    * Generate cost estimates based on usage
    */
-  private calculateCosts(usage: any[]) {
+  public calculateCosts(usage: any[]) {
     // Implement your cost calculation logic here
     // This would typically involve your pricing tiers and rates
     const costs: any = {
@@ -717,7 +717,7 @@ export class UsageLoggingQueries {
 
     // Example calculation
     usage.forEach((log) => {
-      const rate = this.getRateForUsage(log.event_type, log.unit);
+      const rate = this.getRateForUsage(log.event_type);
       const cost = Number(log.quantity) * rate;
 
       costs.total += cost;
@@ -739,7 +739,7 @@ export class UsageLoggingQueries {
   /**
    * Get rate for usage type
    */
-  private getRateForUsage(eventType: string, unit: string): number {
+  private getRateForUsage(eventType: string): number {
     // Implement your pricing logic here
     // This would typically come from your pricing configuration
     const baseRates: Record<string, number> = {
@@ -772,7 +772,7 @@ export class UsageLoggingQueries {
   /**
    * Get current billing period end
    */
-  private getCurrentBillingPeriodEnd(entity: any): Date {
+  public getCurrentBillingPeriodEnd(entity: any): Date {
     const start = this.getCurrentBillingPeriodStart(entity);
     const end = new Date(start);
     end.setMonth(end.getMonth() + 1);

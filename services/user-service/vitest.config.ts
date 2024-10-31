@@ -47,11 +47,8 @@ export default defineWorkersProject(async () => {
      * @property {object} poolOptions - Pool options for configuring worker instances.
      */
     test: {
-      browser: {
-        name: 'chromium', // or 'firefox', 'webkit'
-      },
-      inspect: false,
       globals: true, // This allows using describe, it, etc. without importing them
+      environment: "node", // or 'jsdom' if you're testing browser code
       setupFiles: ["./test/apply-migrations.ts"],
       exclude: [
         "./src/integration/**",
@@ -60,7 +57,12 @@ export default defineWorkersProject(async () => {
       ],
       reporters: ["html", "verbose"],
       outputFile: "./.vitest/index.html",
-      include: ["./**/*.test.ts", "./**/*.test.tsx"],
+      include: [
+        "./src/**/*.test.ts",
+        "./src/**/*.test.tsx",
+        "./test/**/*.test.ts",
+        "./test/**/*.test.tsx"
+      ],
       alias: {
         "@/": new URL("./src/", import.meta.url).pathname,
       },

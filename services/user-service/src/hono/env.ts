@@ -2,10 +2,6 @@ import { Analytics } from "@/analytics";
 import { ServiceCache } from "@/cache";
 import { QueryMiddleware } from "@/database/client";
 import { PrismaClient } from "@/database/generated/postgresql";
-import { APIKeyRepository } from "@/db-repository/api-key-repository";
-import { UserRepository } from "@/db-repository/user-repository";
-import { DrizzleDB } from "@/db/client";
-import { User } from "@/db/schema";
 import { Env } from "@/env";
 import { Metrics } from "@/metric";
 import { Logger } from "@/metric/logger";
@@ -14,8 +10,6 @@ import { Logger } from "@/metric/logger";
  * Represents the context for various services used in the application.
  */
 export type ServiceContext = {
-  /** Database instance for interacting with the application's data. */
-  db: DrizzleDB;
   /** Logger instance for recording application events and errors. */
   logger: Logger;
   /** Cache service for improving application performance. */
@@ -30,15 +24,6 @@ export type ServiceContext = {
   // TODO: add analytics client to pass api usage
   // TODO: add audit log client to log user actions and store in a nosql db
   // TODO: add usage limit client to check if user has exceeded their usage limits
-};
-
-export type RepositoryTypes = {
-  apiKey: APIKeyRepository;
-  user: UserRepository;
-};
-
-export type Repository = {
-  [K in keyof RepositoryTypes]: RepositoryTypes[K];
 };
 
 /**
@@ -66,15 +51,11 @@ export interface HonoEnv {
     };
     /** Services available for use during request processing. */
     ctx: ServiceContext;
-    /** Repository instances for interacting with the application's data. */
-    repo: Repository;
     /**
      * IP address or region information of the client making the request.
      */
     location: string;
     /** User agent string of the client making the request. */
     userAgent?: string;
-    /** User object representing the authenticated user for the request. */
-    user: User;
   };
 }

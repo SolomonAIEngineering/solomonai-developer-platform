@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=staging wrangler dev src/index.ts --port 3002",
+    "dev": "NODE_ENV=development wrangler dev src/index.ts --port 3002 --show-interactive-dev-session",
     "deploy": "wrangler deploy --minify src/index.ts --env production",
     "deploy:staging": "wrangler deploy --minify src/index.ts --env staging",
     "clean": "rm -rf .turbo node_modules",
@@ -20,7 +20,7 @@
     "test:ci": "vitest run -c vitest.unit.ts --reporter basic",
     "test:watch": "vitest",
     "start-tests": "npm run cleanup && npm run generate && npm run local:migrations:apply && npm run test:watch",
-    "build": "tsc",
+    "build": "tsc --noEmit",
     "cf-typegen": "wrangler types",
     "db:generate": "bunx prisma generate --no-engine --accelerate --schema=./prisma/schema.postgresql.prisma",
     "db:migrate:deploy": "bunx run env prisma migrate deploy --schema=./prisma/schema.postgresql.prisma",

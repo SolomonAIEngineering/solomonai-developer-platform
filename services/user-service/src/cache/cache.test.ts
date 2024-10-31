@@ -7,13 +7,12 @@ describe("ServiceCache", () => {
 
   beforeEach(() => {
     cache = new ServiceCache(env.KV, `test_${Date.now()}_`);
-    vi.useFakeTimers();
   });
 
   afterEach(async () => {
     await cache.clear();
-    vi.useRealTimers();
-    vi.clearAllMocks();
+    // vi.useRealTimers();
+    // vi.clearAllMocks();
   });
 
   it("should store and retrieve values", async () => {
@@ -78,14 +77,6 @@ describe("ServiceCache", () => {
 
   // Add more comprehensive expiration tests
   describe("cache expiration", () => {
-    beforeEach(() => {
-      vi.useFakeTimers();
-    });
-
-    afterEach(() => {
-      vi.useRealTimers();
-    });
-
     it("should respect revalidateAfter time", async () => {
       const testData = { foo: "bar" };
       const fetchFn = vi.fn().mockResolvedValue(testData);
@@ -219,8 +210,6 @@ describe("ServiceCache", () => {
 
     it("should handle cache expiration correctly", async () => {
       // Setup fake timers
-      vi.useFakeTimers();
-
       const testData = { foo: "bar" };
       const newData = { foo: "baz" };
       let fetchCount = 0;

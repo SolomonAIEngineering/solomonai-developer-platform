@@ -1,6 +1,7 @@
 import type { TaskContext } from "vitest";
 import { Harness } from "./harness";
 import { type StepRequest, type StepResponse, step } from "./request";
+import { QueryMiddleware } from "@/database/client";
 
 /**
  * IntegrationHarness is an extension of the `Harness` class that provides methods for making HTTP requests
@@ -26,7 +27,7 @@ export class IntegrationHarness extends Harness {
    * @param {TaskContext<HonoEnv>} t - The test execution context provided by Vitest, which includes `HonoEnv`.
    * This contains information about the current test and its environment.
    */
-  private constructor(t: TaskContext, db: D1Database) {
+  private constructor(t: TaskContext, db: QueryMiddleware) {
     super(t, db);
     this.baseUrl = "http://localhost:8787";
   }
@@ -40,7 +41,7 @@ export class IntegrationHarness extends Harness {
    */
   static async init(
     t: TaskContext,
-    db: D1Database,
+    db: QueryMiddleware,
   ): Promise<IntegrationHarness> {
     const h = new IntegrationHarness(t, db);
     await h.seed();

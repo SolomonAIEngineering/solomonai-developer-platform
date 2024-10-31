@@ -48,6 +48,7 @@ const handler = {
    * @returns A `Response` object indicating success or failure.
    */
   fetch: async (req: Request, env: Env, executionCtx: ExecutionContext) => {
+    console.log("this is the env", env);
     const parsedEnv = zEnv.safeParse(env);
     if (!parsedEnv.success) {
       createLogger(env).fatal(`BAD_ENVIRONMENT: ${parsedEnv.error.message}`);

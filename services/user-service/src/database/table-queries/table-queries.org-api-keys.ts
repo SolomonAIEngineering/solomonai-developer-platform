@@ -6,12 +6,6 @@ import {
   PrismaClient,
 } from "../generated/postgresql";
 import { QueryOptions, RequestContext } from "../types";
-type APIKeyWithRelations = Prisma.org_api_keysGetPayload<{
-  include: {
-    organization: true;
-    user: true;
-  };
-}>;
 
 /**
  * API Key management and query implementation
