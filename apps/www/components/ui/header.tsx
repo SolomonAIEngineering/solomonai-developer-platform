@@ -129,7 +129,7 @@ export default async function Header() {
                             See what&apos;s new in Solomon AI
                           </ListItem>
                           <ListItem
-                            href="https://developer-platform.solomon-ai.app"
+                            href="https://developer-platform.solomon-ai.app/landing"
                             title="Developer Platform"
                           >
                             Learn how to build on Solomon AI
