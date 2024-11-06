@@ -33,6 +33,7 @@ export async function middleware(request: NextRequest) {
   if (
     !session &&
     newUrl.pathname !== "/login" &&
+    newUrl.pathname !== "/landing" &&
     !newUrl.pathname.includes("/report")
   ) {
     const encodedSearchParams = `${newUrl.pathname.substring(1)}${

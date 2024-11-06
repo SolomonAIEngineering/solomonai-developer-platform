@@ -8,6 +8,7 @@ import { AppleSignIn } from "@/components/apple-sign-in";
 import { DesktopCommandMenuSignIn } from "@/components/desktop-command-menu-sign-in";
 import { GithubSignIn } from "@/components/github-sign-in";
 import { GoogleSignIn } from "@/components/google-sign-in";
+import Hero from "@/components/hero";
 import { OTPSignIn } from "@/components/otp-sign-in";
 import { SlackSignIn } from "@/components/slack-sign-in";
 import config from "@/config";
