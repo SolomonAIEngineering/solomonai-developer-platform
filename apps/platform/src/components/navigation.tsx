@@ -86,6 +86,11 @@ export default function Nav() {
                 Solomon For Business
               </button>
             </NextLink>
+            <NextLink href="/login">
+              <button className="bg-brand-500 dark:bg-brand-600 hover:bg-brand-600 rounded-xl px-4 py-3 text-sm font-medium text-white shadow-lg transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-100">
+                Login/Register
+              </button>
+            </NextLink>
           </div>
           <div className="justify-end lg:hidden">
             <MobileMenu />
