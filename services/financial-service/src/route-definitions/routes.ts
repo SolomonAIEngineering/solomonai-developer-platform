@@ -30,7 +30,6 @@ export const Routes = {
       summary: "Get a specific financial institution",
       tags: ["Institutions"],
       authenticationRequired: false,
-
     },
     updateUsage: {
       path: "/v1/api.institutions/{id}/usage",
@@ -40,7 +39,6 @@ export const Routes = {
       summary: "Update the usage of a financial institution",
       tags: ["Institutions"],
       authenticationRequired: false,
-
     },
   },
   FinancialAccounts: {
@@ -53,7 +51,6 @@ export const Routes = {
       summary: "List all financial accounts",
       tags: ["Financial-Accounts"],
       authenticationRequired: false,
-
     },
     getById: {
       path: "/v1/api.financial.accounts/{id}",
@@ -64,7 +61,6 @@ export const Routes = {
       summary: "Get a specific financial account",
       tags: ["Financial Accounts"],
       authenticationRequired: false,
-
     },
     create: {
       path: "/v1/api.financial.accounts",
@@ -104,7 +100,6 @@ export const Routes = {
       summary: "List all account balances",
       tags: ["Account Balance"],
       authenticationRequired: false,
-
     },
     // NOTE: NOT YET SUPPORTED
     getById: {
@@ -116,7 +111,6 @@ export const Routes = {
       summary: "Get balance for a specific account",
       tags: ["Account Balance"],
       authenticationRequired: false,
-
     },
   },
   Rates: {
@@ -129,7 +123,6 @@ export const Routes = {
       summary: "List all financial rates",
       tags: ["Rates"],
       authenticationRequired: false,
-
     },
     getByType: {
       path: "/v1/api.rates/:type",
@@ -140,7 +133,6 @@ export const Routes = {
       summary: "Get rates for a specific type",
       tags: ["Rates"],
       authenticationRequired: false,
-
     },
   },
   ApiKeys: {
@@ -182,7 +174,6 @@ export const Routes = {
       summary: "Auth Link (Plaid)",
       tags: ["auth", "plaid"],
       authenticationRequired: false,
-
     },
     plaidExchange: {
       path: "/v1/api.plaid/exchange",
@@ -192,7 +183,6 @@ export const Routes = {
       summary: "Exchange token (Plaid)",
       tags: ["auth", "plaid"],
       authenticationRequired: false,
-
     },
     gocardlessLink: {
       path: "/v1/api.gocardless/link",
@@ -202,7 +192,6 @@ export const Routes = {
       summary: "Auth link (GoCardLess)",
       tags: ["auth", "gocardless"],
       authenticationRequired: false,
-
     },
     gocardlessExchange: {
       path: "/v1/api.gocardless/exchange",
@@ -212,7 +201,6 @@ export const Routes = {
       summary: "Exchange token (GoCardLess)",
       tags: ["auth", "gocardless"],
       authenticationRequired: false,
-
     },
     gocardlessAgreement: {
       path: "/v1/api.gocardless/agreement",
@@ -222,7 +210,6 @@ export const Routes = {
       summary: "Agreement (GoCardLess)",
       tags: ["auth", "gocardless"],
       authenticationRequired: false,
-
     },
   },
   Health: {
@@ -234,7 +221,6 @@ export const Routes = {
       summary: "Health Check",
       tags: ["health"],
       authenticationRequired: false,
-
     },
   },
   Statements: {
@@ -247,7 +233,6 @@ export const Routes = {
       tags: ["statements"],
       shouldCache: true,
       authenticationRequired: false,
-
     },
     getPdf: {
       path: "/v1/api.statements/pdf",
@@ -258,7 +243,6 @@ export const Routes = {
       tags: ["statements"],
       shouldCache: true,
       authenticationRequired: false,
-
     },
   },
   Transactions: {
@@ -271,7 +255,6 @@ export const Routes = {
       tags: ["transactions"],
       shouldCache: false,
       authenticationRequired: false,
-
     },
     recurring: {
       path: "/v1/api.transactions/recurring",
@@ -282,7 +265,6 @@ export const Routes = {
       tags: ["transactions"],
       shouldCache: false,
       authenticationRequired: false,
-
     },
   },
   Users: {
@@ -353,5 +335,5 @@ export const AuthenticationRequiredRoutes: RouteDefinition[] = AllRoutes.filter(
 
     // All other routes require authentication by default
     return true;
-  }
+  },
 );
