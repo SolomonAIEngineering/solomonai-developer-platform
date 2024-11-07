@@ -12,8 +12,7 @@ import { metrics } from "@/middleware/metrics";
 import { rateLimit } from "@/middleware/ratelimit";
 import {
   AuthenticationRequiredRoutes,
-  CachedRoutes,
-  Routes,
+  CachedRoutes
 } from "@/route-definitions/routes";
 import { swaggerUI } from "@hono/swagger-ui";
 import { OpenAPIHono } from "@hono/zod-openapi";
@@ -212,7 +211,7 @@ function setupSwagger(app: OpenAPIHono<HonoEnv>) {
     "/",
     swaggerUI({
       url: "/openapi",
-    }),
+    }) as any,
   );
 
   // Mount API documentation at additional endpoints

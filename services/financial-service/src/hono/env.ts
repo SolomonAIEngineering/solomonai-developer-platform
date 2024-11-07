@@ -5,8 +5,13 @@ import { UserRepository } from "@/db-repository/user-repository";
 import { DrizzleDB } from "@/db/client";
 import { User } from "@/db/schema";
 import { Env } from "@/env";
-import { Logger } from "@/metric/logger";
 import { Metrics } from "@/metric";
+import { Logger } from "@/metric/logger";
+
+export type HonoAppContext<Variables = NonNullable<unknown>> = {
+  Variables: Variables;
+  Bindings: Env;
+};
 
 /**
  * Represents the context for various services used in the application.
@@ -39,7 +44,7 @@ export type Repository = {
 /**
  * Represents the environment and context for Hono application requests.
  */
-export interface HonoEnv {
+export interface HonoEnv extends HonoAppContext {
   /** Environment bindings, typically containing configuration and secrets. */
   Bindings: Env;
   /** Variables available during request processing. */
