@@ -19,6 +19,7 @@ export const Routes = {
       operationId: "get.institutions",
       summary: "List all financial institutions",
       tags: ["Institutions"],
+      authenticationRequired: false,
     },
     getById: {
       path: "/v1/api.institutions/{id}",
@@ -28,6 +29,7 @@ export const Routes = {
       operationId: "get.institutions.by.id",
       summary: "Get a specific financial institution",
       tags: ["Institutions"],
+      authenticationRequired: false,
     },
     updateUsage: {
       path: "/v1/api.institutions/{id}/usage",
@@ -36,6 +38,7 @@ export const Routes = {
       operationId: "update.institutions.usage",
       summary: "Update the usage of a financial institution",
       tags: ["Institutions"],
+      authenticationRequired: false,
     },
   },
   FinancialAccounts: {
@@ -47,6 +50,7 @@ export const Routes = {
       operationId: "get.financial.accounts",
       summary: "List all financial accounts",
       tags: ["Financial-Accounts"],
+      authenticationRequired: false,
     },
     getById: {
       path: "/v1/api.financial.accounts/{id}",
@@ -56,6 +60,7 @@ export const Routes = {
       operationId: "get.financial.accounts.by.id",
       summary: "Get a specific financial account",
       tags: ["Financial Accounts"],
+      authenticationRequired: false,
     },
     create: {
       path: "/v1/api.financial.accounts",
@@ -94,6 +99,7 @@ export const Routes = {
       operationId: "get.account.balances",
       summary: "List all account balances",
       tags: ["Account Balance"],
+      authenticationRequired: false,
     },
     // NOTE: NOT YET SUPPORTED
     getById: {
@@ -104,6 +110,7 @@ export const Routes = {
       operationId: "get.account.balance.by.id",
       summary: "Get balance for a specific account",
       tags: ["Account Balance"],
+      authenticationRequired: false,
     },
   },
   Rates: {
@@ -115,6 +122,7 @@ export const Routes = {
       operationId: "get.rates",
       summary: "List all financial rates",
       tags: ["Rates"],
+      authenticationRequired: false,
     },
     getByType: {
       path: "/v1/api.rates/:type",
@@ -124,6 +132,7 @@ export const Routes = {
       operationId: "get.rates.by.type",
       summary: "Get rates for a specific type",
       tags: ["Rates"],
+      authenticationRequired: false,
     },
   },
   ApiKeys: {
@@ -164,6 +173,7 @@ export const Routes = {
       operationId: "post.plaid.link",
       summary: "Auth Link (Plaid)",
       tags: ["auth", "plaid"],
+      authenticationRequired: false,
     },
     plaidExchange: {
       path: "/v1/api.plaid/exchange",
@@ -172,6 +182,7 @@ export const Routes = {
       operationId: "post.plaid.exchange",
       summary: "Exchange token (Plaid)",
       tags: ["auth", "plaid"],
+      authenticationRequired: false,
     },
     gocardlessLink: {
       path: "/v1/api.gocardless/link",
@@ -180,6 +191,7 @@ export const Routes = {
       operationId: "post.gocardless.link",
       summary: "Auth link (GoCardLess)",
       tags: ["auth", "gocardless"],
+      authenticationRequired: false,
     },
     gocardlessExchange: {
       path: "/v1/api.gocardless/exchange",
@@ -188,6 +200,7 @@ export const Routes = {
       operationId: "post.gocardless.exchange",
       summary: "Exchange token (GoCardLess)",
       tags: ["auth", "gocardless"],
+      authenticationRequired: false,
     },
     gocardlessAgreement: {
       path: "/v1/api.gocardless/agreement",
@@ -196,6 +209,7 @@ export const Routes = {
       operationId: "post.gocardless.agreement",
       summary: "Agreement (GoCardLess)",
       tags: ["auth", "gocardless"],
+      authenticationRequired: false,
     },
   },
   Health: {
@@ -206,6 +220,7 @@ export const Routes = {
       operationId: "get.health",
       summary: "Health Check",
       tags: ["health"],
+      authenticationRequired: false,
     },
   },
   Statements: {
@@ -217,6 +232,7 @@ export const Routes = {
       summary: "Get Statements",
       tags: ["statements"],
       shouldCache: true,
+      authenticationRequired: false,
     },
     getPdf: {
       path: "/v1/api.statements/pdf",
@@ -226,6 +242,7 @@ export const Routes = {
       summary: "Get Statement PDF",
       tags: ["statements"],
       shouldCache: true,
+      authenticationRequired: false,
     },
   },
   Transactions: {
@@ -237,6 +254,7 @@ export const Routes = {
       summary: "Get transactions",
       tags: ["transactions"],
       shouldCache: false,
+      authenticationRequired: false,
     },
     recurring: {
       path: "/v1/api.transactions/recurring",
@@ -246,6 +264,7 @@ export const Routes = {
       summary: "Get recurring transactions",
       tags: ["transactions"],
       shouldCache: false,
+      authenticationRequired: false,
     },
   },
   Users: {
@@ -298,5 +317,23 @@ export const CachedRoutes: RouteDefinition[] = AllRoutes.filter(
 );
 
 export const AuthenticationRequiredRoutes: RouteDefinition[] = AllRoutes.filter(
-  (route) => route.authenticationRequired === true,
+  (route) => {
+    // If authenticationRequired is explicitly set to false, don't require auth
+    if (route.authenticationRequired === false) {
+      return false;
+    }
+
+    // Health check and public endpoints don't require auth
+    if (route.tags.includes("health")) {
+      return false;
+    }
+
+    // User creation doesn't require auth
+    if (route.operationId === "post.users") {
+      return false;
+    }
+
+    // All other routes require authentication by default
+    return true;
+  },
 );
