@@ -1,11 +1,11 @@
 DO $$ BEGIN
- CREATE TYPE "logPostType" AS ENUM('http', 'form');
+ CREATE TYPE "public"."logPostType" AS ENUM('http', 'form', 'webhook', 'email');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "logType" AS ENUM('success', 'error');
+ CREATE TYPE "public"."logType" AS ENUM('success', 'error');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -70,7 +70,9 @@ CREATE TABLE IF NOT EXISTS "user" (
 	"name" text,
 	"email" text NOT NULL,
 	"emailVerified" timestamp,
-	"image" text
+	"image" text,
+	"leadCount" integer DEFAULT 0 NOT NULL,
+	"createdAt" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "verificationToken" (
@@ -81,31 +83,31 @@ CREATE TABLE IF NOT EXISTS "verificationToken" (
 );
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "account" ADD CONSTRAINT "account_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "account" ADD CONSTRAINT "account_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "endpoint" ADD CONSTRAINT "endpoint_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "endpoint" ADD CONSTRAINT "endpoint_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "lead" ADD CONSTRAINT "lead_endpointId_endpoint_id_fk" FOREIGN KEY ("endpointId") REFERENCES "endpoint"("id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "lead" ADD CONSTRAINT "lead_endpointId_endpoint_id_fk" FOREIGN KEY ("endpointId") REFERENCES "public"."endpoint"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "log" ADD CONSTRAINT "log_endpointId_endpoint_id_fk" FOREIGN KEY ("endpointId") REFERENCES "endpoint"("id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "log" ADD CONSTRAINT "log_endpointId_endpoint_id_fk" FOREIGN KEY ("endpointId") REFERENCES "public"."endpoint"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "session" ADD CONSTRAINT "session_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "session" ADD CONSTRAINT "session_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
