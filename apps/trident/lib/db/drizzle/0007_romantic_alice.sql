@@ -1,0 +1,1 @@
+ALTER TABLE "lead" ALTER COLUMN "data" SET NOT NULL;
