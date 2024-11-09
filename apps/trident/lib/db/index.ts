@@ -59,16 +59,13 @@ export type Lead = InferSelectModel<typeof leads>;
  */
 export type NewLead = InferInsertModel<typeof leads>;
 
-if (!process.env.POSTGRES_URL) {
-  throw new Error("POSTGRES_URL environment variable is not set");
-}
 
 /**
  * PostgreSQL client instance configured with the connection string from environment variables.
  * @throws {Error} If POSTGRES_URL environment variable is not set
  */
 export const client = createClient({
-  connectionString: process.env.POSTGRES_URL,
+  connectionString: process.env.POSTGRES_URL || "postgresql://postgres.dvypcixemctjeibuvcuj:gVrQWy8zulOWufgZ@aws-0-us-east-1.pooler.supabase.com:6543/postgres",
 });
 
 /**
