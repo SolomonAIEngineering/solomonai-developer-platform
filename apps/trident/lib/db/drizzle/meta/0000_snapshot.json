@@ -1,4 +1,6 @@
 {
+  "id": "ab10e1c2-00bc-4058-9d7c-9dbb9d991668",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -78,17 +80,24 @@
         "account_userId_user_id_fk": {
           "name": "account_userId_user_id_fk",
           "tableFrom": "account",
-          "columnsFrom": ["userId"],
           "tableTo": "user",
-          "columnsTo": ["id"],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
         "account_provider_providerAccountId_pk": {
           "name": "account_provider_providerAccountId_pk",
-          "columns": ["provider", "providerAccountId"]
+          "columns": [
+            "provider",
+            "providerAccountId"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -191,11 +200,15 @@
         "endpoint_userId_user_id_fk": {
           "name": "endpoint_userId_user_id_fk",
           "tableFrom": "endpoint",
-          "columnsFrom": ["userId"],
           "tableTo": "user",
-          "columnsTo": ["id"],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -241,11 +254,15 @@
         "lead_endpointId_endpoint_id_fk": {
           "name": "lead_endpointId_endpoint_id_fk",
           "tableFrom": "lead",
-          "columnsFrom": ["endpointId"],
           "tableTo": "endpoint",
-          "columnsTo": ["id"],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "columnsFrom": [
+            "endpointId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -270,12 +287,14 @@
         "type": {
           "name": "type",
           "type": "logType",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
         "postType": {
           "name": "postType",
           "type": "logPostType",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -297,11 +316,15 @@
         "log_endpointId_endpoint_id_fk": {
           "name": "log_endpointId_endpoint_id_fk",
           "tableFrom": "log",
-          "columnsFrom": ["endpointId"],
           "tableTo": "endpoint",
-          "columnsTo": ["id"],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "columnsFrom": [
+            "endpointId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -335,11 +358,15 @@
         "session_userId_user_id_fk": {
           "name": "session_userId_user_id_fk",
           "tableFrom": "session",
-          "columnsFrom": ["userId"],
           "tableTo": "user",
-          "columnsTo": ["id"],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -378,6 +405,20 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "leadCount": {
+          "name": "leadCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -413,7 +454,10 @@
       "compositePrimaryKeys": {
         "verificationToken_identifier_token_pk": {
           "name": "verificationToken_identifier_token_pk",
-          "columns": ["identifier", "token"]
+          "columns": [
+            "identifier",
+            "token"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -423,21 +467,27 @@
     "public.logPostType": {
       "name": "logPostType",
       "schema": "public",
-      "values": ["http", "form"]
+      "values": [
+        "http",
+        "form",
+        "webhook",
+        "email"
+      ]
     },
     "public.logType": {
       "name": "logType",
       "schema": "public",
-      "values": ["success", "error"]
+      "values": [
+        "success",
+        "error"
+      ]
     }
   },
   "schemas": {},
+  "sequences": {},
   "_meta": {
+    "columns": {},
     "schemas": {},
-    "tables": {},
-    "columns": {}
-  },
-  "id": "aac0d4d3-bfd6-4842-9eeb-94ca03658cba",
-  "prevId": "00000000-0000-0000-0000-000000000000",
-  "sequences": {}
+    "tables": {}
+  }
 }
