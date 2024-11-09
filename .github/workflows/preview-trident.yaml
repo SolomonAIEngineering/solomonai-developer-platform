@@ -1,7 +1,8 @@
-name: Preview Deployment - Developer Platform
+name: Preview Deployment - Trident Lead Mgmt. Platform
+
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_DEVELOPPER_PLATFORM }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_TRIDENT_PLATFORM }}
   TURBO_TOKEN: ${{ secrets.VERCEL_TOKEN }}
   TURBO_TEAM: ${{ secrets.VERCEL_ORG_ID }}
   TIPTAP_PRO_TOKEN: ${{ secrets.TIPTAP_PRO_TOKEN }}
@@ -11,8 +12,8 @@ on:
     branches-ignore:
       - main
     paths:
-      - apps/platform/**
-      - packages/**
+      - apps/trident/**
+      - packages/env/**
   workflow_dispatch:
 
 jobs:
