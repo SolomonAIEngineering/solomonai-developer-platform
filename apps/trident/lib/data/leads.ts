@@ -1,13 +1,13 @@
 "use server";
 
-import { leads, endpoints } from "../db/schema";
-import { eq, desc, sql, and } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
-import { db, Lead } from "../db";
 import { getErrorMessage } from "@/lib/helpers/error-message";
+import { and, desc, eq, sql } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
+import { z } from "zod";
+import { db, Lead } from "../db";
+import { endpoints, leads } from "../db/schema";
 import { authenticatedAction } from "./safe-action";
 import { getLeadDataSchema } from "./validations";
-import { z } from "zod";
 
 /**
  * Creates a new lead in the database
@@ -20,11 +20,16 @@ export async function createLead(
   data: {
     [x: string]: any;
   },
+  source: "website" | "referral" | "social_media" | "advertisement" | "event" | "other" = "other"
 ): Promise<string> {
   const [{ leadId }] = await db
     .insert(leads)
     .values({
-      data,
+      data: data,
+      email: "",
+      firstName: "",
+      lastName: "",
+      source,
       createdAt: new Date(),
       updatedAt: new Date(),
       endpointId: endpointId,
@@ -48,15 +53,11 @@ export const getLeads = authenticatedAction.action(
       .where(eq(endpoints.userId, userId))
       .orderBy(desc(leads.createdAt));
 
-    const data: LeadRow[] = leadsData.map((lead) => ({
-      id: lead.lead.id,
-      data: lead.lead.data,
-      schema: lead.endpoint?.schema || [],
-      createdAt: lead.lead.createdAt,
-      updatedAt: lead.lead.updatedAt,
-      endpointId: lead.endpoint?.id as string,
-      endpoint: lead.endpoint?.name || undefined,
-    }));
+    const data: Lead[] = leadsData.map((lead) => {
+      return {
+        ...lead.lead
+      }
+    });
 
     return data;
   },

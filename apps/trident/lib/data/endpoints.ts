@@ -1,18 +1,18 @@
 "use server";
 
+import { getErrorMessage } from "@/lib/helpers/error-message";
+import { randomBytes } from "crypto";
+import { and, desc, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { z } from "zod";
 import { db, Endpoint } from "../db";
 import { endpoints } from "../db/schema";
-import { eq, desc, and } from "drizzle-orm";
-import { getErrorMessage } from "@/lib/helpers/error-message";
 import { authenticatedAction } from "./safe-action";
-import { z } from "zod";
 import {
   createEndpointFormSchema,
   updateEndpointFormSchema,
 } from "./validations";
-import { randomBytes } from "crypto";
-import { redirect } from "next/navigation";
 
 /**
  * Gets all endpoints for a user
@@ -115,6 +115,25 @@ export const createEndpoint = authenticatedAction
       userId,
       name: parsedInput.name,
       schema: parsedInput.schema,
+      config: {
+        rateLimit: {
+          requests: 100,
+          period: 60
+        },
+        cors: {
+          enabled: true,
+          origins: ["*"],
+          methods: ["GET", "POST", "PUT", "DELETE"]
+        },
+        auth: {
+          type: "none",
+          settings: {}
+        },
+        caching: {
+          enabled: false,
+          ttl: 0
+        }
+      },
       // TODO: add this to form
       // enabled: parsedInput.enabled,
       formEnabled: parsedInput.formEnabled,

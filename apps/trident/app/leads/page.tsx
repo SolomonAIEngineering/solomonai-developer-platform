@@ -1,11 +1,11 @@
-import { notFound } from "next/navigation";
+import { columns } from "@/components/groups/leads/columns";
+import { DataTable } from "@/components/groups/leads/data-table";
 import { Breadcrumbs } from "@/components/parts/breadcrumbs";
 import { Header } from "@/components/parts/header";
-import { getLeads } from "@/lib/data/leads";
-import { getEndpoints } from "@/lib/data/endpoints";
-import { DataTable } from "@/components/groups/leads/data-table";
-import { columns } from "@/components/groups/leads/columns";
 import { PageWrapper } from "@/components/parts/page-wrapper";
+import { getEndpoints } from "@/lib/data/endpoints";
+import { getLeads } from "@/lib/data/leads";
+import { notFound } from "next/navigation";
 
 const pageData = {
   name: "Leads",
