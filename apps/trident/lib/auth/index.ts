@@ -24,7 +24,10 @@ export const config = {
       from: "Solomon AI Team <team@inbox.solomon-ai.app>",
       // sendVerificationRequest, -> TODO: send custom email
     }),
-    GitHub, // optional GitHub provider
+    GitHub({
+      clientId: process.env.GITHUB_ID!,
+      clientSecret: process.env.GITHUB_SECRET!,
+    }), // optional GitHub provider
   ],
   callbacks: {
     session({ session, token }) {
