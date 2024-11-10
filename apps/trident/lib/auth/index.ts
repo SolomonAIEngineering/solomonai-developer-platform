@@ -21,7 +21,7 @@ export const config = {
   providers: [
     Resend({
       apiKey: process.env.RESEND_API_KEY!,
-      from: "team@inbox.solomon-ai.app",
+      from: "Solomon AI Team <team@inbox.solomon-ai.app>",
       // sendVerificationRequest, -> TODO: send custom email
     }),
     GitHub, // optional GitHub provider

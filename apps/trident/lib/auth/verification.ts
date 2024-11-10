@@ -12,7 +12,7 @@ export async function sendVerificationRequest(params: {
 
   try {
     const data = await resend.emails.send({
-      from: "team@inbox.solomon-ai.app",
+      from: "Solomon AI Team <team@inbox.solomon-ai.app>",
       to: [identifier],
       subject: `Log in to ${host}`,
       text: text({ url, host }),
