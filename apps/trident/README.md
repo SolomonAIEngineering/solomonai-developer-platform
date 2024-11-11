@@ -1,7 +1,7 @@
 # Trident / Open Source Form Backend
 
 <div align="center">
-    <img src="path_to_trident_logo.svg" width="128" alt="Trident Logo" />
+    <img src="../../logo.svg" width="128" alt="Trident Logo" />
 </div>
 
 ## Overview
