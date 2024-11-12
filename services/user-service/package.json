@@ -13,7 +13,7 @@
     "check:types": "tsc --noEmit",
     "import-institutions": "node scripts/importer.js",
     "cleanup": "rm -rf .wrangler && rm -rf .drizzle && rm -rf .drizzle-kit && rm -rf .drizzle-kit-sqlite && rm -rf .drizzle-kit-sqlite-schema",
-    "test": "vitest run -c vitest.config.ts",
+    "test": "vitest run -c vitest.config.ts --bail=1",
     "test:integration": "vitest run -c vitest.integration.ts --bail=1",
     "test:benchmark": "vitest run -c vitest.benchmark.ts",
     "debug": "vite --port 5173 --host",
