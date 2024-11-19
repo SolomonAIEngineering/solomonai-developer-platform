@@ -16,6 +16,8 @@ The **Transaction Enrichment Service** is a comprehensive platform that transfor
 
 Powered by **Cloudflare Workflows** and cutting-edge LLMs, this service delivers enterprise-grade performance with real-time processing capabilities. It seamlessly integrates into existing financial systems, enabling businesses to enhance their transaction data with actionable intelligence for risk management, customer experience, and business analytics.
 
+[Reference](https://chatgpt.com/c/673c3bb4-e6e0-800e-9522-1f8fe6f56a6c)
+
 ---
 
 ## Core Capabilities 🌟
