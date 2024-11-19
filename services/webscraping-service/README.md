@@ -19,6 +19,8 @@ Powered by **Cloudflare Workflows** and cutting-edge LLMs, this service delivers
 [Reference](https://chatgpt.com/c/673c3bb4-e6e0-800e-9522-1f8fe6f56a6c)
 [Image To Text](https://developers.cloudflare.com/workers-ai/models/)
 
+TODO: Integrate the upload service tus resumable upload with the webscraping service
+
 ---
 
 ## Core Capabilities 🌟
