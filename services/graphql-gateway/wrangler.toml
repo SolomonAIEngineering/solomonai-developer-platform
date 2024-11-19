@@ -1,0 +1,20 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "workers-graphql-server"
+main = "src/index.ts"
+compatibility_date = "2024-10-11"
+compatibility_flags = ["nodejs_compat"]
+
+[observability]
+enabled = true
+
+[[rules]]
+type = "Text"
+globs = ["**/*.graphql"]
+fallthrough = true
+
+# You can bind to other Workers services and
+# use them inside your resolvers
+# [[services]]
+# binding = "MOVIES"
+# entrypoint = "MoviesService"
+# service = "d1-movie-example"
