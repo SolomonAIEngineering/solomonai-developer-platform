@@ -1,6 +1,3 @@
-// Copyright 2023 Signal Messenger, LLC
-// SPDX-License-Identifier: AGPL-3.0-only
-
 import {error, IRequest, json, Router, RouterType, StatusError} from 'itty-router';
 import {Buffer} from 'node:buffer';
 import {AsyncLock, generateParts, readIntFromHeader, toBase64, WritableStreamBuffer} from './util';

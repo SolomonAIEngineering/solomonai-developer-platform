@@ -1,6 +1,3 @@
-// Copyright 2023 Signal Messenger, LLC
-// SPDX-License-Identifier: AGPL-3.0-only
-
 // cloudflare:test currently has an issue where tests will fail if a non-empty body of a durable
 // object response is not disposed of. See https://github.com/cloudflare/workers-sdk/issues/5629 . The
 // superfluous `await response.body.cancel()` calls in some tests may be removed when this issue is fixed.

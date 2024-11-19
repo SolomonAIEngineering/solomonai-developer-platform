@@ -1,6 +1,3 @@
-// Copyright 2023 Signal Messenger, LLC
-// SPDX-License-Identifier: AGPL-3.0-only
-
 import {describe, expect, it} from 'vitest';
 import {AsyncLock, Release, WritableStreamBuffer} from './util';
 

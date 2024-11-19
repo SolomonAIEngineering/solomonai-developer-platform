@@ -1,6 +1,3 @@
-// Copyright 2023 Signal Messenger, LLC
-// SPDX-License-Identifier: AGPL-3.0-only
-
 import {expect, it, test, describe} from 'vitest';
 import {runInDurableObject, env, runDurableObjectAlarm} from 'cloudflare:test';
 

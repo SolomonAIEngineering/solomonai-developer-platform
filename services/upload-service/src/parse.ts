@@ -1,6 +1,3 @@
-// Copyright 2023 Signal Messenger, LLC
-// SPDX-License-Identifier: AGPL-3.0-only
-
 import {StatusError} from 'itty-router';
 import {fromBase64} from './util';
 import {X_SIGNAL_CHECKSUM_SHA256} from './uploadHandler';
